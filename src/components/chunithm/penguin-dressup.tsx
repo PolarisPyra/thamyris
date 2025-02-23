@@ -82,7 +82,7 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 		return (
 			<div className="flex justify-center items-center h-[400px]">
 				<div className="text-lg text-gray-400">
-					<Spinner size={24} color="#ffffff" />.
+					<Spinner size={24} color="#ffffff" />
 				</div>
 			</div>
 		);
