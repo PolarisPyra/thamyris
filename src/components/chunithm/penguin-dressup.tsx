@@ -130,7 +130,6 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 			<div className="bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-xl p-4 md:p-6 border border-gray-700 w-full md:w-[400px]">
 				{Object.entries(availableAccessories).map(([accessoryType, values]) => {
 					const key = values.map((item) => item.avatarAccessoryId).join("-");
-					console.log(`Accessories: ${accessoryType}`, JSON.stringify(values, null, 2));
 					return (
 						<AccessoryDropdown
 							key={key}
