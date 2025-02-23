@@ -152,7 +152,7 @@ const ChunithmScorePage = () => {
 							scores={paginatedPlaylogScores.map((scores) => ({
 								id: scores.id,
 								title: (
-									<div className="max-w-[150px] flex items-center space-x-1 group relative">
+									<div className="flex items-center space-x-1 group relative">
 										<span className="truncate">{scores.title}</span>
 									</div>
 								),
