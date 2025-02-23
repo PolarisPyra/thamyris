@@ -1,90 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { api } from "@/utils";
 import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
-
-interface Nameplate {
-	id: number;
-	name: string;
-	imagePath: string;
-}
+import { useNameplates, useCurrentNameplate, useUpdateNameplate } from "@/hooks/use-nameplates";
 
 const NameplateSelector = () => {
-	const [nameplates, setNameplates] = useState<Nameplate[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [selectedNameplate, setSelectedNameplate] = useState<string>("");
 	const [openDropdown, setOpenDropdown] = useState(false);
+	const { data: nameplates, isLoading: isLoadingNameplates } = useNameplates();
+	const { data: currentNameplate, isLoading: isLoadingCurrent } = useCurrentNameplate();
+	const { mutate: updateNameplate, isPending } = useUpdateNameplate();
+
+	const [selectedNameplate, setSelectedNameplate] = useState<string>("");
+
+	// Set initial selected nameplate when data loads
+	React.useEffect(() => {
+		if (currentNameplate) {
+			setSelectedNameplate(currentNameplate.imagePath.replace(".dds", ".png"));
+		} else if (nameplates && nameplates.length > 0) {
+			setSelectedNameplate(nameplates[0].imagePath);
+		}
+	}, [currentNameplate, nameplates]);
 
 	const handleDropdownToggle = () => {
 		setOpenDropdown(!openDropdown);
 	};
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const currentResponse = await api.chunithm.nameplates.current.$get();
-				if (currentResponse.ok) {
-					const currentData = await currentResponse.json();
-					const currentNameplate = currentData.results[0];
-					if (currentNameplate) {
-						setSelectedNameplate(currentNameplate.imagePath.replace(".dds", ".png"));
-					}
+	const handleSubmit = () => {
+		const selected = nameplates?.find((nameplate) => nameplate.imagePath === selectedNameplate);
 
-					const allResponse = await api.chunithm.nameplates.all.$get();
-					if (allResponse.ok) {
-						const allData = await allResponse.json();
-						const convertedNameplates = allData.results.map((nameplate: Nameplate) => ({
-							...nameplate,
-							imagePath: nameplate.imagePath.replace(".dds", ".png"),
-						}));
-
-						setNameplates(convertedNameplates);
-
-						if (!currentNameplate && convertedNameplates.length > 0) {
-							setSelectedNameplate(convertedNameplates[0].imagePath);
-						}
-					}
-				}
-			} catch (error) {
-				console.error("Failed to fetch data:", error);
-				toast.error("Error loading nameplates");
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchData();
-	}, []);
-
-	const handleSubmit = async () => {
-		try {
-			const selected = nameplates.find((nameplate) => nameplate.imagePath === selectedNameplate);
-
-			if (selected) {
-				const response = await api.chunithm.nameplates.update.$post({
-					json: { nameplateId: selected.id },
-				});
-
-				if (!response.ok) {
+		if (selected) {
+			updateNameplate(selected.id, {
+				onSuccess: () => {
+					toast.success("Nameplate updated successfully!");
+					setOpenDropdown(false);
+				},
+				onError: (error) => {
 					toast.error("Failed to update nameplate");
-					throw new Error("Failed to update nameplate");
-				}
-				toast.success("Nameplate updated successfully!");
-			}
-		} catch (error) {
-			console.error("Error updating nameplate:", error);
-			toast.error("Error updating nameplate");
+					console.error("Error updating nameplate:", error);
+				},
+			});
 		}
 	};
 
 	const getSelectedLabel = () => {
-		const selected = nameplates.find((nameplate) => nameplate.imagePath === selectedNameplate);
+		const selected = nameplates?.find((nameplate) => nameplate.imagePath === selectedNameplate);
 		return selected?.name || "Select Nameplate";
 	};
 
-	if (isLoading) {
+	if (isLoadingNameplates || isLoadingCurrent) {
 		return <div>Loading nameplates...</div>;
 	}
 
@@ -124,7 +88,7 @@ const NameplateSelector = () => {
 								onClick={(e) => e.stopPropagation()}
 							>
 								<div className="max-h-[285px] overflow-y-auto space-y-2 pr-2">
-									{nameplates.map((nameplate) => (
+									{nameplates?.map((nameplate) => (
 										<div
 											key={nameplate.id}
 											onClick={() => {
@@ -144,6 +108,7 @@ const NameplateSelector = () => {
 					onClick={handleSubmit}
 					defaultLabel="Update Nameplate"
 					updatingLabel="Updating..."
+					disabled={isPending}
 				/>
 			</div>
 		</motion.div>

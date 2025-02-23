@@ -1,6 +1,5 @@
 import Header from "@/components/common/header";
-import { api } from "@/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import { motion } from "framer-motion";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Trophy } from "lucide-react";
@@ -12,119 +11,42 @@ import {
 	getOngekiComboStatus,
 	getOngekiGrade,
 } from "@/utils/helpers";
-
-interface OngekiApiResponse {
-	results: Score[];
-}
-
-interface Score {
-	id: number;
-	maxCombo: number;
-	isFullCombo: number;
-	userPlayDate: string;
-	playerRating: number;
-	isAllBreak: number;
-	isFullBell: number;
-	techScore: number;
-	battleScore: number;
-	judgeMiss: number;
-	judgeHit: number;
-	judgeBreak: number;
-	judgeCriticalBreak: number;
-	clearStatus: number;
-	cardId1: number;
-	chartId: number;
-	title: string;
-	level: number;
-	genre: string;
-	artist: string;
-	techscore_change: string;
-	battlescore_change: string;
-	rating_change: string;
-}
+import { useOngekiScores, useUsername } from "@/hooks/use-scores";
 
 const ITEMS_PER_PAGE = 10;
 
 const OngekiScorePage = () => {
-	const [playlogResponse, setResponse] = useState<Score[]>([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
-	const [username, setUsername] = useState<string>("");
-	const currentRating =
-		playlogResponse.length > 0 ? (playlogResponse[0].playerRating / 100).toFixed(2) : "0.00";
 
-	const search = playlogResponse.filter((response) =>
-		response.title.toLowerCase().includes(searchQuery.toLowerCase())
+	const { data: scores = [], isLoading: isLoadingScores } = useOngekiScores();
+	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
+
+	const currentRating =
+		scores?.length > 0 && scores[0]?.playerRating != null
+			? (scores[0].playerRating / 100).toFixed(2)
+			: "0.00";
+
+	const filteredScores = scores.filter((score) =>
+		score.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
-	const fetchUsername = async () => {
-		try {
-			const response = await api.users.username.$get();
-			if (response.ok) {
-				const data = await response.json();
-				return data.username;
-			}
-			throw new Error("Failed to fetch username");
-		} catch (error) {
-			console.error("Error fetching username:", error);
-			return null;
-		}
-	};
-
-	useEffect(() => {
-		const getUsername = async () => {
-			const name = await fetchUsername();
-			if (name) {
-				setUsername(name);
-			}
-		};
-		getUsername();
-	}, []);
-
-	const fetchScores = async () => {
-		const response = await api.ongeki.ongeki_score_playlog.$get();
-		if (response.ok) {
-			const data: OngekiApiResponse = await response.json();
-			const ongekiScorePlaylog = data.results.map((score) => ({
-				id: score.id,
-				maxCombo: score.maxCombo,
-				isFullCombo: score.isFullCombo,
-				userPlayDate: new Date(
-					new Date(score.userPlayDate).getTime() - 9 * 60 * 60 * 1000
-				).toISOString(), // Convert JST to UTC
-				playerRating: Math.floor(score.playerRating),
-				isAllBreak: score.isAllBreak,
-				isFullBell: score.isFullBell,
-				techScore: Math.floor(score.techScore),
-				battleScore: Math.floor(score.battleScore),
-				judgeMiss: score.judgeMiss,
-				judgeHit: score.judgeHit,
-				judgeBreak: score.judgeBreak,
-				judgeCriticalBreak: score.judgeCriticalBreak,
-				clearStatus: score.clearStatus,
-				cardId1: score.cardId1,
-				chartId: score.chartId,
-				title: score.title,
-				level: score.level,
-				genre: score.genre,
-				artist: score.artist,
-				techscore_change: score.techscore_change,
-				battlescore_change: score.battlescore_change,
-				rating_change: score.rating_change,
-			}));
-			setResponse(ongekiScorePlaylog);
-		}
-	};
-
-	useEffect(() => {
-		fetchScores();
-	}, []);
-
-	const totalPages = Math.ceil(search.length / ITEMS_PER_PAGE);
-	const paginatedPlaylogScores = search.slice(
+	const totalPages = Math.ceil(filteredScores.length / ITEMS_PER_PAGE);
+	const paginatedScores = filteredScores.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE
 	);
+
+	if (isLoadingScores || isLoadingUsername) {
+		return (
+			<div className="flex-1 overflow-auto relative">
+				<Header title="Overview" />
+				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
+					<div className="text-lg text-gray-400">Loading scores...</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex-1 overflow-auto relative">
@@ -139,50 +61,44 @@ const OngekiScorePage = () => {
 					>
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							name={` (Rating: ${currentRating})`}
+							name={`(Rating: ${currentRating})`}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>
 						<div className="mt-6 space-y-6"></div>
 
 						<ScoreTable
-							scores={paginatedPlaylogScores.map((response) => ({
-								id: response.id,
+							scores={paginatedScores.map((score) => ({
+								id: score.id,
 								title: (
-									<div className="max-w-[150px] flex items-center space-x-1 group relative">
-										<span className="truncate">{response.title}</span>
+									<div className="flex items-center space-x-1 group relative">
+										<span className="truncate">{score.title}</span>
 									</div>
-								),
-								score: response.techScore.toLocaleString(),
-								grade: getOngekiGrade(response.techScore),
-								date: new Date(response.userPlayDate).toLocaleString(),
-								level: (
-									<div className="flex flex-col items-start">
-										<span>{response.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyClass(response.chartId)}</span>
-									</div>
-								),
-								difficulty: getDifficultyClass(response.chartId),
-								lamp: getOngekiClearStatus(response.clearStatus),
-								combolamp: getOngekiComboStatus(
-									response.isFullCombo,
-									response.isAllBreak,
-									response.isFullBell
 								),
 								rating: (
 									<div className="flex items-center">
-										<span className="mr-4">{(response.playerRating / 100).toFixed(2)}</span>
-										{response.rating_change === "Increase" && (
+										<span className="mr-4">{(score.playerRating / 100).toFixed(2)}</span>
+										{score.rating_change === "Increase" && (
 											<CircleArrowUp className="w-6 h-6 text-green-500" />
 										)}
-										{response.rating_change === "Decrease" && (
+										{score.rating_change === "Decrease" && (
 											<CircleArrowDown className="w-6 h-6 text-red-500" />
 										)}
-										{response.rating_change === "Same" && (
-											<CircleArrowRight className="w-6 h-6 text-gray-500" />
-										)}
+										{score.rating_change === "Same" && <CircleArrowRight className="w-6 h-6 text-gray-500" />}
 									</div>
 								),
+								score: score.techScore.toLocaleString(),
+								grade: getOngekiGrade(score.techScore),
+								date: new Date(score.userPlayDate).toLocaleString(),
+								level: (
+									<div className="flex flex-col items-start">
+										<span>{score.level.toString()}</span>
+										<span className="text-sm text-gray-400">{getDifficultyClass(score.chartId)}</span>
+									</div>
+								),
+								lamp: getOngekiClearStatus(score.clearStatus),
+								combolamp: getOngekiComboStatus(score.isFullCombo, score.isAllBreak, score.isFullBell),
+								difficulty: getDifficultyClass(score.chartId),
 							}))}
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}

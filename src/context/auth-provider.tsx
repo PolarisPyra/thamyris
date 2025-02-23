@@ -141,7 +141,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 			if (response.ok) {
 				setUser(null);
 				setIsAuthenticated(false);
-				navigate("/login");
+				navigate("/");
 			}
 		} catch (err) {
 			console.error("Logout error:", err);

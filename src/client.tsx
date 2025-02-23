@@ -22,48 +22,53 @@ import { SidebarComponent } from "./components/common/sidebar";
 import { SidebarProvider } from "./components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "./context/auth-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
-		<BrowserRouter>
-			<AuthProvider>
-				<Toaster />
-				<Routes>
-					<Route path="/" element={<WelcomePage />} />
-					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/login" element={<LoginPage />} />
+		<QueryClientProvider client={queryClient}>
+			<BrowserRouter>
+				<AuthProvider>
+					<Toaster />
+					<Routes>
+						<Route path="/" element={<WelcomePage />} />
+						<Route path="/signup" element={<SignUpPage />} />
+						<Route path="/login" element={<LoginPage />} />
 
-					<Route
-						element={
-							<div className="flex h-screen text-gray-100 overflow-hidden bg-gray-900">
-								<SidebarProvider>
-									<SidebarComponent />
-									<div className="flex-1 flex flex-col overflow-hidden">
-										<Outlet />
-									</div>
-								</SidebarProvider>
-							</div>
-						}
-					>
-						<Route element={<ProtectedRoute />}>
-							<Route path="/overview" element={<OverviewPage />} />
-							<Route path="/news" element={<ServerNews />} />
-							<Route path="/settings/chunithm" element={<ChunithmSettingsPage />} />
-							<Route path="/settings/ongeki" element={<OngekiSettingsPage />} />
-							<Route path="/ongeki/allsongs" element={<OngekiAllSongs />} />
+						<Route
+							element={
+								<div className="flex h-screen text-gray-100 overflow-hidden bg-gray-900">
+									<SidebarProvider>
+										<SidebarComponent />
+										<div className="flex-1 flex flex-col overflow-hidden">
+											<Outlet />
+										</div>
+									</SidebarProvider>
+								</div>
+							}
+						>
+							<Route element={<ProtectedRoute />}>
+								<Route path="/overview" element={<OverviewPage />} />
+								<Route path="/news" element={<ServerNews />} />
+								<Route path="/settings/chunithm" element={<ChunithmSettingsPage />} />
+								<Route path="/settings/ongeki" element={<OngekiSettingsPage />} />
+								<Route path="/ongeki/allsongs" element={<OngekiAllSongs />} />
 
-							<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
-							<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
-							<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
-							<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
-							<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
-							<Route path="/ongeki/scores" element={<OngekiScorePage />} />
+								<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
+								<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
+								<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
+								<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
+								<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
+								<Route path="/ongeki/scores" element={<OngekiScorePage />} />
+							</Route>
 						</Route>
-					</Route>
 
-					<Route path="*" element={<NotFound />} />
-				</Routes>
-			</AuthProvider>
-		</BrowserRouter>
+						<Route path="*" element={<NotFound />} />
+					</Routes>
+				</AuthProvider>
+			</BrowserRouter>
+		</QueryClientProvider>
 	</React.StrictMode>
 );

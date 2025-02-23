@@ -1,27 +1,15 @@
 import Header from "@/components/common/header";
-import { api } from "@/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import { motion } from "framer-motion";
 import { getDifficultyClass } from "@/utils/helpers";
-
 import AllSongsTable from "@/components/common/allsongs-table";
-
-interface Song {
-	id: number;
-	songId: number;
-	chartId: number;
-	title: string;
-	level: number;
-	genre: string;
-	artist: string;
-	jacketPath: string;
-}
+import { useOngekiSongs } from "@/hooks/use-songs";
 
 const ITEMS_PER_PAGE = 10;
 
 const OngekiAllSongs = () => {
-	const [songs, setSongs] = useState<Song[]>([]);
+	const { data: songs = [], isLoading } = useOngekiSongs();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 
@@ -34,23 +22,22 @@ const OngekiAllSongs = () => {
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE
 	);
-	const fetchSongs = async () => {
-		const resp = await api.ongeki.ongeki_static_music.$get();
-		if (resp.ok) {
-			const data = await resp.json();
-			setSongs(data.results);
-		}
-	};
 
-	useEffect(() => {
-		fetchSongs();
-	}, []);
+	if (isLoading) {
+		return (
+			<div className="flex-1 overflow-auto relative">
+				<Header title="All Songs" />
+				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
+					<div className="text-lg text-gray-400">Loading songs...</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex-1 overflow-auto relative">
 			<Header title="All Songs" />
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-4 px-2 sm:px-4 lg:px-8">
-				{" "}
 				<div className="flex flex-col gap-4">
 					<motion.div
 						className="grid grid-cols-1 w-full"
@@ -59,28 +46,28 @@ const OngekiAllSongs = () => {
 						transition={{ duration: 1 }}
 					>
 						<AllSongsTable
-							allsongs={paginatedSongs.map((songs) => ({
-								id: songs.id,
-								songId: songs.songId,
-								chartId: getDifficultyClass(songs.chartId),
+							allsongs={paginatedSongs.map((song) => ({
+								id: song.id,
+								songId: song.songId,
+								chartId: getDifficultyClass(song.chartId),
 								title: (
-									<div className=" flex items-center space-x-1 group relative">
-										<span className="truncate">{songs.title}</span>
+									<div className="flex items-center space-x-1 group relative">
+										<span className="truncate">{song.title}</span>
 									</div>
 								),
 								level: (
 									<div className="flex flex-col items-start">
-										<span>{songs.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyClass(songs.chartId)}</span>
+										<span>{song.level.toString()}</span>
+										<span className="text-sm text-gray-400">{getDifficultyClass(song.chartId)}</span>
 									</div>
 								),
-								genre: songs.genre,
+								genre: song.genre,
 								artist: (
 									<div className="max-w-[150px] flex items-center space-x-1 group relative">
-										<span className="truncate">{songs.artist}</span>
+										<span className="truncate">{song.artist}</span>
 									</div>
 								),
-								jacketPath: songs.jacketPath,
+								jacketPath: song.jacketPath,
 								icon: null,
 							}))}
 							searchQuery={searchQuery}

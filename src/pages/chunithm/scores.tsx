@@ -1,6 +1,5 @@
 import Header from "@/components/common/header";
-import { api } from "@/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import { motion } from "framer-motion";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Trophy } from "lucide-react";
@@ -12,122 +11,42 @@ import {
 	getDifficultyClass,
 	getGrade,
 } from "@/utils/helpers";
-
-interface ChunithmApiResponse {
-	results: Score[];
-}
-
-interface Score {
-	id: number;
-	maxCombo: number;
-	isFullCombo: number;
-	userPlayDate: string;
-	playerRating: number;
-	isAllJustice: number;
-	score: number;
-	judgeHeaven: number;
-	judgeGuilty: number;
-	judgeJustice: number;
-	judgeAttack: number;
-	judgeCritical: number;
-	isClear: number;
-	skillId: number;
-	isNewRecord: number;
-	chartId: number;
-	title: string;
-	level: number;
-	genre: string;
-	jacketPath: string;
-	artist: string;
-	score_change: string;
-	rating_change: string;
-	rating: number;
-}
+import { useChunithmScores, useUsername } from "@/hooks/use-scores";
 
 const ITEMS_PER_PAGE = 10;
 
 const ChunithmScorePage = () => {
-	const [playlogResponse, setResponse] = useState<Score[]>([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
-	const [username, setUsername] = useState<string>("");
 
-	const fetchUsername = async () => {
-		try {
-			const response = await api.users.username.$get();
-			if (response.ok) {
-				const data = await response.json();
-				return data.username;
-			}
-			throw new Error("Failed to fetch username");
-		} catch (error) {
-			console.error("Error fetching username:", error);
-			return null;
-		}
-	};
-
-	useEffect(() => {
-		const getUsername = async () => {
-			const name = await fetchUsername();
-			if (name) {
-				setUsername(name);
-			}
-		};
-		getUsername();
-	}, []);
+	const { data: scores = [], isLoading: isLoadingScores } = useChunithmScores();
+	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
 	const currentRating =
-		playlogResponse.length > 0 ? (playlogResponse[1].playerRating / 100).toFixed(2) : "0.00";
+		scores?.length > 0 && scores[0]?.playerRating != null
+			? (scores[0].playerRating / 100).toFixed(2)
+			: "0.00";
 
-	const search = playlogResponse.filter((response) =>
-		response.title.toLowerCase().includes(searchQuery.toLowerCase())
+	const filteredScores = scores.filter((score) =>
+		score.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
-	const fetchScores = async () => {
-		const response = await api.chunithm.chuni_score_playlog.$get();
-		if (response.ok) {
-			const data: ChunithmApiResponse = await response.json();
-			const chuniScorePlaylog = data.results.map((score) => ({
-				id: score.id,
-				maxCombo: score.maxCombo,
-				isFullCombo: score.isFullCombo,
-				userPlayDate: new Date(
-					new Date(score.userPlayDate).getTime() - 9 * 60 * 60 * 1000
-				).toISOString(), // Convert JST to UTC
-				playerRating: Math.floor(score.playerRating),
-				isAllJustice: score.isAllJustice,
-				score: Math.floor(score.score),
-				judgeHeaven: score.judgeHeaven,
-				judgeGuilty: score.judgeGuilty,
-				judgeJustice: score.judgeJustice,
-				judgeAttack: score.judgeAttack,
-				judgeCritical: score.judgeCritical,
-				isClear: score.isClear,
-				skillId: score.skillId,
-				isNewRecord: score.isNewRecord,
-				chartId: score.chartId,
-				title: score.title,
-				level: score.level,
-				genre: score.genre,
-				jacketPath: score.jacketPath,
-				artist: score.artist,
-				score_change: score.score_change,
-				rating_change: score.rating_change,
-				rating: score.rating,
-			}));
-			setResponse(chuniScorePlaylog);
-		}
-	};
-
-	useEffect(() => {
-		fetchScores();
-	}, []);
-
-	const totalPages = Math.ceil(search.length / ITEMS_PER_PAGE);
-	const paginatedPlaylogScores = search.slice(
+	const totalPages = Math.ceil(filteredScores.length / ITEMS_PER_PAGE);
+	const paginatedScores = filteredScores.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE
 	);
+
+	if (isLoadingScores || isLoadingUsername) {
+		return (
+			<div className="flex-1 overflow-auto relative">
+				<Header title="Overview" />
+				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
+					<div className="text-lg text-gray-400">Loading scores...</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex-1 overflow-auto relative">
@@ -149,39 +68,37 @@ const ChunithmScorePage = () => {
 						<div className="mt-6 space-y-6"></div>
 
 						<ScoreTable
-							scores={paginatedPlaylogScores.map((scores) => ({
-								id: scores.id,
+							scores={paginatedScores.map((score) => ({
+								id: score.id,
 								title: (
 									<div className="flex items-center space-x-1 group relative">
-										<span className="truncate">{scores.title}</span>
+										<span className="truncate">{score.title}</span>
 									</div>
 								),
 								rating: (
 									<div className="flex items-center">
-										<span className="mr-4">{(scores.playerRating / 100).toFixed(2)}</span>
-										{scores.rating_change === "Increase" && (
+										<span className="mr-4">{(score.playerRating / 100).toFixed(2)}</span>
+										{score.rating_change === "Increase" && (
 											<CircleArrowUp className="w-6 h-6 text-green-500" />
 										)}
-										{scores.rating_change === "Decrease" && (
+										{score.rating_change === "Decrease" && (
 											<CircleArrowDown className="w-6 h-6 text-red-500" />
 										)}
-										{scores.rating_change === "Same" && (
-											<CircleArrowRight className="w-6 h-6 text-gray-500" />
-										)}
+										{score.rating_change === "Same" && <CircleArrowRight className="w-6 h-6 text-gray-500" />}
 									</div>
 								),
-								score: scores.score.toLocaleString(),
-								grade: getGrade(scores.score),
-								date: new Date(scores.userPlayDate).toLocaleString(),
+								score: score.score.toLocaleString(),
+								grade: getGrade(score.score),
+								date: new Date(score.userPlayDate).toLocaleString(),
 								level: (
 									<div className="flex flex-col items-start">
-										<span>{scores.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyClass(scores.chartId)}</span>
+										<span>{score.level.toString()}</span>
+										<span className="text-sm text-gray-400">{getDifficultyClass(score.chartId)}</span>
 									</div>
 								),
-								lamp: getChunithmClearStatus(scores.isClear),
-								combolamp: getChunithmComboStatus(scores.isFullCombo, scores.isAllJustice, scores.score),
-								difficulty: getDifficultyClass(scores.chartId),
+								lamp: getChunithmClearStatus(score.isClear),
+								combolamp: getChunithmComboStatus(score.isFullCombo, score.isAllJustice, score.score),
+								difficulty: getDifficultyClass(score.chartId),
 							}))}
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}

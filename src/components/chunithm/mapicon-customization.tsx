@@ -1,90 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { api } from "@/utils";
 import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
-
-interface mapIcon {
-	id: number;
-	name: string;
-	imagePath: string;
-}
+import { useMapIcons, useCurrentMapIcon, useUpdateMapIcon } from "@/hooks/use-mapicon";
 
 const MapiconSelector = () => {
-	const [mapIcons, setmapIcons] = useState<mapIcon[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [selectedmapIcon, setSelectedmapIcon] = useState<string>("");
 	const [openDropdown, setOpenDropdown] = useState(false);
+	const { data: mapIcons, isLoading: isLoadingIcons } = useMapIcons();
+	const { data: currentIcon, isLoading: isLoadingCurrent } = useCurrentMapIcon();
+	const { mutate: updateIcon, isPending } = useUpdateMapIcon();
+
+	const [selectedIcon, setSelectedIcon] = useState<string>("");
+
+	// Set initial selected icon when data loads
+	React.useEffect(() => {
+		if (currentIcon) {
+			setSelectedIcon(currentIcon.imagePath);
+		} else if (mapIcons && mapIcons.length > 0) {
+			setSelectedIcon(mapIcons[0].imagePath);
+		}
+	}, [currentIcon, mapIcons]);
 
 	const handleDropdownToggle = () => {
 		setOpenDropdown(!openDropdown);
 	};
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const currentResponse = await api.chunithm.mapicon.current.$get();
-				if (currentResponse.ok) {
-					const currentData = await currentResponse.json();
-					const currentmapIcon = currentData.results[0];
-					if (currentmapIcon) {
-						setSelectedmapIcon(currentmapIcon.imagePath.replace(".dds", ".png"));
-					}
+	const handleSubmit = () => {
+		const selected = mapIcons?.find((icon) => icon.imagePath === selectedIcon);
 
-					const allResponse = await api.chunithm.mapicon.all.$get();
-					if (allResponse.ok) {
-						const allData = await allResponse.json();
-						const convertedmapIcons = allData.results.map((mapIcon: mapIcon) => ({
-							...mapIcon,
-							imagePath: mapIcon.imagePath.replace(".dds", ".png"),
-						}));
-
-						setmapIcons(convertedmapIcons);
-
-						if (!currentmapIcon && convertedmapIcons.length > 0) {
-							setSelectedmapIcon(convertedmapIcons[0].imagePath);
-						}
-					}
-				}
-			} catch (error) {
-				console.error("Failed to fetch data:", error);
-				toast.error("Error loading map icons");
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchData();
-	}, []);
-
-	const handleSubmit = async () => {
-		try {
-			const selected = mapIcons.find((mapIcon) => mapIcon.imagePath === selectedmapIcon);
-
-			if (selected) {
-				const response = await api.chunithm.mapicon.update.$post({
-					json: { mapIconId: selected.id },
-				});
-
-				if (!response.ok) {
+		if (selected) {
+			updateIcon(selected.id, {
+				onSuccess: () => {
+					toast.success("Map icon updated successfully!");
+					setOpenDropdown(false);
+				},
+				onError: (error) => {
 					toast.error("Failed to update map icon");
-					throw new Error("Failed to update map icon");
-				}
-				toast.success("Map icon updated successfully!");
-			}
-		} catch (error) {
-			console.error("Error updating map icon:", error);
-			toast.error("Error updating map icon");
+					console.error("Error updating map icon:", error);
+				},
+			});
 		}
 	};
 
 	const getSelectedLabel = () => {
-		const selected = mapIcons.find((mapIcon) => mapIcon.imagePath === selectedmapIcon);
+		const selected = mapIcons?.find((icon) => icon.imagePath === selectedIcon);
 		return selected?.name || "Select Map Icon";
 	};
 
-	if (isLoading) {
+	if (isLoadingIcons || isLoadingCurrent) {
 		return <div>Loading map icons...</div>;
 	}
 
@@ -97,7 +61,7 @@ const MapiconSelector = () => {
 		>
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
-					src={`/assets/map_icon/${selectedmapIcon}`}
+					src={`/assets/map_icon/${selectedIcon}`}
 					alt="Selected map icon"
 					className="w-[150px] object-contain"
 				/>
@@ -123,15 +87,15 @@ const MapiconSelector = () => {
 								onClick={(e) => e.stopPropagation()}
 							>
 								<div className="max-h-[285px] overflow-y-auto space-y-2 pr-2">
-									{mapIcons.map((mapIcon) => (
+									{mapIcons?.map((icon) => (
 										<div
-											key={mapIcon.id}
+											key={icon.id}
 											onClick={() => {
-												setSelectedmapIcon(mapIcon.imagePath);
+												setSelectedIcon(icon.imagePath);
 											}}
 											className="p-2 bg-gray-700 rounded-md hover:bg-gray-600 cursor-pointer transition-colors overflow-x-hidden"
 										>
-											<span className="text-gray-200 min-w-[150px] truncate">{mapIcon.name}</span>
+											<span className="text-gray-200 min-w-[150px] truncate">{icon.name}</span>
 										</div>
 									))}
 								</div>
@@ -143,6 +107,7 @@ const MapiconSelector = () => {
 					onClick={handleSubmit}
 					defaultLabel="Update Map Icon"
 					updatingLabel="Updating..."
+					disabled={isPending}
 				/>
 			</div>
 		</motion.div>

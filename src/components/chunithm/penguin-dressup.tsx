@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { api } from "@/utils";
 import { SubmitButton } from "@/components/common/button";
 import { AvatarImage } from "./avatar-image";
-import { avatarData } from "@/utils/types";
-import { useFetchAvatarData } from "@/hooks/use-get-avatar";
 import { AccessoryDropdown } from "./avatar-dropdown";
 import { toast } from "sonner";
+import { useCurrentAvatar, useAllAvatarParts, useUpdateAvatar } from "@/hooks/use-avatar";
 
 interface PenguinCustomizerProps {
 	onUpdate?: () => void;
 }
 
 const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
+	const { data: currentAvatar, isLoading: isLoadingCurrent } = useCurrentAvatar();
+	const { data: availableAccessories, isLoading: isLoadingParts } = useAllAvatarParts();
+	const { mutate: updateAvatar, isPending } = useUpdateAvatar();
+
 	const [selectedAccessories, setSelectedAccessories] = useState({
 		head: "",
 		back: "",
@@ -20,45 +22,22 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 		face: "",
 		item: "",
 	});
-
-	const [availableAccessories, setAvailableAccessories] = useState({
-		head: [] as avatarData[],
-		back: [] as avatarData[],
-		wear: [] as avatarData[],
-		face: [] as avatarData[],
-		item: [] as avatarData[],
-	});
-
-	const [initialSelectedAccessories, setInitialSelectedAccessories] = useState({
-		head: "",
-		back: "",
-		wear: "",
-		face: "",
-		item: "",
-	});
-
-	const [isLoading, setIsLoading] = useState(true);
 	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-	const [wasChanged, setWasChanged] = useState(false);
 
-	useFetchAvatarData(
-		setSelectedAccessories,
-		setInitialSelectedAccessories,
-		setAvailableAccessories,
-		setIsLoading,
-		availableAccessories
-	);
+	// Set initial selected accessories when data loads
+	React.useEffect(() => {
+		if (currentAvatar) {
+			setSelectedAccessories(currentAvatar);
+		}
+	}, [currentAvatar]);
 
 	const handleAccessoryChange = (part: string, image: string) => {
-		if (!wasChanged) {
-			setWasChanged(true);
-		}
 		setSelectedAccessories((prev) => ({ ...prev, [part]: image }));
 	};
 
 	const getAccessoryLabel = (part: string) => {
 		const selectedValue = selectedAccessories[part as keyof typeof selectedAccessories];
-		const partOptions = availableAccessories[part as keyof typeof availableAccessories];
+		const partOptions = availableAccessories?.[part as keyof typeof availableAccessories] || [];
 		const selectedAccessory = partOptions.find((option) => option.image === selectedValue);
 		return selectedAccessory?.label || part;
 	};
@@ -67,56 +46,44 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 		setOpenDropdown(openDropdown === part ? null : part);
 	};
 
-	const updateAvatar = async () => {
-		const hasChanged = Object.keys(selectedAccessories).some(
-			(key) =>
-				selectedAccessories[key as keyof typeof selectedAccessories] !==
-				initialSelectedAccessories[key as keyof typeof initialSelectedAccessories]
-		);
+	const handleSubmit = () => {
+		if (!availableAccessories) return;
 
-		if (!hasChanged) return;
+		const avatarParts = {
+			head:
+				availableAccessories.head.find((item) => item.image === selectedAccessories.head)
+					?.avatarAccessoryId || 0,
+			face:
+				availableAccessories.face.find((item) => item.image === selectedAccessories.face)
+					?.avatarAccessoryId || 0,
+			back:
+				availableAccessories.back.find((item) => item.image === selectedAccessories.back)
+					?.avatarAccessoryId || 0,
+			wear:
+				availableAccessories.wear.find((item) => item.image === selectedAccessories.wear)
+					?.avatarAccessoryId || 0,
+			item:
+				availableAccessories.item.find((item) => item.image === selectedAccessories.item)
+					?.avatarAccessoryId || 0,
+		};
 
-		try {
-			const avatarParts = {
-				head:
-					availableAccessories.head.find((item) => item.image === selectedAccessories.head)
-						?.avatarAccessoryId || 0,
-				face:
-					availableAccessories.face.find((item) => item.image === selectedAccessories.face)
-						?.avatarAccessoryId || 0,
-				back:
-					availableAccessories.back.find((item) => item.image === selectedAccessories.back)
-						?.avatarAccessoryId || 0,
-				wear:
-					availableAccessories.wear.find((item) => item.image === selectedAccessories.wear)
-						?.avatarAccessoryId || 0,
-				item:
-					availableAccessories.item.find((item) => item.image === selectedAccessories.item)
-						?.avatarAccessoryId || 0,
-			};
-
-			const response = await api.chunithm.avatar.update.$post({
-				json: {
-					userId: 10000,
-					avatarParts,
-				},
-			});
-
-			if (response.ok) {
+		updateAvatar(avatarParts, {
+			onSuccess: () => {
 				toast.success("Avatar updated successfully");
-				setInitialSelectedAccessories(selectedAccessories);
-
 				onUpdate?.();
-			} else {
-				console.error("Failed to update avatar");
-			}
-		} catch (error) {
-			toast.error("Error updating avatar");
-		}
+			},
+			onError: () => {
+				toast.error("Error updating avatar");
+			},
+		});
 	};
 
-	if (isLoading) {
-		return <div>Loading avatar...</div>;
+	if (isLoadingCurrent || isLoadingParts) {
+		return (
+			<div className="flex justify-center items-center h-[400px]">
+				<div className="text-lg text-gray-400">Loading avatar...</div>
+			</div>
+		);
 	}
 
 	return (
@@ -128,21 +95,27 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 		>
 			<AvatarImage clothing={selectedAccessories} />
 			<div className="bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-xl p-4 md:p-6 border border-gray-700 w-full md:w-[400px]">
-				{Object.entries(availableAccessories).map(([accessoryType, values]) => {
-					const key = values.map((item) => item.avatarAccessoryId).join("-");
-					return (
-						<AccessoryDropdown
-							key={key}
-							accessoryType={accessoryType}
-							options={values}
-							openDropdown={openDropdown}
-							handleDropdownToggle={toggleDropdown}
-							handleChange={handleAccessoryChange}
-							getSelectedLabel={getAccessoryLabel}
-						/>
-					);
-				})}
-				<SubmitButton onClick={updateAvatar} defaultLabel="Update Avatar" updatingLabel="Updating..." />
+				{availableAccessories &&
+					Object.entries(availableAccessories).map(([accessoryType, values]) => {
+						const key = values.map((item) => item.avatarAccessoryId).join("-");
+						return (
+							<AccessoryDropdown
+								key={key}
+								accessoryType={accessoryType}
+								options={values}
+								openDropdown={openDropdown}
+								handleDropdownToggle={toggleDropdown}
+								handleChange={handleAccessoryChange}
+								getSelectedLabel={getAccessoryLabel}
+							/>
+						);
+					})}
+				<SubmitButton
+					onClick={handleSubmit}
+					defaultLabel="Update Avatar"
+					updatingLabel="Updating..."
+					disabled={isPending}
+				/>
 			</div>
 		</motion.div>
 	);

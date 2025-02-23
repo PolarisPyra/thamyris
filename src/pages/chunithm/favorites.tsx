@@ -1,109 +1,45 @@
 import Header from "@/components/common/header";
-import { api } from "@/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import { motion } from "framer-motion";
 import { HeartIcon, Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import { getDifficultyClass } from "@/utils/helpers";
 import FavoritesTable from "@/components/common/favorites-table";
-interface ChunithmApiResponse {
-	results: Favorites[];
-}
-
-interface Favorites {
-	id: number;
-	songId: number;
-	chartId: number;
-	title: string;
-	level: number;
-	genre: string;
-	jacketPath: string;
-	artist: string;
-	isFavorite?: boolean; // Add this field
-}
+import { useSongs, useFavorites, useAddFavorite, useRemoveFavorite } from "@/hooks/use-favorites";
+import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 10;
 
 const ChunithmFavorites = () => {
-	const [playlogResponse, setResponse] = useState<Favorites[]>([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
-	const [favoriteSongIds, setFavoriteSongIds] = useState<number[]>([]);
 
-	const fetchFavorites = async () => {
-		try {
-			const response = await api.chunithm.favorites.all.$get();
-			if (response.ok) {
-				const data = await response.json();
-				setFavoriteSongIds(data.results.map((fav: { favId: number }) => fav.favId));
-			}
-		} catch (error) {
-			console.error("Error fetching favorites:", error);
-		}
-	};
+	const { data: songs = [], isLoading: isLoadingSongs } = useSongs();
+	const { data: favoriteSongIds = [], isLoading: isLoadingFavorites } = useFavorites();
+	const { mutate: addFavorite } = useAddFavorite();
+	const { mutate: removeFavorite } = useRemoveFavorite();
 
-	const handleAddFavorite = async (songId: number) => {
-		try {
-			const response = await api.chunithm.favorites.add.$post({
-				json: { favId: songId },
-			});
-
-			if (response.ok) {
-				console.log("Favorite added successfully");
-			} else {
-				console.error("Failed to add favorite");
-			}
-		} catch (error) {
-			console.error("Error adding favorite:", error);
-		}
-	};
-
-	const handleRemoveFavorite = async (songId: number) => {
-		try {
-			const response = await api.chunithm.favorites.remove.$post({
-				json: { favId: songId },
-			});
-			if (response.ok) {
-				console.log("Favorite removed successfully");
-			} else {
-				console.error("Failed to remove favorite");
-			}
-		} catch (error) {
-			console.error("Error removing favorite:", error);
-		}
-	};
-
-	const filter = playlogResponse
-		.filter((response) => response.chartId === 3)
-		.filter((response) => response.title.toLowerCase().includes(searchQuery.toLowerCase()));
-	const fetchScores = async () => {
-		const resp = await api.chunithm.chuni_static_music.$get();
-		if (resp.ok) {
-			const data: ChunithmApiResponse = await resp.json();
-			const chuniScorePlaylog = data.results.map((response) => ({
-				id: response.id,
-				songId: response.songId,
-				chartId: response.chartId,
-				title: response.title,
-				level: response.level,
-				genre: response.genre,
-				jacketPath: response.jacketPath,
-				artist: response.artist,
-			}));
-			setResponse(chuniScorePlaylog);
-		}
-	};
-	useEffect(() => {
-		fetchScores();
-		fetchFavorites();
-	}, []);
+	const filter = songs
+		.filter((song) => song.chartId === 3)
+		.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
 	const totalPages = Math.ceil(filter.length / ITEMS_PER_PAGE);
-	const paginatedPlaylogScores = filter.slice(
+	const paginatedSongs = filter.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE
 	);
+
+	if (isLoadingSongs || isLoadingFavorites) {
+		return (
+			<div className="flex-1 overflow-auto relative">
+				<Header title="Overview" />
+				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
+					<div className="text-lg text-gray-400">Loading songs...</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex-1 overflow-auto relative">
@@ -125,34 +61,44 @@ const ChunithmFavorites = () => {
 						<div className="mt-6 space-y-6"></div>
 
 						<FavoritesTable
-							favorites={paginatedPlaylogScores.map((songs) => ({
-								id: songs.id,
-								songId: songs.songId,
-								chartId: getDifficultyClass(Number(songs.chartId)),
+							favorites={paginatedSongs.map((song) => ({
+								id: song.id,
+								songId: song.songId,
+								chartId: getDifficultyClass(Number(song.chartId)),
 								title: (
 									<div className="`max-w-[200px] `flex items-center space-x-1 group relative">
-										<span className="truncate">{songs.title}</span>
+										<span className="truncate">{song.title}</span>
 									</div>
 								),
-								level: songs.level,
-								genre: songs.genre,
-								jacketPath: songs.jacketPath,
-								artist: songs.artist,
+								level: song.level,
+								genre: song.genre,
+								jacketPath: song.jacketPath,
+								artist: song.artist,
 								icon: (
 									<HeartIcon
 										className={`w-8 h-8 ${
-											favoriteSongIds.includes(songs.songId) ? "text-red-500" : "text-gray-500"
+											favoriteSongIds.includes(song.songId) ? "text-red-500" : "text-gray-500"
 										}`}
 										onClick={() => {
-											const isFavorited = favoriteSongIds.includes(songs.songId);
+											const isFavorited = favoriteSongIds.includes(song.songId);
 											if (isFavorited) {
-												handleRemoveFavorite(songs.songId);
-												setFavoriteSongIds((previousFavorites) =>
-													previousFavorites.filter((favoriteId) => favoriteId !== songs.songId)
-												);
+												removeFavorite(song.songId, {
+													onSuccess: () => {
+														toast.success("Removed from favorites");
+													},
+													onError: () => {
+														toast.error("Failed to remove from favorites");
+													},
+												});
 											} else {
-												handleAddFavorite(songs.songId);
-												setFavoriteSongIds((previousFavorites) => [...previousFavorites, songs.songId]);
+												addFavorite(song.songId, {
+													onSuccess: () => {
+														toast.success("Added to favorites");
+													},
+													onError: () => {
+														toast.error("Failed to add to favorites");
+													},
+												});
 											}
 										}}
 									/>
