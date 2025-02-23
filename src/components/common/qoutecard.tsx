@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import React from "react";
 
-// ... existing imports ...
-
 const QouteCard = ({
 	tagline,
+	value,
 	icon: Icon,
 	color,
 	welcomeMessage,
@@ -26,6 +25,7 @@ const QouteCard = ({
 					{welcomeMessage && <span className="text-sm sm:text-base">{welcomeMessage}</span>}
 				</div>
 				<span className="font-bold text-sm sm:text-base break-words block mt-1">{tagline}</span>
+				<span className="font-bold text-sm sm:text-base break-words block mt-1">Average: {value}</span>
 			</div>
 		</motion.div>
 	);

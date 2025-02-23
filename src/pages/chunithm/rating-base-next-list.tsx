@@ -70,7 +70,7 @@ const ChunithmRatingBaseNextList = () => {
 						tagline="Potential Plays"
 						value={averageRating}
 						color="yellow"
-						welcomeMessage={`Based on ${newNextListCount} new potential songs`}
+						welcomeMessage={`Based on ${newNextListCount} new potential plays`}
 					/>
 				</div>
 				<RatingBaseNextListTable

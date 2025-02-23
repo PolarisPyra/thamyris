@@ -34,7 +34,7 @@ const RatingBaseNextListTable = ({
 	return (
 		<div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-4 sm:p-6 border border-gray-700">
 			<div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 gap-4">
-				<h2 className="text-lg sm:text-xl font-semibold text-gray-100">Potential Ratings</h2>
+				<h2 className="text-lg sm:text-xl font-semibold text-gray-100">Potential Plays</h2>
 				<div className="relative w-full sm:w-auto">
 					<input
 						type="text"

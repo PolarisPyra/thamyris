@@ -91,7 +91,7 @@ const ChunithmRatingBaseList = () => {
 						tagline="Base 30 Rating"
 						value={averageBaseRating}
 						color="yellow"
-						welcomeMessage={`Based on ${baseSongs.length} base songs`}
+						welcomeMessage={`Based on ${baseSongs.length} base plays`}
 					/>
 					{(version ?? 0) >= 17 && (
 						<QouteCard
@@ -99,7 +99,7 @@ const ChunithmRatingBaseList = () => {
 							tagline="New 20 Rating"
 							value={averageNewRating}
 							color="yellow"
-							welcomeMessage={`Based on ${newSongs.length} new songs`}
+							welcomeMessage={`Based on ${newSongs.length} new plays`}
 						/>
 					)}
 				</div>
