@@ -132,7 +132,6 @@ const SystemvoiceSelector = () => {
 											key={Systemvoice.id}
 											onClick={() => {
 												setSelectedSystemvoice(Systemvoice.imagePath);
-												setOpenDropdown(false);
 											}}
 											className="p-2 bg-gray-700 rounded-md hover:bg-gray-600 cursor-pointer transition-colors overflow-x-hidden"
 										>
