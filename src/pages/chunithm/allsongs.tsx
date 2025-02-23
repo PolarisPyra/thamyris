@@ -1,10 +1,11 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { motion } from "framer-motion";
 import { getDifficultyClass } from "@/utils/helpers";
 import AllSongsTable from "@/components/common/allsongs-table";
-import { useChunithmSongs } from "@/hooks/use-songs";
+import { useChunithmSongs, useUsername } from "@/hooks/use-songs";
+import QouteCard from "@/components/common/qoutecard";
+import { BoomBox } from "lucide-react";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -12,6 +13,7 @@ const ChunithmAllSongs = () => {
 	const { data: songs = [], isLoading } = useChunithmSongs();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
+	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
 	const filteredSongs = songs.filter((song) =>
 		song.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -23,7 +25,7 @@ const ChunithmAllSongs = () => {
 		currentPage * ITEMS_PER_PAGE
 	);
 
-	if (isLoading) {
+	if (isLoading || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
 				<Header title="All Songs" />
@@ -39,12 +41,15 @@ const ChunithmAllSongs = () => {
 			<Header title="All Songs" />
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-4 px-2 sm:px-4 lg:px-8">
 				<div className="flex flex-col gap-4">
-					<motion.div
-						className="grid grid-cols-1 w-full"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 1 }}
-					>
+					<div className="grid grid-cols-1 w-full">
+						<QouteCard
+							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+							tagline={""}
+							icon={BoomBox}
+							color={"#9e0bd9"}
+						/>
+						<div className="mt-6 space-y-6"></div>
+
 						<AllSongsTable
 							allsongs={paginatedSongs.map((song) => ({
 								id: song.id,
@@ -73,7 +78,7 @@ const ChunithmAllSongs = () => {
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
-					</motion.div>
+					</div>
 
 					<div className="flex justify-center items-center space-x-4 mb-4">
 						<button

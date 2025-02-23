@@ -1,7 +1,6 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { motion } from "framer-motion";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import ScoreTable from "@/components/common/score-table";
@@ -53,15 +52,10 @@ const OngekiScorePage = () => {
 			<Header title="Overview" />
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-6 px-4 lg:px-8">
 				<div className="flex flex-col gap-4">
-					<motion.div
-						className="grid grid-cols-1 w-full"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 1 }}
-					>
+					<div className="grid grid-cols-1 w-full">
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							name={`(Rating: ${currentRating})`}
+							tagline={`(Rating: ${currentRating})`}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>
@@ -103,7 +97,7 @@ const OngekiScorePage = () => {
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
-					</motion.div>
+					</div>
 
 					<div className="flex justify-center items-center space-x-4 mb-4">
 						<button

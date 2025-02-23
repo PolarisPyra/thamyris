@@ -57,12 +57,7 @@ const SystemvoiceSelector = () => {
 	}
 
 	return (
-		<motion.div
-			className="flex flex-col md:flex-row justify-center w-full pt-4 md:pt-15 gap-4 md:gap-8 px-4"
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 1 }}
-		>
+		<div className="flex flex-col md:flex-row justify-center w-full pt-4 md:pt-15 gap-4 md:gap-8 px-4">
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
 					src={`/assets/system_voice/${selectedVoice}`}
@@ -114,7 +109,7 @@ const SystemvoiceSelector = () => {
 					disabled={isPending}
 				/>
 			</div>
-		</motion.div>
+		</div>
 	);
 };
 

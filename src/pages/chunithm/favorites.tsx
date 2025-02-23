@@ -1,12 +1,17 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { motion } from "framer-motion";
 import { HeartIcon, Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import { getDifficultyClass } from "@/utils/helpers";
 import FavoritesTable from "@/components/common/favorites-table";
-import { useSongs, useFavorites, useAddFavorite, useRemoveFavorite } from "@/hooks/use-favorites";
+import {
+	useSongs,
+	useFavorites,
+	useAddFavorite,
+	useRemoveFavorite,
+	useUsername,
+} from "@/hooks/use-favorites";
 import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 10;
@@ -19,6 +24,7 @@ const ChunithmFavorites = () => {
 	const { data: favoriteSongIds = [], isLoading: isLoadingFavorites } = useFavorites();
 	const { mutate: addFavorite } = useAddFavorite();
 	const { mutate: removeFavorite } = useRemoveFavorite();
+	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
 	const filter = songs
 		.filter((song) => song.chartId === 3)
@@ -30,7 +36,7 @@ const ChunithmFavorites = () => {
 		currentPage * ITEMS_PER_PAGE
 	);
 
-	if (isLoadingSongs || isLoadingFavorites) {
+	if (isLoadingSongs || isLoadingFavorites || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
 				<Header title="Overview" />
@@ -46,15 +52,10 @@ const ChunithmFavorites = () => {
 			<Header title="Overview" />
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-6 px-4 lg:px-8">
 				<div className="flex flex-col gap-4">
-					<motion.div
-						className="grid grid-cols-1 w-full"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 1 }}
-					>
+					<div className="grid grid-cols-1 w-full">
 						<QouteCard
-							welcomeMessage="Welcome back,"
-							name={"PolarisPyra"}
+							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+							tagline={""}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>
@@ -107,7 +108,7 @@ const ChunithmFavorites = () => {
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
-					</motion.div>
+					</div>
 
 					<div className="flex justify-center items-center space-x-4  mb-4">
 						<button

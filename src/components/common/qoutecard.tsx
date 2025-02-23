@@ -4,12 +4,12 @@ import React from "react";
 // ... existing imports ...
 
 const QouteCard = ({
-	name,
+	tagline,
 	icon: Icon,
 	color,
 	welcomeMessage,
 }: {
-	name: string;
+	tagline: string;
 	icon: React.ElementType;
 	value?: string | number; // Make value optional since we'll use quotes list
 	color: string;
@@ -25,7 +25,7 @@ const QouteCard = ({
 					<Icon size={20} className="mr-1 sm:mr-2" style={{ color }} />
 					{welcomeMessage && <span className="text-sm sm:text-base">{welcomeMessage}</span>}
 				</div>
-				<span className="font-bold text-sm sm:text-base break-words block mt-1">{name}</span>
+				<span className="font-bold text-sm sm:text-base break-words block mt-1">{tagline}</span>
 			</div>
 		</motion.div>
 	);

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { SubmitButton } from "@/components/common/button";
 import { AvatarImage } from "./avatar-image";
 import { AccessoryDropdown } from "./avatar-dropdown";
@@ -87,12 +86,7 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 	}
 
 	return (
-		<motion.div
-			className="flex flex-col md:flex-row justify-center w-full pt-4 md:pt-15 gap-4 md:gap-8 px-4"
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 1 }}
-		>
+		<div className="flex flex-col md:flex-row justify-center w-full pt-4 md:pt-15 gap-4 md:gap-8 px-4">
 			<AvatarImage clothing={selectedAccessories} />
 			<div className="bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-xl p-4 md:p-6 border border-gray-700 w-full md:w-[400px]">
 				{availableAccessories &&
@@ -117,7 +111,7 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 					disabled={isPending}
 				/>
 			</div>
-		</motion.div>
+		</div>
 	);
 };
 

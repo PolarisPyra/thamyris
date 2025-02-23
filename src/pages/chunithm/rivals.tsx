@@ -1,38 +1,33 @@
 import Header from "@/components/common/header";
-import { api } from "@/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react";
-import { motion } from "framer-motion";
 import { Handshake, Skull, Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
-
 import RivalsTable from "@/components/common/rivals-table";
-import { Toast } from "@/components/common/toast";
-interface ChunithmApiResponse {
-	results: Rivals[];
-}
-
-interface Rivals {
-	id: number;
-	isMutual: boolean;
-	username: string;
-	isRival?: boolean;
-}
+import { toast } from "sonner";
+import {
+	useRivals,
+	useRivalCount,
+	useRivalUsers,
+	useAddRival,
+	useRemoveRival,
+	useUsername,
+} from "@/hooks/use-rivals";
 
 const ITEMS_PER_PAGE = 10;
 
 const ChunithmRivals = () => {
-	const [playlogResponse, setResponse] = useState<Rivals[]>([]);
-	const [rivalSongIds, setRivalSongIds] = useState<number[]>([]);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
-	const [rivalCount, setRivalCount] = useState(0);
-	const [toast, setToast] = useState<{
-		message: string;
-		type: "success" | "error";
-	} | null>(null);
 
-	const filteredRivals = playlogResponse.filter((user) =>
+	const { data: rivalIds = [], isLoading: isLoadingRivals } = useRivals();
+	const { data: rivalCount = 0, isLoading: isLoadingCount } = useRivalCount();
+	const { data: users = [], isLoading: isLoadingUsers } = useRivalUsers();
+	const { mutate: addRival } = useAddRival();
+	const { mutate: removeRival } = useRemoveRival();
+	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
+
+	const filteredRivals = users.filter((user) =>
 		user.username.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
@@ -42,126 +37,55 @@ const ChunithmRivals = () => {
 		currentPage * ITEMS_PER_PAGE
 	);
 
-	const fetchRivals = async () => {
-		try {
-			const response = await api.chunithm.rivals.all.$get();
-			if (response.ok) {
-				const data = await response.json();
-				setRivalSongIds(data.results);
-			}
-		} catch (error) {
-			console.error("Error fetching rivals:", error);
+	const handleAddRival = (id: number) => {
+		if (rivalCount >= 4) {
+			toast.error("You can only have up to 4 rivals.");
+			return;
 		}
+
+		addRival(id, {
+			onSuccess: () => {
+				toast.success("Rival added successfully!");
+			},
+			onError: (error) => {
+				toast.error(error instanceof Error ? error.message : "Failed to add rival");
+			},
+		});
 	};
 
-	const fetchRivalCount = async () => {
-		try {
-			const response = await api.chunithm.rivals.count.$get();
-			if (response.ok) {
-				const data = await response.json();
-				setRivalCount(data.rivalCount);
-			}
-		} catch (error) {
-			console.error("Error fetching rival count:", error);
-		}
+	const handleRemoveRival = (id: number) => {
+		removeRival(id, {
+			onSuccess: () => {
+				toast.success("Rival removed successfully!");
+			},
+			onError: (error) => {
+				toast.error(error instanceof Error ? error.message : "Failed to remove rival");
+			},
+		});
 	};
 
-	const handleAddRival = async (id: number) => {
-		try {
-			// Check if the user already has 4 rivals
-			if (rivalCount >= 4) {
-				setToast({ message: "You can only have up to 4 rivals.", type: "error" });
-				return;
-			}
+	const isLoading = isLoadingRivals || isLoadingCount || isLoadingUsers || isLoadingUsername;
 
-			const response = await api.chunithm.rivals.add.$post({
-				json: { favId: id },
-			});
-
-			if (response.ok) {
-				setToast({ message: "Rival added successfully!", type: "success" });
-				fetchRivalCount(); // Refresh the count
-				fetchRivals(); // Refresh the rival list
-			} else {
-				setToast({ message: "Failed to add rival.", type: "error" });
-			}
-		} catch (error) {
-			setToast({ message: "Error adding rival.", type: "error" });
-			console.error("Error adding rival:", error);
-		}
-	};
-
-	const handleRemoveRival = async (id: number) => {
-		try {
-			const response = await api.chunithm.rivals.remove.$post({
-				json: { favId: id },
-			});
-			if (response.ok) {
-				setToast({ message: "Rival removed successfully!", type: "success" });
-				fetchRivalCount(); // Refresh the count
-				fetchRivals(); // Refresh the rival list
-			} else {
-				setToast({ message: "Failed to remove rival.", type: "error" });
-			}
-		} catch (error) {
-			setToast({ message: "Error removing rival.", type: "error" });
-			console.error("Error removing rival:", error);
-		}
-	};
-
-	const fetchusers = async () => {
-		try {
-			const [usersResp, mutualResp] = await Promise.all([
-				api.chunithm.rivals.userlookup.$get(),
-				api.chunithm.rivals.mutual.$get(),
-			]);
-
-			if (!usersResp.ok || !mutualResp.ok) {
-				throw new Error("Failed to fetch data");
-			}
-
-			const usersData: ChunithmApiResponse = await usersResp.json();
-			const mutualData = await mutualResp.json();
-
-			// Create a set of mutual rival IDs for quick lookup
-			const mutualRivals = new Set(
-				mutualData.results
-					.filter((r: { isMutual: number }) => r.isMutual === 1)
-					.map((r: { rivalId: number }) => r.rivalId)
-			);
-
-			const chuniScorePlaylog = usersData.results.map((response) => ({
-				id: response.id,
-				username: response.username,
-				isMutual: mutualRivals.has(response.id),
-			}));
-			setResponse(chuniScorePlaylog);
-		} catch (error) {
-			console.error("Error fetching scores:", error);
-		}
-	};
-
-	useEffect(() => {
-		fetchusers();
-		fetchRivals();
-		fetchRivalCount();
-	}, []);
+	if (isLoading) {
+		return (
+			<div className="flex-1 overflow-auto relative">
+				<Header title="Rivals" />
+				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
+					<div className="text-lg text-gray-400">Loading rivals...</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex-1 overflow-auto relative">
 			<Header title={`Rivals ${rivalCount}/4`} />
-			{toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-6 px-4 lg:px-8">
 				<div className="flex flex-col gap-4">
-					<motion.div
-						className="grid grid-cols-1 w-full"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 1 }}
-					>
+					<div className="grid grid-cols-1 w-full">
 						<QouteCard
-							welcomeMessage="Welcome back,"
-							name={"PolarisPyra"}
+							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+							tagline={""}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>
@@ -173,17 +97,13 @@ const ChunithmRivals = () => {
 								mutualIcon: user.isMutual ? <Handshake className="w-8 h-8 text-green-500" /> : null,
 								rivalIcon: (
 									<Skull
-										className={`w-8 h-8 ${rivalSongIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+										className={`w-8 h-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
 										onClick={() => {
-											const isRival = rivalSongIds.includes(user.id);
+											const isRival = rivalIds.includes(user.id);
 											if (isRival) {
 												handleRemoveRival(user.id);
-												setRivalSongIds((previousRivals) =>
-													previousRivals.filter((rivalId) => rivalId !== user.id)
-												);
 											} else {
 												handleAddRival(user.id);
-												setRivalSongIds((previousRivals) => [...previousRivals, user.id]);
 											}
 										}}
 									/>
@@ -193,8 +113,8 @@ const ChunithmRivals = () => {
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 							rivalCount={rivalCount}
 						/>
-					</motion.div>
-					<div className="flex justify-center items-center space-x-4  mb-4">
+					</div>
+					<div className="flex justify-center items-center space-x-4 mb-4">
 						<button
 							disabled={currentPage === 1}
 							onClick={() => setCurrentPage((prev) => prev - 1)}
