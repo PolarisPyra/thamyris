@@ -3,7 +3,7 @@ import { useState } from "react";
 import React from "react";
 import { HeartIcon, Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
-import { getDifficultyClass } from "@/utils/helpers";
+import { getDifficultyFromChartId } from "@/utils/helpers";
 import FavoritesTable from "@/components/common/favorites-table";
 import {
 	useSongs,
@@ -68,7 +68,7 @@ const ChunithmFavorites = () => {
 							favorites={paginatedSongs.map((song) => ({
 								id: song.id,
 								songId: song.songId,
-								chartId: getDifficultyClass(Number(song.chartId)),
+								chartId: getDifficultyFromChartId(song.chartId),
 								title: (
 									<div className="`max-w-[200px] `flex items-center space-x-1 group relative">
 										<span className="truncate">{song.title}</span>

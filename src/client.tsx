@@ -23,6 +23,9 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "./context/auth-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ChunithmRatingBaseHotList from "./pages/chunithm/rating-base-hot-list";
+import ChunithmRatingBaseList from "./pages/chunithm/rating-base-list";
+import ChunithmRatingBaseNextList from "./pages/chunithm/rating-base-next-list";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +65,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 								<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
 								<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
 								<Route path="/ongeki/scores" element={<OngekiScorePage />} />
+								<Route path="/chunithm/rating-base-hot-list" element={<ChunithmRatingBaseHotList />} />
+								<Route path="/chunithm/rating-base-list" element={<ChunithmRatingBaseList />} />
+								<Route path="/chunithm/rating-base-next-list" element={<ChunithmRatingBaseNextList />} />
 							</Route>
 						</Route>
 

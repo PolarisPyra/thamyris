@@ -15,6 +15,7 @@ import { chunithmSettingsRoute } from "./routes/titles/chunithm/settings";
 import { ongekiSettingsRoute } from "./routes/titles/ongeki/settings";
 import { config } from "@/env";
 import { routeLogger } from "./middleware/logs";
+import { UserRatingFramesRoutes } from "./routes/titles/chunithm/userRatingFrames";
 
 interface DatabaseConfig {
 	host: string;
@@ -118,7 +119,7 @@ const routes = new Hono()
 	.route("/chunithm", rivalsRoutes)
 	.route("/chunithm", mapIconRoutes)
 	.route("/chunithm", chunithmSettingsRoute)
-
+	.route("/chunithm", UserRatingFramesRoutes)
 	.route("/ongeki", OngekiRoutes)
 	.route("/ongeki", ongekiSettingsRoute);
 

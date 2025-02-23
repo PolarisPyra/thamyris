@@ -8,6 +8,9 @@ import {
 	HeartIcon,
 	Pencil,
 	BoomBox,
+	Trophy,
+	List,
+	ArrowRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -24,6 +27,40 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
 import { useAuth } from "@/context/auth-provider";
+import { useChunithmVersion } from "@/hooks/use-version";
+
+const baseChunithmSubnav = [
+	{
+		name: "Scores",
+		href: "/chunithm/scores",
+		icon: NotepadText,
+		color: "#e0d531",
+	},
+	{
+		name: "Userbox",
+		icon: Pencil,
+		color: "#e0d531",
+		href: "/chunithm/userbox",
+	},
+	{
+		name: "Favorites",
+		href: "/chunithm/favorites",
+		icon: HeartIcon,
+		color: "#e0d531",
+	},
+	{
+		name: "Rivals",
+		href: "/chunithm/rivals",
+		icon: Swords,
+		color: "#e0d531",
+	},
+	{
+		name: "All Songs",
+		href: "/chunithm/allsongs",
+		icon: BoomBox,
+		color: "#e0d531",
+	},
+];
 
 const sidebarItems = [
 	{
@@ -42,38 +79,7 @@ const sidebarItems = [
 		name: "Chunithm",
 		icon: ChevronDown,
 		color: "#59ba22",
-		subnav: [
-			{
-				name: "Scores",
-				href: "/chunithm/scores",
-				icon: NotepadText,
-				color: "#e0d531",
-			},
-			{
-				name: "Userbox",
-				icon: Pencil,
-				color: "#e0d531",
-				href: "/chunithm/userbox",
-			},
-			{
-				name: "Favorites",
-				href: "/chunithm/favorites",
-				icon: HeartIcon,
-				color: "#e0d531",
-			},
-			{
-				name: "Rivals",
-				href: "/chunithm/rivals",
-				icon: Swords,
-				color: "#e0d531",
-			},
-			{
-				name: "All Songs",
-				href: "/chunithm/allsongs",
-				icon: BoomBox,
-				color: "#e0d531",
-			},
-		],
+		subnav: [], // Will be populated dynamically
 	},
 	{
 		name: "Ongeki",
@@ -99,6 +105,52 @@ const sidebarItems = [
 export function SidebarComponent() {
 	const [openCategories, setOpenCategories] = React.useState<Record<string, boolean>>({});
 	const { user } = useAuth();
+	const { data: version } = useChunithmVersion();
+
+	// Dynamically construct Chunithm subnav based on version
+	const chunithmSubnav = React.useMemo(() => {
+		const subnav = [...baseChunithmSubnav];
+
+		// Add Rating Frame for version 16 and 17
+		if (version && version >= 16) {
+			subnav.push({
+				name: "Rating Frame",
+				href: "/chunithm/rating-base-list",
+				icon: List,
+				color: "#e0d531",
+			});
+		}
+
+		// Add Hot and Potential ratings only for version 17 and above
+		if (version && version >= 17) {
+			subnav.push(
+				{
+					name: "Rating Frame Hot",
+					href: "/chunithm/rating-base-hot-list",
+					icon: Trophy,
+					color: "#e0d531",
+				},
+				{
+					name: "Potential Rating",
+					href: "/chunithm/rating-base-next-list",
+					icon: ArrowRight,
+					color: "#e0d531",
+				}
+			);
+		}
+
+		return subnav;
+	}, [version]);
+
+	// Update sidebarItems with dynamic Chunithm subnav
+	const currentSidebarItems = React.useMemo(() => {
+		return sidebarItems.map((item) => {
+			if (item.name === "Chunithm") {
+				return { ...item, subnav: chunithmSubnav };
+			}
+			return item;
+		});
+	}, [chunithmSubnav]);
 
 	const toggleCategory = (categoryName: string) => {
 		setOpenCategories((prev) => ({
@@ -112,7 +164,7 @@ export function SidebarComponent() {
 	const userData = {
 		name: user.username,
 		aimeCardId: user.aimeCardId,
-		avatar: "", // You can add avatar URL if needed
+		avatar: "",
 	};
 
 	return (
@@ -120,16 +172,16 @@ export function SidebarComponent() {
 			<SidebarHeader className="bg-gray-800 px-4 py-4">
 				<h2 className="text-2xl font-extrabold text-white">Thamyris</h2>
 			</SidebarHeader>
-			<SidebarContent className=" bg-gray-800">
+			<SidebarContent className="bg-gray-800">
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{sidebarItems.map((item, index) => (
+							{currentSidebarItems.map((item, index) => (
 								<SidebarMenuItem key={index}>
 									{item.subnav ? (
 										<>
 											<SidebarMenuButton
-												className="data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100 hover:bg-gray-700  active:bg-gray-700 active:text-white hover:text-gray-100 text-gray-100 ring-0"
+												className="data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100 hover:bg-gray-700 active:bg-gray-700 active:text-white hover:text-gray-100 text-gray-100 ring-0"
 												onClick={() => toggleCategory(item.name)}
 											>
 												<item.icon style={{ color: item.color }} />
@@ -140,7 +192,7 @@ export function SidebarComponent() {
 													{item.subnav.map((subItem, subIndex) => (
 														<SidebarMenuItem key={`${index}-${subIndex}`}>
 															<SidebarMenuButton
-																className="data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100 hover:bg-gray-700  active:bg-gray-700 active:text-white hover:text-gray-100 text-gray-100 ring-0"
+																className="data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100 hover:bg-gray-700 active:bg-gray-700 active:text-white hover:text-gray-100 text-gray-100 ring-0"
 																asChild
 															>
 																<Link to={subItem.href}>
@@ -155,7 +207,7 @@ export function SidebarComponent() {
 										</>
 									) : (
 										<SidebarMenuButton
-											className="data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100 hover:bg-gray-700  active:bg-gray-700 active:text-white hover:text-gray-100 text-gray-100 ring-0"
+											className="data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100 hover:bg-gray-700 active:bg-gray-700 active:text-white hover:text-gray-100 text-gray-100 ring-0"
 											asChild
 										>
 											<Link to={item.href}>
