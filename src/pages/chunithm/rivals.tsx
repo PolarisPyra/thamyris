@@ -13,6 +13,7 @@ import {
 	useRemoveRival,
 	useUsername,
 } from "@/hooks/use-rivals";
+import Spinner from "@/components/common/spinner";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -71,7 +72,9 @@ const ChunithmRivals = () => {
 			<div className="flex-1 overflow-auto relative">
 				<Header title="Rivals" />
 				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
-					<div className="text-lg text-gray-400">Loading rivals...</div>
+					<div className="text-lg text-gray-400">
+						<Spinner size={24} color="#ffffff" />
+					</div>
 				</div>
 			</div>
 		);

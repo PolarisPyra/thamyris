@@ -8,6 +8,7 @@ import {
 	useCurrentSystemVoice,
 	useUpdateSystemVoice,
 } from "@/hooks/use-systemvoice";
+import Spinner from "../common/spinner";
 
 const SystemvoiceSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
@@ -53,7 +54,11 @@ const SystemvoiceSelector = () => {
 	};
 
 	if (isLoadingVoices || isLoadingCurrent) {
-		return <div>Loading system voices...</div>;
+		return (
+			<div>
+				<Spinner size={24} color="#ffffff" />
+			</div>
+		);
 	}
 
 	return (

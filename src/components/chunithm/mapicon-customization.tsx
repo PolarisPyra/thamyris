@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
 import { useMapIcons, useCurrentMapIcon, useUpdateMapIcon } from "@/hooks/use-mapicon";
+import Spinner from "../common/spinner";
 
 const MapiconSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
@@ -49,7 +50,11 @@ const MapiconSelector = () => {
 	};
 
 	if (isLoadingIcons || isLoadingCurrent) {
-		return <div>Loading map icons...</div>;
+		return (
+			<div>
+				<Spinner size={24} color="#ffffff" />
+			</div>
+		);
 	}
 
 	return (

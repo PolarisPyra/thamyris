@@ -13,6 +13,7 @@ import {
 	useUsername,
 } from "@/hooks/use-favorites";
 import { toast } from "sonner";
+import Spinner from "@/components/common/spinner";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -41,7 +42,9 @@ const ChunithmFavorites = () => {
 			<div className="flex-1 overflow-auto relative">
 				<Header title="Overview" />
 				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
-					<div className="text-lg text-gray-400">Loading songs...</div>
+					<div className="text-lg text-gray-400">
+						<Spinner size={24} color="#ffffff" />
+					</div>
 				</div>
 			</div>
 		);

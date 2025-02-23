@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
 import { useNameplates, useCurrentNameplate, useUpdateNameplate } from "@/hooks/use-nameplates";
+import Spinner from "../common/spinner";
 
 const NameplateSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
@@ -49,7 +50,11 @@ const NameplateSelector = () => {
 	};
 
 	if (isLoadingNameplates || isLoadingCurrent) {
-		return <div>Loading nameplates...</div>;
+		return (
+			<div>
+				<Spinner size={24} color="#ffffff" />
+			</div>
+		);
 	}
 
 	return (

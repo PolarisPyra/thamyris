@@ -4,6 +4,7 @@ import { AvatarImage } from "./avatar-image";
 import { AccessoryDropdown } from "./avatar-dropdown";
 import { toast } from "sonner";
 import { useCurrentAvatar, useAllAvatarParts, useUpdateAvatar } from "@/hooks/use-avatar";
+import Spinner from "../common/spinner";
 
 interface PenguinCustomizerProps {
 	onUpdate?: () => void;
@@ -80,7 +81,9 @@ const PenguinDressup = ({ onUpdate }: PenguinCustomizerProps) => {
 	if (isLoadingCurrent || isLoadingParts) {
 		return (
 			<div className="flex justify-center items-center h-[400px]">
-				<div className="text-lg text-gray-400">Loading avatar...</div>
+				<div className="text-lg text-gray-400">
+					<Spinner size={24} color="#ffffff" />.
+				</div>
 			</div>
 		);
 	}
