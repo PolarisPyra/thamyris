@@ -9,7 +9,6 @@ import { useUsername } from "@/hooks/use-scores";
 import { useChunithmVersion } from "@/hooks/use-version";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
-import { Button } from "@/components/ui/button";
 
 const ITEMS_PER_PAGE = 15;
 
