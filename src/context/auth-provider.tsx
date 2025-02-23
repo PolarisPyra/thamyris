@@ -62,29 +62,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 			}
 
 			if (response.ok) {
-				const rawData = await response.json();
-				const isValidAuthResponse = (data: unknown): data is AuthResponse => {
-					if (typeof data !== "object" || data === null) return false;
-					const d = data as Record<string, unknown>;
-					if (typeof d.authenticated !== "boolean") return false;
-					if (d.user && typeof d.user === "object") {
-						const u = d.user as Record<string, unknown>;
-						return (
-							typeof u.userId === "number" &&
-							typeof u.username === "string" &&
-							typeof u.exp === "number" &&
-							typeof u.aimeCardId === "string"
-						);
-					}
-					return true;
-				};
+				const data = await response.json();
 
-				if (isValidAuthResponse(rawData) && rawData.authenticated && rawData.user) {
+				if (data.authenticated && data.user) {
 					setUser({
-						userId: rawData.user.userId,
-						username: rawData.user.username,
-						exp: rawData.user.exp,
-						aimeCardId: rawData.user.aimeCardId,
+						userId: data.user.userId,
+						username: data.user.username,
+						exp: data.user.exp ?? 0,
+						aimeCardId: data.user.aimeCardId,
 					});
 					setIsAuthenticated(true);
 					return true;
