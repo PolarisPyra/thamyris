@@ -80,24 +80,24 @@ const ChunithmRatingBaseNextList = () => {
 					onSearchChange={(e) => setSearchQuery(e.target.value)}
 				/>
 				{totalPages > 1 && (
-					<div className="flex justify-center gap-2 mt-4">
-						<Button
-							variant="outline"
-							onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+					<div className="flex justify-center items-center space-x-4 mb-4">
+						<button
 							disabled={currentPage === 1}
+							onClick={() => setCurrentPage((prev) => prev - 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 						>
 							Previous
-						</Button>
-						<span className="flex items-center px-4 py-2 bg-gray-700 rounded-md">
+						</button>
+						<span className="text-gray-300 text-sm">
 							Page {currentPage} of {totalPages}
 						</span>
-						<Button
-							variant="outline"
-							onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+						<button
 							disabled={currentPage === totalPages}
+							onClick={() => setCurrentPage((prev) => prev + 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 						>
 							Next
-						</Button>
+						</button>
 					</div>
 				)}
 			</div>
