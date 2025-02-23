@@ -61,13 +61,13 @@ const ChunithmRatingBaseNextList = () => {
 	).length;
 
 	return (
-		<div className="flex-1 overflow-auto p-4 relative">
-			<Header title="Rating Base Next List" />
+		<div className="flex-1 overflow-auto relative">
+			<Header title="Potential Plays" />
 			<div className="container mx-auto space-y-6">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
 						icon={Trophy}
-						tagline="Potential Rating"
+						tagline="Potential Plays"
 						value={averageRating}
 						color="yellow"
 						welcomeMessage={`Based on ${newNextListCount} new potential songs`}
