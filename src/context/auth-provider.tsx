@@ -14,7 +14,6 @@ interface AuthContextType {
 	isAuthenticated: boolean | null;
 	isLoading: boolean;
 	error: string;
-	isRateLimited: boolean;
 	login: (username: string, password: string) => Promise<void>;
 	logout: () => Promise<void>;
 	signup: (username: string, password: string, accessCode: string) => Promise<void>;
@@ -50,14 +49,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState("");
-	const [isRateLimited, setIsRateLimited] = useState(false);
 	const navigate = useNavigate();
 
 	const verifyAuth = async () => {
 		try {
 			const response = await api.users.verify.$post();
 
-			// If we get a 401, we're definitely not authenticated
 			if (response.status === 401) {
 				setUser(null);
 				setIsAuthenticated(false);
@@ -66,7 +63,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 			if (response.ok) {
 				const rawData = await response.json();
-				// Type guard to ensure the response matches our expected structure
 				const isValidAuthResponse = (data: unknown): data is AuthResponse => {
 					if (typeof data !== "object" || data === null) return false;
 					const d = data as Record<string, unknown>;
@@ -108,7 +104,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		}
 	};
 
-	// Only verify on mount if we haven't determined auth state yet
 	useEffect(() => {
 		if (isAuthenticated === null) {
 			verifyAuth();
@@ -125,16 +120,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 			});
 
 			if (response.ok) {
-				// After successful login, verify auth once
 				const isVerified = await verifyAuth();
 				if (isVerified) {
 					navigate("/overview");
 				} else {
 					setError("Authentication failed after login");
 				}
-			} else if (response.status === 429) {
-				setIsRateLimited(true);
-				setError("Rate limited. Please wait 1m before trying again.");
 			} else {
 				const data = await response.json();
 				setError((data as LoginResponse).error || "Login failed. Please check your credentials.");
@@ -156,7 +147,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 			});
 
 			if (response.ok) {
-				// After successful signup, verify auth once
 				const isVerified = await verifyAuth();
 				if (isVerified) {
 					navigate("/overview");
@@ -192,7 +182,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		isAuthenticated,
 		isLoading,
 		error,
-		isRateLimited,
 		login,
 		logout,
 		signup,

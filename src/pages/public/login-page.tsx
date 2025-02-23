@@ -5,7 +5,7 @@ export const LoginPage: React.FC = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
-	const { login, isLoading, isRateLimited } = useAuth();
+	const { login, isLoading } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -51,12 +51,12 @@ export const LoginPage: React.FC = () => {
 					{error && <div className="text-red-500 text-sm text-center">{error}</div>}
 					<button
 						type="submit"
-						disabled={isLoading || isRateLimited}
+						disabled={isLoading}
 						className={`w-full block text-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105 ${
-							isLoading || isRateLimited ? "opacity-50 cursor-not-allowed" : ""
+							isLoading ? "opacity-50 cursor-not-allowed" : ""
 						}`}
 					>
-						{isLoading ? "Logging in..." : isRateLimited ? "Try again later" : "Login"}
+						{isLoading ? "Logging in..." : "Login"}
 					</button>
 				</form>
 				<p className="text-center text-gray-500 mt-6 text-sm">
