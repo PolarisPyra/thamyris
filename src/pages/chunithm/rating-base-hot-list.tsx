@@ -36,7 +36,7 @@ const ChunithmRatingBaseHotList = () => {
 	if (isLoadingRatingList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
-				<Header title="Rating Base Hot List" />
+				<Header title="Hot Plays" />
 				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
 					<div className="text-lg text-gray-400">
 						<Spinner size={24} color="#ffffff" />
@@ -47,8 +47,8 @@ const ChunithmRatingBaseHotList = () => {
 	}
 
 	return (
-		<div className="flex-1 overflow-auto p-4 relative">
-			<Header title="Rating Base Hot List" />
+		<div className="flex-1 overflow-auto relative">
+			<Header title="Hot Plays" />
 			<div className="container mx-auto space-y-6">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
