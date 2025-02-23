@@ -1,0 +1,33 @@
+import { config } from "@/env";
+import { Context, Next } from "hono";
+
+export const routeLogger = async (c: Context, next: Next) => {
+	const isServer = typeof process !== "undefined" && config.NODE_ENV !== undefined;
+
+	const start = Date.now();
+	const { method, url } = c.req;
+
+	// Get port from request URL
+	const port = new URL(c.req.url).port || (c.req.url.startsWith("https") ? "443" : "80");
+
+	try {
+		await next();
+
+		const elapsed = Date.now() - start;
+		const status = c.res.status;
+
+		if (isServer) {
+			console.log(
+				`[${new Date().toISOString()}] [Port ${port}] ${method} ${url} - Status: ${status} - ${elapsed}ms`
+			);
+		}
+	} catch (error) {
+		const elapsed = Date.now() - start;
+		if (isServer) {
+			console.error(
+				`[${new Date().toISOString()}] [Port ${port}] ${method} ${url} - Error: ${error} - ${elapsed}ms`
+			);
+		}
+		throw error;
+	}
+};
