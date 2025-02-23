@@ -19,27 +19,17 @@ interface AuthContextType {
 	signup: (username: string, password: string, accessCode: string) => Promise<void>;
 }
 
-interface AuthResponse {
-	authenticated: boolean;
+interface ApiResponse {
+	message?: string;
+	error?: string;
+	userId?: number;
+	authenticated?: boolean;
 	user?: {
 		userId: number;
 		username: string;
 		exp: number;
 		aimeCardId: string;
 	};
-	error?: string;
-}
-
-interface LoginResponse {
-	message: string;
-	userId: number;
-	error?: string;
-}
-
-interface SignupResponse {
-	message: string;
-	userId: number;
-	error?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -54,26 +44,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	const verifyAuth = async () => {
 		try {
 			const response = await api.users.verify.$post();
+			const data = (await response.json()) as ApiResponse;
 
-			if (response.status === 401) {
+			if (!response.ok || response.status === 401) {
 				setUser(null);
 				setIsAuthenticated(false);
 				return false;
 			}
 
-			if (response.ok) {
-				const data = await response.json();
-
-				if (data.authenticated && data.user) {
-					setUser({
-						userId: data.user.userId,
-						username: data.user.username,
-						exp: data.user.exp ?? 0,
-						aimeCardId: data.user.aimeCardId,
-					});
-					setIsAuthenticated(true);
-					return true;
-				}
+			if (data.authenticated && data.user) {
+				setUser({
+					userId: data.user.userId,
+					username: data.user.username,
+					exp: data.user.exp ?? 0,
+					aimeCardId: data.user.aimeCardId,
+				});
+				setIsAuthenticated(true);
+				return true;
 			}
 
 			setUser(null);
@@ -90,10 +77,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	};
 
 	useEffect(() => {
-		if (isAuthenticated === null) {
-			verifyAuth();
-		}
-	}, [isAuthenticated]);
+		verifyAuth();
+	}, []);
 
 	const login = async (username: string, password: string) => {
 		setIsLoading(true);
@@ -112,8 +97,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 					setError("Authentication failed after login");
 				}
 			} else {
-				const data = await response.json();
-				setError((data as LoginResponse).error || "Login failed. Please check your credentials.");
+				const data = (await response.json()) as ApiResponse;
+				setError(data.error || "Login failed. Please check your credentials.");
 			}
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "An unexpected error occurred");
@@ -139,8 +124,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 					setError("Authentication failed after signup");
 				}
 			} else {
-				const data = await response.json();
-				setError((data as SignupResponse).error || "Signup failed");
+				const data = (await response.json()) as ApiResponse;
+				setError(data.error || "Signup failed");
 			}
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "An unexpected error occurred");
@@ -150,6 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	};
 
 	const logout = async () => {
+		setIsLoading(true);
 		try {
 			const response = await api.users.logout.$post();
 			if (response.ok) {
@@ -159,6 +145,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 			}
 		} catch (err) {
 			console.error("Logout error:", err);
+			setError(err instanceof Error ? err.message : "Logout failed");
+		} finally {
+			setIsLoading(false);
 		}
 	};
 

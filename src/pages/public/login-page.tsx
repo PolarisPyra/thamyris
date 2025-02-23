@@ -1,19 +1,25 @@
 import { useAuth } from "@/context/auth-provider";
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
+import Spinner from "@/components/common/spinner";
 
 export const LoginPage: React.FC = () => {
+	const { login, isLoading, error, isAuthenticated } = useAuth();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
-	const { login, isLoading } = useAuth();
+	const [localError, setLocalError] = useState("");
+
+	if (isAuthenticated) {
+		return <Navigate to="/overview" replace />;
+	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setError("");
+		setLocalError("");
 		try {
 			await login(username, password);
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "Login failed");
+			setLocalError(err instanceof Error ? err.message : "Login failed");
 		}
 	};
 
@@ -22,6 +28,9 @@ export const LoginPage: React.FC = () => {
 			<div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
 				<h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Welcome Back</h1>
 				<form className="space-y-6" onSubmit={handleSubmit}>
+					{(error || localError) && (
+						<div className="text-red-500 text-sm text-center">{error || localError}</div>
+					)}
 					<div>
 						<label htmlFor="username" className="block text-sm font-medium text-gray-700">
 							Username
@@ -30,9 +39,10 @@ export const LoginPage: React.FC = () => {
 							type="text"
 							id="username"
 							className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-							placeholder="username"
+							placeholder="Username"
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
+							disabled={isLoading}
 						/>
 					</div>
 					<div>
@@ -46,28 +56,18 @@ export const LoginPage: React.FC = () => {
 							placeholder="••••••••"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
+							disabled={isLoading}
 						/>
 					</div>
-					{error && <div className="text-red-500 text-sm text-center">{error}</div>}
 					<button
 						type="submit"
+						className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
 						disabled={isLoading}
-						className={`w-full block text-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105 ${
-							isLoading ? "opacity-50 cursor-not-allowed" : ""
-						}`}
 					>
-						{isLoading ? "Logging in..." : "Login"}
+						{isLoading ? <Spinner size={24} color="#ffffff" /> : "Login"}
 					</button>
 				</form>
-				<p className="text-center text-gray-500 mt-6 text-sm">
-					Don't have an account?{" "}
-					<a href="/signup" className="text-blue-600 hover:text-blue-500">
-						Sign up
-					</a>
-				</p>
 			</div>
 		</div>
 	);
 };
-
-export default LoginPage;
