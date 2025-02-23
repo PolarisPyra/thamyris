@@ -80,7 +80,7 @@ const mapIconRoutes = new Hono()
 			const userId = payload.userId;
 			const supportedVersionNumber = 17;
 
-			// Get unlocked nameplates
+			// Get unlocked mapicons
 			const unlockedResults = await db.query(
 				`SELECT itemId 
      FROM chuni_item_item 
@@ -90,7 +90,7 @@ const mapIconRoutes = new Hono()
 
 			const unlockedMapicons = unlockedResults.map((item: { itemId: number }) => item.itemId);
 
-			// Get all nameplates
+			// Get all mapicons
 			const allMapicons = await db.query(
 				`SELECT mapIconId AS id, version, name, sortName, imagePath 
      FROM daphnis_static_map_icon
@@ -98,15 +98,15 @@ const mapIconRoutes = new Hono()
 				[supportedVersionNumber]
 			);
 
-			// Filter unlocked nameplates
-			const currentlyUnlockedMapicons = allMapicons.filter((nameplate: { id: number }) =>
-				unlockedMapicons.includes(nameplate.id)
+			// Filter unlocked mapicons
+			const currentlyUnlockedMapicons = allMapicons.filter((mapicon: { id: number }) =>
+				unlockedMapicons.includes(mapicon.id)
 			);
 
 			return c.json({ results: currentlyUnlockedMapicons });
 		} catch (error) {
-			console.error("Error fetching nameplates:", error);
-			return c.json({ error: "Failed to fetch nameplates" }, 500);
+			console.error("Error fetching mapicons:", error);
+			return c.json({ error: "Failed to fetch mapicons" }, 500);
 		}
 	});
 export { mapIconRoutes };

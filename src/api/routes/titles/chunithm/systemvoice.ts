@@ -80,7 +80,7 @@ const systemvoiceRoutes = new Hono()
 			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
-			// Get unlocked nameplates
+			// Get unlocked systemvoices
 			const unlockedResults = await db.query(
 				`SELECT itemId 
      FROM chuni_item_item 
@@ -90,7 +90,7 @@ const systemvoiceRoutes = new Hono()
 
 			const unlockedSystemvoices = unlockedResults.map((item: { itemId: number }) => item.itemId);
 
-			// Get all nameplates
+			// Get all systemvoices
 			const allSystemvoices = await db.query(
 				`SELECT systemVoiceId AS id, version, name, imagePath 
      FROM daphnis_static_system_voice
@@ -98,15 +98,15 @@ const systemvoiceRoutes = new Hono()
 				[version]
 			);
 
-			// Filter unlocked nameplates
-			const currentlyUnlockedSystemvoices = allSystemvoices.filter((nameplate: { id: number }) =>
-				unlockedSystemvoices.includes(nameplate.id)
+			// Filter unlocked systemvoices
+			const currentlyUnlockedSystemvoices = allSystemvoices.filter((systemvoice: { id: number }) =>
+				unlockedSystemvoices.includes(systemvoice.id)
 			);
 
 			return c.json({ results: currentlyUnlockedSystemvoices });
 		} catch (error) {
-			console.error("Error fetching nameplates:", error);
-			return c.json({ error: "Failed to fetch nameplates" }, 500);
+			console.error("Error fetching systemvoices:", error);
+			return c.json({ error: "Failed to fetch systemvoices" }, 500);
 		}
 	});
 export { systemvoiceRoutes };
