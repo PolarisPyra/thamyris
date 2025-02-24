@@ -27,9 +27,6 @@ const OngekiScorePage = () => {
 			? (scores[0].playerRating / 100).toFixed(2)
 			: "0.00";
 
-	const totalRating = scores.reduce((sum, score) => sum + score.playerRating, 0);
-	const averageRating = scores.length > 0 ? (totalRating / scores.length / 100).toFixed(2) : "0.00";
-
 	const filteredScores = scores.filter((score) =>
 		score.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
@@ -62,7 +59,7 @@ const OngekiScorePage = () => {
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
 							tagline={`Rating: ${currentRating}`}
-							value={averageRating}
+							value={""}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>

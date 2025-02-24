@@ -67,8 +67,8 @@ const ChunithmRatingBaseNextList = () => {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
 						icon={Trophy}
-						tagline="Potential Plays"
-						value={averageRating}
+						tagline=""
+						value={`Average Rating: ${averageRating}`}
 						color="yellow"
 						welcomeMessage={`Based on ${newNextListCount} new potential plays`}
 					/>

@@ -88,16 +88,16 @@ const ChunithmRatingBaseList = () => {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
 						icon={Trophy}
-						tagline="Base 30 Rating"
-						value={averageBaseRating}
+						tagline=""
+						value={`Average Rating: ${averageBaseRating}`}
 						color="yellow"
 						welcomeMessage={`Based on ${baseSongs.length} base plays`}
 					/>
 					{(version ?? 0) >= 17 && (
 						<QouteCard
 							icon={Trophy}
-							tagline="New 20 Rating"
-							value={averageNewRating}
+							tagline=""
+							value={`AverageRating: ${averageNewRating}`}
 							color="yellow"
 							welcomeMessage={`Based on ${newSongs.length} new plays`}
 						/>

@@ -53,8 +53,8 @@ const ChunithmRatingBaseHotList = () => {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
 						icon={Trophy}
-						tagline="Current Rating"
-						value={averageRating}
+						tagline=""
+						value={`Average Rating: ${averageRating}`}
 						color="yellow"
 						welcomeMessage={`Based on ${ratingList.length} songs`}
 					/>
