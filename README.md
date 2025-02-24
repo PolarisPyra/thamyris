@@ -61,13 +61,16 @@ A modern web application built with React, Hono, and TypeScript.
    NODE_ENV=development  # or production
    PORT=3000
    SERVER_PORT=3001
-
-    # CDN Configuration
-    CDN_URL=/
    ```
 
+# CDN Configuration
+
+CDN_URL=/
+
+````
+
 4. **Database Setup**
-   - Create a MySQL database following the artemis [guide](https://gitea.tendokyu.moe/Hay1tsme/artemis) and configure your `.env` file
+- Create a MySQL database following the artemis [guide](https://gitea.tendokyu.moe/Hay1tsme/artemis) and configure your `.env` file
 
 ## 🚀 Development
 
@@ -80,7 +83,7 @@ bun dev
 # Or start frontend and backend separately
 bun client:dev    # Frontend only
 bun server:dev    # Backend only
-```
+````
 
 ### Available Scripts
 
