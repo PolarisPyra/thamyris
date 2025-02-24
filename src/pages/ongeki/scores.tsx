@@ -11,6 +11,7 @@ import {
 	getOngekiGrade,
 } from "@/utils/helpers";
 import { useOngekiScores, useUsername } from "@/hooks/use-scores";
+import Spinner from "@/components/common/spinner";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -25,6 +26,9 @@ const OngekiScorePage = () => {
 		scores?.length > 0 && scores[0]?.playerRating != null
 			? (scores[0].playerRating / 100).toFixed(2)
 			: "0.00";
+
+	const totalRating = scores.reduce((sum, score) => sum + score.playerRating, 0);
+	const averageRating = scores.length > 0 ? (totalRating / scores.length / 100).toFixed(2) : "0.00";
 
 	const filteredScores = scores.filter((score) =>
 		score.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -41,7 +45,9 @@ const OngekiScorePage = () => {
 			<div className="flex-1 overflow-auto relative">
 				<Header title="Overview" />
 				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
-					<div className="text-lg text-gray-400">Loading scores...</div>
+					<div className="text-lg text-gray-400">
+						<Spinner size={24} color="#ffffff" />
+					</div>
 				</div>
 			</div>
 		);
@@ -52,10 +58,18 @@ const OngekiScorePage = () => {
 			<Header title="Overview" />
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-6 px-4 lg:px-8">
 				<div className="flex flex-col gap-4">
-					<div className="grid grid-cols-1 w-full">
+					<div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline={`(Rating: ${currentRating})`}
+							tagline="Current Rating"
+							value={currentRating}
+							icon={Trophy}
+							color={"#9e0bd9"}
+						/>
+						<QouteCard
+							welcomeMessage={`Based on ${scores.length} plays`}
+							tagline="Average Rating"
+							value={averageRating}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>
