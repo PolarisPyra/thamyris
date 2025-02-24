@@ -93,8 +93,8 @@ const PenguinDressup = () => {
 
 	const getAccessoryLabel = (part: string) => {
 		const selectedValue = selectedAccessories[part as keyof typeof selectedAccessories];
-		const partOptions = availableAccessories?.[part as keyof typeof availableAccessories] || [];
-		const selectedAccessory = partOptions.find((option) => option.image === selectedValue);
+		const accessory = availableAccessories?.[part as keyof typeof availableAccessories] || [];
+		const selectedAccessory = accessory.find((accessory) => accessory.image === selectedValue);
 		return selectedAccessory?.label || `Select ${part}`;
 	};
 
@@ -104,7 +104,6 @@ const PenguinDressup = () => {
 
 	const handleSubmit = () => {
 		if (!availableAccessories) return;
-
 		const avatarParts = {
 			head:
 				availableAccessories.head?.find((item) => item.image === selectedAccessories.head)
