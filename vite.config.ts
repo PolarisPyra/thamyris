@@ -15,6 +15,20 @@ export default defineConfig({
 			output: {
 				entryFileNames: "[name].js",
 				chunkFileNames: "assets/[name]-[hash].js",
+				manualChunks: {
+					"react-vendor": ["react", "react-dom", "react-router-dom"],
+					"ui-components": [
+						"@radix-ui/react-avatar",
+						"@radix-ui/react-dialog",
+						"@radix-ui/react-dropdown-menu",
+						"@radix-ui/react-separator",
+						"@radix-ui/react-slot",
+						"@radix-ui/react-tooltip",
+					],
+					"chart-vendor": ["recharts"],
+					"animation-vendor": ["framer-motion"],
+					"query-vendor": ["@tanstack/react-query"],
+				},
 			},
 		},
 		minify: true,
