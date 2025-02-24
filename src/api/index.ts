@@ -12,7 +12,6 @@ import { systemvoiceRoutes } from "./routes/titles/chunithm/systemvoice";
 import { favoritesRoutes } from "./routes/titles/chunithm/favorites";
 import { rivalsRoutes } from "./routes/titles/chunithm/rivals";
 import { chunithmSettingsRoute } from "./routes/titles/chunithm/settings";
-import { ongekiSettingsRoute } from "./routes/titles/ongeki/settings";
 import { env } from "@/env";
 import { routeLogger } from "./middleware/logs";
 import { UserRatingFramesRoutes } from "./routes/titles/chunithm/userRatingFrames";
