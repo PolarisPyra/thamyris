@@ -78,7 +78,7 @@ const OngekiRatingBaseList = () => {
 
 				{/* Base List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Best Base Rating</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Best 30 </h3>
 					<RatingBaseBestListTable
 						songs={formatSongs(paginatedBaseSongs)}
 						searchQuery={searchQuery}
@@ -107,7 +107,7 @@ const OngekiRatingBaseList = () => {
 
 				{/* New List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Best Base New Rating</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Best New 15</h3>
 					<RatingBaseBestListTable
 						songs={formatSongs(paginatedNewSongs)}
 						searchQuery={searchNewQuery}

@@ -1,8 +1,6 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { Trophy } from "lucide-react";
-import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
