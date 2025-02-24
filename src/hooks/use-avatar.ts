@@ -28,6 +28,11 @@ interface AvatarParts {
 	item: number;
 }
 
+interface AllAvatarPartsResponse {
+	results?: Record<string, avatarData[]>;
+	error?: string;
+}
+
 // Fetch current avatar
 export function useCurrentAvatar() {
 	return useQuery({
@@ -51,30 +56,6 @@ export function useCurrentAvatar() {
 		},
 	});
 }
-
-// Fetch available parts for a specific category
-export function useAvatarParts(category: number) {
-	return useQuery({
-		queryKey: ["avatar", "parts", category],
-		queryFn: async () => {
-			const response = await api.chunithm.avatar.parts[":category"].$get({
-				param: { category: category.toString() },
-			});
-			const data = (await response.json()) as AvatarPartsResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
-			}
-
-			return data.results.map((item) => ({
-				image: item.texturePath?.replace(".dds", "") || "",
-				label: item.name,
-				avatarAccessoryId: Number(item.avatarAccessoryId),
-			}));
-		},
-	});
-}
-
 // Update avatar mutation
 export function useUpdateAvatar() {
 	const queryClient = useQueryClient();
@@ -101,35 +82,17 @@ export function useUpdateAvatar() {
 
 // Hook to fetch all avatar parts
 export function useAllAvatarParts() {
-	const categories = [
-		{ id: 1, key: "wear" },
-		{ id: 2, key: "head" },
-		{ id: 3, key: "face" },
-		{ id: 5, key: "item" },
-		{ id: 7, key: "back" },
-	];
+	return useQuery({
+		queryKey: ["avatar", "parts", "all"],
+		queryFn: async () => {
+			const response = await api.chunithm.avatar.parts.all.$get();
+			const data = (await response.json()) as AllAvatarPartsResponse;
 
-	const results = categories.map((category) => {
-		const { data, isLoading, error } = useAvatarParts(category.id);
-		return {
-			key: category.key,
-			data,
-			isLoading,
-			error,
-		};
+			if (data.error) {
+				throw new Error(data.error);
+			}
+
+			return data.results || {};
+		},
 	});
-
-	const isLoading = results.some((result) => result.isLoading);
-	const error = results.find((result) => result.error)?.error;
-
-	const data = results.reduce((acc, { key, data }) => {
-		acc[key as keyof typeof acc] = data || [];
-		return acc;
-	}, {} as Record<string, avatarData[]>);
-
-	return {
-		data,
-		isLoading,
-		error,
-	};
 }

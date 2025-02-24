@@ -4,10 +4,11 @@ import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import { getUserVersionChunithm } from "../../../version";
 import { env } from "@/env";
+import type { Context } from "hono";
 
 const AvatarRoutes = new Hono()
 
-	.get("/avatar/current", async (c) => {
+	.get("/avatar/current", async (c: Context) => {
 		try {
 			const token = getCookie(c, "auth_token");
 			if (!token) {
@@ -66,7 +67,7 @@ AND cp.version = ?;
 		}
 	})
 
-	.post("/avatar/update", async (c) => {
+	.post("/avatar/update", async (c: Context) => {
 		try {
 			const token = getCookie(c, "auth_token");
 			if (!token) {
@@ -75,10 +76,10 @@ AND cp.version = ?;
 
 			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
-			const version = await getUserVersionChunithm(userId);
 			const { avatarParts } = await c.req.json();
+			const version = await getUserVersionChunithm(userId);
 
-			const results = await db.query(
+			const result = await db.query(
 				`
         UPDATE chuni_profile_data
         SET
@@ -100,55 +101,82 @@ AND cp.version = ?;
 				]
 			);
 
-			return c.json({ success: true, results });
+			if (result.affectedRows === 0) {
+				return c.json({ error: "Profile not found for this version" }, 404);
+			}
+			return c.json({ success: true });
 		} catch (error) {
 			console.error("Error updating avatar:", error);
 			return c.json({ error: "Failed to update avatar" }, 500);
 		}
 	})
 
-	.get("/avatar/parts/:category", async (c) => {
-		const token = getCookie(c, "auth_token");
-		if (!token) {
-			return c.json({ error: "Unauthorized" }, 401);
-		}
-
-		const payload = await verify(token, env.JWT_SECRET);
-		const userId = payload.userId;
-		const version = await getUserVersionChunithm(userId);
-		const category = Number(c.req.param("category"));
+	.get("/avatar/parts/all", async (c: Context) => {
 		try {
-			const results = await db.query(
-				`
-        SELECT
-          csa.id,
-          csa.name,
-          csa.avatarAccessoryId,
-          csa.category,
-          csa.version,
-          csa.iconPath,
-          csa.texturePath
-        FROM chuni_static_avatar AS csa
-        INNER JOIN (
-            SELECT itemId
-            FROM chuni_item_item
-            WHERE itemKind = 11 AND user = ?
-        ) AS i
-        ON csa.avatarAccessoryId = i.itemId
-        WHERE csa.category = ? AND csa.version = ?
-        `,
-				[userId, category, version]
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
+
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
+
+			// Get unlocked avatar parts
+			const unlockedResults = await db.query(
+				`SELECT itemId 
+				FROM chuni_item_item 
+				WHERE itemKind = 11 AND user = ?`,
+				[userId]
 			);
 
-			return c.json({
-				results: results.map((item: { avatarAccessoryId: any }) => ({
-					...item,
-					avatarAccessoryId: item.avatarAccessoryId,
-				})),
-			});
+			const unlockedParts = unlockedResults.map((item: { itemId: number }) => item.itemId);
+
+			// Get all avatar parts
+			const allParts = await db.query(
+				`SELECT 
+					id,
+					name,
+					avatarAccessoryId,
+					category,
+					version,
+					iconPath,
+					texturePath
+				FROM chuni_static_avatar
+				WHERE version = ?`,
+				[version]
+			);
+
+			// Filter unlocked parts and group by category
+			const groupedResults = allParts
+				.filter((part: { avatarAccessoryId: number }) => unlockedParts.includes(part.avatarAccessoryId))
+				.reduce((acc: any, item: any) => {
+					const categoryMap: Record<number, string> = {
+						1: "wear",
+						2: "head",
+						3: "face",
+						5: "item",
+						7: "back",
+					};
+
+					const category = categoryMap[item.category];
+					if (category) {
+						if (!acc[category]) {
+							acc[category] = [];
+						}
+						acc[category].push({
+							image: item.texturePath?.replace(".dds", "") || "",
+							label: item.name,
+							avatarAccessoryId: Number(item.avatarAccessoryId),
+						});
+					}
+					return acc;
+				}, {});
+
+			return c.json({ results: groupedResults });
 		} catch (error) {
-			console.error("Database query error:", error);
-			return c.json({ error: "Database query failed" }, 500);
+			console.error("Error fetching all avatar parts:", error);
+			return c.json({ error: "Failed to fetch all avatar parts" }, 500);
 		}
 	});
 
