@@ -15,10 +15,7 @@ const QouteCard = ({
 	welcomeMessage?: string;
 }) => {
 	return (
-		<motion.div
-			className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 w-full"
-			whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
-		>
+		<div className="bg-gray-800 bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-700 w-full">
 			<div className="px-4 py-3 sm:px-6 sm:py-5">
 				<div className="flex items-center">
 					<Icon size={20} className="mr-1 sm:mr-2" style={{ color }} />
@@ -27,7 +24,7 @@ const QouteCard = ({
 				<span className="font-bold text-sm sm:text-base break-words block mt-1">{tagline}</span>
 				<span className="font-bold text-sm sm:text-base break-words block mt-1">{value}</span>
 			</div>
-		</motion.div>
+		</div>
 	);
 };
 export default QouteCard;

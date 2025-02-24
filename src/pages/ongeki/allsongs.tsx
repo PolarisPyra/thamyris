@@ -3,10 +3,10 @@ import { useState } from "react";
 import React from "react";
 import { getDifficultyClass } from "@/utils/helpers";
 import AllSongsTable from "@/components/common/allsongs-table";
-import { useOngekiSongs } from "@/hooks/use-songs";
+import { useOngekiSongs } from "@/hooks/chunithm/use-songs";
 import QouteCard from "@/components/common/qoutecard";
 import { BoomBox } from "lucide-react";
-import { useUsername } from "@/hooks/use-username";
+import { useUsername } from "@/hooks/common/use-username";
 
 const ITEMS_PER_PAGE = 10;
 

@@ -11,9 +11,9 @@ import {
 	useRivalUsers,
 	useAddRival,
 	useRemoveRival,
-} from "@/hooks/use-rivals";
+} from "@/hooks/chunithm/use-rivals";
 import Spinner from "@/components/common/spinner";
-import { useUsername } from "@/hooks/use-username";
+import { useUsername } from "@/hooks/common/use-username";
 const ITEMS_PER_PAGE = 10;
 
 const ChunithmRivals = () => {

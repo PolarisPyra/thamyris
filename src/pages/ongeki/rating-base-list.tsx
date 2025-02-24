@@ -3,15 +3,14 @@ import { useState } from "react";
 import React from "react";
 import { Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
-import RatingBaseListTable from "@/components/chunithm/rating-base-list-table";
-import { useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
+import { useUserRatingBaseList } from "@/hooks/ongeki/use-rating";
+import RatingBaseBestListTable from "@/components/ongeki/rating-base-best-list-table";
 const ITEMS_PER_PAGE = 15;
 
-const ChunithmRatingBaseList = () => {
+const OngekiRatingBaseList = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentNewPage, setCurrentNewPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
@@ -19,11 +18,10 @@ const ChunithmRatingBaseList = () => {
 
 	const { data: ratingList = [], isLoading: isLoadingRatingList } = useUserRatingBaseList();
 	const { isLoading: isLoadingUsername } = useUsername();
-	const { data: version } = useChunithmVersion();
 
 	// Separate base and new songs
-	const baseSongs = ratingList.filter((song) => song.type === "userRatingBaseList");
-	const newSongs = ratingList.filter((song) => song.type === "userRatingBaseNewList");
+	const baseSongs = ratingList.filter((song) => song.type === "userRatingBaseBestList");
+	const newSongs = ratingList.filter((song) => song.type === "userRatingBaseBestNewList");
 
 	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
 	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
@@ -87,88 +85,80 @@ const ChunithmRatingBaseList = () => {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
 						icon={Trophy}
-						tagline=""
-						value={`Average Rating: ${averageBaseRating}`}
+						tagline="Base List"
+						value={`Rating: ${averageBaseRating}`}
 						color="yellow"
 						welcomeMessage={`Based on ${baseSongs.length} base plays`}
 					/>
-					{(version ?? 0) >= 17 && (
-						<QouteCard
-							icon={Trophy}
-							tagline=""
-							value={`Average Rating: ${averageNewRating}`}
-							color="yellow"
-							welcomeMessage={`Based on ${newSongs.length} new plays`}
-						/>
-					)}
+					<QouteCard
+						icon={Trophy}
+						tagline="New List"
+						value={`Rating: ${averageNewRating}`}
+						color="yellow"
+						welcomeMessage={`Based on ${newSongs.length} new plays`}
+					/>
 				</div>
 
-				{/* Base 30 Table */}
+				{/* Base List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Base 30</h3>
-					<RatingBaseListTable
+					<h3 className="text-xl font-semibold text-gray-100">Base List</h3>
+					<RatingBaseBestListTable
 						songs={formatSongs(paginatedBaseSongs)}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
 					/>
-					{totalBasePages > 1 && (
-						<div className="flex justify-center items-center space-x-4 mb-4">
-							<button
-								disabled={currentPage === 1}
-								onClick={() => setCurrentPage((prev) => prev - 1)}
-								className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-							>
-								Previous
-							</button>
-							<span className="text-gray-300 text-sm">
-								Page {currentPage} of {totalBasePages}
-							</span>
-							<button
-								disabled={currentPage === totalBasePages}
-								onClick={() => setCurrentPage((prev) => prev + 1)}
-								className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-							>
-								Next
-							</button>
-						</div>
-					)}
+					<div className="flex justify-center items-center space-x-4 mb-4">
+						<button
+							disabled={currentPage === 1}
+							onClick={() => setCurrentPage((prev) => prev - 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+						>
+							Previous
+						</button>
+						<span className="text-gray-300 text-sm">
+							Page {currentPage} of {Math.max(1, totalBasePages)}
+						</span>
+						<button
+							disabled={currentPage === Math.max(1, totalBasePages)}
+							onClick={() => setCurrentPage((prev) => prev + 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+						>
+							Next
+						</button>
+					</div>
 				</div>
 
-				{/* New 20 Table - Only show if version >= 17 */}
-				{(version ?? 0) >= 17 && (
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-gray-100">New 20</h3>
-						<RatingBaseListTable
-							songs={formatSongs(paginatedNewSongs)}
-							searchQuery={searchNewQuery}
-							onSearchChange={(e) => setSearchNewQuery(e.target.value)}
-						/>
-						{totalNewPages > 1 && (
-							<div className="flex justify-center items-center space-x-4 mb-4">
-								<button
-									disabled={currentNewPage === 1}
-									onClick={() => setCurrentNewPage((prev) => prev - 1)}
-									className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-								>
-									Previous
-								</button>
-								<span className="text-gray-300 text-sm">
-									Page {currentNewPage} of {totalNewPages}
-								</span>
-								<button
-									disabled={currentNewPage === totalNewPages}
-									onClick={() => setCurrentNewPage((prev) => prev + 1)}
-									className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-								>
-									Next
-								</button>
-							</div>
-						)}
+				{/* New List Table */}
+				<div className="space-y-4">
+					<h3 className="text-xl font-semibold text-gray-100">New List</h3>
+					<RatingBaseBestListTable
+						songs={formatSongs(paginatedNewSongs)}
+						searchQuery={searchNewQuery}
+						onSearchChange={(e) => setSearchNewQuery(e.target.value)}
+					/>
+					<div className="flex justify-center items-center space-x-4 mb-4">
+						<button
+							disabled={currentNewPage === 1}
+							onClick={() => setCurrentNewPage((prev) => prev - 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+						>
+							Previous
+						</button>
+						<span className="text-gray-300 text-sm">
+							Page {currentNewPage} of {Math.max(1, totalNewPages)}
+						</span>
+						<button
+							disabled={currentNewPage === Math.max(1, totalNewPages)}
+							onClick={() => setCurrentNewPage((prev) => prev + 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+						>
+							Next
+						</button>
 					</div>
-				)}
+				</div>
 			</div>
 		</div>
 	);
 };
 
-export default ChunithmRatingBaseList;
+export default OngekiRatingBaseList;

@@ -3,11 +3,11 @@ import { useState } from "react";
 import React from "react";
 import { getDifficultyFromChartId } from "@/utils/helpers";
 import AllSongsTable from "@/components/common/allsongs-table";
-import { useChunithmSongs } from "@/hooks/use-songs";
+import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
 import QouteCard from "@/components/common/qoutecard";
 import { BoomBox } from "lucide-react";
 import Spinner from "@/components/common/spinner";
-import { useUsername } from "@/hooks/use-username";
+import { useUsername } from "@/hooks/common/use-username";
 
 const ITEMS_PER_PAGE = 10;
 

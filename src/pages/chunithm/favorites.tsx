@@ -5,11 +5,11 @@ import { HeartIcon, Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import { getDifficultyFromChartId } from "@/utils/helpers";
 import FavoritesTable from "@/components/common/favorites-table";
-import { useFavorites, useAddFavorite, useRemoveFavorite } from "@/hooks/use-favorites";
+import { useFavorites, useAddFavorite, useRemoveFavorite } from "@/hooks/chunithm/use-favorites";
 import { toast } from "sonner";
 import Spinner from "@/components/common/spinner";
-import { useUsername } from "@/hooks/use-username";
-import { useChunithmSongs } from "@/hooks/use-songs";
+import { useUsername } from "@/hooks/common/use-username";
+import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
 
 const ITEMS_PER_PAGE = 10;
 

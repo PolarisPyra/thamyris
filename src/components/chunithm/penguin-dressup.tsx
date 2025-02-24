@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SubmitButton } from "@/components/common/button";
 
 import { toast } from "sonner";
-import { useCurrentAvatar, useAllAvatarParts, useUpdateAvatar } from "@/hooks/use-avatar";
+import { useCurrentAvatar, useAllAvatarParts, useUpdateAvatar } from "@/hooks/chunithm/use-avatar";
 import Spinner from "../common/spinner";
 import { cdnUrl } from "@/lib/cdn";
 import { avatarData } from "@/utils/types";

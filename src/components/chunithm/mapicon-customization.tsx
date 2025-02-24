@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
-import { useMapIcons, useCurrentMapIcon, useUpdateMapIcon } from "@/hooks/use-mapicon";
+import { useMapIcons, useCurrentMapIcon, useUpdateMapIcon } from "@/hooks/chunithm/use-mapicon";
 import Spinner from "../common/spinner";
 import { cdnUrl } from "@/lib/cdn";
 

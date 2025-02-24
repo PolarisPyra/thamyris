@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
 import { useAuth } from "@/context/auth-provider";
-import { useChunithmVersion } from "@/hooks/use-version";
+import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 
 const baseChunithmSubnav = [
 	{
@@ -96,6 +96,24 @@ const sidebarItems = [
 				name: "All Songs",
 				href: "/ongeki/allsongs",
 				icon: BoomBox,
+				color: "#da31e0",
+			},
+			{
+				name: "Best 30",
+				href: "/ongeki/rating-base-best-list",
+				icon: Trophy,
+				color: "#da31e0",
+			},
+			{
+				name: "Hot List",
+				href: "/ongeki/rating-base-hot-list",
+				icon: Trophy,
+				color: "#da31e0",
+			},
+			{
+				name: "New Best",
+				href: "/ongeki/rating-base-new-best-list",
+				icon: Trophy,
 				color: "#da31e0",
 			},
 		],

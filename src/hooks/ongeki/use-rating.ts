@@ -1,3 +1,4 @@
+import { api } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 
 interface UserRatingBaseEntry {
@@ -16,15 +17,22 @@ interface UserRatingBaseEntry {
 	rating: number;
 }
 
+interface RatingResponse {
+	results: UserRatingBaseEntry[];
+	error?: string;
+}
+
 export const useUserRatingBaseHotList = () => {
 	return useQuery<UserRatingBaseEntry[]>({
 		queryKey: ["userRatingBaseHotList"],
 		queryFn: async () => {
-			const response = await fetch("/api/chunithm/user_rating_base_hot_list");
-			if (!response.ok) {
-				throw new Error("Failed to fetch user rating base hot list");
+			const response = await api.ongeki.user_rating_base_hot_list.$get();
+			const data = (await response.json()) as RatingResponse;
+
+			if (data.error) {
+				throw new Error(data.error);
 			}
-			const data = await response.json();
+
 			return data.results;
 		},
 	});
@@ -34,11 +42,13 @@ export const useUserRatingBaseList = () => {
 	return useQuery<UserRatingBaseEntry[]>({
 		queryKey: ["userRatingBaseList"],
 		queryFn: async () => {
-			const response = await fetch("/api/chunithm/user_rating_base_list");
-			if (!response.ok) {
-				throw new Error("Failed to fetch user rating base list");
+			const response = await api.ongeki.user_rating_base_list.$get();
+			const data = (await response.json()) as RatingResponse;
+
+			if (data.error) {
+				throw new Error(data.error);
 			}
-			const data = await response.json();
+
 			return data.results;
 		},
 	});
@@ -48,11 +58,13 @@ export const useUserRatingBaseNextList = () => {
 	return useQuery<UserRatingBaseEntry[]>({
 		queryKey: ["userRatingBaseNextList"],
 		queryFn: async () => {
-			const response = await fetch("/api/chunithm/user_rating_base_next_list");
-			if (!response.ok) {
-				throw new Error("Failed to fetch user rating base next list");
+			const response = await api.ongeki.user_rating_base_next_list.$get();
+			const data = (await response.json()) as RatingResponse;
+
+			if (data.error) {
+				throw new Error(data.error);
 			}
-			const data = await response.json();
+
 			return data.results;
 		},
 	});

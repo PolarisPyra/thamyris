@@ -3,7 +3,11 @@ import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
-import { useNameplates, useCurrentNameplate, useUpdateNameplate } from "@/hooks/use-nameplates";
+import {
+	useNameplates,
+	useCurrentNameplate,
+	useUpdateNameplate,
+} from "@/hooks/chunithm/use-nameplates";
 import Spinner from "../common/spinner";
 import { cdnUrl } from "@/lib/cdn";
 

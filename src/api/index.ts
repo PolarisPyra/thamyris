@@ -16,6 +16,7 @@ import { ongekiSettingsRoute } from "./routes/titles/ongeki/settings";
 import { env } from "@/env";
 import { routeLogger } from "./middleware/logs";
 import { UserRatingFramesRoutes } from "./routes/titles/chunithm/userRatingFrames";
+import OngekiRatingRoutes from "./routes/titles/ongeki/rating";
 
 interface Databaseenv {
 	host: string;
@@ -121,7 +122,7 @@ const routes = new Hono()
 	.route("/chunithm", chunithmSettingsRoute)
 	.route("/chunithm", UserRatingFramesRoutes)
 	.route("/ongeki", OngekiRoutes)
-	.route("/ongeki", ongekiSettingsRoute);
+	.route("/ongeki", OngekiRatingRoutes);
 
 export { routes };
 
