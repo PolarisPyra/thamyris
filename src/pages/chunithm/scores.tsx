@@ -61,7 +61,8 @@ const ChunithmScorePage = () => {
 					<div className="grid grid-cols-1 w-full">
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline={`(Rating: ${currentRating} | Average: ${averageRating})`}
+							tagline={`Rating: ${currentRating}`}
+							value={averageRating}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>
