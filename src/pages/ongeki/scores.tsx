@@ -58,18 +58,10 @@ const OngekiScorePage = () => {
 			<Header title="Overview" />
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-6 px-4 lg:px-8">
 				<div className="flex flex-col gap-4">
-					<div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
+					<div className="grid grid-cols-1 w-full">
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline="Current Rating"
-							value={currentRating}
-							icon={Trophy}
-							color={"#9e0bd9"}
-						/>
-						<QouteCard
-							welcomeMessage={`Based on ${scores.length} plays`}
-							tagline="Average Rating"
-							value={averageRating}
+							tagline={`(Rating: ${currentRating} | Average: ${averageRating})`}
 							icon={Trophy}
 							color={"#9e0bd9"}
 						/>
