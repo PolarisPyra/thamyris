@@ -1,43 +1,44 @@
+import { cdnUrl } from "@/lib/cdn";
 import React from "react";
 
 export const AvatarImage = ({ clothing }: { clothing: any }) => (
 	<div className="relative w-full md:w-[300px] h-[300px] md:h-[400px] mb-6 md:mb-0">
 		<div className="avatar_base relative w-[300px] h-[400px]">
 			<div className="avatar_back">
-				<img loading="lazy" src={`/assets/avatar/${clothing.back}.png`} alt="Back" />
+				<img loading="lazy" src={`${cdnUrl}assets/avatar/${clothing.back}.png`} />
 			</div>
 			<div className="avatar_wear">
-				<img loading="lazy" src={`/assets/avatar/${clothing.wear}.png`} alt="Body" />
+				<img loading="lazy" src={`${cdnUrl}assets/avatar/${clothing.wear}.png`} />
 			</div>
 			<div className="avatar_skin">
-				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Skin" />
+				<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png`} />
 			</div>
 			<div className="avatar_hand_l">
-				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_LeftHand.png" alt="Left Hand" />
+				<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_LeftHand.png`} />
 			</div>
 			<div className="avatar_hand_r">
-				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_RightHand.png" alt="Right Hand" />
+				<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_RightHand.png`} />
 			</div>
 			<div className="avatar_head">
-				<img loading="lazy" src={`/assets/avatar/${clothing.head}.png`} alt="Head" />
+				<img loading="lazy" src={`${cdnUrl}assets/avatar/${clothing.head}.png`} />
 			</div>
 			<div className="avatar_face_static">
-				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_Face.png" alt="Static Face" />
+				<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_Face.png`} />
 			</div>
 			<div className="avatar_face">
-				<img loading="lazy" src={`/assets/avatar/${clothing.face}.png`} alt="Face" />
+				<img loading="lazy" src={`${cdnUrl}assets/avatar/${clothing.face}.png`} />
 			</div>
 			<div className="avatar_item_l">
-				<img loading="lazy" src={`/assets/avatar/${clothing.item}.png`} alt="Left Accessory" />
+				<img loading="lazy" src={`${cdnUrl}assets/avatar/${clothing.item}.png`} />
 			</div>
 			<div className="avatar_item_r">
-				<img loading="lazy" src={`/assets/avatar/${clothing.item}.png`} alt="Right Accessory" />
+				<img loading="lazy" src={`${cdnUrl}assets/avatar/${clothing.item}.png`} />
 			</div>
 			<div className="avatar_skinfoot_l">
-				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Left Foot" />
+				<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png`} />
 			</div>
 			<div className="avatar_skinfoot_r">
-				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Right Foot" />
+				<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png`} />
 			</div>
 		</div>
 	</div>

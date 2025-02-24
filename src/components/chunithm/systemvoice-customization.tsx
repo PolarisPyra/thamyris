@@ -9,6 +9,7 @@ import {
 	useUpdateSystemVoice,
 } from "@/hooks/use-systemvoice";
 import Spinner from "../common/spinner";
+import { cdnUrl } from "@/lib/cdn";
 
 const SystemvoiceSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
@@ -66,8 +67,7 @@ const SystemvoiceSelector = () => {
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
 					loading="lazy"
-					src={`/assets/system_voice/${selectedVoice}`}
-					alt="Selected system voice"
+					src={`${cdnUrl}assets/system_voice/${selectedVoice}`}
 					className="w-[200px] object-contain"
 				/>
 			</div>

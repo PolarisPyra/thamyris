@@ -5,6 +5,7 @@ import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
 import { useNameplates, useCurrentNameplate, useUpdateNameplate } from "@/hooks/use-nameplates";
 import Spinner from "../common/spinner";
+import { cdnUrl } from "@/lib/cdn";
 
 const NameplateSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
@@ -62,8 +63,7 @@ const NameplateSelector = () => {
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
 					loading="lazy"
-					src={`/assets/nameplate/${selectedNameplate}`}
-					alt="Selected nameplate"
+					src={`${cdnUrl}assets/nameplate/${selectedNameplate}`}
 					className="w-[250px] object-contain"
 				/>
 			</div>

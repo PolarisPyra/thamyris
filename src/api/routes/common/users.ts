@@ -4,10 +4,10 @@ import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { sign, verify } from "hono/jwt";
 import { rateLimiter } from "hono-rate-limiter";
-import { config } from "@/env";
+import { env } from "@/env";
 
-const domain = config.DOMAIN;
-const key = config.RATELIMIT_KEY;
+const domain = env.DOMAIN;
+const key = env.RATELIMIT_KEY;
 
 const limiter = rateLimiter({
 	windowMs: 1 * 60 * 1000, // 1 minute
@@ -50,16 +50,16 @@ const userRoutes = new Hono()
 				exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
 				aimeCardId: aimeCard?.access_code,
 			};
-			const token = await sign(payload, config.JWT_SECRET);
+			const token = await sign(payload, env.JWT_SECRET);
 
 			// Set JWT token as a cookie
 			setCookie(c, "auth_token", token, {
 				httpOnly: true,
-				secure: config.NODE_ENV === "production",
+				secure: env.NODE_ENV === "production",
 				sameSite: "Strict",
 				maxAge: 60 * 60 * 24, // 1 day
 				path: "/",
-				domain: config.NODE_ENV === "production" ? domain : "localhost",
+				domain: env.NODE_ENV === "production" ? domain : "localhost",
 			});
 
 			// Update last login date
@@ -178,16 +178,16 @@ const userRoutes = new Hono()
 				exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
 			};
 
-			const token = await sign(payload, config.JWT_SECRET);
+			const token = await sign(payload, env.JWT_SECRET);
 
 			// Set JWT token as a cookie
 			setCookie(c, "auth_token", token, {
 				httpOnly: true,
-				secure: config.NODE_ENV === "production",
+				secure: env.NODE_ENV === "production",
 				sameSite: "Strict",
 				maxAge: 60 * 60 * 24, // 1 day
 				path: "/",
-				domain: config.NODE_ENV === "production" ? domain : "localhost",
+				domain: env.NODE_ENV === "production" ? domain : "localhost",
 			});
 
 			return c.json({
@@ -203,11 +203,11 @@ const userRoutes = new Hono()
 		// Clear the auth_token cookie
 		setCookie(c, "auth_token", "", {
 			httpOnly: true,
-			secure: config.NODE_ENV === "production",
+			secure: env.NODE_ENV === "production",
 			sameSite: "Strict",
 			maxAge: 0,
 			path: "/",
-			domain: config.NODE_ENV === "production" ? domain : "localhost",
+			domain: env.NODE_ENV === "production" ? domain : "localhost",
 		});
 
 		return c.json({ message: "Logout successful" });
@@ -222,7 +222,7 @@ const userRoutes = new Hono()
 			}
 
 			// Verify the token
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 
 			return c.json({ authenticated: true, user: payload });
 		} catch (error) {
@@ -243,7 +243,7 @@ const userRoutes = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 
 			const [user] = await db.query(

@@ -28,7 +28,6 @@ import ChunithmRatingBaseList from "./pages/chunithm/rating-base-list";
 import ChunithmRatingBaseNextList from "./pages/chunithm/rating-base-next-list";
 
 const queryClient = new QueryClient();
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>

@@ -3,7 +3,7 @@ import { getUserVersionOngeki } from "@/api/version";
 import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
-import { config } from "@/env";
+import { env } from "@/env";
 
 const ongekiSettingsRoute = new Hono()
 
@@ -14,7 +14,7 @@ const ongekiSettingsRoute = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 
 			const [versionResult] = await db.query(
@@ -37,7 +37,7 @@ const ongekiSettingsRoute = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 			const { version } = await c.req.json();
 
@@ -65,7 +65,7 @@ const ongekiSettingsRoute = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 
 			await db.query(
@@ -123,7 +123,7 @@ const ongekiSettingsRoute = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 			const { itemKind, itemId } = await c.req.json();
 
@@ -153,7 +153,7 @@ const ongekiSettingsRoute = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 			const version = await getUserVersionOngeki(userId);
 

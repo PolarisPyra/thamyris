@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import { getUserVersionOngeki } from "../../../version";
-import { config } from "@/env";
+import { env } from "@/env";
 
 const OngekiRoutes = new Hono()
 	.get("/ongeki_score_playlog", async (c) => {
@@ -12,7 +12,7 @@ const OngekiRoutes = new Hono()
 			if (!token) {
 				return c.json({ error: "Unauthorized" }, 401);
 			}
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 			const version = await getUserVersionOngeki(userId);
 
@@ -100,7 +100,7 @@ ORDER BY
 			if (!token) {
 				return c.json({ error: "Unauthorized" }, 401);
 			}
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 			const version = await getUserVersionOngeki(userId);
 			const results = await db.query(

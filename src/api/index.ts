@@ -13,55 +13,55 @@ import { favoritesRoutes } from "./routes/titles/chunithm/favorites";
 import { rivalsRoutes } from "./routes/titles/chunithm/rivals";
 import { chunithmSettingsRoute } from "./routes/titles/chunithm/settings";
 import { ongekiSettingsRoute } from "./routes/titles/ongeki/settings";
-import { config } from "@/env";
+import { env } from "@/env";
 import { routeLogger } from "./middleware/logs";
 import { UserRatingFramesRoutes } from "./routes/titles/chunithm/userRatingFrames";
 
-interface DatabaseConfig {
+interface Databaseenv {
 	host: string;
 	user: string;
 	password: string;
 	database: string;
 }
 
-const getDatabaseConfig = (): DatabaseConfig => {
-	const isProduction = config.NODE_ENV === "production";
+const getDatabaseenv = (): Databaseenv => {
+	const isProduction = env.NODE_ENV === "production";
 
-	let dbConfig: DatabaseConfig;
+	let dbenv: Databaseenv;
 
 	if (isProduction) {
 		if (
-			!config.PROD_MYSQL_HOST ||
-			!config.PROD_MYSQL_USERNAME ||
-			!config.PROD_MYSQL_PASSWORD ||
-			!config.PROD_MYSQL_DATABASE
+			!env.PROD_MYSQL_HOST ||
+			!env.PROD_MYSQL_USERNAME ||
+			!env.PROD_MYSQL_PASSWORD ||
+			!env.PROD_MYSQL_DATABASE
 		) {
-			throw new Error("Missing required production database configuration");
+			throw new Error("Missing required production database envuration");
 		}
-		dbConfig = {
-			host: config.PROD_MYSQL_HOST,
-			user: config.PROD_MYSQL_USERNAME,
-			password: config.PROD_MYSQL_PASSWORD,
-			database: config.PROD_MYSQL_DATABASE,
+		dbenv = {
+			host: env.PROD_MYSQL_HOST,
+			user: env.PROD_MYSQL_USERNAME,
+			password: env.PROD_MYSQL_PASSWORD,
+			database: env.PROD_MYSQL_DATABASE,
 		};
 	} else {
 		if (
-			!config.DEV_MYSQL_HOST ||
-			!config.DEV_MYSQL_USERNAME ||
-			!config.DEV_MYSQL_PASSWORD ||
-			!config.DEV_MYSQL_DATABASE
+			!env.DEV_MYSQL_HOST ||
+			!env.DEV_MYSQL_USERNAME ||
+			!env.DEV_MYSQL_PASSWORD ||
+			!env.DEV_MYSQL_DATABASE
 		) {
-			throw new Error("Missing required development database configuration");
+			throw new Error("Missing required development database envuration");
 		}
-		dbConfig = {
-			host: config.DEV_MYSQL_HOST,
-			user: config.DEV_MYSQL_USERNAME,
-			password: config.DEV_MYSQL_PASSWORD,
-			database: config.DEV_MYSQL_DATABASE,
+		dbenv = {
+			host: env.DEV_MYSQL_HOST,
+			user: env.DEV_MYSQL_USERNAME,
+			password: env.DEV_MYSQL_PASSWORD,
+			database: env.DEV_MYSQL_DATABASE,
 		};
 	}
 
-	return dbConfig;
+	return dbenv;
 };
 
 class Database {
@@ -69,9 +69,9 @@ class Database {
 	private connection: mysql.Connection;
 	public query: (sql: string, values?: any) => Promise<any>;
 
-	private constructor(config: DatabaseConfig) {
+	private constructor(env: Databaseenv) {
 		// Initialize connection first
-		this.connection = mysql.createConnection(config);
+		this.connection = mysql.createConnection(env);
 		// Initialize the promisified query
 		this.query = util.promisify(this.connection.query).bind(this.connection);
 		// Setup connection handlers after initialization
@@ -99,8 +99,8 @@ class Database {
 
 	public static getInstance(): Database {
 		if (!Database.instance) {
-			const config = getDatabaseConfig();
-			Database.instance = new Database(config);
+			const env = getDatabaseenv();
+			Database.instance = new Database(env);
 		}
 		return Database.instance;
 	}

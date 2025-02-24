@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import { getUserVersionChunithm } from "../../../version";
-import { config } from "@/env";
+import { env } from "@/env";
 
 const mapIconRoutes = new Hono()
 
@@ -14,7 +14,7 @@ const mapIconRoutes = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 
 			const version = await getUserVersionChunithm(userId);
@@ -47,7 +47,7 @@ const mapIconRoutes = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 			const { mapIconId } = await c.req.json();
 			const version = await getUserVersionChunithm(userId);
@@ -76,7 +76,7 @@ const mapIconRoutes = new Hono()
 				return c.json({ error: "Unauthorized" }, 401);
 			}
 
-			const payload = await verify(token, config.JWT_SECRET);
+			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
 			const supportedVersionNumber = 17;
 

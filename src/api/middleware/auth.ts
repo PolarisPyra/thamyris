@@ -1,7 +1,7 @@
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import type { Context, Next } from "hono";
-import { config } from "@/env";
+import { env } from "@/env";
 
 const authMiddleware = async (c: Context, next: Next) => {
 	const token = getCookie(c, "auth_token");
@@ -10,7 +10,7 @@ const authMiddleware = async (c: Context, next: Next) => {
 	}
 
 	try {
-		const payload = await verify(token, config.JWT_SECRET);
+		const payload = await verify(token, env.JWT_SECRET);
 		c.set("user", payload);
 		await next();
 	} catch (error) {

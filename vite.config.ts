@@ -1,10 +1,17 @@
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { config } from "./src/env";
+import { env } from "./src/env";
+import path from "path";
+
 export default defineConfig({
 	ssr: {
 		external: ["react", "react-dom"],
+	},
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "./src"),
+		},
 	},
 	build: {
 		rollupOptions: {
@@ -41,13 +48,13 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/api": {
-				target: `http://${config.DOMAIN}:${config.SERVER_PORT}`,
+				target: `http://${env.DOMAIN}:${env.SERVER_PORT}`,
 				changeOrigin: true,
 				secure: false,
 				rewrite: (path) => path,
 			},
 		},
-		port: config.PORT,
+		port: env.PORT,
 		cors: {
 			origin: true,
 			credentials: true,
@@ -57,5 +64,6 @@ export default defineConfig({
 	},
 	define: {
 		"process.env": process.env,
+		"process.env.CDN_URL": JSON.stringify(env.CDN_URL),
 	},
 });

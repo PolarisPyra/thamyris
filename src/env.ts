@@ -4,7 +4,7 @@ import { config as dotenv } from "dotenv";
 
 dotenv();
 
-export const config = createEnv({
+export const env = createEnv({
 	server: {
 		NODE_ENV: z.enum(["development", "production"]).default("development"),
 		JWT_SECRET: z.string(),
@@ -12,6 +12,7 @@ export const config = createEnv({
 		RATELIMIT_KEY: z.string(),
 		PORT: z.coerce.number().default(3000),
 		SERVER_PORT: z.coerce.number().default(3000),
+		CDN_URL: z.string(),
 
 		// Development database
 		DEV_MYSQL_HOST: z.string().optional(),

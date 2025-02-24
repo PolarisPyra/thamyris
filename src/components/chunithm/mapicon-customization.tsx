@@ -5,6 +5,7 @@ import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
 import { useMapIcons, useCurrentMapIcon, useUpdateMapIcon } from "@/hooks/use-mapicon";
 import Spinner from "../common/spinner";
+import { cdnUrl } from "@/lib/cdn";
 
 const MapiconSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
@@ -62,8 +63,7 @@ const MapiconSelector = () => {
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
 					loading="lazy"
-					src={`/assets/map_icon/${selectedIcon}`}
-					alt="Selected map icon"
+					src={`${cdnUrl}assets/map_icon/${selectedIcon}`}
 					className="w-[150px] object-contain"
 				/>
 			</div>

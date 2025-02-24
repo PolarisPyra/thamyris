@@ -8,13 +8,13 @@ import { routes } from "./api";
 import { authMiddleware } from "./api/middleware/auth";
 import { serve } from "@hono/node-server";
 import { cors } from "hono/cors";
-import { config } from "./env";
+import { env } from "./env";
 const server = new Hono({});
 
 // Replace the existing CORS and CSRF configuration with:
 const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-const port = process.env.NODE_ENV === "production" ? "" : `:${config.PORT}`;
-const origin = `${protocol}://${config.DOMAIN}${port}`;
+const port = process.env.NODE_ENV === "production" ? "" : `:${env.PORT}`;
+const origin = `${protocol}://${env.DOMAIN}${port}`;
 
 server.use(
 	"*",
@@ -70,7 +70,7 @@ server.get("/*", (c) => {
 // Only start the server if we're in the server process
 serve({
 	fetch: server.fetch,
-	port: config.SERVER_PORT,
+	port: env.SERVER_PORT,
 });
 
 export default server;

@@ -1,8 +1,8 @@
-import { config } from "@/env";
+import { env } from "@/env";
 import { Context, Next } from "hono";
 
 export const routeLogger = async (c: Context, next: Next) => {
-	const isServer = typeof process !== "undefined" && config.NODE_ENV !== undefined;
+	const isServer = typeof process !== "undefined" && env.NODE_ENV !== undefined;
 
 	const start = Date.now();
 	const { method, url } = c.req;
