@@ -27,8 +27,6 @@ const ChunithmScorePage = () => {
 			? (scores[0].playerRating / 100).toFixed(2)
 			: "0.00";
 
-	const totalRating = scores.reduce((sum, score) => sum + score.playerRating, 0);
-
 	const filteredScores = scores.filter((score) =>
 		score.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);

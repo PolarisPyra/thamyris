@@ -97,7 +97,7 @@ const ChunithmRatingBaseList = () => {
 						<QouteCard
 							icon={Trophy}
 							tagline=""
-							value={`AverageRating: ${averageNewRating}`}
+							value={`Average Rating: ${averageNewRating}`}
 							color="yellow"
 							welcomeMessage={`Based on ${newSongs.length} new plays`}
 						/>
