@@ -25,7 +25,9 @@ const QouteCard = ({
 					{welcomeMessage && <span className="text-sm sm:text-base">{welcomeMessage}</span>}
 				</div>
 				<span className="font-bold text-sm sm:text-base break-words block mt-1">{tagline}</span>
-				<span className="font-bold text-sm sm:text-base break-words block mt-1">Average: {value}</span>
+				<span className="font-bold text-sm sm:text-base break-words block mt-1">
+					Average Rating: {value}
+				</span>
 			</div>
 		</motion.div>
 	);
