@@ -65,6 +65,7 @@ const SystemvoiceSelector = () => {
 		<div className="flex flex-col md:flex-row justify-center w-full pt-4 md:pt-15 gap-4 md:gap-8 px-4">
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
+					loading="lazy"
 					src={`/assets/system_voice/${selectedVoice}`}
 					alt="Selected system voice"
 					className="w-[200px] object-contain"

@@ -61,6 +61,7 @@ const NameplateSelector = () => {
 		<div className="flex flex-col md:flex-row justify-center w-full pt-4 md:pt-15 gap-4 md:gap-8 px-4">
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
+					loading="lazy"
 					src={`/assets/nameplate/${selectedNameplate}`}
 					alt="Selected nameplate"
 					className="w-[250px] object-contain"
