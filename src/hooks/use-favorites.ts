@@ -1,63 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/utils";
 
-interface Song {
-	id: number;
-	songId: number;
-	chartId: number;
-	title: string;
-	level: number;
-	genre: string;
-	jacketPath: string;
-	artist: string;
-}
-
-interface SongResponse {
-	results: Song[];
-	error?: string;
-}
-
 interface FavoriteResponse {
 	results: { favId: number }[];
 	error?: string;
-}
-
-interface UserResponse {
-	username: string;
-	error?: string;
-}
-// Fetch username
-export function useUsername() {
-	return useQuery({
-		queryKey: ["username"],
-		queryFn: async () => {
-			const response = await api.users.username.$get();
-			const data = (await response.json()) as UserResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
-			}
-
-			return data.username;
-		},
-	});
-}
-
-// Fetch all songs
-export function useSongs() {
-	return useQuery({
-		queryKey: ["songs"],
-		queryFn: async () => {
-			const response = await api.chunithm.chuni_static_music.$get();
-			const data = (await response.json()) as SongResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
-			}
-
-			return data.results;
-		},
-	});
 }
 
 // Fetch favorite songs

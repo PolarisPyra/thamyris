@@ -10,8 +10,9 @@ import {
 	getOngekiComboStatus,
 	getOngekiGrade,
 } from "@/utils/helpers";
-import { useOngekiScores, useUsername } from "@/hooks/use-scores";
+import { useOngekiScores } from "@/hooks/use-scores";
 import Spinner from "@/components/common/spinner";
+import { useUsername } from "@/hooks/use-username";
 
 const ITEMS_PER_PAGE = 10;
 

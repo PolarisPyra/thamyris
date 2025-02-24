@@ -106,7 +106,7 @@ ORDER BY
 			const results = await db.query(
 				`SELECT id, songId, chartId, title, level, artist, genre  
                 FROM ongeki_static_music 
-                WHERE version = ? ORDER BY id DESC`,
+                WHERE version = ?`,
 				[version]
 			);
 

@@ -5,9 +5,9 @@ import { Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import RatingBaseHotListTable from "@/components/common/rating-base-hot-list-table";
 import { useUserRatingBaseHotList } from "@/hooks/use-rating";
-import { useUsername } from "@/hooks/use-scores";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
+import { useUsername } from "@/hooks/use-username";
 
 const ChunithmRatingBaseHotList = () => {
 	const [searchQuery, setSearchQuery] = useState("");

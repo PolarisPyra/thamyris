@@ -5,15 +5,11 @@ import { HeartIcon, Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import { getDifficultyFromChartId } from "@/utils/helpers";
 import FavoritesTable from "@/components/common/favorites-table";
-import {
-	useSongs,
-	useFavorites,
-	useAddFavorite,
-	useRemoveFavorite,
-	useUsername,
-} from "@/hooks/use-favorites";
+import { useFavorites, useAddFavorite, useRemoveFavorite } from "@/hooks/use-favorites";
 import { toast } from "sonner";
 import Spinner from "@/components/common/spinner";
+import { useUsername } from "@/hooks/use-username";
+import { useChunithmSongs } from "@/hooks/use-songs";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -21,7 +17,7 @@ const ChunithmFavorites = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 
-	const { data: songs = [], isLoading: isLoadingSongs } = useSongs();
+	const { data: songs = [], isLoading: isLoadingSongs } = useChunithmSongs();
 	const { data: favoriteSongIds = [], isLoading: isLoadingFavorites } = useFavorites();
 	const { mutate: addFavorite } = useAddFavorite();
 	const { mutate: removeFavorite } = useRemoveFavorite();

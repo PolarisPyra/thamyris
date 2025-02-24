@@ -5,10 +5,9 @@ import { Trophy } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import RatingBaseNextListTable from "@/components/common/rating-base-next-list-table";
 import { useUserRatingBaseNextList } from "@/hooks/use-rating";
-import { useUsername } from "@/hooks/use-scores";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
-
+import { useUsername } from "@/hooks/use-username";
 const ITEMS_PER_PAGE = 15;
 
 const ChunithmRatingBaseNextList = () => {

@@ -10,8 +10,9 @@ import {
 	getDifficultyFromChartId,
 	getGrade,
 } from "@/utils/helpers";
-import { useChunithmScores, useUsername } from "@/hooks/use-scores";
+import { useChunithmScores } from "@/hooks/use-scores";
 import Spinner from "@/components/common/spinner";
+import { useUsername } from "@/hooks/use-username";
 
 const ITEMS_PER_PAGE = 10;
 
