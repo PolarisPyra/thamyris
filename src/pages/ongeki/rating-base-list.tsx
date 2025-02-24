@@ -1,8 +1,7 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { Trophy } from "lucide-react";
-import QouteCard from "@/components/common/qoutecard";
+
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
@@ -22,13 +21,6 @@ const OngekiRatingBaseList = () => {
 	// Separate base and new songs
 	const baseSongs = ratingList.filter((song) => song.type === "userRatingBaseBestList");
 	const newSongs = ratingList.filter((song) => song.type === "userRatingBaseBestNewList");
-
-	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
-	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
-	const averageBaseRating =
-		baseSongs.length > 0 ? (totalBaseRating / baseSongs.length / 100).toFixed(2) : "0.00";
-	const averageNewRating =
-		newSongs.length > 0 ? (totalNewRating / newSongs.length / 100).toFixed(2) : "0.00";
 
 	// Filter base songs by search
 	const filteredBaseSongs = baseSongs.filter((song) =>
@@ -82,26 +74,11 @@ const OngekiRatingBaseList = () => {
 		<div className="flex-1 overflow-auto relative">
 			<Header title="Rating Frame" />
 			<div className="container mx-auto space-y-6">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<QouteCard
-						icon={Trophy}
-						tagline="Base List"
-						value={`Rating: ${averageBaseRating}`}
-						color="yellow"
-						welcomeMessage={`Based on ${baseSongs.length} base plays`}
-					/>
-					<QouteCard
-						icon={Trophy}
-						tagline="New List"
-						value={`Rating: ${averageNewRating}`}
-						color="yellow"
-						welcomeMessage={`Based on ${newSongs.length} new plays`}
-					/>
-				</div>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
 
 				{/* Base List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Base List</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Best Base Rating</h3>
 					<RatingBaseBestListTable
 						songs={formatSongs(paginatedBaseSongs)}
 						searchQuery={searchQuery}
@@ -130,7 +107,7 @@ const OngekiRatingBaseList = () => {
 
 				{/* New List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">New List</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Best Base New Rating</h3>
 					<RatingBaseBestListTable
 						songs={formatSongs(paginatedNewSongs)}
 						searchQuery={searchNewQuery}

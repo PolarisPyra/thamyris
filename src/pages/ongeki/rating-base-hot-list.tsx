@@ -17,10 +17,6 @@ const OngekiRatingBaseHotList = () => {
 	const { data: ratingList = [], isLoading: isLoadingRatingList } = useUserRatingBaseHotList();
 	const { isLoading: isLoadingUsername } = useUsername();
 
-	const totalRating = ratingList.reduce((sum, song) => sum + song.rating, 0);
-	const averageRating =
-		ratingList.length > 0 ? (totalRating / ratingList.length / 100).toFixed(2) : "0.00";
-
 	// Filter songs by search
 	const filteredSongs = ratingList.filter((song) =>
 		song.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -48,7 +44,7 @@ const OngekiRatingBaseHotList = () => {
 	if (isLoadingRatingList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
-				<Header title="Hot Frame" />
+				<Header title="Hot Plays" />
 				<div className="flex justify-center items-center h-[calc(100vh-64px)]">
 					<div className="text-lg text-gray-400">
 						<Spinner size={24} color="#ffffff" />
@@ -60,17 +56,9 @@ const OngekiRatingBaseHotList = () => {
 
 	return (
 		<div className="flex-1 overflow-auto relative">
-			<Header title="Hot Frame" />
+			<Header title="Hot Plays" />
 			<div className="container mx-auto space-y-6">
-				<div className="grid grid-cols-1 gap-4">
-					<QouteCard
-						icon={Trophy}
-						tagline="Hot List"
-						value={`Rating: ${averageRating}`}
-						color="yellow"
-						welcomeMessage={`Based on ${ratingList.length} hot plays`}
-					/>
-				</div>
+				<div className="grid grid-cols-1 gap-4"></div>
 
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Hot List</h3>

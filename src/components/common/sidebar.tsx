@@ -8,9 +8,9 @@ import {
 	HeartIcon,
 	Pencil,
 	BoomBox,
-	Trophy,
 	List,
-	ArrowRight,
+	Flame,
+	CircleArrowRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -99,21 +99,15 @@ const sidebarItems = [
 				color: "#da31e0",
 			},
 			{
-				name: "Best 30",
+				name: "Rating Frame",
 				href: "/ongeki/rating-base-best-list",
-				icon: Trophy,
+				icon: List,
 				color: "#da31e0",
 			},
 			{
-				name: "Hot List",
+				name: "Rating Frame Hot",
 				href: "/ongeki/rating-base-hot-list",
-				icon: Trophy,
-				color: "#da31e0",
-			},
-			{
-				name: "New Best",
-				href: "/ongeki/rating-base-new-best-list",
-				icon: Trophy,
+				icon: Flame,
 				color: "#da31e0",
 			},
 		],
@@ -145,13 +139,13 @@ export function SidebarComponent() {
 				{
 					name: "Rating Frame Hot",
 					href: "/chunithm/rating-base-hot-list",
-					icon: Trophy,
+					icon: Flame,
 					color: "#e0d531",
 				},
 				{
 					name: "Potential Rating",
 					href: "/chunithm/rating-base-next-list",
-					icon: ArrowRight,
+					icon: CircleArrowRight,
 					color: "#e0d531",
 				}
 			);

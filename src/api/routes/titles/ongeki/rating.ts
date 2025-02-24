@@ -278,25 +278,16 @@ const OngekiRatingRoutes = new Hono()
 
 // Rating calculation function for Ongeki
 function calculateRating(level: number, score: number): number {
-	if (score >= 1010000) {
-		return level * 100 + 200;
-	} else if (score >= 1007500) {
-		return level * 100 + 150 + (score - 1007500) / 100;
-	} else if (score >= 1005000) {
-		return level * 100 + 100 + (score - 1005000) / 50;
+	const iclInt = level * 100;
+
+	if (score >= 1007500) {
+		return iclInt + 200;
 	} else if (score >= 1000000) {
-		return level * 100 + 50 + (score - 1000000) / 100;
-	} else if (score >= 975000) {
-		return level * 100 + (score - 975000) / 500;
-	} else if (score >= 925000) {
-		return level * 100 - 150 + ((score - 925000) * 3) / 1000;
-	} else if (score >= 900000) {
-		return level * 100 - 300 + ((score - 900000) * 3) / 500;
-	} else if (score >= 800000) {
-		return (level * 100 - 300) / 2 + ((score - 800000) * ((level * 100 - 300) / 2)) / 100000;
+		return iclInt + 150 + Math.floor((score - 1000000) / 150);
+	} else if (score >= 970000) {
+		return iclInt + Math.floor((score - 970000) / 200);
 	} else {
-		return 0;
+		return iclInt - Math.ceil((970000 - score) / 175);
 	}
 }
-
 export default OngekiRatingRoutes;
