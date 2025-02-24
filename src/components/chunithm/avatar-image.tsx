@@ -10,23 +10,19 @@ export const AvatarImage = ({ clothing }: { clothing: any }) => (
 				<img loading="lazy" src={`/assets/avatar/${clothing.wear}.png`} alt="Body" />
 			</div>
 			<div className="avatar_skin">
-				<img loading="lazy" src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Skin" />
+				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Skin" />
 			</div>
 			<div className="avatar_hand_l">
-				<img loading="lazy" src="/assets/avatarStatic/CHU_UI_Avatar_Tex_LeftHand.png" alt="Left Hand" />
+				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_LeftHand.png" alt="Left Hand" />
 			</div>
 			<div className="avatar_hand_r">
-				<img
-					loading="lazy"
-					src="/assets/avatarStatic/CHU_UI_Avatar_Tex_RightHand.png"
-					alt="Right Hand"
-				/>
+				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_RightHand.png" alt="Right Hand" />
 			</div>
 			<div className="avatar_head">
 				<img loading="lazy" src={`/assets/avatar/${clothing.head}.png`} alt="Head" />
 			</div>
 			<div className="avatar_face_static">
-				<img loading="lazy" src="/assets/avatarStatic/CHU_UI_Avatar_Tex_Face.png" alt="Static Face" />
+				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_Face.png" alt="Static Face" />
 			</div>
 			<div className="avatar_face">
 				<img loading="lazy" src={`/assets/avatar/${clothing.face}.png`} alt="Face" />
@@ -35,17 +31,13 @@ export const AvatarImage = ({ clothing }: { clothing: any }) => (
 				<img loading="lazy" src={`/assets/avatar/${clothing.item}.png`} alt="Left Accessory" />
 			</div>
 			<div className="avatar_item_r">
-				<img src={`/assets/avatar/${clothing.item}.png`} alt="Right Accessory" />
+				<img loading="lazy" src={`/assets/avatar/${clothing.item}.png`} alt="Right Accessory" />
 			</div>
 			<div className="avatar_skinfoot_l">
-				<img loading="lazy" src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Left Foot" />
+				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Left Foot" />
 			</div>
 			<div className="avatar_skinfoot_r">
-				<img
-					loading="lazy"
-					src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png"
-					alt="Right Foot"
-				/>
+				<img src="/assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png" alt="Right Foot" />
 			</div>
 		</div>
 	</div>
