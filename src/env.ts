@@ -12,7 +12,7 @@ export const env = createEnv({
 		RATELIMIT_KEY: z.string(),
 		PORT: z.coerce.number().default(3000),
 		SERVER_PORT: z.coerce.number().default(3000),
-		CDN_URL: z.string(),
+		CDN_URL: z.string(), // need to use process.env.CDN_URL for client side
 
 		// Development database
 		DEV_MYSQL_HOST: z.string().optional(),
