@@ -61,6 +61,9 @@ A modern web application built with React, Hono, and TypeScript.
    NODE_ENV=development  # or production
    PORT=3000
    SERVER_PORT=3001
+
+    # CDN Configuration
+    CDN_URL=/
    ```
 
 4. **Database Setup**
