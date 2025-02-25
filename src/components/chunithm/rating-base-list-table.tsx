@@ -15,7 +15,7 @@ interface RatingBaseListTableProps {
 		title: string | React.ReactNode;
 		score: number;
 		level: string | number | React.ReactNode;
-		ChartIdToDifficulty: string;
+		chartIdToDifficulty: string;
 		genre: string;
 		artist: string | React.ReactNode;
 		rating: number;
@@ -62,7 +62,7 @@ const RatingBaseListTable = ({ songs, searchQuery, onSearchChange }: RatingBaseL
 								<TableCell className="text-sm text-gray-300">{song.score.toLocaleString()}</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.level}</TableCell>
 								<TableCell className="text-sm text-gray-300">
-									<span>{song.ChartIdToDifficulty}</span>
+									<span>{song.chartIdToDifficulty}</span>
 								</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.genre}</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.artist}</TableCell>

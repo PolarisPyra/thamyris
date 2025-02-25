@@ -61,7 +61,7 @@ const ChunithmRatingBaseList = () => {
 			title: song.title,
 			score: song.score,
 			level: song.level,
-			ChartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
+			chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
 			genre: song.genre,
 			artist: song.artist,
 			rating: song.rating,
