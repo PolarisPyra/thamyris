@@ -12,6 +12,7 @@ import {
 	useUserRatingBaseHotList,
 } from "@/hooks/ongeki/use-rating";
 import RatingBaseBestListTable from "@/components/ongeki/rating-base-best-list-table";
+
 const ITEMS_PER_PAGE = 15;
 
 const OngekiRatingFrames = () => {
@@ -26,25 +27,39 @@ const OngekiRatingFrames = () => {
 	const { data: hotList = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
 	const { isLoading: isLoadingUsername } = useUsername();
 
+	// Separate base and new songs
+	const baseSongs = baseList.filter(
+		(song) => song.type === "userRatingBaseBestList" && song.musicId != 0
+	);
+	const newSongs = newList.filter(
+		(song) => song.type === "userRatingBaseBestNewList" && song.musicId != 0
+	);
+	const hotSongs = hotList.filter(
+		(song) => song.type === "userRatingBaseHotList" && song.musicId != 0
+	);
+
+	// Calculate total ratings
+	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
+	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
+	const totalHotRating = hotSongs.reduce((sum, song) => sum + song.rating, 0);
+
+	const totalSongsCount = baseSongs.length + newSongs.length + hotSongs.length;
+
+	const totalCombinedRating = totalBaseRating + totalNewRating + totalHotRating;
+	const totalAverageRating =
+		totalSongsCount > 0 ? (totalCombinedRating / totalSongsCount / 100).toFixed(2) : "0.00";
 	// Filter songs by search
-	const filteredBaseSongs = baseList.filter((song) =>
+	const filteredBaseSongs = baseSongs.filter((song) =>
 		song.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
-	const filteredNewSongs = newList.filter((song) =>
+	const filteredNewSongs = newSongs.filter((song) =>
 		song.title.toLowerCase().includes(searchNewQuery.toLowerCase())
 	);
 
-	const filteredHotSongs = hotList.filter((song) =>
+	const filteredHotSongs = hotSongs.filter((song) =>
 		song.title.toLowerCase().includes(searchHotQuery.toLowerCase())
 	);
-
-	const totalBaseRating = baseList.slice(0, 30).reduce((sum, song) => sum + song.rating, 0);
-	const totalNewRating = newList.slice(0, 15).reduce((sum, song) => sum + song.rating, 0);
-	const totalHotRating = hotList.slice(0, 10).reduce((sum, song) => sum + song.rating, 0);
-
-	const totalSongs = baseList.length + newList.length + hotList.length;
-	const averageRating = ((totalBaseRating + totalNewRating + totalHotRating) / 5500).toFixed(2);
 
 	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
 	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
@@ -59,7 +74,7 @@ const OngekiRatingFrames = () => {
 		currentNewPage * ITEMS_PER_PAGE
 	);
 
-	const RatingListTable = (songs: typeof baseList) =>
+	const formatSongs = (songs: typeof baseList) =>
 		songs.map((song) => ({
 			title: song.title,
 			score: song.score,
@@ -92,9 +107,9 @@ const OngekiRatingFrames = () => {
 					<QouteCard
 						icon={ChartNoAxesCombined}
 						tagline=""
-						value={`Average Rating: ${averageRating}`}
+						value={`Average Rating: ${totalAverageRating}`}
 						color="#f067e9"
-						welcomeMessage={`Based on ${baseList.length} best plays, ${newList.length} new plays and ${hotList.length} hot plays for a total of ${totalSongs} plays`}
+						welcomeMessage={`Based on ${totalSongsCount} plays`}
 					/>
 				</div>
 
@@ -102,65 +117,69 @@ const OngekiRatingFrames = () => {
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingBaseBestListTable
-						songs={RatingListTable(paginatedBaseSongs)}
+						songs={formatSongs(paginatedBaseSongs)}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
 					/>
-					<div className="flex justify-center items-center space-x-4 mb-4">
-						<button
-							disabled={currentPage === 1}
-							onClick={() => setCurrentPage((prev) => prev - 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Previous
-						</button>
-						<span className="text-gray-300 text-sm">
-							Page {currentPage} of {Math.max(1, totalBasePages)}
-						</span>
-						<button
-							disabled={currentPage === Math.max(1, totalBasePages)}
-							onClick={() => setCurrentPage((prev) => prev + 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Next
-						</button>
-					</div>
+					{totalBasePages > 1 && (
+						<div className="flex justify-center items-center space-x-4 mb-4">
+							<button
+								disabled={currentPage === 1}
+								onClick={() => setCurrentPage((prev) => prev - 1)}
+								className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							>
+								Previous
+							</button>
+							<span className="text-gray-300 text-sm">
+								Page {currentPage} of {totalBasePages}
+							</span>
+							<button
+								disabled={currentPage === totalBasePages}
+								onClick={() => setCurrentPage((prev) => prev + 1)}
+								className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							>
+								Next
+							</button>
+						</div>
+					)}
 				</div>
 
 				{/* New List Table */}
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">New 15</h3>
 					<RatingBaseBestListTable
-						songs={RatingListTable(paginatedNewSongs)}
+						songs={formatSongs(paginatedNewSongs)}
 						searchQuery={searchNewQuery}
 						onSearchChange={(e) => setSearchNewQuery(e.target.value)}
 					/>
-					<div className="flex justify-center items-center space-x-4 mb-4">
-						<button
-							disabled={currentNewPage === 1}
-							onClick={() => setCurrentNewPage((prev) => prev - 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Previous
-						</button>
-						<span className="text-gray-300 text-sm">
-							Page {currentNewPage} of {Math.max(1, totalNewPages)}
-						</span>
-						<button
-							disabled={currentNewPage === Math.max(1, totalNewPages)}
-							onClick={() => setCurrentNewPage((prev) => prev + 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Next
-						</button>
-					</div>
+					{totalNewPages > 1 && (
+						<div className="flex justify-center items-center space-x-4 mb-4">
+							<button
+								disabled={currentNewPage === 1}
+								onClick={() => setCurrentNewPage((prev) => prev - 1)}
+								className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							>
+								Previous
+							</button>
+							<span className="text-gray-300 text-sm">
+								Page {currentNewPage} of {totalNewPages}
+							</span>
+							<button
+								disabled={currentNewPage === totalNewPages}
+								onClick={() => setCurrentNewPage((prev) => prev + 1)}
+								className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							>
+								Next
+							</button>
+						</div>
+					)}
 				</div>
 
 				{/* Hot List Table */}
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Hot 10</h3>
 					<RatingBaseBestListTable
-						songs={RatingListTable(filteredHotSongs)}
+						songs={formatSongs(filteredHotSongs)}
 						searchQuery={searchHotQuery}
 						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
 					/>

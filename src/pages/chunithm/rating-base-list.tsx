@@ -27,6 +27,7 @@ const ChunithmRatingBaseList = () => {
 
 	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
 	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
+
 	const averageBaseRating =
 		baseSongs.length > 0 ? (totalBaseRating / baseSongs.length / 100).toFixed(2) : "0.00";
 	const averageNewRating =
