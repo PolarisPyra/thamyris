@@ -33,11 +33,10 @@ const OngekiRatingRoutes = new Hono()
 					score,
 					difficultId,
 					version,
-					\`index\`,
 					type
 				FROM ongeki_profile_rating
 				WHERE user = ?
-					AND type = 'userRatingBaseHotList'
+					AND type = 'userRatingBaseHotNextList'
 					AND version = ?
 				ORDER BY \`index\` ASC`,
 				[userId, version]
@@ -101,7 +100,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
 		}
 	})
-	.get("/user_rating_base_list", async (c) => {
+	.get("/user_rating_base_best_list", async (c) => {
 		try {
 			const token = getCookie(c, "auth_token");
 			if (!token) {
@@ -112,20 +111,19 @@ const OngekiRatingRoutes = new Hono()
 			const userId = payload.userId;
 			const version = await getUserVersionOngeki(userId);
 
-			// Get both base and new list entries
+			// Get base list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
 					musicId,
 					score,
 					difficultId,
 					version,
-					\`index\`,
 					type
 				FROM ongeki_profile_rating
 				WHERE user = ?
-					AND type IN ('userRatingBaseBestList', 'userRatingBaseBestNewList')
+					AND type = 'userRatingBaseBestList'
 					AND version = ?
-				ORDER BY type ASC, \`index\` ASC`,
+				ORDER BY \`index\` ASC`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -145,7 +143,7 @@ const OngekiRatingRoutes = new Hono()
 					chartId,
 					level,
 					genre
-  				FROM ongeki_static_music
+				FROM ongeki_static_music
 				WHERE songId IN (?)
 					AND version = ?`,
 				[musicIds, version]
@@ -184,10 +182,10 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ results });
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base list" }, 500);
+			return c.json({ error: "Failed to fetch user rating base best list" }, 500);
 		}
 	})
-	.get("/user_rating_base_next_list", async (c) => {
+	.get("/user_rating_base_best_new_list", async (c) => {
 		try {
 			const token = getCookie(c, "auth_token");
 			if (!token) {
@@ -198,23 +196,20 @@ const OngekiRatingRoutes = new Hono()
 			const userId = payload.userId;
 			const version = await getUserVersionOngeki(userId);
 
-			const typeFilter = "userRatingBaseNextList";
-
-			// Get next list entries
+			// Get new list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
 					musicId,
 					score,
 					difficultId,
 					version,
-					\`index\`,
 					type
 				FROM ongeki_profile_rating
 				WHERE user = ?
-					AND type = ?
+					AND type = 'userRatingBaseBestNewList'
 					AND version = ?
 				ORDER BY \`index\` ASC`,
-				[userId, typeFilter, version]
+				[userId, version]
 			)) as UserRatingBaseEntry[];
 
 			if (!userRatingBaseList.length) {
@@ -233,7 +228,7 @@ const OngekiRatingRoutes = new Hono()
 					chartId,
 					level,
 					genre
-  				FROM ongeki_static_music
+				FROM ongeki_static_music
 				WHERE songId IN (?)
 					AND version = ?`,
 				[musicIds, version]
@@ -272,11 +267,11 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ results });
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base next list" }, 500);
+			return c.json({ error: "Failed to fetch user rating base best new list" }, 500);
 		}
 	});
 
-// Rating calculation function for Ongeki
+// Rating calculation function
 function calculateRating(level: number, score: number): number {
 	const iclInt = level * 100;
 
@@ -290,4 +285,5 @@ function calculateRating(level: number, score: number): number {
 		return iclInt - Math.ceil((970000 - score) / 175);
 	}
 }
-export default OngekiRatingRoutes;
+
+export { OngekiRatingRoutes };

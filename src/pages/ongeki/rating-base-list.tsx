@@ -1,39 +1,55 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-
+import { Trophy } from "lucide-react";
+import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
-import { useUserRatingBaseList } from "@/hooks/ongeki/use-rating";
+import {
+	useUserRatingBaseBestList,
+	useUserRatingBaseBestNewList,
+	useUserRatingBaseHotList,
+} from "@/hooks/ongeki/use-rating";
 import RatingBaseBestListTable from "@/components/ongeki/rating-base-best-list-table";
 const ITEMS_PER_PAGE = 15;
 
 const OngekiRatingBaseList = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentNewPage, setCurrentNewPage] = useState(1);
+	const [currentHotPage, setCurrentHotPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchNewQuery, setSearchNewQuery] = useState("");
+	const [searchHotQuery, setSearchHotQuery] = useState("");
 
-	const { data: ratingList = [], isLoading: isLoadingRatingList } = useUserRatingBaseList();
+	const { data: baseList = [], isLoading: isLoadingBaseList } = useUserRatingBaseBestList();
+	const { data: newList = [], isLoading: isLoadingNewList } = useUserRatingBaseBestNewList();
+	const { data: hotList = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
 	const { isLoading: isLoadingUsername } = useUsername();
 
-	// Separate base and new songs
-	const baseSongs = ratingList.filter((song) => song.type === "userRatingBaseBestList");
-	const newSongs = ratingList.filter((song) => song.type === "userRatingBaseBestNewList");
-
-	// Filter base songs by search
-	const filteredBaseSongs = baseSongs.filter((song) =>
+	// Filter songs by search
+	const filteredBaseSongs = baseList.filter((song) =>
 		song.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
 
-	// Filter new songs by search
-	const filteredNewSongs = newSongs.filter((song) =>
+	const filteredNewSongs = newList.filter((song) =>
 		song.title.toLowerCase().includes(searchNewQuery.toLowerCase())
 	);
 
+	const filteredHotSongs = hotList.filter((song) =>
+		song.title.toLowerCase().includes(searchHotQuery.toLowerCase())
+	);
+
+	const totalBaseRating = baseList.slice(0, 30).reduce((sum, song) => sum + song.rating, 0);
+	const totalNewRating = newList.slice(0, 15).reduce((sum, song) => sum + song.rating, 0);
+	const totalHotRating = hotList.slice(0, 10).reduce((sum, song) => sum + song.rating, 0);
+
+	const totalSongs = baseList.length + newList.length + hotList.length;
+	const averageRating = ((totalBaseRating + totalNewRating + totalHotRating) / 5500).toFixed(2);
+
 	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
 	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
+	const totalHotPages = Math.ceil(filteredHotSongs.length / ITEMS_PER_PAGE);
 
 	const paginatedBaseSongs = filteredBaseSongs.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
@@ -45,7 +61,12 @@ const OngekiRatingBaseList = () => {
 		currentNewPage * ITEMS_PER_PAGE
 	);
 
-	const formatSongs = (songs: typeof ratingList) =>
+	const paginatedHotSongs = filteredHotSongs.slice(
+		(currentHotPage - 1) * ITEMS_PER_PAGE,
+		currentHotPage * ITEMS_PER_PAGE
+	);
+
+	const formatSongs = (songs: typeof baseList) =>
 		songs.map((song) => ({
 			title: song.title,
 			score: song.score,
@@ -57,7 +78,7 @@ const OngekiRatingBaseList = () => {
 			type: song.type,
 		}));
 
-	if (isLoadingRatingList || isLoadingUsername) {
+	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
 				<Header title="Rating Frame" />
@@ -74,11 +95,19 @@ const OngekiRatingBaseList = () => {
 		<div className="flex-1 overflow-auto relative">
 			<Header title="Rating Frame" />
 			<div className="container mx-auto space-y-6">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<QouteCard
+						icon={Trophy}
+						tagline="Base List"
+						value={`Rating: ${averageRating}`}
+						color="yellow"
+						welcomeMessage={`Based on ${baseList.length} base plays, ${newList.length} new plays and ${hotList.length} hot plays for a total of ${totalSongs} plays`}
+					/>
+				</div>
 
 				{/* Base List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Best 30 </h3>
+					<h3 className="text-xl font-semibold text-gray-100">Base List</h3>
 					<RatingBaseBestListTable
 						songs={formatSongs(paginatedBaseSongs)}
 						searchQuery={searchQuery}
@@ -107,7 +136,7 @@ const OngekiRatingBaseList = () => {
 
 				{/* New List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Best New 15</h3>
+					<h3 className="text-xl font-semibold text-gray-100">New List</h3>
 					<RatingBaseBestListTable
 						songs={formatSongs(paginatedNewSongs)}
 						searchQuery={searchNewQuery}
@@ -127,6 +156,35 @@ const OngekiRatingBaseList = () => {
 						<button
 							disabled={currentNewPage === Math.max(1, totalNewPages)}
 							onClick={() => setCurrentNewPage((prev) => prev + 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+						>
+							Next
+						</button>
+					</div>
+				</div>
+
+				{/* Hot List Table */}
+				<div className="space-y-4">
+					<h3 className="text-xl font-semibold text-gray-100">Hot List</h3>
+					<RatingBaseBestListTable
+						songs={formatSongs(paginatedHotSongs)}
+						searchQuery={searchHotQuery}
+						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
+					/>
+					<div className="flex justify-center items-center space-x-4 mb-4">
+						<button
+							disabled={currentHotPage === 1}
+							onClick={() => setCurrentHotPage((prev) => prev - 1)}
+							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+						>
+							Previous
+						</button>
+						<span className="text-gray-300 text-sm">
+							Page {currentHotPage} of {Math.max(1, totalHotPages)}
+						</span>
+						<button
+							disabled={currentHotPage === Math.max(1, totalHotPages)}
+							onClick={() => setCurrentHotPage((prev) => prev + 1)}
 							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 						>
 							Next

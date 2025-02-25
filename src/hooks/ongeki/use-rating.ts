@@ -38,11 +38,11 @@ export const useUserRatingBaseHotList = () => {
 	});
 };
 
-export const useUserRatingBaseList = () => {
+export const useUserRatingBaseBestList = () => {
 	return useQuery<UserRatingBaseEntry[]>({
-		queryKey: ["userRatingBaseList"],
+		queryKey: ["userRatingBaseBestList"],
 		queryFn: async () => {
-			const response = await api.ongeki.user_rating_base_list.$get();
+			const response = await api.ongeki.user_rating_base_best_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (data.error) {
@@ -54,11 +54,11 @@ export const useUserRatingBaseList = () => {
 	});
 };
 
-export const useUserRatingBaseNextList = () => {
+export const useUserRatingBaseBestNewList = () => {
 	return useQuery<UserRatingBaseEntry[]>({
-		queryKey: ["userRatingBaseNextList"],
+		queryKey: ["userRatingBaseBestNewList"],
 		queryFn: async () => {
-			const response = await api.ongeki.user_rating_base_next_list.$get();
+			const response = await api.ongeki.user_rating_base_best_new_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (data.error) {
