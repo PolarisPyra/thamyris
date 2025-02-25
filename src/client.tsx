@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import "./index.css";
 import ChunithmScorePage from "./pages/chunithm/scores";
 import ChunithmUserbox from "./pages/chunithm/userbox";
 import ServerNews from "./pages/common/server-news";
@@ -23,13 +22,11 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "./context/auth-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ChunithmRatingBaseHotList from "./pages/chunithm/rating-base-hot-list";
 import ChunithmRatingBaseList from "./pages/chunithm/rating-base-list";
-import ChunithmRatingBaseNextList from "./pages/chunithm/rating-base-next-list";
-import OngekiRatingBaseHotList from "./pages/ongeki/rating-base-hot-list";
-
-import OngekiRatingBaseBestList from "./pages/ongeki/rating-base-list";
-import OngekiRatingBaseHotNextList from "./pages/ongeki/rating-base-hot-next-list";
+import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
+import OngekiRatingFramesPotential from "./pages/ongeki/rating-base-hot-next-list";
+import "./index.css";
+import ChunithmRatingFramesPotential from "./pages/chunithm/rating-base-next-list";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -65,15 +62,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 								<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
 								<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
 								<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
+								<Route path="/chunithm/potential" element={<ChunithmRatingFramesPotential />} />
 								<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
 								<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
 								<Route path="/ongeki/scores" element={<OngekiScorePage />} />
-								<Route path="/chunithm/rating-base-hot-list" element={<ChunithmRatingBaseHotList />} />
-								<Route path="/chunithm/rating-base-list" element={<ChunithmRatingBaseList />} />
-								<Route path="/chunithm/rating-base-next-list" element={<ChunithmRatingBaseNextList />} />
-								<Route path="/ongeki/rating-base-hot-list" element={<OngekiRatingBaseHotList />} />
-								<Route path="/ongeki/rating-base-best-list" element={<OngekiRatingBaseBestList />} />
-								<Route path="/ongeki/rating-base-hot-next-list" element={<OngekiRatingBaseHotNextList />} />
+								<Route path="/chunithm/rating" element={<ChunithmRatingBaseList />} />
+								<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
+								<Route path="/ongeki/potential" element={<OngekiRatingFramesPotential />} />
 							</Route>
 						</Route>
 

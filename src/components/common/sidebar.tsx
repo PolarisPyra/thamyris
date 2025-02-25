@@ -60,6 +60,12 @@ const baseChunithmSubnav = [
 		icon: BoomBox,
 		color: "#e0d531",
 	},
+	{
+		name: "Rating Frame",
+		href: "/chunithm/rating",
+		icon: List,
+		color: "#e0d531",
+	},
 ];
 
 const baseOngekiSubnav = [
@@ -71,19 +77,14 @@ const baseOngekiSubnav = [
 	},
 	{
 		name: "Rating Frame",
-		href: "/ongeki/rating-base-best-list",
+		href: "/ongeki/rating",
 		icon: List,
 		color: "#f067e9",
 	},
-	{
-		name: "Rating Frame Hot",
-		href: "/ongeki/rating-base-hot-list",
-		icon: Flame,
-		color: "#f067e9",
-	},
+
 	{
 		name: "Potential Rating",
-		href: "/ongeki/rating-base-hot-next-list",
+		href: "/ongeki/potential",
 		icon: CircleArrowRight,
 		color: "#f067e9",
 	},
@@ -125,32 +126,14 @@ export function SidebarComponent() {
 	const chunithmSubnav = React.useMemo(() => {
 		const subnav = [...baseChunithmSubnav];
 
-		// Add Rating Frame for version 16 and 17
-		if (version && version >= 16) {
+		// Add Potential ratings only for version 17 and above
+		if (version && version >= 17) {
 			subnav.push({
-				name: "Rating Frame",
-				href: "/chunithm/rating-base-list",
-				icon: List,
+				name: "Potential Rating",
+				href: "/chunithm/potential",
+				icon: CircleArrowRight,
 				color: "#e0d531",
 			});
-		}
-
-		// Add Hot and Potential ratings only for version 17 and above
-		if (version && version >= 17) {
-			subnav.push(
-				{
-					name: "Rating Frame Hot",
-					href: "/chunithm/rating-base-hot-list",
-					icon: Flame,
-					color: "#e0d531",
-				},
-				{
-					name: "Potential Rating",
-					href: "/chunithm/rating-base-next-list",
-					icon: CircleArrowRight,
-					color: "#e0d531",
-				}
-			);
 		}
 
 		return subnav;

@@ -11,7 +11,7 @@ import { getDifficultyFromChartId } from "@/utils/helpers";
 
 const ITEMS_PER_PAGE = 15;
 
-const OngekiRatingBaseHotNextList = () => {
+const OngekiRatingFramesPotential = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 
@@ -101,4 +101,4 @@ const OngekiRatingBaseHotNextList = () => {
 	);
 };
 
-export default OngekiRatingBaseHotNextList;
+export default OngekiRatingFramesPotential;
