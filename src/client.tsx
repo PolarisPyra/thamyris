@@ -27,6 +27,7 @@ import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
 import OngekiRatingFramesPotential from "./pages/ongeki/rating-base-hot-next-list";
 import "./index.css";
 import ChunithmRatingFramesPotential from "./pages/chunithm/rating-base-next-list";
+import Account from "./pages/account/account";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -69,6 +70,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 								<Route path="/chunithm/rating" element={<ChunithmRatingBaseList />} />
 								<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
 								<Route path="/ongeki/potential" element={<OngekiRatingFramesPotential />} />
+								<Route path="/account" element={<Account />} />
 							</Route>
 						</Route>
 

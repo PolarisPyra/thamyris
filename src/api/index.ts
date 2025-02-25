@@ -14,7 +14,7 @@ import { rivalsRoutes } from "./routes/titles/chunithm/rivals";
 import { chunithmSettingsRoute } from "./routes/titles/chunithm/settings";
 import { env } from "@/env";
 import { routeLogger } from "./middleware/logs";
-import { UserRatingFramesRoutes } from "./routes/titles/chunithm/userRatingFrames";
+import { UserRatingFramesRoutes } from "./routes/titles/chunithm/rating";
 import { OngekiRatingRoutes } from "./routes/titles/ongeki/rating";
 import { ongekiSettingsRoute } from "./routes/titles/ongeki/settings";
 interface Databaseenv {

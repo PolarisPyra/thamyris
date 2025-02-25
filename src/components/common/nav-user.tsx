@@ -79,15 +79,18 @@ export function NavUser({
 
 						<DropdownMenuSeparator className="bg-gray-700" />
 						<DropdownMenuGroup>
-							<DropdownMenuItem className="text-gray-100 focus:bg-gray-700 focus:text-gray-100">
-								<BadgeCheck className="text-gray-400" />
+							<DropdownMenuItem
+								onClick={() => navigate("/account")}
+								className="text-gray-100 focus:bg-gray-700 focus:text-gray-100"
+							>
+								<SettingsIcon className="text-gray-400" />
 								Account
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator className="bg-gray-700" />
 						<DropdownMenuGroup>
 							<DropdownMenuItem
-								onClick={() => navigate("/settings/ongeki")}
+								onClick={() => navigate("/account")}
 								className="text-gray-100 focus:bg-gray-700 focus:text-gray-100"
 							>
 								<SettingsIcon className="text-gray-400" />
