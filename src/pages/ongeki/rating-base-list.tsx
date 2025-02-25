@@ -74,18 +74,6 @@ const OngekiRatingFrames = () => {
 		currentNewPage * ITEMS_PER_PAGE
 	);
 
-	const formatSongs = (songs: typeof baseList) =>
-		songs.map((song) => ({
-			title: song.title,
-			score: song.score,
-			level: song.level,
-			chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
-			genre: song.genre,
-			artist: song.artist,
-			rating: song.rating,
-			type: song.type,
-		}));
-
 	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
@@ -117,7 +105,16 @@ const OngekiRatingFrames = () => {
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingBaseBestListTable
-						songs={formatSongs(paginatedBaseSongs)}
+						songs={paginatedBaseSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+							type: song.type,
+						}))}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
 					/>
@@ -148,7 +145,16 @@ const OngekiRatingFrames = () => {
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">New 15</h3>
 					<RatingBaseBestListTable
-						songs={formatSongs(paginatedNewSongs)}
+						songs={paginatedNewSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+							type: song.type,
+						}))}
 						searchQuery={searchNewQuery}
 						onSearchChange={(e) => setSearchNewQuery(e.target.value)}
 					/>
@@ -179,7 +185,16 @@ const OngekiRatingFrames = () => {
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Hot 10</h3>
 					<RatingBaseBestListTable
-						songs={formatSongs(filteredHotSongs)}
+						songs={filteredHotSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+							type: song.type,
+						}))}
 						searchQuery={searchHotQuery}
 						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
 					/>

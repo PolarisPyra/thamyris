@@ -56,18 +56,6 @@ const ChunithmRatingBaseList = () => {
 		currentNewPage * ITEMS_PER_PAGE
 	);
 
-	const formatSongs = (songs: typeof ratingList) =>
-		songs.map((song) => ({
-			title: song.title,
-			score: song.score,
-			level: song.level,
-			chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
-			genre: song.genre,
-			artist: song.artist,
-			rating: song.rating,
-			type: song.type,
-		}));
-
 	if (isLoadingRatingList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
@@ -108,7 +96,16 @@ const ChunithmRatingBaseList = () => {
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingBaseListTable
-						songs={formatSongs(paginatedBaseSongs)}
+						songs={paginatedBaseSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+							type: song.type,
+						}))}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
 					/>
@@ -140,7 +137,16 @@ const ChunithmRatingBaseList = () => {
 					<div className="space-y-4">
 						<h3 className="text-xl font-semibold text-gray-100">New 20</h3>
 						<RatingBaseListTable
-							songs={formatSongs(paginatedNewSongs)}
+							songs={paginatedNewSongs.map((song) => ({
+								title: song.title,
+								score: song.score,
+								level: song.level,
+								chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
+								genre: song.genre,
+								artist: song.artist,
+								rating: song.rating,
+								type: song.type,
+							}))}
 							searchQuery={searchNewQuery}
 							onSearchChange={(e) => setSearchNewQuery(e.target.value)}
 						/>

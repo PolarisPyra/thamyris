@@ -31,18 +31,6 @@ const ChunithmRatingBaseNextList = () => {
 		currentPage * ITEMS_PER_PAGE
 	);
 
-	const formatSongs = (songs: typeof ratingList) =>
-		songs.map((song) => ({
-			title: song.title,
-			score: song.score,
-			level: song.level,
-			chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
-			genre: song.genre,
-			artist: song.artist,
-			rating: song.rating,
-			type: song.type,
-		}));
-
 	if (isLoadingRatingList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
@@ -74,7 +62,16 @@ const ChunithmRatingBaseNextList = () => {
 					/>
 				</div>
 				<RatingBaseNextListTable
-					songs={formatSongs(paginatedSongs)}
+					songs={paginatedSongs.map((song) => ({
+						title: song.title,
+						score: song.score,
+						level: song.level,
+						chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
+						genre: song.genre,
+						artist: song.artist,
+						rating: song.rating,
+						type: song.type,
+					}))}
 					searchQuery={searchQuery}
 					onSearchChange={(e) => setSearchQuery(e.target.value)}
 				/>
