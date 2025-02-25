@@ -54,7 +54,7 @@ export default defineConfig({
 				rewrite: (path) => path,
 			},
 		},
-		port: env.PORT,
+		port: env.CLIENT_PORT,
 		cors: {
 			origin: true,
 			credentials: true,
