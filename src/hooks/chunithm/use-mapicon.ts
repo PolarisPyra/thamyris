@@ -26,7 +26,7 @@ export function useMapIcons() {
 
 			return data.results.map((icon) => ({
 				...icon,
-				imagePath: icon.imagePath.replace(".dds", ".png"),
+				imagePath: icon.imagePath.replace(".dds", ""),
 			}));
 		},
 	});
@@ -48,13 +48,12 @@ export function useCurrentMapIcon() {
 			return icon
 				? {
 						...icon,
-						imagePath: icon.imagePath.replace(".dds", ".png"),
+						imagePath: icon.imagePath.replace(".dds", ""),
 				  }
 				: null;
 		},
 	});
 }
-
 // Update map icon mutation
 export function useUpdateMapIcon() {
 	const queryClient = useQueryClient();

@@ -26,7 +26,7 @@ export function useSystemVoices() {
 
 			return data.results.map((voice) => ({
 				...voice,
-				imagePath: voice.imagePath.replace(".dds", ".png"),
+				imagePath: voice.imagePath.replace(".dds", ""),
 			}));
 		},
 	});
@@ -48,7 +48,7 @@ export function useCurrentSystemVoice() {
 			return voice
 				? {
 						...voice,
-						imagePath: voice.imagePath.replace(".dds", ".png"),
+						imagePath: voice.imagePath.replace(".dds", ""),
 				  }
 				: null;
 		},

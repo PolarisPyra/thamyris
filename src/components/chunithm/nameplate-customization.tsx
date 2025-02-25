@@ -22,7 +22,7 @@ const NameplateSelector = () => {
 	// Set initial selected nameplate when data loads
 	React.useEffect(() => {
 		if (currentNameplate) {
-			setSelectedNameplate(currentNameplate.imagePath.replace(".dds", ".png"));
+			setSelectedNameplate(currentNameplate.imagePath);
 		} else if (nameplates && nameplates.length > 0) {
 			setSelectedNameplate(nameplates[0].imagePath);
 		}
@@ -66,7 +66,7 @@ const NameplateSelector = () => {
 		<div className="flex flex-col md:flex-row justify-center w-full pt-4 md:pt-15 gap-4 md:gap-8 px-4">
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
-					src={`${cdnUrl}assets/nameplate/${selectedNameplate}`}
+					src={`${cdnUrl}assets/nameplate/${selectedNameplate}.png`}
 					className="w-[250px] object-contain"
 				/>
 			</div>

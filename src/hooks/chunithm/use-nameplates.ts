@@ -26,7 +26,7 @@ export function useNameplates() {
 
 			return data.results.map((nameplate) => ({
 				...nameplate,
-				imagePath: nameplate.imagePath.replace(".dds", ".png"),
+				imagePath: nameplate.imagePath.replace(".dds", ""),
 			}));
 		},
 	});
@@ -43,7 +43,13 @@ export function useCurrentNameplate() {
 				throw new Error(data.error);
 			}
 
-			return data.results[0];
+			const nameplate = data.results[0];
+			return nameplate
+				? {
+						...nameplate,
+						imagePath: nameplate.imagePath.replace(".dds", ""),
+				  }
+				: null;
 		},
 	});
 }

@@ -63,7 +63,7 @@ const MapiconSelector = () => {
 			<div className="relative w-full md:w-[300px] h-[100px] flex justify-center items-center">
 				<img
 					loading="lazy"
-					src={`${cdnUrl}assets/map_icon/${selectedIcon}`}
+					src={`${cdnUrl}assets/map_icon/${selectedIcon}.png`}
 					className="w-[150px] object-contain"
 				/>
 			</div>
