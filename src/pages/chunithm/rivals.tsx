@@ -1,7 +1,7 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { Handshake, Skull, Trophy } from "lucide-react";
+import { Handshake, Skull, Swords } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import RivalsTable from "@/components/common/rivals-table";
 import { toast } from "sonner";
@@ -88,8 +88,8 @@ const ChunithmRivals = () => {
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
 							tagline={""}
-							icon={Trophy}
-							color={"#9e0bd9"}
+							icon={Swords}
+							color={"yellow"}
 						/>
 						<div className="mt-6 space-y-6"></div>
 						<RivalsTable

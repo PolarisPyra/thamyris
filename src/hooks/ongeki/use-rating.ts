@@ -69,3 +69,19 @@ export const useUserRatingBaseBestNewList = () => {
 		},
 	});
 };
+
+export const useUserRatingBaseHotNextList = () => {
+	return useQuery<UserRatingBaseEntry[]>({
+		queryKey: ["userRatingBaseHotNextList"],
+		queryFn: async () => {
+			const response = await api.ongeki.user_rating_base_hot_next_list.$get();
+			const data = (await response.json()) as RatingResponse;
+
+			if (data.error) {
+				throw new Error(data.error);
+			}
+
+			return data.results;
+		},
+	});
+};

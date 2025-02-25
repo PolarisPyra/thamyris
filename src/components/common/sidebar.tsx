@@ -62,6 +62,33 @@ const baseChunithmSubnav = [
 	},
 ];
 
+const baseOngekiSubnav = [
+	{
+		name: "Scores",
+		href: "/ongeki/scores",
+		icon: NotepadText,
+		color: "#f067e9",
+	},
+	{
+		name: "Rating Frame",
+		href: "/ongeki/rating-base-best-list",
+		icon: List,
+		color: "#f067e9",
+	},
+	{
+		name: "Rating Frame Hot",
+		href: "/ongeki/rating-base-hot-list",
+		icon: Flame,
+		color: "#f067e9",
+	},
+	{
+		name: "Potential Rating",
+		href: "/ongeki/rating-base-hot-next-list",
+		icon: CircleArrowRight,
+		color: "#f067e9",
+	},
+];
+
 const sidebarItems = [
 	{
 		name: "Home",
@@ -85,32 +112,7 @@ const sidebarItems = [
 		name: "Ongeki",
 		icon: ChevronDown,
 		color: "#59ba22",
-		subnav: [
-			{
-				name: "Scores",
-				href: "/ongeki/scores",
-				icon: NotepadText,
-				color: "#da31e0",
-			},
-			{
-				name: "All Songs",
-				href: "/ongeki/allsongs",
-				icon: BoomBox,
-				color: "#da31e0",
-			},
-			{
-				name: "Rating Frame",
-				href: "/ongeki/rating-base-best-list",
-				icon: List,
-				color: "#da31e0",
-			},
-			{
-				name: "Rating Frame Hot",
-				href: "/ongeki/rating-base-hot-list",
-				icon: Flame,
-				color: "#da31e0",
-			},
-		],
+		subnav: baseOngekiSubnav,
 	},
 ];
 

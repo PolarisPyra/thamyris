@@ -50,7 +50,7 @@ const ChunithmAllSongs = () => {
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
 							tagline={""}
 							icon={BoomBox}
-							color={"#9e0bd9"}
+							color={"yellow"}
 						/>
 						<div className="mt-6 space-y-6"></div>
 

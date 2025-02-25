@@ -1,7 +1,7 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { Trophy } from "lucide-react";
+import { ChartNoAxesCombined } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import RatingBaseListTable from "@/components/chunithm/rating-base-list-table";
 import { useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
@@ -86,7 +86,7 @@ const ChunithmRatingBaseList = () => {
 			<div className="container mx-auto space-y-6">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
-						icon={Trophy}
+						icon={ChartNoAxesCombined}
 						tagline=""
 						value={`Average Rating: ${averageBaseRating}`}
 						color="yellow"
@@ -94,7 +94,7 @@ const ChunithmRatingBaseList = () => {
 					/>
 					{(version ?? 0) >= 17 && (
 						<QouteCard
-							icon={Trophy}
+							icon={ChartNoAxesCombined}
 							tagline=""
 							value={`Average Rating: ${averageNewRating}`}
 							color="yellow"

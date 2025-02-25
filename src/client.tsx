@@ -29,6 +29,7 @@ import ChunithmRatingBaseNextList from "./pages/chunithm/rating-base-next-list";
 import OngekiRatingBaseHotList from "./pages/ongeki/rating-base-hot-list";
 
 import OngekiRatingBaseBestList from "./pages/ongeki/rating-base-list";
+import OngekiRatingBaseHotNextList from "./pages/ongeki/rating-base-hot-next-list";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -72,6 +73,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 								<Route path="/chunithm/rating-base-next-list" element={<ChunithmRatingBaseNextList />} />
 								<Route path="/ongeki/rating-base-hot-list" element={<OngekiRatingBaseHotList />} />
 								<Route path="/ongeki/rating-base-best-list" element={<OngekiRatingBaseBestList />} />
+								<Route path="/ongeki/rating-base-hot-next-list" element={<OngekiRatingBaseHotNextList />} />
 							</Route>
 						</Route>
 

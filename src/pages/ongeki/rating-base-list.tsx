@@ -1,7 +1,7 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { Trophy } from "lucide-react";
+import { ChartNoAxesCombined } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChartId } from "@/utils/helpers";
@@ -78,10 +78,10 @@ const OngekiRatingBaseList = () => {
 			<div className="container mx-auto space-y-6">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<QouteCard
-						icon={Trophy}
-						tagline="Base List"
-						value={`Rating: ${averageRating}`}
-						color="yellow"
+						icon={ChartNoAxesCombined}
+						tagline=""
+						value={`Average Rating: ${averageRating}`}
+						color="#f067e9"
 						welcomeMessage={`Based on ${baseList.length} best plays, ${newList.length} new plays and ${hotList.length} hot plays for a total of ${totalSongs} plays`}
 					/>
 				</div>

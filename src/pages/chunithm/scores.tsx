@@ -1,7 +1,12 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Trophy } from "lucide-react";
+import {
+	ChartNoAxesCombined,
+	CircleArrowDown,
+	CircleArrowRight,
+	CircleArrowUp,
+} from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import ScoreTable from "@/components/common/score-table";
 import {
@@ -61,8 +66,8 @@ const ChunithmScorePage = () => {
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
 							tagline={`Rating: ${currentRating}`}
 							value={""}
-							icon={Trophy}
-							color={"#9e0bd9"}
+							icon={ChartNoAxesCombined}
+							color={"yellow"}
 						/>
 						<div className="mt-6 space-y-6"></div>
 
