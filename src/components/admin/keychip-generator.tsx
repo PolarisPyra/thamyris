@@ -20,7 +20,7 @@ const KeychipGenerator = () => {
 	const hasSerialId = showNamcoPcbId ? !!formData.namcopcbid : !!formData.aimecard;
 
 	const gameOptions = [
-		{ value: "aime", label: "Sega (Aime Card)" },
+		{ value: "aime", label: "Sega (Aime card)" },
 		{ value: "SDEW", label: "SDEW (Namco PCB)" },
 	];
 
