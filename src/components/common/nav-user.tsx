@@ -90,7 +90,7 @@ export function NavUser({
 						<DropdownMenuSeparator className="bg-gray-700" />
 						<DropdownMenuGroup>
 							<DropdownMenuItem
-								onClick={() => navigate("/account")}
+								onClick={() => navigate("/settings/ongeki")}
 								className="text-gray-100 focus:bg-gray-700 focus:text-gray-100"
 							>
 								<SettingsIcon className="text-gray-400" />
