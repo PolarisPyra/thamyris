@@ -13,7 +13,7 @@ const server = new Hono({});
 
 // Replace the existing CORS and CSRF configuration with:
 const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-const port = process.env.NODE_ENV === "production" ? "" : `:${env.PORT}`;
+const port = process.env.NODE_ENV === "production" ? "" : `:${env.CLIENT_PORT}`;
 const origin = `${protocol}://${env.DOMAIN}${port}`;
 
 server.use(
