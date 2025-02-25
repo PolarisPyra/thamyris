@@ -7,7 +7,7 @@ import Spinner from "@/components/common/spinner";
 import { useUsername } from "@/hooks/common/use-username";
 import { useUserRatingBaseHotNextList } from "@/hooks/ongeki/use-rating";
 import RatingBaseHotNextListTable from "@/components/ongeki/rating-base-hot-next-list-table";
-import { getDifficultyFromChartId } from "@/utils/helpers";
+import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -37,7 +37,7 @@ const OngekiRatingFramesPotential = () => {
 			title: song.title,
 			score: song.score,
 			level: song.level,
-			difficulty: getDifficultyFromChartId(song.chartId),
+			chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
 			genre: song.genre,
 			artist: song.artist,
 			rating: song.rating,

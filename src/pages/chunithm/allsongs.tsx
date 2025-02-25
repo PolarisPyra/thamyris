@@ -1,7 +1,7 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { getDifficultyFromChartId } from "@/utils/helpers";
+import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 import AllSongsTable from "@/components/common/allsongs-table";
 import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
 import QouteCard from "@/components/common/qoutecard";
@@ -58,7 +58,7 @@ const ChunithmAllSongs = () => {
 							allsongs={paginatedSongs.map((song) => ({
 								id: song.id,
 								songId: song.songId,
-								chartId: getDifficultyFromChartId(song.chartId),
+								chartId: getDifficultyFromChunithmChart(song.chartId),
 								title: (
 									<div className="flex items-center space-x-1 group relative">
 										<span className="">{song.title}</span>
@@ -67,7 +67,9 @@ const ChunithmAllSongs = () => {
 								level: (
 									<div className="flex flex-col items-start">
 										<span>{song.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyFromChartId(song.chartId)}</span>
+										<span className="text-sm text-gray-400">
+											{getDifficultyFromChunithmChart(song.chartId)}
+										</span>
 									</div>
 								),
 								genre: song.genre,

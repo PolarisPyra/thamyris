@@ -1,7 +1,7 @@
 import Header from "@/components/common/header";
 import { useState } from "react";
 import React from "react";
-import { getDifficultyClass } from "@/utils/helpers";
+import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 import AllSongsTable from "@/components/common/allsongs-table";
 import { useOngekiSongs } from "@/hooks/chunithm/use-songs";
 import QouteCard from "@/components/common/qoutecard";
@@ -55,7 +55,7 @@ const OngekiAllSongs = () => {
 							allsongs={paginatedSongs.map((song) => ({
 								id: song.id,
 								songId: song.songId,
-								chartId: getDifficultyClass(song.chartId),
+								chartId: getDifficultyFromOngekiChart(song.chartId),
 								title: (
 									<div className="flex items-center space-x-1 group relative">
 										<span className="truncate">{song.title}</span>
@@ -64,7 +64,9 @@ const OngekiAllSongs = () => {
 								level: (
 									<div className="flex flex-col items-start">
 										<span>{song.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyClass(song.chartId)}</span>
+										<span className="text-sm text-gray-400">
+											{getDifficultyFromOngekiChart(song.chartId)}
+										</span>
 									</div>
 								),
 								genre: song.genre,

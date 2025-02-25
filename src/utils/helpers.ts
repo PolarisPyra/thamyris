@@ -16,7 +16,26 @@ export const getGrade = (score: number) => {
 	return "";
 };
 
-export const getDifficultyClass = (chartId: number | string) => {
+export const getDifficultyFromChunithmChart = (chartId: number) => {
+	switch (chartId) {
+		case 0:
+			return "Basic";
+		case 1:
+			return "Advanced";
+		case 2:
+			return "Expert";
+		case 3:
+			return "Master";
+		case 4:
+			return "Ultima";
+		case 5:
+			return "Worlds End";
+		default:
+			return "Unknown";
+	}
+};
+
+export const getDifficultyFromOngekiChart = (chartId: number | string) => {
 	const id = typeof chartId === "string" ? parseInt(chartId) : chartId;
 	switch (id) {
 		case 0:
@@ -89,23 +108,3 @@ export const getOngekiComboStatus = (
 	if (isFullCombo === 1) return "FC";
 	return "";
 };
-
-export function getDifficultyFromChartId(chartId: number | string): string {
-	const id = typeof chartId === "string" ? chartId : chartId.toString();
-	switch (id) {
-		case "0":
-			return "BASIC";
-		case "1":
-			return "ADVANCED";
-		case "2":
-			return "EXPERT";
-		case "3":
-			return "MASTER";
-		case "4":
-			return "ULTIMA";
-		case "5":
-			return "WORLD'S END";
-		default:
-			return "UNKNOWN";
-	}
-}

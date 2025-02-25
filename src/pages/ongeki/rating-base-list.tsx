@@ -4,7 +4,6 @@ import React from "react";
 import { ChartNoAxesCombined } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
-import { getDifficultyFromChartId } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
 import {
 	useUserRatingBaseBestList,
@@ -12,6 +11,7 @@ import {
 	useUserRatingBaseHotList,
 } from "@/hooks/ongeki/use-rating";
 import RatingBaseBestListTable from "@/components/ongeki/rating-base-best-list-table";
+import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -79,7 +79,7 @@ const OngekiRatingFrames = () => {
 			title: song.title,
 			score: song.score,
 			level: song.level,
-			difficulty: getDifficultyFromChartId(song.chartId),
+			chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
 			genre: song.genre,
 			artist: song.artist,
 			rating: song.rating,

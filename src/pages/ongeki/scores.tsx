@@ -5,7 +5,7 @@ import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Trophy } from "lucide
 import QouteCard from "@/components/common/qoutecard";
 import ScoreTable from "@/components/common/score-table";
 import {
-	getDifficultyFromChartId,
+	getDifficultyFromOngekiChart,
 	getOngekiClearStatus,
 	getOngekiComboStatus,
 	getOngekiGrade,
@@ -92,12 +92,14 @@ const OngekiScorePage = () => {
 								level: (
 									<div className="flex flex-col items-start">
 										<span>{score.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyFromChartId(score.chartId)}</span>
+										<span className="text-sm text-gray-400">
+											{getDifficultyFromOngekiChart(score.chartId)}
+										</span>
 									</div>
 								),
 								lamp: getOngekiClearStatus(score.clearStatus),
 								combolamp: getOngekiComboStatus(score.isFullCombo, score.isAllBreak, score.isFullBell),
-								difficulty: getDifficultyFromChartId(score.chartId),
+								difficulty: getDifficultyFromOngekiChart(score.chartId),
 							}))}
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}

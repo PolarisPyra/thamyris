@@ -6,7 +6,7 @@ import QouteCard from "@/components/common/qoutecard";
 import RatingBaseNextListTable from "@/components/chunithm/rating-base-next-list-table";
 import { useUserRatingBaseNextList } from "@/hooks/chunithm/use-rating";
 import Spinner from "@/components/common/spinner";
-import { getDifficultyFromChartId } from "@/utils/helpers";
+import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
 const ITEMS_PER_PAGE = 15;
 
@@ -35,7 +35,7 @@ const ChunithmRatingBaseNextList = () => {
 		title: song.title,
 		score: song.score,
 		level: song.level,
-		difficulty: getDifficultyFromChartId(song.chartId),
+		chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
 		genre: song.genre,
 		artist: song.artist,
 		rating: song.rating,

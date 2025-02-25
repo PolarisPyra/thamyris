@@ -12,7 +12,7 @@ import ScoreTable from "@/components/common/score-table";
 import {
 	getChunithmClearStatus,
 	getChunithmComboStatus,
-	getDifficultyFromChartId,
+	getDifficultyFromChunithmChart,
 	getGrade,
 } from "@/utils/helpers";
 import { useChunithmScores } from "@/hooks/chunithm/use-scores";
@@ -97,12 +97,14 @@ const ChunithmScorePage = () => {
 								level: (
 									<div className="flex flex-col items-start">
 										<span>{score.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyFromChartId(score.chartId)}</span>
+										<span className="text-sm text-gray-400">
+											{getDifficultyFromChunithmChart(score.chartId)}
+										</span>
 									</div>
 								),
 								lamp: getChunithmClearStatus(score.isClear),
 								combolamp: getChunithmComboStatus(score.isFullCombo, score.isAllJustice, score.score),
-								difficulty: getDifficultyFromChartId(score.chartId),
+								difficulty: getDifficultyFromChunithmChart(score.chartId),
 							}))}
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}

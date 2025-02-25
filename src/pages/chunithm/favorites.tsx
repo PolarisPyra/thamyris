@@ -3,7 +3,7 @@ import { useState } from "react";
 import React from "react";
 import { Heart, HeartIcon } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
-import { getDifficultyFromChartId } from "@/utils/helpers";
+import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 import FavoritesTable from "@/components/common/favorites-table";
 import { useFavorites, useAddFavorite, useRemoveFavorite } from "@/hooks/chunithm/use-favorites";
 import { toast } from "sonner";
@@ -64,7 +64,7 @@ const ChunithmFavorites = () => {
 							favorites={paginatedSongs.map((song) => ({
 								id: song.id,
 								songId: song.songId,
-								chartId: getDifficultyFromChartId(song.chartId),
+								chartId: getDifficultyFromChunithmChart(song.chartId),
 								title: (
 									<div className="`max-w-[200px] `flex items-center space-x-1 group relative">
 										<span className="truncate">{song.title}</span>

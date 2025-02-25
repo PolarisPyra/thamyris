@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/table";
 import { Search } from "lucide-react";
 import React from "react";
-import { getDifficultyClass } from "@/utils/helpers";
 
 interface RatingBaseHotListTableProps {
 	songs: {
@@ -16,7 +15,7 @@ interface RatingBaseHotListTableProps {
 		title: string | React.ReactNode;
 		score: number;
 		level: string | number | React.ReactNode;
-		difficulty: string;
+		chartId: number;
 		genre: string;
 		artist: string | React.ReactNode;
 		rating: number;
@@ -65,7 +64,7 @@ const RatingBaseHotListTable = ({
 								<TableCell className="text-sm text-gray-300">{song.score.toLocaleString()}</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.level}</TableCell>
 								<TableCell className="text-sm text-gray-300">
-									<span className={getDifficultyClass(song.difficulty)}>{song.difficulty}</span>
+									<span>{song.chartId}</span>
 								</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.genre}</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.artist}</TableCell>
