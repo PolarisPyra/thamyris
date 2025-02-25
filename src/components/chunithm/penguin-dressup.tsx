@@ -149,7 +149,7 @@ const PenguinDressup = () => {
 						<img loading="lazy" src={`${cdnUrl}assets/avatar/${selectedAccessories.back}.png`} />
 					</div>
 					<div className="avatar_wear">
-						<img loading="lazy" src={`${cdnUrl}assets/avatar/${selectedAccessories.wear}.png`} />
+						<img src={`${cdnUrl}assets/avatar/${selectedAccessories.wear}.png`} />
 					</div>
 					<div className="avatar_skin">
 						<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png`} />
@@ -161,19 +161,19 @@ const PenguinDressup = () => {
 						<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_RightHand.png`} />
 					</div>
 					<div className="avatar_head">
-						<img loading="lazy" src={`${cdnUrl}assets/avatar/${selectedAccessories.head}.png`} />
+						<img src={`${cdnUrl}assets/avatar/${selectedAccessories.head}.png`} />
 					</div>
 					<div className="avatar_face_static">
 						<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_Face.png`} />
 					</div>
 					<div className="avatar_face">
-						<img loading="lazy" src={`${cdnUrl}assets/avatar/${selectedAccessories.face}.png`} />
+						<img src={`${cdnUrl}assets/avatar/${selectedAccessories.face}.png`} />
 					</div>
 					<div className="avatar_item_l">
-						<img loading="lazy" src={`${cdnUrl}assets/avatar/${selectedAccessories.item}.png`} />
+						<img src={`${cdnUrl}assets/avatar/${selectedAccessories.item}.png`} />
 					</div>
 					<div className="avatar_item_r">
-						<img loading="lazy" src={`${cdnUrl}assets/avatar/${selectedAccessories.item}.png`} />
+						<img src={`${cdnUrl}assets/avatar/${selectedAccessories.item}.png`} />
 					</div>
 					<div className="avatar_skinfoot_l">
 						<img src={`${cdnUrl}assets/avatarStatic/CHU_UI_Avatar_Tex_01400001.png`} />
