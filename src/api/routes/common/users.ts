@@ -47,6 +47,7 @@ const userRoutes = new Hono()
 			const payload = {
 				userId: user.id,
 				username: user.username,
+				permissions: user.permissions || 0,
 				exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
 				aimeCardId: aimeCard?.access_code,
 			};
@@ -174,6 +175,7 @@ const userRoutes = new Hono()
 			const payload = {
 				userId: userId,
 				username: username,
+				permissions: 1, // Default permissions for new users
 				aimeCardId: accessCode,
 				exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
 			};
