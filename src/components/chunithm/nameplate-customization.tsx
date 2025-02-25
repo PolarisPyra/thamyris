@@ -9,7 +9,8 @@ import {
 	useUpdateNameplate,
 } from "@/hooks/chunithm/use-nameplates";
 import Spinner from "../common/spinner";
-import { cdnUrl } from "@/lib/constants";
+import { cdnUrl } from "@/lib/cdn";
+
 const NameplateSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
 	const { data: nameplates, isLoading: isLoadingNameplates } = useNameplates();
