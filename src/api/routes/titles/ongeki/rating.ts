@@ -37,8 +37,7 @@ const OngekiRatingRoutes = new Hono()
 				FROM ongeki_profile_rating
 				WHERE user = ?
 					AND type = 'userRatingBaseHotList'
-					AND version = ?
-				ORDER BY \`index\` ASC`,
+					AND version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -122,8 +121,7 @@ const OngekiRatingRoutes = new Hono()
 				FROM ongeki_profile_rating
 				WHERE user = ?
 					AND type = 'userRatingBaseHotNextList'
-					AND version = ?
-				ORDER BY \`index\` ASC`,
+					AND version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -207,8 +205,7 @@ const OngekiRatingRoutes = new Hono()
 				FROM ongeki_profile_rating
 				WHERE user = ?
 					AND type = 'userRatingBaseBestList'
-					AND version = ?
-				ORDER BY \`index\` ASC`,
+					AND version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
