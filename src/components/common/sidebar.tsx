@@ -9,7 +9,6 @@ import {
 	Pencil,
 	BoomBox,
 	List,
-	Flame,
 	CircleArrowRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
