@@ -292,8 +292,7 @@ const OngekiRatingRoutes = new Hono()
 				FROM ongeki_profile_rating
 				WHERE user = ?
 					AND type = 'userRatingBaseBestNewList'
-					AND version = ?
-				ORDER BY \`index\` ASC`,
+					AND version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 

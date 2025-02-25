@@ -120,13 +120,11 @@ const UserRatingFramesRoutes = new Hono()
           score,
           difficultId,
           version,
-          \`index\`,
           type
         FROM chuni_profile_rating
         WHERE user = ?
           AND type IN ('userRatingBaseList', 'userRatingBaseNewList')
-          AND version = ?
-        ORDER BY type ASC, \`index\` ASC`,
+          AND version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -210,13 +208,11 @@ const UserRatingFramesRoutes = new Hono()
           score,
           difficultId,
           version,
-          \`index\`,
           type
         FROM chuni_profile_rating
         WHERE user = ?
           AND type = ?
-          AND version = ?
-        ORDER BY \`index\` ASC`,
+          AND version = ?`,
 				[userId, typeFilter, version]
 			)) as UserRatingBaseEntry[];
 
