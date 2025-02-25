@@ -177,7 +177,7 @@ const KeychipGenerator = () => {
 					disabled={isLoading}
 					className="w-full p-2 bg-gray-700 rounded hover:bg-gray-600 disabled:opacity-50 transition-colors"
 				>
-					Generate Random Serial Number
+					Generate random serial
 				</button>
 
 				<button
@@ -185,7 +185,7 @@ const KeychipGenerator = () => {
 					disabled={isLoading || !hasSerialId}
 					className="w-full p-2 bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
 				>
-					{isLoading ? "Generating..." : "Generate Keychip"}
+					{isLoading ? "Generating..." : "Generate keychip"}
 				</button>
 			</form>
 		</div>
