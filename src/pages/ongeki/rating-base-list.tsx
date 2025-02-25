@@ -16,11 +16,8 @@ const ITEMS_PER_PAGE = 15;
 
 const OngekiRatingBaseList = () => {
 	const [currentPage, setCurrentPage] = useState(1);
-	const [currentNewPage, setCurrentNewPage] = useState(1);
-	const [currentHotPage, setCurrentHotPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchNewQuery, setSearchNewQuery] = useState("");
-	const [searchHotQuery, setSearchHotQuery] = useState("");
 
 	const { data: baseList = [], isLoading: isLoadingBaseList } = useUserRatingBaseBestList();
 	const { data: newList = [], isLoading: isLoadingNewList } = useUserRatingBaseBestNewList();
@@ -36,10 +33,6 @@ const OngekiRatingBaseList = () => {
 		song.title.toLowerCase().includes(searchNewQuery.toLowerCase())
 	);
 
-	const filteredHotSongs = hotList.filter((song) =>
-		song.title.toLowerCase().includes(searchHotQuery.toLowerCase())
-	);
-
 	const totalBaseRating = baseList.slice(0, 30).reduce((sum, song) => sum + song.rating, 0);
 	const totalNewRating = newList.slice(0, 15).reduce((sum, song) => sum + song.rating, 0);
 	const totalHotRating = hotList.slice(0, 10).reduce((sum, song) => sum + song.rating, 0);
@@ -48,25 +41,13 @@ const OngekiRatingBaseList = () => {
 	const averageRating = ((totalBaseRating + totalNewRating + totalHotRating) / 5500).toFixed(2);
 
 	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
-	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
-	const totalHotPages = Math.ceil(filteredHotSongs.length / ITEMS_PER_PAGE);
 
 	const paginatedBaseSongs = filteredBaseSongs.slice(
 		(currentPage - 1) * ITEMS_PER_PAGE,
 		currentPage * ITEMS_PER_PAGE
 	);
 
-	const paginatedNewSongs = filteredNewSongs.slice(
-		(currentNewPage - 1) * ITEMS_PER_PAGE,
-		currentNewPage * ITEMS_PER_PAGE
-	);
-
-	const paginatedHotSongs = filteredHotSongs.slice(
-		(currentHotPage - 1) * ITEMS_PER_PAGE,
-		currentHotPage * ITEMS_PER_PAGE
-	);
-
-	const formatSongs = (songs: typeof baseList) =>
+	const RatingListTable = (songs: typeof baseList) =>
 		songs.map((song) => ({
 			title: song.title,
 			score: song.score,
@@ -109,7 +90,7 @@ const OngekiRatingBaseList = () => {
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Base List</h3>
 					<RatingBaseBestListTable
-						songs={formatSongs(paginatedBaseSongs)}
+						songs={RatingListTable(paginatedBaseSongs)}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
 					/>
@@ -138,29 +119,11 @@ const OngekiRatingBaseList = () => {
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">New List</h3>
 					<RatingBaseBestListTable
-						songs={formatSongs(paginatedNewSongs)}
+						songs={RatingListTable(filteredNewSongs)}
 						searchQuery={searchNewQuery}
 						onSearchChange={(e) => setSearchNewQuery(e.target.value)}
 					/>
-					<div className="flex justify-center items-center space-x-4 mb-4">
-						<button
-							disabled={currentNewPage === 1}
-							onClick={() => setCurrentNewPage((prev) => prev - 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Previous
-						</button>
-						<span className="text-gray-300 text-sm">
-							Page {currentNewPage} of {Math.max(1, totalNewPages)}
-						</span>
-						<button
-							disabled={currentNewPage === Math.max(1, totalNewPages)}
-							onClick={() => setCurrentNewPage((prev) => prev + 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Next
-						</button>
-					</div>
+					<div className="flex justify-center items-center space-x-4 mb-4" />
 				</div>
 			</div>
 		</div>
