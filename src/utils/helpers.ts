@@ -36,8 +36,7 @@ export const getDifficultyFromChunithmChart = (chartId: number) => {
 };
 
 export const getDifficultyFromOngekiChart = (chartId: number) => {
-	const id = typeof chartId === "string" ? parseInt(chartId) : chartId;
-	switch (id) {
+	switch (chartId) {
 		case 0:
 			return "Basic";
 		case 1:
@@ -46,10 +45,8 @@ export const getDifficultyFromOngekiChart = (chartId: number) => {
 			return "Expert";
 		case 3:
 			return "Master";
-		case 4:
-			return "Ultima";
-		case 5:
-			return "Worlds End";
+		case 10:
+			return "Lunatic";
 		default:
 			return "Unknown";
 	}
