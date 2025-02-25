@@ -8,7 +8,7 @@ interface UserRatingBaseEntry {
 	musicId: number;
 	score: number;
 	difficultId: string;
-	chartId: string;
+	chartId: number;
 	title: string;
 	artist: string;
 	genre: string;

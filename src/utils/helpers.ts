@@ -35,7 +35,7 @@ export const getDifficultyFromChunithmChart = (chartId: number) => {
 	}
 };
 
-export const getDifficultyFromOngekiChart = (chartId: number | string) => {
+export const getDifficultyFromOngekiChart = (chartId: number) => {
 	const id = typeof chartId === "string" ? parseInt(chartId) : chartId;
 	switch (id) {
 		case 0:
