@@ -105,7 +105,7 @@ const ChunithmRatingBaseList = () => {
 
 				{/* Base 30 Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Base 30</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingBaseListTable
 						songs={formatSongs(paginatedBaseSongs)}
 						searchQuery={searchQuery}

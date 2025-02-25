@@ -100,7 +100,7 @@ const OngekiRatingFrames = () => {
 
 				{/* Base List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Base List</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingBaseBestListTable
 						songs={RatingListTable(paginatedBaseSongs)}
 						searchQuery={searchQuery}
@@ -129,7 +129,7 @@ const OngekiRatingFrames = () => {
 
 				{/* New List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">New List</h3>
+					<h3 className="text-xl font-semibold text-gray-100">New 15</h3>
 					<RatingBaseBestListTable
 						songs={RatingListTable(paginatedNewSongs)}
 						searchQuery={searchNewQuery}
@@ -158,7 +158,7 @@ const OngekiRatingFrames = () => {
 
 				{/* Hot List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Hot Plays</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Hot 10</h3>
 					<RatingBaseBestListTable
 						songs={RatingListTable(filteredHotSongs)}
 						searchQuery={searchHotQuery}
