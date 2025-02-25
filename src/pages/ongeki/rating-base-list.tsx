@@ -101,7 +101,7 @@ const OngekiRatingBaseList = () => {
 						tagline="Base List"
 						value={`Rating: ${averageRating}`}
 						color="yellow"
-						welcomeMessage={`Based on ${baseList.length} base plays, ${newList.length} new plays and ${hotList.length} hot plays for a total of ${totalSongs} plays`}
+						welcomeMessage={`Based on ${baseList.length} best plays, ${newList.length} new plays and ${hotList.length} hot plays for a total of ${totalSongs} plays`}
 					/>
 				</div>
 
@@ -156,35 +156,6 @@ const OngekiRatingBaseList = () => {
 						<button
 							disabled={currentNewPage === Math.max(1, totalNewPages)}
 							onClick={() => setCurrentNewPage((prev) => prev + 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Next
-						</button>
-					</div>
-				</div>
-
-				{/* Hot List Table */}
-				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Hot List</h3>
-					<RatingBaseBestListTable
-						songs={formatSongs(paginatedHotSongs)}
-						searchQuery={searchHotQuery}
-						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
-					/>
-					<div className="flex justify-center items-center space-x-4 mb-4">
-						<button
-							disabled={currentHotPage === 1}
-							onClick={() => setCurrentHotPage((prev) => prev - 1)}
-							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-						>
-							Previous
-						</button>
-						<span className="text-gray-300 text-sm">
-							Page {currentHotPage} of {Math.max(1, totalHotPages)}
-						</span>
-						<button
-							disabled={currentHotPage === Math.max(1, totalHotPages)}
-							onClick={() => setCurrentHotPage((prev) => prev + 1)}
 							className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 						>
 							Next
