@@ -9,7 +9,7 @@ import {
 	useUpdateSystemVoice,
 } from "@/hooks/chunithm/use-systemvoice";
 import Spinner from "../common/spinner";
-import { cdnUrl } from "@/lib/cdn";
+import { cdnUrl } from "@/lib/constants";
 
 const SystemvoiceSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);

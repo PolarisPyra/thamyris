@@ -5,7 +5,7 @@ import { SubmitButton } from "@/components/common/button";
 import { toast } from "sonner";
 import { useMapIcons, useCurrentMapIcon, useUpdateMapIcon } from "@/hooks/chunithm/use-mapicon";
 import Spinner from "../common/spinner";
-import { cdnUrl } from "@/lib/cdn";
+import { cdnUrl } from "@/lib/constants";
 
 const MapiconSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
