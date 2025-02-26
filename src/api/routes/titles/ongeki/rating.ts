@@ -4,15 +4,7 @@ import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import { getUserVersionOngeki } from "../../../version";
 import { env } from "@/env";
-
-interface UserRatingBaseEntry {
-	musicId: string;
-	score: number;
-	difficultId: string;
-	version: number;
-	index: number;
-	type: string;
-}
+import { UserRatingBaseEntry } from "@/utils/types";
 
 const OngekiRatingRoutes = new Hono()
 	.get("/user_rating_base_hot_list", async (c) => {

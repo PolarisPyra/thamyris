@@ -4,15 +4,7 @@ import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import { getUserVersionChunithm } from "../../../version";
 import { env } from "@/env";
-
-interface UserRatingBaseEntry {
-	musicId: string;
-	score: number;
-	difficultId: string;
-	version: number;
-	index: number;
-	type: string;
-}
+import { UserRatingBaseEntry } from "@/utils/types";
 
 const UserRatingFramesRoutes = new Hono()
 	.get("/user_rating_base_hot_list", async (c) => {
@@ -113,18 +105,18 @@ const UserRatingFramesRoutes = new Hono()
 			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
-			// Get both base and new list entries
+			// Get base list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-          musicId,
-          score,
-          difficultId,
-          version,
-          type
-        FROM chuni_profile_rating
-        WHERE user = ?
-          AND type IN ('userRatingBaseList', 'userRatingBaseNewList')
-          AND version = ?`,
+                musicId,
+                score,
+                difficultId,
+                version,
+                type
+            FROM chuni_profile_rating
+            WHERE user = ?
+                AND type = 'userRatingBaseList'
+                AND version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -138,16 +130,16 @@ const UserRatingFramesRoutes = new Hono()
 			// Get static music information
 			const staticMusicInfo = (await db.query(
 				`SELECT 
-          songId,
-          title,
-          artist,
-          chartId,
-          level,
-          genre,
-          jacketPath
-        FROM chuni_static_music
-        WHERE songId IN (?)
-          AND version = ?`,
+                songId,
+                title,
+                artist,
+                chartId,
+                level,
+                genre,
+                jacketPath
+            FROM chuni_static_music
+            WHERE songId IN (?)
+                AND version = ?`,
 				[musicIds, version]
 			)) as any[];
 
@@ -185,6 +177,91 @@ const UserRatingFramesRoutes = new Hono()
 		} catch (error) {
 			console.error("Error executing query:", error);
 			return c.json({ error: "Failed to fetch user rating base list" }, 500);
+		}
+	})
+	.get("/user_rating_base_new_list", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
+
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
+
+			// Get new list entries
+			const userRatingBaseList = (await db.query(
+				`SELECT 
+                musicId,
+                score,
+                difficultId,
+                version,
+                type
+            FROM chuni_profile_rating
+            WHERE user = ?
+                AND type = 'userRatingBaseNewList'
+                AND version = ?`,
+				[userId, version]
+			)) as UserRatingBaseEntry[];
+
+			if (!userRatingBaseList.length) {
+				return c.json({ results: [] });
+			}
+
+			// Get the music IDs to fetch static music info
+			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
+
+			// Get static music information
+			const staticMusicInfo = (await db.query(
+				`SELECT 
+                songId,
+                title,
+                artist,
+                chartId,
+                level,
+                genre,
+                jacketPath
+            FROM chuni_static_music
+            WHERE songId IN (?)
+                AND version = ?`,
+				[musicIds, version]
+			)) as any[];
+
+			// Create a map for easy lookup
+			const songIdtoChartId = new Map(
+				staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music])
+			);
+
+			// Calculate ratings and combine data
+			const results = userRatingBaseList.map((entry) => {
+				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
+				const level = staticMusic?.level ?? 0;
+				const score = entry.score ?? 0;
+
+				const rating = calculateRating(level, score);
+
+				return {
+					type: entry.type,
+					version: entry.version,
+					index: entry.index,
+					musicId: entry.musicId,
+					score: entry.score,
+					difficultId: entry.difficultId,
+					chartId: staticMusic?.chartId || "Unknown chartId",
+					title: staticMusic?.title || "Unknown Title",
+					artist: staticMusic?.artist || "Unknown Artist",
+					genre: staticMusic?.genre || "Unknown Genre",
+					level: staticMusic?.level || "Unknown Level",
+					jacketPath: staticMusic?.jacketPath || "",
+					rating,
+				};
+			});
+
+			return c.json({ results });
+		} catch (error) {
+			console.error("Error executing query:", error);
+			return c.json({ error: "Failed to fetch user rating base new list" }, 500);
 		}
 	})
 	.get("/user_rating_base_next_list", async (c) => {

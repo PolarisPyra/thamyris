@@ -3,7 +3,7 @@ import { useState } from "react";
 import React from "react";
 import { ChartNoAxesCombined } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
-import { useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
+import { useUserRatingBaseList, useUserRatingBaseNewList } from "@/hooks/chunithm/use-rating";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
@@ -17,13 +17,10 @@ const ChunithmRatingBaseList = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchNewQuery, setSearchNewQuery] = useState("");
 
-	const { data: ratingList = [], isLoading: isLoadingRatingList } = useUserRatingBaseList();
+	const { data: baseSongs = [], isLoading: isLoadingBaseList } = useUserRatingBaseList();
+	const { data: newSongs = [], isLoading: isLoadingNewList } = useUserRatingBaseNewList();
 	const { isLoading: isLoadingUsername } = useUsername();
 	const { data: version } = useChunithmVersion();
-
-	// Separate base and new songs
-	const baseSongs = ratingList.filter((song) => song.type === "userRatingBaseList");
-	const newSongs = ratingList.filter((song) => song.type === "userRatingBaseNewList");
 
 	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
 	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
@@ -56,7 +53,7 @@ const ChunithmRatingBaseList = () => {
 		currentNewPage * ITEMS_PER_PAGE
 	);
 
-	if (isLoadingRatingList || isLoadingUsername) {
+	if (isLoadingBaseList || isLoadingNewList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
 				<Header title="Rating Frame" />
@@ -73,7 +70,7 @@ const ChunithmRatingBaseList = () => {
 		<div className="flex-1 overflow-auto relative">
 			<Header title="Rating Frame" />
 			<div className="container mx-auto space-y-6">
-				<div className="grid grid-cols-1  py-6 md:grid-cols-2 gap-4">
+				<div className="grid grid-cols-1 py-6 md:grid-cols-2 gap-4">
 					<QouteCard
 						icon={ChartNoAxesCombined}
 						tagline=""

@@ -1,9 +1,15 @@
 import { db } from "@/api";
 import { Hono } from "hono";
+import { getCookie } from "hono/cookie";
 
 const aimeCardRoute = new Hono()
 	.get("/aime_card", async (c) => {
 		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
+
 			const rows = await db.query("SELECT * FROM aime_card");
 			return c.json({ users: rows });
 		} catch (error) {
@@ -13,6 +19,11 @@ const aimeCardRoute = new Hono()
 	})
 	.get("/aime_user", async (c) => {
 		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
+
 			const rows = await db.query("SELECT * FROM aime_user");
 			return c.json({ users: rows });
 		} catch (error) {

@@ -34,6 +34,21 @@ export const useUserRatingBaseList = () => {
 	});
 };
 
+export const useUserRatingBaseNewList = () => {
+	return useQuery<UserRatingBaseEntry[]>({
+		queryKey: ["userRatingBaseNewList"],
+		queryFn: async () => {
+			const response = await api.chunithm.user_rating_base_new_list.$get();
+			const data = (await response.json()) as RatingResponse;
+
+			if (data.error) {
+				throw new Error(data.error);
+			}
+
+			return data.results;
+		},
+	});
+};
 export const useUserRatingBaseNextList = () => {
 	return useQuery<UserRatingBaseEntry[]>({
 		queryKey: ["userRatingBaseNextList"],
