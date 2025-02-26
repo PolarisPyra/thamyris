@@ -1,23 +1,25 @@
-import { db } from "@/api";
 import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
-import { getUserVersionOngeki } from "../../../version";
+
+import { db } from "@/api";
 import { env } from "@/env";
 
-const OngekiRoutes = new Hono()
-	.get("/ongeki_score_playlog", async (c) => {
-		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
-			const version = await getUserVersionOngeki(userId);
+import { getUserVersionOngeki } from "../../../version";
 
-			const results = await db.query(
-				`WITH RankedScores AS (
+const OngekiRoutes = new Hono()
+  .get("/ongeki_score_playlog", async (c) => {
+    try {
+      const token = getCookie(c, "auth_token");
+      if (!token) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+      const payload = await verify(token, env.JWT_SECRET);
+      const userId = payload.userId;
+      const version = await getUserVersionOngeki(userId);
+
+      const results = await db.query(
+        `WITH RankedScores AS (
     SELECT 
         csp.id,
         csp.userPlayDate,
@@ -86,34 +88,34 @@ FROM
 ORDER BY 
     userPlayDate DESC;
     `,
-				[version, userId, version]
-			);
-			return c.json({ results });
-		} catch (error) {
-			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch playlog" }, 500);
-		}
-	})
-	.get("/ongeki_static_music", async (c) => {
-		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
-			const version = await getUserVersionOngeki(userId);
-			const results = await db.query(
-				`SELECT id, songId, chartId, title, level, artist, genre  
+        [version, userId, version]
+      );
+      return c.json({ results });
+    } catch (error) {
+      console.error("Error executing query:", error);
+      return c.json({ error: "Failed to fetch playlog" }, 500);
+    }
+  })
+  .get("/ongeki_static_music", async (c) => {
+    try {
+      const token = getCookie(c, "auth_token");
+      if (!token) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+      const payload = await verify(token, env.JWT_SECRET);
+      const userId = payload.userId;
+      const version = await getUserVersionOngeki(userId);
+      const results = await db.query(
+        `SELECT id, songId, chartId, title, level, artist, genre  
                 FROM ongeki_static_music 
                 WHERE version = ?`,
-				[version]
-			);
+        [version]
+      );
 
-			return c.json({ results });
-		} catch (error) {
-			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch music data" }, 500);
-		}
-	});
+      return c.json({ results });
+    } catch (error) {
+      console.error("Error executing query:", error);
+      return c.json({ error: "Failed to fetch music data" }, 500);
+    }
+  });
 export { OngekiRoutes };

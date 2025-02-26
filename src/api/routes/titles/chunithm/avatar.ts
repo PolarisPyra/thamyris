@@ -1,25 +1,27 @@
-import { db } from "@/api";
 import { Hono } from "hono";
+import type { Context } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
-import { getUserVersionChunithm } from "../../../version";
+
+import { db } from "@/api";
 import { env } from "@/env";
-import type { Context } from "hono";
+
+import { getUserVersionChunithm } from "../../../version";
 
 const AvatarRoutes = new Hono()
 
-	.get("/avatar/current", async (c: Context) => {
-		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+  .get("/avatar/current", async (c: Context) => {
+    try {
+      const token = getCookie(c, "auth_token");
+      if (!token) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
-			const version = await getUserVersionChunithm(userId);
-			const results = await db.query(
-				`
+      const payload = await verify(token, env.JWT_SECRET);
+      const userId = payload.userId;
+      const version = await getUserVersionChunithm(userId);
+      const results = await db.query(
+        `
 SELECT 
     saSkin.avatarAccessoryId AS avatarSkinId,
     saSkin.texturePath AS avatarSkinTexture,
@@ -58,29 +60,29 @@ WHERE cp.user = ?
 AND cp.version = ?;
 
       `,
-				[userId, version]
-			);
-			return c.json({ results });
-		} catch (error) {
-			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch avatar parts" }, 500);
-		}
-	})
+        [userId, version]
+      );
+      return c.json({ results });
+    } catch (error) {
+      console.error("Error executing query:", error);
+      return c.json({ error: "Failed to fetch avatar parts" }, 500);
+    }
+  })
 
-	.post("/avatar/update", async (c: Context) => {
-		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+  .post("/avatar/update", async (c: Context) => {
+    try {
+      const token = getCookie(c, "auth_token");
+      if (!token) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
-			const { avatarParts } = await c.req.json();
-			const version = await getUserVersionChunithm(userId);
+      const payload = await verify(token, env.JWT_SECRET);
+      const userId = payload.userId;
+      const { avatarParts } = await c.req.json();
+      const version = await getUserVersionChunithm(userId);
 
-			const result = await db.query(
-				`
+      const result = await db.query(
+        `
         UPDATE chuni_profile_data
         SET
           avatarHead = ?,
@@ -90,51 +92,43 @@ AND cp.version = ?;
           avatarItem = ?
         WHERE user = ? AND version = ?
         `,
-				[
-					avatarParts.head,
-					avatarParts.face,
-					avatarParts.back,
-					avatarParts.wear,
-					avatarParts.item,
-					userId,
-					version,
-				]
-			);
+        [avatarParts.head, avatarParts.face, avatarParts.back, avatarParts.wear, avatarParts.item, userId, version]
+      );
 
-			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found for this version" }, 404);
-			}
-			return c.json({ success: true });
-		} catch (error) {
-			console.error("Error updating avatar:", error);
-			return c.json({ error: "Failed to update avatar" }, 500);
-		}
-	})
+      if (result.affectedRows === 0) {
+        return c.json({ error: "Profile not found for this version" }, 404);
+      }
+      return c.json({ success: true });
+    } catch (error) {
+      console.error("Error updating avatar:", error);
+      return c.json({ error: "Failed to update avatar" }, 500);
+    }
+  })
 
-	.get("/avatar/parts/all", async (c: Context) => {
-		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+  .get("/avatar/parts/all", async (c: Context) => {
+    try {
+      const token = getCookie(c, "auth_token");
+      if (!token) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
-			const version = await getUserVersionChunithm(userId);
+      const payload = await verify(token, env.JWT_SECRET);
+      const userId = payload.userId;
+      const version = await getUserVersionChunithm(userId);
 
-			// Get unlocked avatar parts
-			const unlockedResults = await db.query(
-				`SELECT itemId 
+      // Get unlocked avatar parts
+      const unlockedResults = await db.query(
+        `SELECT itemId 
 				FROM chuni_item_item 
 				WHERE itemKind = 11 AND user = ?`,
-				[userId]
-			);
+        [userId]
+      );
 
-			const unlockedParts = unlockedResults.map((item: { itemId: number }) => item.itemId);
+      const unlockedParts = unlockedResults.map((item: { itemId: number }) => item.itemId);
 
-			// Get all avatar parts
-			const allParts = await db.query(
-				`SELECT 
+      // Get all avatar parts
+      const allParts = await db.query(
+        `SELECT 
 					id,
 					name,
 					avatarAccessoryId,
@@ -144,40 +138,40 @@ AND cp.version = ?;
 					texturePath
 				FROM chuni_static_avatar
 				WHERE version = ?`,
-				[version]
-			);
+        [version]
+      );
 
-			// Filter unlocked parts and group by category
-			const groupedResults = allParts
-				.filter((part: { avatarAccessoryId: number }) => unlockedParts.includes(part.avatarAccessoryId))
-				.reduce((acc: any, item: any) => {
-					const categoryMap: Record<number, string> = {
-						1: "wear",
-						2: "head",
-						3: "face",
-						5: "item",
-						7: "back",
-					};
+      // Filter unlocked parts and group by category
+      const groupedResults = allParts
+        .filter((part: { avatarAccessoryId: number }) => unlockedParts.includes(part.avatarAccessoryId))
+        .reduce((acc: any, item: any) => {
+          const categoryMap: Record<number, string> = {
+            1: "wear",
+            2: "head",
+            3: "face",
+            5: "item",
+            7: "back",
+          };
 
-					const category = categoryMap[item.category];
-					if (category) {
-						if (!acc[category]) {
-							acc[category] = [];
-						}
-						acc[category].push({
-							image: item.texturePath?.replace(".dds", "") || "",
-							label: item.name,
-							avatarAccessoryId: Number(item.avatarAccessoryId),
-						});
-					}
-					return acc;
-				}, {});
+          const category = categoryMap[item.category];
+          if (category) {
+            if (!acc[category]) {
+              acc[category] = [];
+            }
+            acc[category].push({
+              image: item.texturePath?.replace(".dds", "") || "",
+              label: item.name,
+              avatarAccessoryId: Number(item.avatarAccessoryId),
+            });
+          }
+          return acc;
+        }, {});
 
-			return c.json({ results: groupedResults });
-		} catch (error) {
-			console.error("Error fetching all avatar parts:", error);
-			return c.json({ error: "Failed to fetch all avatar parts" }, 500);
-		}
-	});
+      return c.json({ results: groupedResults });
+    } catch (error) {
+      console.error("Error fetching all avatar parts:", error);
+      return c.json({ error: "Failed to fetch all avatar parts" }, 500);
+    }
+  });
 
 export { AvatarRoutes };
