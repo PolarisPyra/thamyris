@@ -1,19 +1,18 @@
 {
   "semi": true,
   "singleQuote": false,
-  "tabWidth": 2,
+  "tabWidth": 1,
   "trailingComma": "es5",
-  "importOrder": [
-    "^(react|next?/?([a-zA-Z/]*))$",
-    "<THIRD_PARTY_MODULES>",
-    "^@/(.*)$",
-    "^[./]"
-  ],
+  "importOrder": ["^(react|next?/?([a-zA-Z/]*))$", "<THIRD_PARTY_MODULES>", "^@/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "plugins": [
-    "@trivago/prettier-plugin-sort-imports",
-    "prettier-plugin-tailwindcss"
-  ],
-  "printWidth": 120
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "printWidth": 120,
+  "useTabs": true,
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "endOfLine": "lf"
 }
