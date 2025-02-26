@@ -1,6 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { api } from "@/utils";
 import { SongResponse } from "@/utils/types";
-import { useQuery } from "@tanstack/react-query";
 
 export function useOngekiSongs() {
 	return useQuery({

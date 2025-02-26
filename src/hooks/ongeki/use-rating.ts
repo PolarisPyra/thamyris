@@ -1,6 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { api } from "@/utils";
 import { RatingResponse, UserRatingBaseEntry } from "@/utils/types";
-import { useQuery } from "@tanstack/react-query";
 
 export const useUserRatingBaseHotList = () => {
 	return useQuery<UserRatingBaseEntry[]>({

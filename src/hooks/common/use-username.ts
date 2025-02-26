@@ -1,5 +1,6 @@
-import { api } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
+
+import { api } from "@/utils";
 
 interface UserResponse {
 	username: string;

@@ -9,41 +9,41 @@ import { getUserVersionChunithm } from "../../../version";
 
 const ChunithmRoutes = new Hono()
 
-  .get("/chuni_static_music", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const version = await getUserVersionChunithm(userId);
-      const results = await db.query(
-        `SELECT id, songId, chartId, title, level, artist, genre  
+	.get("/chuni_static_music", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
+			const results = await db.query(
+				`SELECT id, songId, chartId, title, level, artist, genre  
      FROM chuni_static_music 
      WHERE version = ?`,
-        [version]
-      );
+				[version]
+			);
 
-      return c.json({ results });
-    } catch (error) {
-      console.error("Error executing query:", error);
-      return c.json({ error: "Failed to fetch music data" }, 500);
-    }
-  })
-  .get("/chuni_score_playlog", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
+			return c.json({ results });
+		} catch (error) {
+			console.error("Error executing query:", error);
+			return c.json({ error: "Failed to fetch music data" }, 500);
+		}
+	})
+	.get("/chuni_score_playlog", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
 
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const version = await getUserVersionChunithm(userId);
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
 
-      const results = await db.query(
-        `
+			const results = await db.query(
+				`
       WITH RankedScores AS (
         SELECT 
           csp.id,
@@ -111,14 +111,14 @@ const ChunithmRoutes = new Hono()
       ORDER BY 
         userPlayDate DESC;
       `,
-        [version, userId, version]
-      );
+				[version, userId, version]
+			);
 
-      return c.json({ results });
-    } catch (error) {
-      console.error("Error executing query:", error);
-      return c.json({ error: "Failed to fetch playlog" }, 500);
-    }
-  });
+			return c.json({ results });
+		} catch (error) {
+			console.error("Error executing query:", error);
+			return c.json({ error: "Failed to fetch playlog" }, 500);
+		}
+	});
 
 export { ChunithmRoutes };

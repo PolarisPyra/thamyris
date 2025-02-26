@@ -9,100 +9,100 @@ import { getUserVersionChunithm } from "../../../version";
 
 const rivalsRoutes = new Hono()
 
-  .post("/rivals/add", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
+	.post("/rivals/add", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
 
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const { favId } = await c.req.json();
-      const version = await getUserVersionChunithm(userId);
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const { favId } = await c.req.json();
+			const version = await getUserVersionChunithm(userId);
 
-      const result = await db.query(
-        `INSERT INTO chuni_item_favorite (user, version, favId, favKind)
+			const result = await db.query(
+				`INSERT INTO chuni_item_favorite (user, version, favId, favKind)
        VALUES (?, ?, ?, 2)`,
-        [userId, version, favId]
-      );
+				[userId, version, favId]
+			);
 
-      if (result.affectedRows === 0) {
-        return c.json({ error: "Failed to add favorite" }, 400);
-      }
-      return c.json({ success: true });
-    } catch (error) {
-      console.error("Error adding favorite:", error);
-      return c.json({ error: "Failed to add favorite" }, 500);
-    }
-  })
+			if (result.affectedRows === 0) {
+				return c.json({ error: "Failed to add favorite" }, 400);
+			}
+			return c.json({ success: true });
+		} catch (error) {
+			console.error("Error adding favorite:", error);
+			return c.json({ error: "Failed to add favorite" }, 500);
+		}
+	})
 
-  .post("/rivals/remove", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
+	.post("/rivals/remove", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
 
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const { favId } = await c.req.json();
-      const version = await getUserVersionChunithm(userId);
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const { favId } = await c.req.json();
+			const version = await getUserVersionChunithm(userId);
 
-      const result = await db.query(
-        `DELETE FROM chuni_item_favorite
+			const result = await db.query(
+				`DELETE FROM chuni_item_favorite
        WHERE user = ? AND version = ? AND favId = ? AND favKind = 2`,
-        [userId, version, favId]
-      );
+				[userId, version, favId]
+			);
 
-      if (result.affectedRows === 0) {
-        return c.json({ error: "Favorite not found" }, 404);
-      }
-      return c.json({ success: true });
-    } catch (error) {
-      console.error("Error removing favorite:", error);
-      return c.json({ error: "Failed to remove favorite" }, 500);
-    }
-  })
+			if (result.affectedRows === 0) {
+				return c.json({ error: "Favorite not found" }, 404);
+			}
+			return c.json({ success: true });
+		} catch (error) {
+			console.error("Error removing favorite:", error);
+			return c.json({ error: "Failed to remove favorite" }, 500);
+		}
+	})
 
-  .get("/rivals/all", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
+	.get("/rivals/all", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
 
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const version = await getUserVersionChunithm(userId);
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
 
-      const results = await db.query(
-        `SELECT favId 
+			const results = await db.query(
+				`SELECT favId 
        FROM chuni_item_favorite
        WHERE user = ? AND version = ? AND favKind = 2`,
-        [userId, version]
-      );
+				[userId, version]
+			);
 
-      return c.json({ results: results.map((r: { favId: number }) => r.favId) });
-    } catch (error) {
-      console.error("Error fetching rivals:", error);
-      return c.json({ error: "Failed to fetch rivals" }, 500);
-    }
-  })
+			return c.json({ results: results.map((r: { favId: number }) => r.favId) });
+		} catch (error) {
+			console.error("Error fetching rivals:", error);
+			return c.json({ error: "Failed to fetch rivals" }, 500);
+		}
+	})
 
-  .get("/rivals/mutual", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
+	.get("/rivals/mutual", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
 
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const version = await getUserVersionChunithm(userId);
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
 
-      const results = await db.query(
-        `SELECT 
+			const results = await db.query(
+				`SELECT 
           f1.favId AS rivalId,
           CASE 
               WHEN EXISTS (
@@ -124,66 +124,66 @@ const rivalsRoutes = new Hono()
           FROM aime_card AS ac
           WHERE ac.user = f1.favId
         )`,
-        [userId, version]
-      );
+				[userId, version]
+			);
 
-      return c.json({ results });
-    } catch (error) {
-      console.error("Error fetching mutual rivals:", error);
-      return c.json({ error: "Failed to fetch mutual rivals" }, 500);
-    }
-  })
+			return c.json({ results });
+		} catch (error) {
+			console.error("Error fetching mutual rivals:", error);
+			return c.json({ error: "Failed to fetch mutual rivals" }, 500);
+		}
+	})
 
-  .get("/rivals/userlookup", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
+	.get("/rivals/userlookup", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
 
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const version = await getUserVersionChunithm(userId);
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
 
-      const results = await db.query(
-        ` SELECT 
+			const results = await db.query(
+				` SELECT 
           user AS id, 
           userName AS username
       FROM chuni_profile_data
       WHERE version = ?
       AND user != ?`,
-        [version, userId]
-      );
+				[version, userId]
+			);
 
-      return c.json({ results });
-    } catch (error) {
-      console.error("Error fetching Aime users:", error);
-      return c.json({ error: "Failed to fetch Aime users" }, 500);
-    }
-  })
+			return c.json({ results });
+		} catch (error) {
+			console.error("Error fetching Aime users:", error);
+			return c.json({ error: "Failed to fetch Aime users" }, 500);
+		}
+	})
 
-  .get("/rivals/count", async (c) => {
-    try {
-      const token = getCookie(c, "auth_token");
-      if (!token) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
+	.get("/rivals/count", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
 
-      const payload = await verify(token, env.JWT_SECRET);
-      const userId = payload.userId;
-      const version = await getUserVersionChunithm(userId);
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+			const version = await getUserVersionChunithm(userId);
 
-      const result = await db.query(
-        `SELECT COUNT(*) AS rivalCount 
+			const result = await db.query(
+				`SELECT COUNT(*) AS rivalCount 
        FROM chuni_item_favorite
        WHERE user = ? AND version = ? AND favKind = 2`,
-        [userId, version]
-      );
+				[userId, version]
+			);
 
-      return c.json({ rivalCount: result[0].rivalCount });
-    } catch (error) {
-      console.error("Error counting rivals:", error);
-      return c.json({ error: "Failed to count rivals" }, 500);
-    }
-  });
+			return c.json({ rivalCount: result[0].rivalCount });
+		} catch (error) {
+			console.error("Error counting rivals:", error);
+			return c.json({ error: "Failed to count rivals" }, 500);
+		}
+	});
 export { rivalsRoutes };
