@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 
-import { db } from "@/api";
+import { db } from "@/api/db";
 import { getUserVersionOngeki } from "@/api/version";
 import { env } from "@/env";
 

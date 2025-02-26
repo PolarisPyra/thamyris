@@ -1,4 +1,4 @@
-import { db } from "@/api";
+import { db } from "@/api/db";
 
 export async function getUserVersionChunithm(userId: unknown): Promise<string> {
 	if (typeof userId !== "number") {

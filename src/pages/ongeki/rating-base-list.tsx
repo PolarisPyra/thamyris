@@ -8,6 +8,7 @@ import QouteCard from "@/components/common/qoutecard";
 import OngekiRatingTable from "@/components/common/rating-table";
 import RatingFrameTable from "@/components/common/rating-table";
 import Spinner from "@/components/common/spinner";
+import RatingBaseBestListTable from "@/components/ongeki/rating-base-best-list-table";
 import { useUsername } from "@/hooks/common/use-username";
 import {
 	useUserRatingBaseBestList,

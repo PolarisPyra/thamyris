@@ -3,7 +3,7 @@ import type { Context } from "hono";
 import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 
-import { db } from "@/api";
+import { db } from "@/api/db";
 import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
