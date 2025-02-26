@@ -2,7 +2,6 @@ dist
 node_modules
 .gitignore
 .prettierignore
-LICENSE
 package.json
 package-lock.json
 *.ejs

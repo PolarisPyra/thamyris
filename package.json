@@ -15,8 +15,9 @@
 		"server:start": "NODE_ENV=production tsx src/server.tsx",
 		"typecheck": "tsc --noEmit",
 		"lint": "eslint .",
-		"lint:fix": "eslint . --fix"
-	},
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --write \"**/*.{ts,tsx}\" --cache"
+},
 	"dependencies": {
 		"@hono/node-server": "^1.13.8",
 		"@hono/vite-dev-server": "^0.18.1",

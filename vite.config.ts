@@ -1,8 +1,9 @@
-import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
-import tsconfigPaths from "vite-tsconfig-paths";
-import { env } from "./src/env";
 import path from "path";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+import { env } from "./src/env";
 
 export default defineConfig({
 	ssr: {
