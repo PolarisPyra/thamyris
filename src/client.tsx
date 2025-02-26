@@ -28,7 +28,7 @@ import OngekiRatingFramesPotential from "./pages/ongeki/rating-base-hot-next-lis
 import "./index.css";
 import ChunithmRatingFramesPotential from "./pages/chunithm/rating-base-next-list";
 import Account from "./pages/account/account";
-import { VersionCheck } from "./components/common/version-check";
+import { VersionCheck } from "./components/chunithm/version-check";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
