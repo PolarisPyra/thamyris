@@ -199,6 +199,7 @@ const OngekiRatingFrames = () => {
 						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
 					/>
 				</div>
+				<div className="flex justify-center items-center space-x-4 mb-4" />
 			</div>
 		</div>
 	);
