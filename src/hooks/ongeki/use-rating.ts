@@ -1,26 +1,6 @@
 import { api } from "@/utils";
+import { RatingResponse, UserRatingBaseEntry } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
-
-interface UserRatingBaseEntry {
-	type: string;
-	version: number;
-	index: number;
-	musicId: number;
-	score: number;
-	difficultId: string;
-	chartId: number;
-	title: string;
-	artist: string;
-	genre: string;
-	level: string | number;
-	jacketPath: string;
-	rating: number;
-}
-
-interface RatingResponse {
-	results: UserRatingBaseEntry[];
-	error?: string;
-}
 
 export const useUserRatingBaseHotList = () => {
 	return useQuery<UserRatingBaseEntry[]>({
