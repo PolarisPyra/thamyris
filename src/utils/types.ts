@@ -102,6 +102,7 @@ export interface RatingTableProps {
 		genre: string;
 		artist: string | React.ReactNode;
 		rating: number;
+		type?: string;
 	}[];
 	searchQuery: string;
 	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

@@ -3,12 +3,12 @@ import { useState } from "react";
 import React from "react";
 import { ChartNoAxesCombined } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
-import RatingBaseListTable from "@/components/chunithm/rating-base-list-table";
 import { useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
+import RatingFrameTable from "@/components/common/rating-table";
 const ITEMS_PER_PAGE = 15;
 
 const ChunithmRatingBaseList = () => {
@@ -94,13 +94,13 @@ const ChunithmRatingBaseList = () => {
 
 				{/* Base 30 Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
-					<RatingBaseListTable
+					<h3 className="text-xl font-semibold text-gray-100">Highest Rating</h3>
+					<RatingFrameTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,
 							score: song.score,
 							level: song.level,
-							chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
+							difficulty: getDifficultyFromChunithmChart(song.chartId),
 							genre: song.genre,
 							artist: song.artist,
 							rating: song.rating,
@@ -135,13 +135,13 @@ const ChunithmRatingBaseList = () => {
 				{/* New 20 Table - Only show if version >= 17 */}
 				{(version ?? 0) >= 17 && (
 					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-gray-100">New 20</h3>
-						<RatingBaseListTable
+						<h3 className="text-xl font-semibold text-gray-100">Current Version</h3>
+						<RatingFrameTable
 							songs={paginatedNewSongs.map((song) => ({
 								title: song.title,
 								score: song.score,
 								level: song.level,
-								chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
+								difficulty: getDifficultyFromChunithmChart(song.chartId),
 								genre: song.genre,
 								artist: song.artist,
 								rating: song.rating,

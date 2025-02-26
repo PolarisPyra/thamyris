@@ -6,8 +6,8 @@ import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import { useUsername } from "@/hooks/common/use-username";
 import { useUserRatingBaseHotNextList } from "@/hooks/ongeki/use-rating";
-import RatingBaseHotNextListTable from "@/components/ongeki/rating-base-hot-next-list-table";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
+import RatingFrameTable from "@/components/common/rating-table";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -58,7 +58,7 @@ const OngekiRatingFramesPotential = () => {
 						welcomeMessage={`Based on ${ratingList.length} songs`}
 					/>
 				</div>
-				<RatingBaseHotNextListTable
+				<RatingFrameTable
 					songs={paginatedSongs.map((song) => ({
 						title: song.title,
 						score: song.score,

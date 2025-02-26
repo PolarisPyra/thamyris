@@ -10,8 +10,9 @@ import {
 	useUserRatingBaseBestNewList,
 	useUserRatingBaseHotList,
 } from "@/hooks/ongeki/use-rating";
-import RatingBaseBestListTable from "@/components/ongeki/rating-base-best-list-table";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
+import OngekiRatingTable from "@/components/common/rating-table";
+import RatingFrameTable from "@/components/common/rating-table";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -104,7 +105,7 @@ const OngekiRatingFrames = () => {
 				{/* Base List Table */}
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Highest Rating</h3>
-					<RatingBaseBestListTable
+					<OngekiRatingTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,
 							score: song.score,
@@ -144,7 +145,7 @@ const OngekiRatingFrames = () => {
 				{/* New List Table */}
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Current Version</h3>
-					<RatingBaseBestListTable
+					<OngekiRatingTable
 						songs={paginatedNewSongs.map((song) => ({
 							title: song.title,
 							score: song.score,
@@ -183,7 +184,7 @@ const OngekiRatingFrames = () => {
 				{/* Hot List Table */}
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Recent</h3>
-					<RatingBaseBestListTable
+					<RatingFrameTable
 						songs={filteredHotSongs.map((song) => ({
 							title: song.title,
 							score: song.score,

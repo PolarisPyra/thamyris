@@ -3,11 +3,11 @@ import { useState } from "react";
 import React from "react";
 import { ChartNoAxesCombined } from "lucide-react";
 import QouteCard from "@/components/common/qoutecard";
-import RatingBaseNextListTable from "@/components/chunithm/rating-base-next-list-table";
 import { useUserRatingBaseNextList } from "@/hooks/chunithm/use-rating";
 import Spinner from "@/components/common/spinner";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 import { useUsername } from "@/hooks/common/use-username";
+import RatingFrameTable from "@/components/common/rating-table";
 const ITEMS_PER_PAGE = 15;
 
 const ChunithmRatingBaseNextList = () => {
@@ -61,12 +61,14 @@ const ChunithmRatingBaseNextList = () => {
 						welcomeMessage={`Based on ${newNextListCount} new potential plays`}
 					/>
 				</div>
-				<RatingBaseNextListTable
+				<h3 className="text-xl font-semibold text-gray-100">Potential Plays</h3>
+
+				<RatingFrameTable
 					songs={paginatedSongs.map((song) => ({
 						title: song.title,
 						score: song.score,
 						level: song.level,
-						chartIdToDifficulty: getDifficultyFromChunithmChart(song.chartId),
+						difficulty: getDifficultyFromChunithmChart(song.chartId),
 						genre: song.genre,
 						artist: song.artist,
 						rating: song.rating,

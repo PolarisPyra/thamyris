@@ -28,6 +28,7 @@ import OngekiRatingFramesPotential from "./pages/ongeki/rating-base-hot-next-lis
 import "./index.css";
 import ChunithmRatingFramesPotential from "./pages/chunithm/rating-base-next-list";
 import Account from "./pages/account/account";
+import { VersionCheck } from "./components/common/version-check";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -63,7 +64,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 								<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
 								<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
 								<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
-								<Route path="/chunithm/potential" element={<ChunithmRatingFramesPotential />} />
+								<Route element={<VersionCheck />}>
+									<Route path="/chunithm/potential" element={<ChunithmRatingFramesPotential />} />
+								</Route>
 								<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
 								<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
 								<Route path="/ongeki/scores" element={<OngekiScorePage />} />
