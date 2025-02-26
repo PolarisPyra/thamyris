@@ -75,6 +75,12 @@ const baseOngekiSubnav = [
 		color: "#f067e9",
 	},
 	{
+		name: "All Songs",
+		href: "/ongeki/allsongs",
+		icon: BoomBox,
+		color: "#f067e9",
+	},
+	{
 		name: "Rating Frame",
 		href: "/ongeki/rating",
 		icon: List,
@@ -85,12 +91,6 @@ const baseOngekiSubnav = [
 		name: "Potential Rating",
 		href: "/ongeki/potential",
 		icon: CircleArrowRight,
-		color: "#f067e9",
-	},
-	{
-		name: "All Songs",
-		href: "/ongeki/allsongs",
-		icon: BoomBox,
 		color: "#f067e9",
 	},
 ];
