@@ -6,30 +6,11 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { RatingTableProps } from "@/utils/types";
 import { Search } from "lucide-react";
 import React from "react";
 
-interface RatingBaseNextListTableProps {
-	songs: {
-		id?: number;
-		title: string | React.ReactNode;
-		score: number;
-		level: string | number | React.ReactNode;
-		chartIdToDifficulty: string;
-		genre: string;
-		artist: string | React.ReactNode;
-		rating: number;
-		type: string;
-	}[];
-	searchQuery: string;
-	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const RatingBaseNextListTable = ({
-	songs,
-	searchQuery,
-	onSearchChange,
-}: RatingBaseNextListTableProps) => {
+const RatingBaseNextListTable = ({ songs, searchQuery, onSearchChange }: RatingTableProps) => {
 	return (
 		<div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-4 sm:p-6 border border-gray-700">
 			<div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 gap-4">
@@ -56,7 +37,6 @@ const RatingBaseNextListTable = ({
 							<TableHead className="text-gray-400">Genre</TableHead>
 							<TableHead className="text-gray-400">Artist</TableHead>
 							<TableHead className="text-gray-400">Rating</TableHead>
-							<TableHead className="text-gray-400">Type</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -66,20 +46,11 @@ const RatingBaseNextListTable = ({
 								<TableCell className="text-sm text-gray-300">{song.score.toLocaleString()}</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.level}</TableCell>
 								<TableCell className="text-sm text-gray-300">
-									<span>{song.chartIdToDifficulty}</span>
+									<span>{song.difficulty}</span>
 								</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.genre}</TableCell>
 								<TableCell className="text-sm text-gray-300">{song.artist}</TableCell>
 								<TableCell className="text-sm text-gray-300">{(song.rating / 100).toFixed(2)}</TableCell>
-								<TableCell className="text-sm text-gray-300">
-									{song.type === "userRatingBaseBestList"
-										? "Best"
-										: song.type === "userRatingBaseBestNewList"
-										? "New Best"
-										: song.type === "userRatingBaseHotList"
-										? "Hot"
-										: song.type}
-								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

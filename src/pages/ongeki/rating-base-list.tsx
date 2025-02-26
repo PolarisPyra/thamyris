@@ -109,7 +109,7 @@ const OngekiRatingFrames = () => {
 							title: song.title,
 							score: song.score,
 							level: song.level,
-							chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
+							difficulty: getDifficultyFromOngekiChart(song.chartId),
 							genre: song.genre,
 							artist: song.artist,
 							rating: song.rating,
@@ -149,11 +149,10 @@ const OngekiRatingFrames = () => {
 							title: song.title,
 							score: song.score,
 							level: song.level,
-							chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
+							difficulty: getDifficultyFromOngekiChart(song.chartId),
 							genre: song.genre,
 							artist: song.artist,
 							rating: song.rating,
-							type: song.type,
 						}))}
 						searchQuery={searchNewQuery}
 						onSearchChange={(e) => setSearchNewQuery(e.target.value)}
@@ -189,11 +188,10 @@ const OngekiRatingFrames = () => {
 							title: song.title,
 							score: song.score,
 							level: song.level,
-							chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
+							difficulty: getDifficultyFromOngekiChart(song.chartId),
 							genre: song.genre,
 							artist: song.artist,
 							rating: song.rating,
-							type: song.type,
 						}))}
 						searchQuery={searchHotQuery}
 						onSearchChange={(e) => setSearchHotQuery(e.target.value)}

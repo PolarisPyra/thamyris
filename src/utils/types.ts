@@ -66,7 +66,7 @@ export interface UserRatingBaseEntry {
 	title: string;
 	artist: string;
 	genre: string;
-	level: string | number;
+	level: number;
 	jacketPath: string;
 	rating: number;
 }
@@ -90,4 +90,19 @@ export interface Song {
 export interface SongResponse {
 	results: Song[];
 	error?: string;
+}
+
+export interface RatingTableProps {
+	songs: {
+		id?: number;
+		title: string | React.ReactNode;
+		score: number;
+		level: number;
+		difficulty: string;
+		genre: string;
+		artist: string | React.ReactNode;
+		rating: number;
+	}[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

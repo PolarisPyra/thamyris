@@ -32,18 +32,6 @@ const OngekiRatingFramesPotential = () => {
 		currentPage * ITEMS_PER_PAGE
 	);
 
-	const RatingListTable = (songs: typeof ratingList) =>
-		songs.map((song) => ({
-			title: song.title,
-			score: song.score,
-			level: song.level,
-			chartIdToDifficulty: getDifficultyFromOngekiChart(song.chartId),
-			genre: song.genre,
-			artist: song.artist,
-			rating: song.rating,
-			type: song.type,
-		}));
-
 	if (isLoadingRatingList || isLoadingUsername) {
 		return (
 			<div className="flex-1 overflow-auto relative">
@@ -71,7 +59,15 @@ const OngekiRatingFramesPotential = () => {
 					/>
 				</div>
 				<RatingBaseHotNextListTable
-					songs={RatingListTable(paginatedSongs)}
+					songs={paginatedSongs.map((song) => ({
+						title: song.title,
+						score: song.score,
+						level: song.level,
+						difficulty: getDifficultyFromOngekiChart(song.chartId),
+						genre: song.genre,
+						artist: song.artist,
+						rating: song.rating,
+					}))}
 					searchQuery={searchQuery}
 					onSearchChange={(e) => setSearchQuery(e.target.value)}
 				/>
