@@ -103,7 +103,7 @@ const OngekiRatingFrames = () => {
 
 				{/* Base List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Highest Rating</h3>
 					<RatingBaseBestListTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,
@@ -143,7 +143,7 @@ const OngekiRatingFrames = () => {
 
 				{/* New List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">New 15</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Current Version</h3>
 					<RatingBaseBestListTable
 						songs={paginatedNewSongs.map((song) => ({
 							title: song.title,
@@ -183,7 +183,7 @@ const OngekiRatingFrames = () => {
 
 				{/* Hot List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Hot 10</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Recent</h3>
 					<RatingBaseBestListTable
 						songs={filteredHotSongs.map((song) => ({
 							title: song.title,
