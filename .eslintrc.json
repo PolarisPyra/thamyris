@@ -1,22 +1,16 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
-  "plugins": ["check-file", "n"],
-  "rules": {
-    "prefer-arrow-callback": ["error"],
-    "prefer-template": ["error"],
-    "semi": ["error"],
-    "quotes": ["error", "double"],
-    "n/no-process-env": ["error"],
-    "check-file/filename-naming-convention": [
-      {
-        "ignoreMiddleExtensions": true
-      }
-    ],
-    "check-file/folder-naming-convention": [
-      "error",
-      {
-        "src/**/!^[.*": "KEBAB_CASE"
-      }
-    ]
-  }
+	"extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+	"plugins": ["check-file", "n"],
+	"rules": {
+		"prefer-arrow-callback": ["error"],
+		"prefer-template": ["error"],
+		"semi": ["error"],
+		"quotes": ["error", "double"],
+		"n/no-process-env": ["error"],
+		"check-file/filename-naming-convention": [
+			{
+				"ignoreMiddleExtensions": true
+			}
+		]
+	}
 }
