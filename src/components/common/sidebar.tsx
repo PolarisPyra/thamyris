@@ -87,6 +87,12 @@ const baseOngekiSubnav = [
 		icon: CircleArrowRight,
 		color: "#f067e9",
 	},
+	{
+		name: "All Songs",
+		href: "/ongeki/allsongs",
+		icon: BoomBox,
+		color: "#f067e9",
+	},
 ];
 
 const sidebarItems = [

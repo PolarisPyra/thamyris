@@ -27,7 +27,7 @@ export function useChunithmSongs() {
 			if (data.error) {
 				throw new Error(data.error);
 			}
-			// moved to client side for faster queries
+
 			// Sort by id in descending order
 			return data.results.sort((a, b) => b.id - a.id);
 		},

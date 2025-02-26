@@ -97,7 +97,7 @@ const OngekiRatingFrames = () => {
 						tagline=""
 						value={`Average Rating: ${totalAverageRating}`}
 						color="#f067e9"
-						welcomeMessage={`Based on ${totalSongsCount} plays`}
+						welcomeMessage={`Based on ${newSongs.length} current version  players,  ${baseSongs.length} best plays and ${hotSongs.length} recent plays`}
 					/>
 				</div>
 
