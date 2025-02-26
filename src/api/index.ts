@@ -1,7 +1,23 @@
 import mysql from "mysql";
 import util from "util";
+import { aimeCardRoute } from "./routes/common/aime";
+import { ChunithmRoutes } from "./routes/titles/chunithm/chunithm";
+import { Hono } from "hono";
+import { AvatarRoutes } from "./routes/titles/chunithm/avatar";
+import { userRoutes } from "./routes/common/users";
+import { nameplateRoutes } from "./routes/titles/chunithm/nameplate";
+import { OngekiRoutes } from "./routes/titles/ongeki/ongeki";
+import { mapIconRoutes } from "./routes/titles/chunithm/mapicon";
+import { systemvoiceRoutes } from "./routes/titles/chunithm/systemvoice";
+import { favoritesRoutes } from "./routes/titles/chunithm/favorites";
+import { rivalsRoutes } from "./routes/titles/chunithm/rivals";
+import { chunithmSettingsRoute } from "./routes/titles/chunithm/settings";
 import { env } from "@/env";
-
+import { routeLogger } from "./middleware/logs";
+import { UserRatingFramesRoutes } from "./routes/titles/chunithm/rating";
+import { OngekiRatingRoutes } from "./routes/titles/ongeki/rating";
+import { ongekiSettingsRoute } from "./routes/titles/ongeki/settings";
+import { AdminRoutes } from "./routes/admin/admin";
 interface Databaseenv {
 	host: string;
 	user: string;
@@ -90,5 +106,28 @@ class Database {
 		return Database.instance;
 	}
 }
+
+const routes = new Hono()
+
+	.use("*", routeLogger)
+	.route("/aime", aimeCardRoute)
+	.route("/chunithm", ChunithmRoutes)
+	.route("/chunithm", AvatarRoutes)
+	.route("/users", userRoutes)
+	.route("/chunithm", nameplateRoutes)
+	.route("/chunithm", systemvoiceRoutes)
+	.route("/chunithm", favoritesRoutes)
+	.route("/chunithm", rivalsRoutes)
+	.route("/chunithm", mapIconRoutes)
+	.route("/chunithm", chunithmSettingsRoute)
+	.route("/chunithm", UserRatingFramesRoutes)
+	.route("/ongeki", OngekiRoutes)
+	.route("/ongeki", OngekiRatingRoutes)
+	.route("/ongeki", ongekiSettingsRoute)
+	.route("/admin", AdminRoutes);
+
+export { routes };
+
+export type ApiRouteType = typeof routes;
 
 export const db = Database.getInstance();
