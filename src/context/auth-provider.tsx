@@ -1,15 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
+import type { InferResponseType } from "hono";
 import { useNavigate } from "react-router-dom";
 
 import { api } from "@/utils";
 
-interface User {
-	userId: number;
-	username: string;
-	exp: number;
-	aimeCardId: string;
-}
+type User = InferResponseType<typeof api.users.verify.$post>["user"];
 
 interface AuthContextType {
 	user: User | null;
@@ -21,100 +17,87 @@ interface AuthContextType {
 	signup: (username: string, password: string, accessCode: string) => Promise<void>;
 }
 
-interface ApiResponse {
-	message?: string;
-	error?: string;
-	userId?: number;
-	authenticated?: boolean;
-	user?: {
-		userId: number;
-		username: string;
-		exp: number;
-		aimeCardId: string;
-	};
-}
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+	// NOTE:
+	//  Is isAuthenticated necessary if we can check for null user?
 	const [user, setUser] = useState<User | null>(null);
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
-	const verifyAuth = async () => {
+	const verifyAuth = async (): Promise<boolean> => {
 		try {
-			const response = await api.users.verify.$post();
-			const data = (await response.json()) as ApiResponse;
-
-			if (!response.ok || response.status === 401) {
-				setUser(null);
-				setIsAuthenticated(false);
-				return false;
+			// NOTE:
+			//  Handling the different responses (ok, error, etc.)
+			//  feels like junk. Could wrap these to auto-throw on error,
+			//  then just implement happy path inside try, and catch for error.
+			const res = await api.users.verify.$post();
+			if (!res.ok) {
+				throw new Error("Invalid token");
 			}
 
-			if (data.authenticated && data.user) {
-				setUser({
-					userId: data.user.userId,
-					username: data.user.username,
-					exp: data.user.exp ?? 0,
-					aimeCardId: data.user.aimeCardId,
-				});
-				setIsAuthenticated(true);
-				return true;
-			}
-
-			setUser(null);
-			setIsAuthenticated(false);
-			return false;
+			const { user } = await res.json();
+			setUser(user);
+			setIsAuthenticated(true);
+			return true;
 		} catch (err) {
-			console.error("Auth verification error:", err);
 			setUser(null);
 			setIsAuthenticated(false);
+
+			// Don't set error if we're checking for the first time
+			if (isAuthenticated !== null) {
+				setError(err instanceof Error ? err.message : "Authentication failed");
+			}
 			return false;
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
+	// Attempt to verify auth on initial load to allow for auto-login
 	useEffect(() => {
 		verifyAuth();
 	}, []);
 
-	const login = async (username: string, password: string) => {
+	useEffect(() => {
+		console.error("Auth verification error:", error);
+	}, [error]);
+
+	const login = useCallback(async (username: string, password: string): Promise<void> => {
 		setIsLoading(true);
 		setError("");
 
 		try {
-			const response = await api.users.login.$post({
+			const res = await api.login.$post({
 				json: { username, password },
 			});
-
-			if (response.ok) {
-				const isVerified = await verifyAuth();
-				if (isVerified) {
-					navigate("/overview");
-				} else {
-					setError("Authentication failed after login");
-				}
+			if (!res.ok) {
+				throw new Error("Invalid credentials");
+			}
+			const isVerified = await verifyAuth();
+			if (isVerified) {
+				navigate("/overview");
 			} else {
-				const data = (await response.json()) as ApiResponse;
-				setError(data.error || "Login failed. Please check your credentials.");
+				setError("Authentication failed after login");
 			}
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "An unexpected error occurred");
+			// NOTE:
+			//  Maybe a resolveErrorMessage or something to handle coalescing
+			setError(`Login failed: ${err instanceof Error ? err.message : "An unexpected error occurred"}`);
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, []);
 
-	const signup = async (username: string, password: string, accessCode: string) => {
+	const signup = useCallback(async (username: string, password: string, accessCode: string) => {
 		setIsLoading(true);
 		setError("");
 
 		try {
-			const response = await api.users.signup.$post({
+			const response = await api.signup.$post({
 				json: { username, password, accessCode },
 			});
 
@@ -126,7 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 					setError("Authentication failed after signup");
 				}
 			} else {
-				const data = (await response.json()) as ApiResponse;
+				const data = await response.json();
 				setError(data.error || "Signup failed");
 			}
 		} catch (err) {
@@ -134,9 +117,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, []);
 
-	const logout = async () => {
+	const logout = useCallback(async () => {
 		setIsLoading(true);
 		try {
 			const response = await api.users.logout.$post();
@@ -151,17 +134,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, []);
 
-	const value = {
-		user,
-		isAuthenticated,
-		isLoading,
-		error,
-		login,
-		logout,
-		signup,
-	};
+	// NOTE:
+	//  Potentially can pull out isLoading and error from value,
+	//  and put in a separate context for global loading/error handling.
+	//  Then this context can just be for the user (assuming isAuthenticated is unnecessary).
+	const value = useMemo(
+		() => ({
+			user,
+			isAuthenticated,
+			isLoading,
+			error,
+			login,
+			logout,
+			signup,
+		}),
+		[user, isAuthenticated, isLoading, error]
+	);
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

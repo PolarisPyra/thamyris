@@ -1,1 +1,1 @@
-export const cdnUrl = process.env.CDN_URL;
+export const cdnUrl = env.CDN_URL;

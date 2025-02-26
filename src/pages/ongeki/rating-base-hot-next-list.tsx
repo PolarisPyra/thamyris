@@ -7,6 +7,7 @@ import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import RatingFrameTable from "@/components/common/rating-table";
 import Spinner from "@/components/common/spinner";
+import RatingBaseHotNextListTable from "@/components/ongeki/rating-base-hot-next-list-table";
 import { useUsername } from "@/hooks/common/use-username";
 import { useUserRatingBaseHotNextList } from "@/hooks/ongeki/use-rating";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
