@@ -52,7 +52,7 @@ const ChunithmRatingBaseNextList = () => {
 		<div className="flex-1 overflow-auto relative">
 			<Header title="Potential Plays" />
 			<div className="container mx-auto space-y-6">
-				<div className="grid py-8 gap-4">
+				<div className="grid py-6">
 					<QouteCard
 						icon={ChartNoAxesCombined}
 						tagline=""

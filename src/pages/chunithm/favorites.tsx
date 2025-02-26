@@ -51,7 +51,7 @@ const ChunithmFavorites = () => {
 			<Header title="Overview" />
 			<main className="max-w-full mx-auto h-[calc(100vh-64px)] py-6 px-4 lg:px-8">
 				<div className="flex flex-col gap-4">
-					<div className="grid grid-cols-1 w-full">
+					<div className="grid py-6">
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
 							tagline={""}
