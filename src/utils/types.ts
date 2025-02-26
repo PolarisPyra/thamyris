@@ -59,7 +59,7 @@ export interface UserRatingBaseEntry {
 	type: string;
 	version: number;
 	index: number;
-	musicId: string;
+	musicId: number;
 	score: number;
 	difficultId: string;
 	chartId: number;
