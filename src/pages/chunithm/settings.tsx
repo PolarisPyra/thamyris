@@ -10,7 +10,6 @@ import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } fro
 interface GameSettingsProps {
 	onUpdate?: () => void;
 }
-
 const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: chunithmVersion } = useChunithmVersion();
 	const { data: versions } = useChunithmVersions();
@@ -18,8 +17,24 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 	const [selectedVersion, setSelectedVersion] = useState<number>(chunithmVersion || 0);
 
+	const getGameTitle = (version: number | undefined): string => {
+		if (!version) return "Unknown Version";
+
+		const versionMap: Record<number, string> = {
+			11: "Chunithm New",
+			12: "Chunithm New Plus",
+			13: "Chunithm Sun",
+			14: "Chunithm Sun Plus",
+			15: "Chunithm Luminous",
+			16: "Chunithm Luminous Plus",
+			17: "Chunithm Verse",
+		};
+
+		return versionMap[version] || `Version ${version}`;
+	};
+
 	const handleVersionChange = (version: number) => {
-		setSelectedVersion(version); // Directly set version as a number
+		setSelectedVersion(version);
 	};
 
 	const handleDropdownToggle = (section: number) => {
@@ -40,14 +55,14 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 
 			<div className="flex w-full flex-col gap-4 px-4 pt-4 md:gap-8 md:pt-15">
 				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-					<h2 className="mb-4 text-xl font-semibold text-gray-100">Chunithm Settings</h2>
+					<h2 className="mb-4 text-xl font-semibold text-gray-100">Set Chunithm version</h2>
 
 					<div className="mb-4">
 						<button
-							onClick={() => handleDropdownToggle(0)} // Use a number for section
+							onClick={() => handleDropdownToggle(0)}
 							className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
 						>
-							<span className="text-gray-200">Game Version: {selectedVersion || chunithmVersion}</span>{" "}
+							<span className="text-gray-200">{getGameTitle(selectedVersion || chunithmVersion)}</span>
 							<ChevronDown
 								className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown === 0 ? "rotate-180" : ""}`}
 							/>
@@ -68,7 +83,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 												onClick={() => handleVersionChange(version)}
 												className="cursor-pointer rounded-md bg-gray-700 p-2 transition-colors hover:bg-gray-600"
 											>
-												<span className="text-gray-200">Version {version}</span>
+												<span className="text-gray-200">{getGameTitle(version)}</span>
 											</div>
 										))}
 									</div>
@@ -76,6 +91,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 							)}
 						</AnimatePresence>
 					</div>
+
 					<SubmitButton
 						onClick={handleUpdate}
 						defaultLabel="Update Chunithm settings"

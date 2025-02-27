@@ -68,6 +68,7 @@ const ongekiSettingsRoute = new Hono()
 
 			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
+			const { version } = await c.req.json();
 
 			await db.query(
 				`
@@ -76,6 +77,7 @@ const ongekiSettingsRoute = new Hono()
       SELECT 
         ?, cardId, 5, 0, 70, 70, 0, 0, 0, 0, "2021-01-01 00:00:00.0", "2021-01-01 00:00:00.0", choKaikaSkillId, 1, "2021-01-01 00:00:00.0"
       FROM ongeki_static_cards AS c
+      WHERE c.version = ?
       ON DUPLICATE KEY UPDATE 
         digitalStock = 5,
         level = 70,
@@ -86,7 +88,7 @@ const ongekiSettingsRoute = new Hono()
         isAcquired = 1,
         created = GREATEST("2021-01-01 00:00:00.0", created)
     `,
-				[userId]
+				[userId, version]
 			);
 
 			await db.query(
