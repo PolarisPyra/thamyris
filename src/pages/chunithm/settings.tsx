@@ -1,76 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
-import { api } from "@/utils";
+import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
 
 interface GameSettingsProps {
 	onUpdate?: () => void;
 }
 
 const ChunithmSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
-	const [chunithmVersion, setChunithmVersion] = useState("");
+	const { data: chunithmVersion } = useChunithmVersion();
+	const { data: versions } = useChunithmVersions();
+	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-	const [versions, setVersions] = useState<string[]>([]);
-
-	const fetchCurrentVersion = async () => {
-		try {
-			const response = await api.chunithm.settings.get.$get();
-			if (response.ok) {
-				const data = await response.json();
-				setChunithmVersion(data.version);
-			}
-		} catch (error) {
-			console.error("Error fetching current version:", error);
-		}
-	};
-
-	const fetchVersions = async () => {
-		try {
-			const response = await api.chunithm.settings.versions.$get();
-			if (response.ok) {
-				const data = await response.json();
-				setVersions(data.versions);
-			}
-		} catch (error) {
-			console.error("Error fetching versions:", error);
-		}
-	};
-
-	useEffect(() => {
-		fetchVersions();
-		fetchCurrentVersion();
-	}, []);
-
-	useEffect(() => {
-		fetchCurrentVersion();
-	}, []);
+	const [selectedVersion, setSelectedVersion] = useState("");
 
 	const handleVersionChange = (version: string) => {
-		setChunithmVersion(version);
+		setSelectedVersion(version);
 	};
 
 	const handleDropdownToggle = (section: string) => {
 		setOpenDropdown(openDropdown === section ? null : section);
 	};
 
-	const updateChunithmSettings = async () => {
-		try {
-			const response = await api.chunithm.settings.update.$post({
-				json: { version: chunithmVersion },
-			});
-			if (response.ok) {
-				const data = await response.json();
-				setChunithmVersion(data.version);
-				console.log("Updated Chunithm settings to version:", data.version);
-			}
-			onUpdate?.();
-		} catch (error) {
-			console.error("Error updating Chunithm settings:", error);
-		}
+	const handleUpdate = () => {
+		updateVersion(selectedVersion, {
+			onSuccess: () => {
+				console.log("Updated Chunithm settings to version:", selectedVersion);
+				onUpdate?.();
+			},
+			onError: (error) => {
+				console.error("Error updating Chunithm settings:", error);
+			},
+		});
 	};
 
 	return (
@@ -83,7 +48,6 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 1 }}
 			>
-				{/* Chunithm Section */}
 				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Chunithm Settings</h2>
 
@@ -109,7 +73,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 									className="mt-2"
 								>
 									<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
-										{versions.map((version) => (
+										{versions?.map((version) => (
 											<div
 												key={version}
 												onClick={() => handleVersionChange(version)}
@@ -124,10 +88,11 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 						</AnimatePresence>
 					</div>
 					<SubmitButton
-						onClick={updateChunithmSettings}
+						onClick={handleUpdate}
 						defaultLabel="Update Chunithm settings"
 						updatingLabel="Updating..."
 						className="bg-red-600 hover:bg-red-700"
+						disabled={isPending}
 					/>
 				</div>
 			</motion.div>
