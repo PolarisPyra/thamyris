@@ -128,18 +128,18 @@ const ongekiSettingsRoute = new Hono()
 
 			const payload = await verify(token, env.JWT_SECRET);
 			const userId = payload.userId;
-			const { itemKind, itemId } = await c.req.json();
+			const { itemKind, version } = await c.req.json();
 
 			await db.query(
 				`
-      INSERT INTO ongeki_user_item 
-        (user, itemKind, itemId, stock, isValid)
-      VALUES (?, ?, ?, 1, 1)
-      ON DUPLICATE KEY UPDATE
-        stock = 1,
-        isValid = 1
-      `,
-				[userId, itemKind, itemId]
+            INSERT IGNORE INTO ongeki_user_item 
+                (user, itemKind, itemId, stock, isValid)
+            SELECT 
+                ?, itemKind, itemId, 1, 1
+            FROM ongeki_static_rewards
+            WHERE version = ? AND itemKind = ?
+            `,
+				[userId, version, itemKind]
 			);
 
 			return c.json({ success: true });
