@@ -93,12 +93,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title={"Ongeki Settings"} />
-			<motion.div
-				className="flex w-full flex-col gap-4 px-4 pt-4 md:gap-8 md:pt-15"
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 1 }}
-			>
+			<div className="flex w-full flex-col gap-4 px-4 pt-4 md:gap-8 md:pt-15">
 				{/* Ongeki Section */}
 				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Ongeki Settings</h2>
@@ -195,7 +190,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 						className="bg-red-600 text-lg hover:bg-red-700"
 					/>
 				</div>
-			</motion.div>
+			</div>
 		</div>
 	);
 };

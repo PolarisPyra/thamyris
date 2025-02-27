@@ -79,17 +79,48 @@ const unprotectedRoutes = new Hono()
 				if (!passwordMatch) {
 					return c.json({ error: "Invalid username or password" }, 401);
 				}
+
 				const [aimeCard] = await db.select<DB.AimeCard>("SELECT access_code FROM aime_card WHERE user = ?", [user.id]);
+
+				// Check if chunithm_version exists
+				const [existingChunithm] = await db.query(
+					`SELECT * FROM daphnis_user_option 
+         WHERE user = ? AND \`key\` = 'chunithm_version'`,
+					[user.id]
+				);
+
+				// Check if ongeki_version exists
+				const [existingOngeki] = await db.query(
+					`SELECT * FROM daphnis_user_option 
+         WHERE user = ? AND \`key\` = 'ongeki_version'`,
+					[user.id]
+				);
+
+				// Insert chunithm_version if it doesn't exist
+				if (!existingChunithm) {
+					await db.query(
+						`INSERT INTO daphnis_user_option (user, \`key\`, value)
+           VALUES (?, 'chunithm_version', (SELECT MAX(version) FROM chuni_profile_data WHERE user = ?))`,
+						[user.id, user.id]
+					);
+				}
+
+				// Insert ongeki_version if it doesn't exist
+				if (!existingOngeki) {
+					await db.query(
+						`INSERT INTO daphnis_user_option (user, \`key\`, value)
+           VALUES (?, 'ongeki_version', (SELECT MAX(version) FROM ongeki_profile_data WHERE user = ?))`,
+						[user.id, user.id]
+					);
+				}
 
 				await signAndSetCookie(c, user, aimeCard);
 
 				// Update last login date
 				await db.update(
-					`
-					UPDATE aime_user 
-					SET last_login_date = NOW() 
-					WHERE id = ?
-				`,
+					`UPDATE aime_user 
+         SET last_login_date = NOW() 
+         WHERE id = ?`,
 					[user.id]
 				);
 
