@@ -22,7 +22,7 @@ export function NavUser({
 	user,
 }: {
 	user: {
-		name: string;
+		username: string;
 		aimeCardId: string;
 		avatar: string;
 	};
@@ -41,13 +41,13 @@ export function NavUser({
 							className="ring-0 hover:bg-gray-700 hover:text-gray-100 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
 						>
 							<Avatar className="h-8 w-8 rounded-lg bg-gray-700">
-								<AvatarImage src={user.avatar} alt={user.name} />
+								<AvatarImage src={user.avatar} alt={user.username} />
 								<AvatarFallback className="rounded-lg bg-gray-700 text-gray-100">
-									{user.name.substring(0, 2).toUpperCase()}
+									{user.username.substring(0, 2).toUpperCase()}
 								</AvatarFallback>
 							</Avatar>
 							<div className="grid flex-1 text-left text-sm leading-tight">
-								<span className="truncate font-semibold text-gray-100">{user.name}</span>
+								<span className="truncate font-semibold text-gray-100">{user.username}</span>
 							</div>
 							<ChevronsUpDown className="ml-auto size-4 text-gray-400" />
 						</SidebarMenuButton>
@@ -61,13 +61,13 @@ export function NavUser({
 						<DropdownMenuLabel className="p-0 font-normal">
 							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 								<Avatar className="h-8 w-8 rounded-lg bg-gray-700">
-									<AvatarImage src={user.avatar} alt={user.name} />
+									<AvatarImage src={user.avatar} alt={user.username} />
 									<AvatarFallback className="rounded-lg bg-gray-700 text-gray-100">
-										{user.name.substring(0, 2).toUpperCase()}
+										{user.username.substring(0, 2).toUpperCase()}
 									</AvatarFallback>
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-semibold text-gray-100">{user.name}</span>
+									<span className="truncate font-semibold text-gray-100">{user.username}</span>
 									<span className="truncate text-xs text-gray-400">{user.aimeCardId}</span>
 								</div>
 							</div>

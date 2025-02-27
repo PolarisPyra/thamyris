@@ -185,6 +185,8 @@ const unprotectedRoutes = new Hono()
 				return c.json({ error: "User not found" }, 404);
 			}
 
+			const [updatedUser] = await db.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
+
 			// NOTE:
 			//   These inserts could be pushed out to some generic
 			//   handler implementation per game. Could get messy
@@ -222,7 +224,7 @@ const unprotectedRoutes = new Hono()
 				);
 			}
 
-			await signAndSetCookie(c, existingUser, aimeCard);
+			await signAndSetCookie(c, updatedUser, aimeCard);
 
 			// Update last login date
 			await db.update(

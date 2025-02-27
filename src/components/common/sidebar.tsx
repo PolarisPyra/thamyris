@@ -120,7 +120,7 @@ export function SidebarComponent() {
 	if (!user) return null;
 
 	const userData = {
-		name: user.username,
+		username: user.username,
 		aimeCardId: user.aimeCardId,
 		avatar: "",
 	};
