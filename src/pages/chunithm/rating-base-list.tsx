@@ -8,6 +8,7 @@ import QouteCard from "@/components/common/qoutecard";
 import RatingFrameTable from "@/components/common/rating-table";
 import Spinner from "@/components/common/spinner";
 import { useUserRatingBaseList, useUserRatingBaseNewList } from "@/hooks/chunithm/use-rating";
+import { useUserRatingBaseHotList } from "@/hooks/chunithm/use-rating";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
@@ -15,11 +16,14 @@ import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 const ITEMS_PER_PAGE = 15;
 
 const ChunithmRatingBaseList = () => {
+	const [currentHotPage, setCurrentHotPage] = useState(1);
+	const [searchHotQuery, setSearchHotQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentNewPage, setCurrentNewPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchNewQuery, setSearchNewQuery] = useState("");
 
+	const { data: hotSongs = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
 	const { data: baseSongs = [], isLoading: isLoadingBaseList } = useUserRatingBaseList();
 	const { data: newSongs = [], isLoading: isLoadingNewList } = useUserRatingBaseNewList();
 	const { isLoading: isLoadingUsername } = useUsername();
@@ -31,23 +35,25 @@ const ChunithmRatingBaseList = () => {
 	const averageBaseRating = baseSongs.length > 0 ? (totalBaseRating / baseSongs.length / 100).toFixed(2) : "0.00";
 	const averageNewRating = newSongs.length > 0 ? (totalNewRating / newSongs.length / 100).toFixed(2) : "0.00";
 
-	// Filter base songs by search
 	const filteredBaseSongs = baseSongs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
-
-	// Filter new songs by search
 	const filteredNewSongs = newSongs.filter((song) => song.title.toLowerCase().includes(searchNewQuery.toLowerCase()));
+	const filteredHotSongs = hotSongs.filter((song) => song.title.toLowerCase().includes(searchHotQuery.toLowerCase()));
 
 	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
 	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
+	const totalHotPages = Math.ceil(filteredHotSongs.length / ITEMS_PER_PAGE);
 
 	const paginatedBaseSongs = filteredBaseSongs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-
 	const paginatedNewSongs = filteredNewSongs.slice(
 		(currentNewPage - 1) * ITEMS_PER_PAGE,
 		currentNewPage * ITEMS_PER_PAGE
 	);
+	const paginatedHotSongs = filteredHotSongs.slice(
+		(currentHotPage - 1) * ITEMS_PER_PAGE,
+		currentHotPage * ITEMS_PER_PAGE
+	);
 
-	if (isLoadingBaseList || isLoadingNewList || isLoadingUsername) {
+	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingUsername) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Rating Frame" />
@@ -64,15 +70,15 @@ const ChunithmRatingBaseList = () => {
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Rating Frame" />
 			<div className="container mx-auto space-y-6">
-				<div className="grid grid-cols-1 gap-4 py-6 md:grid-cols-2">
-					<QouteCard
-						icon={ChartNoAxesCombined}
-						tagline=""
-						value={`Average Rating: ${averageBaseRating}`}
-						color="yellow"
-						welcomeMessage={`Based on ${baseSongs.length} base plays`}
-					/>
-					{(version ?? 0) >= 17 && (
+				{(version ?? 0) >= 17 ? (
+					<div className="grid grid-cols-1 gap-4 py-6 md:grid-cols-2">
+						<QouteCard
+							icon={ChartNoAxesCombined}
+							tagline=""
+							value={`Average Rating: ${averageBaseRating}`}
+							color="yellow"
+							welcomeMessage={`Based on ${baseSongs.length} base plays`}
+						/>
 						<QouteCard
 							icon={ChartNoAxesCombined}
 							tagline=""
@@ -80,8 +86,18 @@ const ChunithmRatingBaseList = () => {
 							color="yellow"
 							welcomeMessage={`Based on ${newSongs.length} new plays`}
 						/>
-					)}
-				</div>
+					</div>
+				) : (
+					<div className="flex flex-col gap-4 py-6">
+						<QouteCard
+							icon={ChartNoAxesCombined}
+							tagline=""
+							value={`Average Rating: ${averageBaseRating}`}
+							color="yellow"
+							welcomeMessage={`Based on ${baseSongs.length} base plays`}
+						/>
+					</div>
+				)}
 
 				{/* Base 30 Table */}
 				<div className="space-y-4">
@@ -122,6 +138,46 @@ const ChunithmRatingBaseList = () => {
 						</div>
 					)}
 				</div>
+
+				<div className="space-y-4">
+					<h3 className="text-xl font-semibold text-gray-100">Recent Plays</h3>
+					<RatingFrameTable
+						songs={paginatedHotSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							difficulty: getDifficultyFromChunithmChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+							type: song.type,
+						}))}
+						searchQuery={searchHotQuery}
+						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
+					/>
+					{totalHotPages > 1 && (
+						<div className="mb-4 flex items-center justify-center space-x-4">
+							<button
+								disabled={currentHotPage === 1}
+								onClick={() => setCurrentHotPage((prev) => prev - 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Previous
+							</button>
+							<span className="text-sm text-gray-300">
+								Page {currentHotPage} of {totalHotPages}
+							</span>
+							<button
+								disabled={currentHotPage === totalHotPages}
+								onClick={() => setCurrentHotPage((prev) => prev + 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Next
+							</button>
+						</div>
+					)}
+				</div>
+				<div className="mb-4 flex items-center justify-center space-x-4" />
 
 				{/* New 20 Table - Only show if version >= 17 */}
 				{(version ?? 0) >= 17 && (
@@ -164,6 +220,7 @@ const ChunithmRatingBaseList = () => {
 						)}
 					</div>
 				)}
+				<div className="mb-4 flex items-center justify-center space-x-4" />
 			</div>
 		</div>
 	);
