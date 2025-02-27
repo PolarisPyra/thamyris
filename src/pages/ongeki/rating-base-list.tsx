@@ -5,7 +5,6 @@ import { ChartNoAxesCombined } from "lucide-react";
 
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
-import OngekiRatingTable from "@/components/common/rating-table";
 import RatingFrameTable from "@/components/common/rating-table";
 import Spinner from "@/components/common/spinner";
 import { useUsername } from "@/hooks/common/use-username";
@@ -20,10 +19,10 @@ const ITEMS_PER_PAGE = 15;
 
 const OngekiRatingFrames = () => {
 	const [currentPage, setCurrentPage] = useState(1);
-	const [currentNewPage, setCurrentNewPage] = useState(1);
+	// const [currentNewPage, setCurrentNewPage] = useState(1);
 	const [currentHotPage, setCurrentHotPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
-	const [searchNewQuery, setSearchNewQuery] = useState("");
+	// const [searchNewQuery, setSearchNewQuery] = useState("");
 	const [searchHotQuery, setSearchHotQuery] = useState("");
 
 	const { data: baseList = [], isLoading: isLoadingBaseList } = useUserRatingBaseBestList();
@@ -48,18 +47,18 @@ const OngekiRatingFrames = () => {
 
 	// Filter songs by search
 	const filteredBaseSongs = baseSongs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
-	const filteredNewSongs = newSongs.filter((song) => song.title.toLowerCase().includes(searchNewQuery.toLowerCase()));
+	// const filteredNewSongs = newSongs.filter((song) => song.title.toLowerCase().includes(searchNewQuery.toLowerCase()));
 	const filteredHotSongs = hotSongs.filter((song) => song.title.toLowerCase().includes(searchHotQuery.toLowerCase()));
 
 	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
-	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
+	// const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
 	const totalHotPages = Math.ceil(filteredHotSongs.length / ITEMS_PER_PAGE);
 
 	const paginatedBaseSongs = filteredBaseSongs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-	const paginatedNewSongs = filteredNewSongs.slice(
-		(currentNewPage - 1) * ITEMS_PER_PAGE,
-		currentNewPage * ITEMS_PER_PAGE
-	);
+	// const paginatedNewSongs = filteredNewSongs.slice(
+	// 	(currentNewPage - 1) * ITEMS_PER_PAGE,
+	// 	currentNewPage * ITEMS_PER_PAGE
+	// );
 	const paginatedHotSongs = filteredHotSongs.slice(
 		(currentHotPage - 1) * ITEMS_PER_PAGE,
 		currentHotPage * ITEMS_PER_PAGE
@@ -173,7 +172,7 @@ const OngekiRatingFrames = () => {
 					)}
 				</div>
 
-				{/* New List Table */}
+				{/* New List Table
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Current Version</h3>
 					<OngekiRatingTable
@@ -210,8 +209,7 @@ const OngekiRatingFrames = () => {
 								Next
 							</button>
 						</div>
-					)}
-				</div>
+					)} */}
 
 				<div className="mb-4 flex items-center justify-center space-x-4" />
 			</div>
