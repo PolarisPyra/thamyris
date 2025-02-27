@@ -4,7 +4,7 @@ import { api } from "@/utils";
 import { RatingResponse, UserRatingBaseEntry } from "@/utils/types";
 
 /**
- * Fetches and returns the 10 most recent plays that could increase the user's rating.
+ * Fetches and returns the 10 most recent plays that contribute to their rating.
  */
 
 export const useUserRatingBaseHotList = () => {
