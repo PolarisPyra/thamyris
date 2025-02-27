@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 
 import Spinner from "@/components/common/spinner";
-import { useAuth } from "@/context/auth-provider";
+import { useAuth } from "@/hooks/auth/use-auth";
 
 export const LoginPage: React.FC = () => {
 	const { login, isLoading, error, isAuthenticated } = useAuth();

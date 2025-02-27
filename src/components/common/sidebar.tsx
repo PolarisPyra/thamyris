@@ -26,7 +26,7 @@ import {
 	SidebarMenuItem,
 	SidebarMenuSub,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/context/auth-provider";
+import { useAuth } from "@/hooks/auth/use-auth";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 
 import { NavUser } from "./nav-user";

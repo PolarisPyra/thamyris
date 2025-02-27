@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useAuth } from "@/context/auth-provider";
+import { useAuth } from "@/hooks/auth/use-auth";
 
 const SignUpPage = () => {
 	const [username, setUsername] = useState("");

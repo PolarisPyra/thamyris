@@ -18,7 +18,7 @@ export const useAdminPermissions = () => {
 					// This handles 403 without throwing an error to the console
 					setIsAdmin(false);
 				}
-			} catch (err) {
+			} catch {
 				// This will only trigger for network errors
 				setError("Failed to verify admin status");
 				setIsAdmin(false);

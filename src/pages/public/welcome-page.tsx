@@ -1,25 +1,18 @@
 import React from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-import Spinner from "@/components/common/spinner";
-import { useAuth } from "@/context/auth-provider";
+import { useAuth } from "@/hooks/auth/use-auth";
 
 const WelcomePage = () => {
-	const navigate = useNavigate();
-	const { isAuthenticated } = useAuth();
-
+	const { isAuthenticated, isLoading } = useAuth();
+	if (isLoading) {
+		return <Navigate to="/overview" replace />;
+	}
 	if (isAuthenticated) {
-		navigate("/overview");
+		return <Navigate to="/overview" replace />;
 	}
 
-	if (isAuthenticated === null) {
-		return (
-			<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100">
-				<Spinner size={40} color="#3b82f6" />
-			</div>
-		);
-	}
 	return (
 		<div className="z-10 flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 p-4">
 			<div className="mx-4 w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">

@@ -16,7 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useAuth } from "@/context/auth-provider";
+import { useAuth } from "@/hooks/auth/use-auth";
 
 export function NavUser({
 	user,

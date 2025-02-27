@@ -64,7 +64,10 @@ export default defineConfig({
 		allowedHosts: ["daphnis.app"],
 	},
 	define: {
-		"process.env": process.env,
-		"process.env.CDN_URL": JSON.stringify(env.CDN_URL),
+		// For client env variables, add the type in src/vite-env.d.ts
+		env: {
+			CDN_URL: env.CDN_URL,
+			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
+		},
 	},
 });

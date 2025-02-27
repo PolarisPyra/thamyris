@@ -91,7 +91,7 @@ const OngekiRatingFrames = () => {
 				{/* Base List Table */}
 				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Highest Rating</h3>
-					<OngekiRatingTable
+					<RatingFrameTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,
 							score: song.score,
@@ -127,6 +127,24 @@ const OngekiRatingFrames = () => {
 						</div>
 					)}
 				</div>
+				{/* Hot List Table */}
+				<div className="space-y-4">
+					<h3 className="text-xl font-semibold text-gray-100">Recent</h3>
+					<RatingFrameTable
+						songs={filteredHotSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							difficulty: getDifficultyFromOngekiChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+						}))}
+						searchQuery={searchHotQuery}
+						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
+					/>
+				</div>
+				<div className="mb-4 flex items-center justify-center space-x-4" />
 
 				{/* New List Table */}
 				<div className="space-y-4">
@@ -144,6 +162,7 @@ const OngekiRatingFrames = () => {
 						searchQuery={searchNewQuery}
 						onSearchChange={(e) => setSearchNewQuery(e.target.value)}
 					/>
+
 					{totalNewPages > 1 && (
 						<div className="mb-4 flex items-center justify-center space-x-4">
 							<button
@@ -165,26 +184,8 @@ const OngekiRatingFrames = () => {
 							</button>
 						</div>
 					)}
+					<div className="mb-4 flex items-center justify-center space-x-4" />
 				</div>
-
-				{/* Hot List Table */}
-				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Recent</h3>
-					<RatingFrameTable
-						songs={filteredHotSongs.map((song) => ({
-							title: song.title,
-							score: song.score,
-							level: song.level,
-							difficulty: getDifficultyFromOngekiChart(song.chartId),
-							genre: song.genre,
-							artist: song.artist,
-							rating: song.rating,
-						}))}
-						searchQuery={searchHotQuery}
-						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
-					/>
-				</div>
-				<div className="mb-4 flex items-center justify-center space-x-4" />
 			</div>
 		</div>
 	);

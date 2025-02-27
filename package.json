@@ -16,8 +16,9 @@
 		"typecheck": "tsc --noEmit",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
-		"format": "prettier --write \"**/*.{ts,tsx}\" --cache"
-},
+		"format": "prettier --write \"**/*.{ts,tsx}\" --cache",
+		"scan": "bun dev & bunx react-scan@latest localhost:3000"
+	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.8",
 		"@hono/vite-dev-server": "^0.18.1",
@@ -49,6 +50,7 @@
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-router-dom": "^7.1.5",
+		"react-scan": "^0.2.7",
 		"recharts": "^2.15.1",
 		"sonner": "^2.0.1",
 		"tailwind-merge": "^3.0.1",
