@@ -1,17 +1,6 @@
 import React from "react";
 
-import {
-	BoomBox,
-	ChevronDown,
-	CircleArrowRight,
-	HeartIcon,
-	Home,
-	List,
-	Newspaper,
-	NotepadText,
-	Pencil,
-	Swords,
-} from "lucide-react";
+import { BoomBox, ChevronDown, HeartIcon, Home, List, Newspaper, NotepadText, Pencil, Swords } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import {
@@ -27,11 +16,10 @@ import {
 	SidebarMenuSub,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/auth/use-auth";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 
 import { NavUser } from "./nav-user";
 
-const baseChunithmSubnav = [
+const chunithmSubnav = [
 	{
 		name: "Scores",
 		href: "/chunithm/scores",
@@ -70,7 +58,7 @@ const baseChunithmSubnav = [
 	},
 ];
 
-const baseOngekiSubnav = [
+const ongekiSubnav = [
 	{
 		name: "Scores",
 		href: "/ongeki/scores",
@@ -87,13 +75,6 @@ const baseOngekiSubnav = [
 		name: "Rating Frame",
 		href: "/ongeki/rating",
 		icon: List,
-		color: "#f067e9",
-	},
-
-	{
-		name: "Potential Rating",
-		href: "/ongeki/potential",
-		icon: CircleArrowRight,
 		color: "#f067e9",
 	},
 ];
@@ -115,47 +96,19 @@ const sidebarItems = [
 		name: "Chunithm",
 		icon: ChevronDown,
 		color: "#59ba22",
-		subnav: [], // Will be populated dynamically
+		subnav: chunithmSubnav,
 	},
 	{
 		name: "Ongeki",
 		icon: ChevronDown,
 		color: "#59ba22",
-		subnav: baseOngekiSubnav,
+		subnav: ongekiSubnav,
 	},
 ];
 
 export function SidebarComponent() {
 	const [openCategories, setOpenCategories] = React.useState<Record<string, boolean>>({});
 	const { user } = useAuth();
-	const { data: version } = useChunithmVersion();
-
-	// Dynamically construct Chunithm subnav based on version
-	const chunithmSubnav = React.useMemo(() => {
-		const subnav = [...baseChunithmSubnav];
-
-		// Add Potential ratings only for version 17 and above
-		if (version && version >= 17) {
-			subnav.push({
-				name: "Potential Rating",
-				href: "/chunithm/potential",
-				icon: CircleArrowRight,
-				color: "#e0d531",
-			});
-		}
-
-		return subnav;
-	}, [version]);
-
-	// Update sidebarItems with dynamic Chunithm subnav
-	const currentSidebarItems = React.useMemo(() => {
-		return sidebarItems.map((item) => {
-			if (item.name === "Chunithm") {
-				return { ...item, subnav: chunithmSubnav };
-			}
-			return item;
-		});
-	}, [chunithmSubnav]);
 
 	const toggleCategory = (categoryName: string) => {
 		setOpenCategories((prev) => ({
@@ -181,7 +134,7 @@ export function SidebarComponent() {
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{currentSidebarItems.map((item, index) => (
+							{sidebarItems.map((item, index) => (
 								<SidebarMenuItem key={index}>
 									{item.subnav ? (
 										<>

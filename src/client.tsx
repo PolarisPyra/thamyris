@@ -6,7 +6,6 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/sonner";
 
-import { VersionCheck } from "./components/chunithm/version-check";
 import { SidebarComponent } from "./components/common/sidebar";
 import { SidebarProvider } from "./components/ui/sidebar";
 import "./index.css";
@@ -14,14 +13,12 @@ import Account from "./pages/account/account";
 import ChunithmAllSongs from "./pages/chunithm/allsongs";
 import ChunithmFavorites from "./pages/chunithm/favorites";
 import ChunithmRatingBaseList from "./pages/chunithm/rating-base-list";
-import ChunithmRatingFramesPotential from "./pages/chunithm/rating-base-next-list";
 import ChunithmRivals from "./pages/chunithm/rivals";
 import ChunithmScorePage from "./pages/chunithm/scores";
 import ChunithmSettingsPage from "./pages/chunithm/settings";
 import ChunithmUserbox from "./pages/chunithm/userbox";
 import ServerNews from "./pages/common/server-news";
 import OngekiAllSongs from "./pages/ongeki/allsongs";
-import OngekiRatingFramesPotential from "./pages/ongeki/rating-base-hot-next-list";
 import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
 import OngekiScorePage from "./pages/ongeki/scores";
 import OngekiSettingsPage from "./pages/ongeki/settings";
@@ -67,15 +64,12 @@ const app = (
 							<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
 							<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
 							<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
-							<Route element={<VersionCheck />}>
-								<Route path="/chunithm/potential" element={<ChunithmRatingFramesPotential />} />
-							</Route>
+
 							<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
 							<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
 							<Route path="/ongeki/scores" element={<OngekiScorePage />} />
 							<Route path="/chunithm/rating" element={<ChunithmRatingBaseList />} />
 							<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
-							<Route path="/ongeki/potential" element={<OngekiRatingFramesPotential />} />
 							<Route path="/account" element={<Account />} />
 						</Route>
 					</Route>

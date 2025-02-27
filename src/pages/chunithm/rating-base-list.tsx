@@ -7,8 +7,12 @@ import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import RatingFrameTable from "@/components/common/rating-table";
 import Spinner from "@/components/common/spinner";
-import { useUserRatingBaseList, useUserRatingBaseNewList } from "@/hooks/chunithm/use-rating";
-import { useUserRatingBaseHotList } from "@/hooks/chunithm/use-rating";
+import {
+	useUserRatingBaseHotList,
+	useUserRatingBaseList,
+	useUserRatingBaseNewList,
+	useUserRatingBaseNextList,
+} from "@/hooks/chunithm/use-rating";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
@@ -20,29 +24,36 @@ const ChunithmRatingBaseList = () => {
 	const [searchHotQuery, setSearchHotQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentNewPage, setCurrentNewPage] = useState(1);
+	const [currentNextPage, setCurrentNextPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchNewQuery, setSearchNewQuery] = useState("");
+	const [searchNextQuery, setSearchNextQuery] = useState("");
 
 	const { data: baseSongs = [], isLoading: isLoadingBaseList } = useUserRatingBaseList();
 	const { data: hotSongs = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
 	const { data: newSongs = [], isLoading: isLoadingNewList } = useUserRatingBaseNewList();
+	const { data: nextSongs = [], isLoading: isLoadingNextList } = useUserRatingBaseNextList();
 
 	const { isLoading: isLoadingUsername } = useUsername();
 	const { data: version } = useChunithmVersion();
 
 	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
 	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
+	const totalNextRating = nextSongs.reduce((sum, song) => sum + song.rating, 0);
 
 	const averageBaseRating = baseSongs.length > 0 ? (totalBaseRating / baseSongs.length / 100).toFixed(2) : "0.00";
 	const averageNewRating = newSongs.length > 0 ? (totalNewRating / newSongs.length / 100).toFixed(2) : "0.00";
+	const averageNextRating = nextSongs.length > 0 ? (totalNextRating / nextSongs.length / 100).toFixed(2) : "0.00";
 
 	const filteredBaseSongs = baseSongs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 	const filteredNewSongs = newSongs.filter((song) => song.title.toLowerCase().includes(searchNewQuery.toLowerCase()));
 	const filteredHotSongs = hotSongs.filter((song) => song.title.toLowerCase().includes(searchHotQuery.toLowerCase()));
+	const filteredNextSongs = nextSongs.filter((song) => song.title.toLowerCase().includes(searchNextQuery.toLowerCase()));
 
 	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
 	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
 	const totalHotPages = Math.ceil(filteredHotSongs.length / ITEMS_PER_PAGE);
+	const totalNextPages = Math.ceil(filteredNextSongs.length / ITEMS_PER_PAGE);
 
 	const paginatedBaseSongs = filteredBaseSongs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 	const paginatedNewSongs = filteredNewSongs.slice(
@@ -53,8 +64,12 @@ const ChunithmRatingBaseList = () => {
 		(currentHotPage - 1) * ITEMS_PER_PAGE,
 		currentHotPage * ITEMS_PER_PAGE
 	);
+	const paginatedNextSongs = filteredNextSongs.slice(
+		(currentNextPage - 1) * ITEMS_PER_PAGE,
+		currentNextPage * ITEMS_PER_PAGE
+	);
 
-	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingUsername) {
+	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingNextList || isLoadingUsername) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Rating Frame" />
@@ -67,25 +82,34 @@ const ChunithmRatingBaseList = () => {
 		);
 	}
 
+	const newNextListCount = nextSongs.filter((song) => song.type === "userRatingBaseNewNextList").length;
+
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Rating Frame" />
 			<div className="container mx-auto space-y-6">
 				{(version ?? 0) >= 17 ? (
-					<div className="grid grid-cols-1 gap-4 py-6 md:grid-cols-2">
+					<div className="grid grid-cols-1 gap-4 py-6 md:grid-cols-2 lg:grid-cols-3">
 						<QouteCard
 							icon={ChartNoAxesCombined}
 							tagline=""
 							value={`Average Rating: ${averageBaseRating}`}
-							color="yellow"
+							color="#f067e9"
 							welcomeMessage={`Based on ${baseSongs.length} base plays`}
 						/>
 						<QouteCard
 							icon={ChartNoAxesCombined}
 							tagline=""
 							value={`Average Rating: ${averageNewRating}`}
-							color="yellow"
+							color="#f067e9"
 							welcomeMessage={`Based on ${newSongs.length} new plays`}
+						/>
+						<QouteCard
+							icon={ChartNoAxesCombined}
+							tagline=""
+							value={`Average Rating: ${averageNextRating}`}
+							color="#f067e9"
+							welcomeMessage={`Based on ${newNextListCount} potential plays`}
 						/>
 					</div>
 				) : (
@@ -94,14 +118,14 @@ const ChunithmRatingBaseList = () => {
 							icon={ChartNoAxesCombined}
 							tagline=""
 							value={`Average Rating: ${averageBaseRating}`}
-							color="yellow"
+							color="#f067e9"
 							welcomeMessage={`Based on ${baseSongs.length} base plays`}
 						/>
 					</div>
 				)}
 
-				{/* Base 30 Table */}
 				<div className="space-y-4">
+					{/* Highest Rating Table */}
 					<h3 className="text-xl font-semibold text-gray-100">Highest Rating</h3>
 					<RatingFrameTable
 						songs={paginatedBaseSongs.map((song) => ({
@@ -138,9 +162,8 @@ const ChunithmRatingBaseList = () => {
 							</button>
 						</div>
 					)}
-				</div>
 
-				<div className="space-y-4">
+					{/* Recent Plays Table */}
 					<h3 className="text-xl font-semibold text-gray-100">Recent Plays</h3>
 					<RatingFrameTable
 						songs={paginatedHotSongs.map((song) => ({
@@ -177,50 +200,91 @@ const ChunithmRatingBaseList = () => {
 							</button>
 						</div>
 					)}
-				</div>
-				<div className="mb-4 flex items-center justify-center space-x-4" />
 
-				{/* New 20 Table - Only show if version >= 17 */}
-				{(version ?? 0) >= 17 && (
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-gray-100">Current Version</h3>
-						<RatingFrameTable
-							songs={paginatedNewSongs.map((song) => ({
-								title: song.title,
-								score: song.score,
-								level: song.level,
-								difficulty: getDifficultyFromChunithmChart(song.chartId),
-								genre: song.genre,
-								artist: song.artist,
-								rating: song.rating,
-								type: song.type,
-							}))}
-							searchQuery={searchNewQuery}
-							onSearchChange={(e) => setSearchNewQuery(e.target.value)}
-						/>
-						{totalNewPages > 1 && (
-							<div className="mb-4 flex items-center justify-center space-x-4">
-								<button
-									disabled={currentNewPage === 1}
-									onClick={() => setCurrentNewPage((prev) => prev - 1)}
-									className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-								>
-									Previous
-								</button>
-								<span className="text-sm text-gray-300">
-									Page {currentNewPage} of {totalNewPages}
-								</span>
-								<button
-									disabled={currentNewPage === totalNewPages}
-									onClick={() => setCurrentNewPage((prev) => prev + 1)}
-									className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-								>
-									Next
-								</button>
-							</div>
-						)}
-					</div>
-				)}
+					{/* Current Version Table - Only show if version is 17 or higher */}
+					{(version ?? 0) >= 17 && (
+						<div className="space-y-4">
+							<h3 className="text-xl font-semibold text-gray-100">Current Version</h3>
+							<RatingFrameTable
+								songs={paginatedNewSongs.map((song) => ({
+									title: song.title,
+									score: song.score,
+									level: song.level,
+									difficulty: getDifficultyFromChunithmChart(song.chartId),
+									genre: song.genre,
+									artist: song.artist,
+									rating: song.rating,
+									type: song.type,
+								}))}
+								searchQuery={searchNewQuery}
+								onSearchChange={(e) => setSearchNewQuery(e.target.value)}
+							/>
+							{totalNewPages > 1 && (
+								<div className="mb-4 flex items-center justify-center space-x-4">
+									<button
+										disabled={currentNewPage === 1}
+										onClick={() => setCurrentNewPage((prev) => prev - 1)}
+										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+									>
+										Previous
+									</button>
+									<span className="text-sm text-gray-300">
+										Page {currentNewPage} of {totalNewPages}
+									</span>
+									<button
+										disabled={currentNewPage === totalNewPages}
+										onClick={() => setCurrentNewPage((prev) => prev + 1)}
+										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+									>
+										Next
+									</button>
+								</div>
+							)}
+						</div>
+					)}
+
+					{/* Potential Plays Table - Only show if version is 17 or higher */}
+					{(version ?? 0) >= 17 && (
+						<>
+							<h3 className="text-xl font-semibold text-gray-100">Potential Plays</h3>
+							<RatingFrameTable
+								songs={paginatedNextSongs.map((song) => ({
+									title: song.title,
+									score: song.score,
+									level: song.level,
+									difficulty: getDifficultyFromChunithmChart(song.chartId),
+									genre: song.genre,
+									artist: song.artist,
+									rating: song.rating,
+									type: song.type,
+								}))}
+								searchQuery={searchNextQuery}
+								onSearchChange={(e) => setSearchNextQuery(e.target.value)}
+							/>
+							{totalNextPages > 1 && (
+								<div className="mb-4 flex items-center justify-center space-x-4">
+									<button
+										disabled={currentNextPage === 1}
+										onClick={() => setCurrentNextPage((prev) => prev - 1)}
+										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+									>
+										Previous
+									</button>
+									<span className="text-sm text-gray-300">
+										Page {currentNextPage} of {totalNextPages}
+									</span>
+									<button
+										disabled={currentNextPage === totalNextPages}
+										onClick={() => setCurrentNextPage((prev) => prev + 1)}
+										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+									>
+										Next
+									</button>
+								</div>
+							)}
+						</>
+					)}
+				</div>
 				<div className="mb-4 flex items-center justify-center space-x-4" />
 			</div>
 		</div>

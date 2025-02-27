@@ -76,7 +76,7 @@ const chunithmSettingsRoute = new Hono()
 				[userId]
 			);
 
-			return c.json({ versions: versions.map((v: { version: any }) => v.version) });
+			return c.json({ versions: versions.map((v: { version: number }) => v.version) });
 		} catch (error) {
 			console.error("Error getting versions:", error);
 			return c.json({ error: "Failed to get versions" }, 500);

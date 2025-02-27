@@ -178,6 +178,30 @@ const ongekiSettingsRoute = new Hono()
 			console.error("Error unlocking all items:", error);
 			return c.json({ error: "Failed to unlock all items" }, 500);
 		}
+	})
+	.get("/settings/versions", async (c) => {
+		try {
+			const token = getCookie(c, "auth_token");
+			if (!token) {
+				return c.json({ error: "Unauthorized" }, 401);
+			}
+
+			const payload = await verify(token, env.JWT_SECRET);
+			const userId = payload.userId;
+
+			const versions = await db.query(
+				`SELECT DISTINCT version 
+       FROM ongeki_profile_data 
+       WHERE user = ? 
+       ORDER BY version DESC`,
+				[userId]
+			);
+
+			return c.json({ versions: versions.map((v: { version: number }) => v.version) });
+		} catch (error) {
+			console.error("Error getting versions:", error);
+			return c.json({ error: "Failed to get versions" }, 500);
+		}
 	});
 
 export { ongekiSettingsRoute };

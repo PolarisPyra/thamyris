@@ -17,11 +17,11 @@ interface VersionResponse {
 	error?: string;
 }
 
-export const useChunithmVersion = () => {
+export const useOngekiVersion = () => {
 	return useQuery({
-		queryKey: ["chunithmVersion"],
+		queryKey: ["ongekiVersion"],
 		queryFn: async () => {
-			const response = await api.chunithm.settings.get.$get();
+			const response = await api.ongeki.settings.get.$get();
 			const data = (await response.json()) as VersionResponse;
 
 			if (data.error) {
@@ -37,11 +37,11 @@ export const useChunithmVersion = () => {
 	});
 };
 
-export const useChunithmVersions = () => {
+export const useOngekiVersions = () => {
 	return useQuery({
-		queryKey: ["chunithmVersions"],
+		queryKey: ["ongekiVersions"],
 		queryFn: async () => {
-			const response = await api.chunithm.settings.versions.$get();
+			const response = await api.ongeki.settings.versions.$get();
 			const data = (await response.json()) as VersionsResponse;
 
 			if (data.error) {
@@ -57,10 +57,10 @@ export const useChunithmVersions = () => {
 	});
 };
 
-export const useUpdateChunithmVersion = () => {
+export const useUpdateOngekiVersion = () => {
 	return useMutation({
 		mutationFn: async (version: string) => {
-			const response = await api.chunithm.settings.update.$post({
+			const response = await api.ongeki.settings.update.$post({
 				json: { version },
 			});
 

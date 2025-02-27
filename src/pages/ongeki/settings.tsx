@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
+import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki/use-version";
 import { api } from "@/utils";
 
 interface GameSettingsProps {
 	onUpdate?: () => void;
 }
 
-const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
-	const [ongekiVersion, setOngekiVersion] = useState("");
-	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
+	const { data: ongekiVersion } = useOngekiVersion();
+	const { data: versions } = useOngekiVersions();
+	const { mutate: updateVersion, isPending } = useUpdateOngekiVersion();
+	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+	const [selectedVersion, setSelectedVersion] = useState<number>(ongekiVersion || 0);
 
 	const unlockAllItems = async () => {
 		const confirmed = window.confirm("Are you sure you want to unlock all items?");
@@ -70,45 +74,20 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 		}
 	};
 
-	const fetchCurrentVersion = async () => {
-		try {
-			const response = await api.ongeki.settings.get.$get();
-			if (response.ok) {
-				const data = await response.json();
-				setOngekiVersion(data.version);
-			}
-		} catch (error) {
-			console.error("Error fetching current version:", error);
-		}
-	};
-	const versions = ["1", "2", "3", "4", "5", "6", "7"];
-
-	useEffect(() => {
-		fetchCurrentVersion();
-	}, []);
-
-	const handleVersionChange = (version: string) => {
-		setOngekiVersion(version);
+	const handleVersionChange = (version: number) => {
+		setSelectedVersion(version);
 	};
 
-	const handleDropdownToggle = (section: string) => {
+	const handleDropdownToggle = (section: number) => {
 		setOpenDropdown(openDropdown === section ? null : section);
 	};
 
-	const updateOngekiSettings = async () => {
-		try {
-			const response = await api.ongeki.settings.update.$post({
-				json: { version: ongekiVersion },
-			});
-			if (response.ok) {
-				const data = await response.json();
-				setOngekiVersion(data.version);
-				console.log("Updated Ongeki settings to version:", data.version);
-			}
-			onUpdate?.();
-		} catch (error) {
-			console.error("Error updating Ongeki settings:", error);
-		}
+	const handleUpdate = () => {
+		updateVersion(selectedVersion.toString(), {
+			onSuccess: () => {
+				console.log("Updated Chunithm settings to version:", selectedVersion);
+			},
+		});
 	};
 
 	return (
@@ -126,19 +105,17 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 
 					<div className="mb-4">
 						<button
-							onClick={() => handleDropdownToggle("ongeki-version")}
+							onClick={() => handleDropdownToggle(0)}
 							className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
 						>
-							<span className="text-gray-200">Game Version: {ongekiVersion}</span>
+							<span className="text-gray-200">Game Version: {selectedVersion || ongekiVersion}</span>
 							<ChevronDown
-								className={`h-5 w-5 text-gray-400 transition-transform ${
-									openDropdown === "ongeki-version" ? "rotate-180" : ""
-								}`}
+								className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown === 0 ? "rotate-180" : ""}`}
 							/>
 						</button>
 
 						<AnimatePresence>
-							{openDropdown === "ongeki-version" && (
+							{openDropdown === 0 && (
 								<motion.div
 									initial={{ opacity: 0, height: 0 }}
 									animate={{ opacity: 1, height: "auto" }}
@@ -146,7 +123,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 									className="mt-2"
 								>
 									<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
-										{versions.map((version) => (
+										{versions?.map((version) => (
 											<div
 												key={version}
 												onClick={() => handleVersionChange(version)}
@@ -162,15 +139,17 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 					</div>
 
 					<SubmitButton
-						onClick={updateOngekiSettings}
+						onClick={handleUpdate}
 						defaultLabel="Update Ongeki settings"
 						updatingLabel="Updating..."
 						className="bg-red-600 text-lg hover:bg-red-700"
+						disabled={isPending}
 					/>
 				</div>
+
+				{/* Card Management Section */}
 				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Card Management</h2>
-
 					<SubmitButton
 						onClick={unlockAllCards}
 						defaultLabel="Unlock all cards"
@@ -178,9 +157,10 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 						className="bg-red-600 text-lg hover:bg-red-700"
 					/>
 				</div>
+
+				{/* Item Management Section */}
 				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
 					<h2 className="text-xl font-semibold text-gray-100">Item Management</h2>
-
 					<div className="grid grid-cols-3 gap-4">
 						<SubmitButton
 							onClick={() => unlockSpecificItem(2)}
@@ -188,7 +168,6 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 							updatingLabel="Unlocking..."
 							className="bg-blue-400 text-lg hover:bg-blue-500"
 						/>
-
 						<SubmitButton
 							onClick={() => unlockSpecificItem(17)}
 							defaultLabel="Unlock costumes"
@@ -209,7 +188,6 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = ({ onUpdate }) => {
 						className="bg-red-600 text-lg hover:bg-red-700"
 					/>
 					<h2 className="mt-2 text-xl font-semibold text-gray-100">Achievement Management</h2>
-
 					<SubmitButton
 						onClick={() => unlockSpecificItem(3)}
 						defaultLabel="Unlock titles"
