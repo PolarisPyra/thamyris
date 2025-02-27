@@ -91,88 +91,88 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
 		}
 	})
-	.get("/user_rating_base_hot_next_list", async (c) => {
-		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+	// .get("/user_rating_base_hot_next_list", async (c) => {
+	// 	try {
+	// 		const token = getCookie(c, "auth_token");
+	// 		if (!token) {
+	// 			return c.json({ error: "Unauthorized" }, 401);
+	// 		}
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
-			const version = await getUserVersionOngeki(userId);
+	// 		const payload = await verify(token, env.JWT_SECRET);
+	// 		const userId = payload.userId;
+	// 		const version = await getUserVersionOngeki(userId);
 
-			// Get the user rating base hot list entries
-			const userRatingBaseList = (await db.query(
-				`SELECT 
-					musicId,
-					score,
-					difficultId,
-					version,
-					type
-				FROM ongeki_profile_rating
-				WHERE user = ?
-					AND type = 'userRatingBaseHotNextList'
-					AND version = ?`,
-				[userId, version]
-			)) as UserRatingBaseEntry[];
+	// 		// Get the user rating base hot list entries
+	// 		const userRatingBaseList = (await db.query(
+	// 			`SELECT
+	// 				musicId,
+	// 				score,
+	// 				difficultId,
+	// 				version,
+	// 				type
+	// 			FROM ongeki_profile_rating
+	// 			WHERE user = ?
+	// 				AND type = 'userRatingBaseHotNextList'
+	// 				AND version = ?`,
+	// 			[userId, version]
+	// 		)) as UserRatingBaseEntry[];
 
-			if (!userRatingBaseList.length) {
-				return c.json({ results: [] });
-			}
+	// 		if (!userRatingBaseList.length) {
+	// 			return c.json({ results: [] });
+	// 		}
 
-			// Get the music IDs to fetch static music info
-			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
+	// 		// Get the music IDs to fetch static music info
+	// 		const musicIds = userRatingBaseList.map((entry) => entry.musicId);
 
-			// Get static music information
-			const staticMusicInfo = (await db.query(
-				`SELECT 
-					songId,
-					title,
-					artist,
-					chartId,
-					level,
-					genre
-					FROM ongeki_static_music
-				WHERE songId IN (?)
-					AND version = ?`,
-				[musicIds, version]
-			)) as any[];
+	// 		// Get static music information
+	// 		const staticMusicInfo = (await db.query(
+	// 			`SELECT
+	// 				songId,
+	// 				title,
+	// 				artist,
+	// 				chartId,
+	// 				level,
+	// 				genre
+	// 				FROM ongeki_static_music
+	// 			WHERE songId IN (?)
+	// 				AND version = ?`,
+	// 			[musicIds, version]
+	// 		)) as any[];
 
-			// Create a map for easy lookup
-			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
+	// 		// Create a map for easy lookup
+	// 		const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
-			// Calculate ratings and combine data
-			const results = userRatingBaseList.map((entry) => {
-				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
-				const level = staticMusic?.level ?? 0;
-				const score = entry.score ?? 0;
+	// 		// Calculate ratings and combine data
+	// 		const results = userRatingBaseList.map((entry) => {
+	// 			const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
+	// 			const level = staticMusic?.level ?? 0;
+	// 			const score = entry.score ?? 0;
 
-				const rating = calculateRating(level, score);
+	// 			const rating = calculateRating(level, score);
 
-				return {
-					type: entry.type,
-					version: entry.version,
-					index: entry.index,
-					musicId: entry.musicId,
-					score: entry.score,
-					difficultId: entry.difficultId,
-					chartId: staticMusic?.chartId || "Unknown chartId",
-					title: staticMusic?.title || "Unknown Title",
-					artist: staticMusic?.artist || "Unknown Artist",
-					genre: staticMusic?.genre || "Unknown Genre",
-					level: staticMusic?.level || "Unknown Level",
-					jacketPath: staticMusic?.jacketPath || "",
-					rating,
-				};
-			});
+	// 			return {
+	// 				type: entry.type,
+	// 				version: entry.version,
+	// 				index: entry.index,
+	// 				musicId: entry.musicId,
+	// 				score: entry.score,
+	// 				difficultId: entry.difficultId,
+	// 				chartId: staticMusic?.chartId || "Unknown chartId",
+	// 				title: staticMusic?.title || "Unknown Title",
+	// 				artist: staticMusic?.artist || "Unknown Artist",
+	// 				genre: staticMusic?.genre || "Unknown Genre",
+	// 				level: staticMusic?.level || "Unknown Level",
+	// 				jacketPath: staticMusic?.jacketPath || "",
+	// 				rating,
+	// 			};
+	// 		});
 
-			return c.json({ results });
-		} catch (error) {
-			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
-		}
-	})
+	// 		return c.json({ results });
+	// 	} catch (error) {
+	// 		console.error("Error executing query:", error);
+	// 		return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
+	// 	}
+	// })
 	.get("/user_rating_base_best_list", async (c) => {
 		try {
 			const token = getCookie(c, "auth_token");

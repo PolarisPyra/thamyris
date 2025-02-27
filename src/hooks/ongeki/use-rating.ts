@@ -63,22 +63,22 @@ export const useUserRatingBaseBestNewList = () => {
 	});
 };
 
-/**
- * Fetches and returns 10 potential plays that could improve the user's rating.
- */
+// /**
+//  * Fetches and returns 10 potential plays that could improve the user's rating.
+//  */
 
-export const useUserRatingBaseHotNextList = () => {
-	return useQuery<UserRatingBaseEntry[]>({
-		queryKey: ["userRatingBaseHotNextList"],
-		queryFn: async () => {
-			const response = await api.ongeki.user_rating_base_hot_next_list.$get();
-			const data = (await response.json()) as RatingResponse;
+// export const useUserRatingBaseHotNextList = () => {
+// 	return useQuery<UserRatingBaseEntry[]>({
+// 		queryKey: ["userRatingBaseHotNextList"],
+// 		queryFn: async () => {
+// 			const response = await api.ongeki.user_rating_base_hot_next_list.$get();
+// 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
-			}
+// 			if (data.error) {
+// 				throw new Error(data.error);
+// 			}
 
-			return data.results;
-		},
-	});
-};
+// 			return data.results;
+// 		},
+// 	});
+// };
