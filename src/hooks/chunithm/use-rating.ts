@@ -44,7 +44,7 @@ export const useUserRatingBaseList = () => {
 };
 
 /**
- * Fetches and returns the 10 most recent plays that contribute to the user's rating.
+ * Fetches and returns the 30  most recent plays for the current game version that contribute to the user's rating.
  * - for verse and above
  */
 
