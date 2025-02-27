@@ -58,7 +58,11 @@ A modern web application built with React, Hono, and TypeScript.
    DEV_MYSQL_DATABASE=your_dev_database
 
    # Additional configuration
-   NODE_ENV=development  # or production
+
+   # Running vite build defaults to "production" mode and "production" so you dont need to set it # when building.
+
+   NODE_ENV=development
+
    PORT=3000
    SERVER_PORT=3001
 
