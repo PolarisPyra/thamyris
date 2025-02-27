@@ -12,7 +12,7 @@ import {
 	useUserRatingBaseBestList,
 	useUserRatingBaseBestNewList,
 	useUserRatingBaseHotList,
-	// useUserRatingBaseHotNextList,
+	useUserRatingBaseNextList,
 } from "@/hooks/ongeki/use-rating";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 
@@ -22,46 +22,44 @@ const OngekiRatingFrames = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [currentNewPage, setCurrentNewPage] = useState(1);
 	const [currentHotPage, setCurrentHotPage] = useState(1);
-	// const [currentNextPage, setCurrentNextPage] = useState(1);
+	const [currentNextPage, setCurrentNextPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchNewQuery, setSearchNewQuery] = useState("");
 	const [searchHotQuery, setSearchHotQuery] = useState("");
-	// const [searchNextQuery, setSearchNextQuery] = useState("");
+	const [searchNextQuery, setSearchNextQuery] = useState("");
 
 	const { data: baseList = [], isLoading: isLoadingBaseList } = useUserRatingBaseBestList();
 	const { data: newList = [], isLoading: isLoadingNewList } = useUserRatingBaseBestNewList();
 	const { data: hotList = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
-	// const { data: nextList = [], isLoading: isLoadingNextList } = useUserRatingBaseHotNextList();
+	const { data: nextList = [], isLoading: isLoadingNextList } = useUserRatingBaseNextList();
 	const { isLoading: isLoadingUsername } = useUsername();
 
 	// Separate base and new songs
 	const baseSongs = baseList.filter((song) => song.musicId != 0);
 	const newSongs = newList.filter((song) => song.musicId != 0);
 	const hotSongs = hotList.filter((song) => song.musicId != 0);
-	// const nextSongs = nextList.filter((song) => song.musicId != 0);
+	const nextSongs = nextList.filter((song) => song.musicId != 0);
 
 	// Calculate total ratings
 	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
 	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
 	const totalHotRating = hotSongs.reduce((sum, song) => sum + song.rating, 0);
-	// const totalNextRating = nextSongs.reduce((sum, song) => sum + song.rating, 0);
 
 	const totalSongsCount = baseSongs.length + newSongs.length + hotSongs.length;
 
 	const totalCombinedRating = totalBaseRating + totalNewRating + totalHotRating;
 	const totalAverageRating = totalSongsCount > 0 ? (totalCombinedRating / totalSongsCount / 100).toFixed(2) : "0.00";
-	// const averageNextRating = nextSongs.length > 0 ? (totalNextRating / nextSongs.length / 100).toFixed(2) : "0.00";
 
 	// Filter songs by search
 	const filteredBaseSongs = baseSongs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 	const filteredNewSongs = newSongs.filter((song) => song.title.toLowerCase().includes(searchNewQuery.toLowerCase()));
 	const filteredHotSongs = hotSongs.filter((song) => song.title.toLowerCase().includes(searchHotQuery.toLowerCase()));
-	// const filteredNextSongs = nextSongs.filter((song) => song.title.toLowerCase().includes(searchNextQuery.toLowerCase()));
+	const filteredNextSongs = nextSongs.filter((song) => song.title.toLowerCase().includes(searchNextQuery.toLowerCase()));
 
 	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
 	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
 	const totalHotPages = Math.ceil(filteredHotSongs.length / ITEMS_PER_PAGE);
-	// const totalNextPages = Math.ceil(filteredNextSongs.length / ITEMS_PER_PAGE);
+	const totalNextPages = Math.ceil(filteredNextSongs.length / ITEMS_PER_PAGE);
 
 	const paginatedBaseSongs = filteredBaseSongs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 	const paginatedNewSongs = filteredNewSongs.slice(
@@ -72,12 +70,12 @@ const OngekiRatingFrames = () => {
 		(currentHotPage - 1) * ITEMS_PER_PAGE,
 		currentHotPage * ITEMS_PER_PAGE
 	);
-	// const paginatedNextSongs = filteredNextSongs.slice(
-	// 	(currentNextPage - 1) * ITEMS_PER_PAGE,
-	// 	currentNextPage * ITEMS_PER_PAGE
-	// );
+	const paginatedNextSongs = filteredNextSongs.slice(
+		(currentNextPage - 1) * ITEMS_PER_PAGE,
+		currentNextPage * ITEMS_PER_PAGE
+	);
 
-	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingUsername) {
+	if (isLoadingBaseList || isLoadingNewList || isLoadingNextList || isLoadingHotList || isLoadingUsername) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Rating Frame" />
@@ -226,7 +224,7 @@ const OngekiRatingFrames = () => {
 				</div>
 
 				{/* Potential Plays Table */}
-				{/* <div className="space-y-4">
+				<div className="space-y-4">
 					<h3 className="text-xl font-semibold text-gray-100">Potential Plays</h3>
 					<RatingFrameTable
 						songs={paginatedNextSongs.map((song) => ({
@@ -262,8 +260,9 @@ const OngekiRatingFrames = () => {
 								Next
 							</button>
 						</div>
-					)} */}
-				<div className="mb-4 flex items-center justify-center space-x-4" />
+					)}
+					<div className="mb-4 flex items-center justify-center space-x-4" />
+				</div>
 			</div>
 		</div>
 	);
