@@ -225,7 +225,6 @@ const unprotectedRoutes = new Hono()
 			}
 
 			await signAndSetCookie(c, updatedUser, aimeCard);
-
 			// Update last login date
 			await db.update(
 				`UPDATE aime_user 
