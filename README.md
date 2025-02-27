@@ -56,23 +56,15 @@ A modern web application built with React, Hono, and TypeScript.
    DEV_MYSQL_USERNAME=your_dev_username
    DEV_MYSQL_PASSWORD=your_dev_password
    DEV_MYSQL_DATABASE=your_dev_database
-   ```
 
    # Additional configuration
-
-   Running vite build defaults to "production" mode and "production" so you don't need to set it when building.
-
-   ```env
-   NODE_ENV=development
+   NODE_ENV=development  # or production
    PORT=3000
    SERVER_PORT=3001
+
+   # CDN Configuration
+   CDN_URL=/
    ```
-
-# CDN Configuration
-
-CDN_URL=/
-
-````
 
 4. **Database Setup**
    - Create a MySQL database following the artemis [guide](https://gitea.tendokyu.moe/Hay1tsme/artemis) and configure your `.env` file
@@ -88,7 +80,7 @@ bun dev
 # Or start frontend and backend separately
 bun client:dev    # Frontend only
 bun server:dev    # Backend only
-````
+```
 
 ### Available Scripts
 
