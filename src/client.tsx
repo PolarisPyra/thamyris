@@ -34,6 +34,7 @@ import { AuthProvider } from "./providers/auth-provider";
 import { ProtectedRoute } from "./utils/protected";
 
 const queryClient = new QueryClient();
+
 const app = (
 	<QueryClientProvider client={queryClient}>
 		<BrowserRouter>
@@ -44,25 +45,25 @@ const app = (
 					<Route path="/signup" element={<SignUpPage />} />
 					<Route path="/login" element={<LoginPage />} />
 
-					<Route
-						element={
-							<div className="flex h-screen overflow-hidden bg-gray-900 text-gray-100">
-								<SidebarProvider>
-									<SidebarComponent />
-									<div className="flex flex-1 flex-col overflow-hidden">
-										<Outlet />
-									</div>
-								</SidebarProvider>
-							</div>
-						}
-					>
-						<Route element={<ProtectedRoute />}>
+					{/* Protected routes with sidebar */}
+					<Route element={<ProtectedRoute />}>
+						<Route
+							element={
+								<div className="flex h-screen overflow-hidden bg-gray-900 text-gray-100">
+									<SidebarProvider>
+										<SidebarComponent />
+										<div className="flex flex-1 flex-col overflow-hidden">
+											<Outlet />
+										</div>
+									</SidebarProvider>
+								</div>
+							}
+						>
 							<Route path="/overview" element={<OverviewPage />} />
 							<Route path="/news" element={<ServerNews />} />
 							<Route path="/settings/chunithm" element={<ChunithmSettingsPage />} />
 							<Route path="/settings/ongeki" element={<OngekiSettingsPage />} />
 							<Route path="/ongeki/allsongs" element={<OngekiAllSongs />} />
-
 							<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
 							<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
 							<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
