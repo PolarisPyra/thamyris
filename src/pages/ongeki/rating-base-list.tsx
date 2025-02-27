@@ -90,7 +90,7 @@ const OngekiRatingFrames = () => {
 
 				{/* Base List Table */}
 				<div className="space-y-4">
-					<h3 className="text-xl font-semibold text-gray-100">Highest Rating</h3>
+					<h3 className="text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingFrameTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,

@@ -23,9 +23,10 @@ const ChunithmRatingBaseList = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchNewQuery, setSearchNewQuery] = useState("");
 
-	const { data: hotSongs = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
 	const { data: baseSongs = [], isLoading: isLoadingBaseList } = useUserRatingBaseList();
+	const { data: hotSongs = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
 	const { data: newSongs = [], isLoading: isLoadingNewList } = useUserRatingBaseNewList();
+
 	const { isLoading: isLoadingUsername } = useUsername();
 	const { data: version } = useChunithmVersion();
 
