@@ -36,9 +36,9 @@ const OngekiRatingFrames = () => {
 	const { isLoading: isLoadingUsername } = useUsername();
 
 	// Separate base and new songs
-	const baseSongs = baseList.filter((song) => song.type === "userRatingBaseBestList" && song.musicId != 0);
-	const newSongs = newList.filter((song) => song.type === "userRatingBaseBestNewList" && song.musicId != 0);
-	const hotSongs = hotList.filter((song) => song.type === "userRatingBaseHotList" && song.musicId != 0);
+	const baseSongs = baseList.filter((song) => song.musicId != 0);
+	const newSongs = newList.filter((song) => song.musicId != 0);
+	const hotSongs = hotList.filter((song) => song.musicId != 0);
 	const nextSongs = nextList.filter((song) => song.musicId != 0);
 
 	// Calculate total ratings
