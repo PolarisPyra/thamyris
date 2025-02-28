@@ -4,7 +4,6 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently \"npm run client:dev\" \"npm run server:dev\"",
 		"start": "NODE_ENV=production tsx scripts/start.ts",
 		"client:dev": "NODE_ENV=development vite",
 		"client:serve": "NODE_ENV=production vite preview",
@@ -35,7 +34,6 @@
 		"argon2": "^0.41.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"concurrently": "^9.1.2",
 		"dotenv": "^16.4.7",
 		"framer-motion": "^12.4.2",
 		"hono": "^4.7.0",
