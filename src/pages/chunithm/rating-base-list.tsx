@@ -81,7 +81,7 @@ const ChunithmRatingBaseList = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Rating Frame" />
-			<div className="container mx-auto space-y-6">
+			<div className="container mx-auto space-y-6 pb-6">
 				{(version ?? 0) >= 17 ? (
 					<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
 						<QouteCard
