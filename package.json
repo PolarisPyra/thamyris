@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "NODE_ENV=development pnpm scripts/dev.ts",
+    "dev": "concurrently --names \"client,server\" --prefix-colors \"bgBlue.bold,bgGreen.bold\" \"pnpm client:dev\" \"pnpm server:dev\"",
 		"build": "rm -rf dist && vite build",
 		"start": "NODE_ENV=production tsx scripts/start.ts",
 		"client:dev": "NODE_ENV=development vite",
