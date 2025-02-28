@@ -100,7 +100,7 @@ const OngekiRatingFrames = () => {
 				{/* All tables wrapped in a single div with padding classes */}
 				<div className="p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
 					{/* Base List Table */}
-					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Best 30</h3>
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingFrameTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,
@@ -138,7 +138,7 @@ const OngekiRatingFrames = () => {
 					)}
 
 					{/* Hot List Table */}
-					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Recent</h3>
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Recent</h3>
 					<RatingFrameTable
 						songs={paginatedHotSongs.map((song) => ({
 							title: song.title,
@@ -176,7 +176,7 @@ const OngekiRatingFrames = () => {
 					)}
 
 					{/* New List Table */}
-					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Current Version</h3>
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Current Version</h3>
 					<RatingFrameTable
 						songs={paginatedNewSongs.map((song) => ({
 							title: song.title,
@@ -214,21 +214,23 @@ const OngekiRatingFrames = () => {
 					)}
 
 					{/* Potential Plays Table */}
-					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Potential Plays</h3>
-					<RatingFrameTable
-						songs={paginatedNextSongs.map((song) => ({
-							title: song.title,
-							score: song.score,
-							level: song.level,
-							difficulty: getDifficultyFromOngekiChart(song.chartId),
-							genre: song.genre,
-							artist: song.artist,
-							rating: song.rating,
-							type: song.type,
-						}))}
-						searchQuery={searchNextQuery}
-						onSearchChange={(e) => setSearchNextQuery(e.target.value)}
-					/>
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Potential Plays</h3>
+					<div className="pb-4">
+						<RatingFrameTable
+							songs={paginatedNextSongs.map((song) => ({
+								title: song.title,
+								score: song.score,
+								level: song.level,
+								difficulty: getDifficultyFromOngekiChart(song.chartId),
+								genre: song.genre,
+								artist: song.artist,
+								rating: song.rating,
+								type: song.type,
+							}))}
+							searchQuery={searchNextQuery}
+							onSearchChange={(e) => setSearchNextQuery(e.target.value)}
+						/>
+					</div>
 					{totalNextPages > 1 && (
 						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
 							<button

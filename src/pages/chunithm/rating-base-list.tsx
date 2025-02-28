@@ -241,20 +241,22 @@ const ChunithmRatingBaseList = () => {
 					{(version ?? 0) >= 17 && (
 						<>
 							<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Potential Plays</h3>
-							<RatingFrameTable
-								songs={paginatedNextSongs.map((song) => ({
-									title: song.title,
-									score: song.score,
-									level: song.level,
-									difficulty: getDifficultyFromChunithmChart(song.chartId),
-									genre: song.genre,
-									artist: song.artist,
-									rating: song.rating,
-									type: song.type,
-								}))}
-								searchQuery={searchNextQuery}
-								onSearchChange={(e) => setSearchNextQuery(e.target.value)}
-							/>
+							<div className="pb-4">
+								<RatingFrameTable
+									songs={paginatedNextSongs.map((song) => ({
+										title: song.title,
+										score: song.score,
+										level: song.level,
+										difficulty: getDifficultyFromChunithmChart(song.chartId),
+										genre: song.genre,
+										artist: song.artist,
+										rating: song.rating,
+										type: song.type,
+									}))}
+									searchQuery={searchNextQuery}
+									onSearchChange={(e) => setSearchNextQuery(e.target.value)}
+								/>
+							</div>
 							{totalNextPages > 1 && (
 								<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
 									<button
