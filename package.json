@@ -4,8 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-    "dev": "concurrently --names \"client,server\" --prefix-colors \"bgBlue.bold,bgGreen.bold\" \"pnpm client:dev\" \"pnpm server:dev\"",
-		"build": "rm -rf dist && vite build",
+    "dev": "concurrently \"npm run client:dev\" \"npm run server:dev\"",
 		"start": "NODE_ENV=production tsx scripts/start.ts",
 		"client:dev": "NODE_ENV=development vite",
 		"client:serve": "NODE_ENV=production vite preview",
@@ -16,7 +15,7 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier --write \"**/*.{ts,tsx}\" --cache",
-		"scan": "pnpm dev & pnpmx react-scan@latest localhost:3000"
+		"scan": "pnpm dev & pnpm exec react-scan@latest localhost:3000"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.8",
@@ -71,6 +70,7 @@
 		"globals": "^15.14.0",
 		"postcss": "^8.5.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
+		"ts-node": "^10.9.2",
 		"tsx": "^4.19.1",
 		"typescript": "~5.7.2",
 		"typescript-eslint": "^8.22.0",
