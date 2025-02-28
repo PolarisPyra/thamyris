@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-    "dev": "concurrently \"npm run client:dev\" \"npm run server:dev\"",
+		"dev": "concurrently \"npm run client:dev\" \"npm run server:dev\"",
 		"start": "NODE_ENV=production tsx scripts/start.ts",
 		"client:dev": "NODE_ENV=development vite",
 		"client:serve": "NODE_ENV=production vite preview",
@@ -14,8 +14,7 @@
 		"typecheck": "tsc --noEmit",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
-		"format": "prettier --write \"**/*.{ts,tsx}\" --cache",
-		"scan": "pnpm dev & pnpm exec react-scan@latest localhost:3000"
+		"format": "prettier --write \"**/*.{ts,tsx}\" --cache"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.8",
@@ -48,7 +47,6 @@
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-router-dom": "^7.1.5",
-		"react-scan": "^0.2.7",
 		"recharts": "^2.15.1",
 		"sonner": "^2.0.1",
 		"tailwind-merge": "^3.0.1",
