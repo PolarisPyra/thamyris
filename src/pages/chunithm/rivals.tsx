@@ -1,67 +1,43 @@
 import { useState } from "react";
 import React from "react";
 
-import { Handshake, Skull, Swords } from "lucide-react";
+import { Heart, HeartIcon } from "lucide-react";
 import { toast } from "sonner";
 
+import FavoritesTable from "@/components/common/favorites-table";
 import Header from "@/components/common/header";
+import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
-import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
-import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/chunithm/use-rivals";
+// Import the Pagination component
+import { useAddFavorite, useFavorites, useRemoveFavorite } from "@/hooks/chunithm/use-favorites";
+import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
 import { useUsername } from "@/hooks/common/use-username";
+import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const itemsPerPage = 10;
 
-const ChunithmRivals = () => {
-	const [searchQuery, setSearchQuery] = useState("");
+const ChunithmFavorites = () => {
 	const [currentPage, setCurrentPage] = useState(1);
+	const [searchQuery, setSearchQuery] = useState("");
 
-	const { data: rivalIds = [], isLoading: isLoadingRivals } = useRivals();
-	const { data: rivalCount = 0, isLoading: isLoadingCount } = useRivalCount();
-	const { data: users = [], isLoading: isLoadingUsers } = useRivalUsers();
-	const { mutate: addRival } = useAddRival();
-	const { mutate: removeRival } = useRemoveRival();
+	const { data: songs = [], isLoading: isLoadingSongs } = useChunithmSongs();
+	const { data: favoriteSongIds = [], isLoading: isLoadingFavorites } = useFavorites();
+	const { mutate: addFavorite } = useAddFavorite();
+	const { mutate: removeFavorite } = useRemoveFavorite();
 	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
-	const filteredRivals = users.filter((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
+	const filter = songs
+		.filter((song) => song.chartId === 3)
+		.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
-	const totalPages = Math.ceil(filteredRivals.length / itemsPerPage);
-	const paginatedRivals = filteredRivals.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+	const totalPages = Math.ceil(filter.length / itemsPerPage);
+	const paginatedSongs = filter.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-	const handleAddRival = (id: number) => {
-		if (rivalCount >= 4) {
-			toast.error("You can only have up to 4 rivals.");
-			return;
-		}
-
-		addRival(id, {
-			onSuccess: () => {
-				toast.success("Rival added successfully!");
-			},
-			onError: (error) => {
-				toast.error(error instanceof Error ? error.message : "Failed to add rival");
-			},
-		});
-	};
-
-	const handleRemoveRival = (id: number) => {
-		removeRival(id, {
-			onSuccess: () => {
-				toast.success("Rival removed successfully!");
-			},
-			onError: (error) => {
-				toast.error(error instanceof Error ? error.message : "Failed to remove rival");
-			},
-		});
-	};
-
-	const isLoading = isLoadingRivals || isLoadingCount || isLoadingUsers || isLoadingUsername;
-
-	if (isLoading) {
+	if (isLoadingSongs || isLoadingFavorites || isLoadingUsername) {
 		return (
 			<div className="relative flex-1 overflow-auto">
-				<Header title="Rivals" />
+				<Header title="Overview" />
 				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
 					<div className="text-lg text-gray-400">
 						<Spinner size={24} color="#ffffff" />
@@ -73,36 +49,61 @@ const ChunithmRivals = () => {
 
 	return (
 		<div className="relative flex-1 overflow-auto">
-			<Header title={`Rivals ${rivalCount}/4`} />
+			<Header title="Overview" />
 			<div className="container mx-auto space-y-6">
 				{/* Quote Cards */}
 				<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
 					<QouteCard
-						icon={Swords}
+						icon={Heart}
 						tagline={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-						value={`Rivals: ${rivalCount}/4`}
+						value="Your favorite songs"
 						color="yellow"
-						welcomeMessage="Manage and compete with your rivals"
+						welcomeMessage="Manage and explore your favorite songs"
 					/>
 				</div>
 
-				{/* Rivals table */}
+				{/* Favorites table */}
 				<div className="mb-4 p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
-					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Rivals</h3>
-					<RivalsTable
-						rivals={paginatedRivals.map((user) => ({
-							id: user.id,
-							username: user.username,
-							mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
-							rivalIcon: (
-								<Skull
-									className={`h-8 w-8 cursor-pointer ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Favorites</h3>
+					<FavoritesTable
+						favorites={paginatedSongs.map((song) => ({
+							id: song.id,
+							songId: song.songId,
+							chartId: getDifficultyFromChunithmChart(song.chartId),
+							title: (
+								<div className="group relative flex items-center space-x-1">
+									<span className="truncate">{song.title}</span>
+								</div>
+							),
+							level: song.level,
+							genre: song.genre,
+							jacketPath: song.jacketPath,
+							artist: song.artist,
+							icon: (
+								<HeartIcon
+									className={`h-8 w-8 cursor-pointer ${
+										favoriteSongIds.includes(song.songId) ? "text-red-500" : "text-gray-500"
+									}`}
 									onClick={() => {
-										const isRival = rivalIds.includes(user.id);
-										if (isRival) {
-											handleRemoveRival(user.id);
+										const isFavorited = favoriteSongIds.includes(song.songId);
+										if (isFavorited) {
+											removeFavorite(song.songId, {
+												onSuccess: () => {
+													toast.success("Removed from favorites");
+												},
+												onError: () => {
+													toast.error("Failed to remove from favorites");
+												},
+											});
 										} else {
-											handleAddRival(user.id);
+											addFavorite(song.songId, {
+												onSuccess: () => {
+													toast.success("Added to favorites");
+												},
+												onError: () => {
+													toast.error("Failed to add to favorites");
+												},
+											});
 										}
 									}}
 								/>
@@ -110,34 +111,13 @@ const ChunithmRivals = () => {
 						}))}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
-						rivalCount={rivalCount}
 					/>
 
-					{totalPages > 1 && (
-						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
-							<button
-								disabled={currentPage === 1}
-								onClick={() => setCurrentPage((prev) => prev - 1)}
-								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Previous
-							</button>
-							<span className="text-sm text-gray-300">
-								Page {currentPage} of {totalPages}
-							</span>
-							<button
-								disabled={currentPage === totalPages}
-								onClick={() => setCurrentPage((prev) => prev + 1)}
-								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Next
-							</button>
-						</div>
-					)}
+					{totalPages > 1 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />}
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default ChunithmRivals;
+export default ChunithmFavorites;

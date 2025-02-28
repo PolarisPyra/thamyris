@@ -4,9 +4,11 @@ import React from "react";
 import { ChartNoAxesCombined } from "lucide-react";
 
 import Header from "@/components/common/header";
+import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
 import RatingFrameTable from "@/components/common/rating-table";
 import Spinner from "@/components/common/spinner";
+// Import the new Pagination component
 import {
 	useUserRatingBaseHotList,
 	useUserRatingBaseList,
@@ -136,25 +138,7 @@ const ChunithmRatingBaseList = () => {
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
 					/>
 					{totalBasePages > 1 && (
-						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
-							<button
-								disabled={currentPage === 1}
-								onClick={() => setCurrentPage((prev) => prev - 1)}
-								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Previous
-							</button>
-							<span className="text-sm text-gray-300">
-								Page {currentPage} of {totalBasePages}
-							</span>
-							<button
-								disabled={currentPage === totalBasePages}
-								onClick={() => setCurrentPage((prev) => prev + 1)}
-								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Next
-							</button>
-						</div>
+						<Pagination currentPage={currentPage} totalPages={totalBasePages} onPageChange={setCurrentPage} />
 					)}
 
 					{/* Recent Plays Table */}
@@ -174,25 +158,7 @@ const ChunithmRatingBaseList = () => {
 						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
 					/>
 					{totalHotPages > 1 && (
-						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
-							<button
-								disabled={currentHotPage === 1}
-								onClick={() => setCurrentHotPage((prev) => prev - 1)}
-								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Previous
-							</button>
-							<span className="text-sm text-gray-300">
-								Page {currentHotPage} of {totalHotPages}
-							</span>
-							<button
-								disabled={currentHotPage === totalHotPages}
-								onClick={() => setCurrentHotPage((prev) => prev + 1)}
-								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Next
-							</button>
-						</div>
+						<Pagination currentPage={currentHotPage} totalPages={totalHotPages} onPageChange={setCurrentHotPage} />
 					)}
 
 					{/* Current Version Table - Only show if version is 17 or higher */}
@@ -214,25 +180,7 @@ const ChunithmRatingBaseList = () => {
 								onSearchChange={(e) => setSearchNewQuery(e.target.value)}
 							/>
 							{totalNewPages > 1 && (
-								<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
-									<button
-										disabled={currentNewPage === 1}
-										onClick={() => setCurrentNewPage((prev) => prev - 1)}
-										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-									>
-										Previous
-									</button>
-									<span className="text-sm text-gray-300">
-										Page {currentNewPage} of {totalNewPages}
-									</span>
-									<button
-										disabled={currentNewPage === totalNewPages}
-										onClick={() => setCurrentNewPage((prev) => prev + 1)}
-										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-									>
-										Next
-									</button>
-								</div>
+								<Pagination currentPage={currentNewPage} totalPages={totalNewPages} onPageChange={setCurrentNewPage} />
 							)}
 						</div>
 					)}
@@ -258,25 +206,7 @@ const ChunithmRatingBaseList = () => {
 								/>
 							</div>
 							{totalNextPages > 1 && (
-								<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
-									<button
-										disabled={currentNextPage === 1}
-										onClick={() => setCurrentNextPage((prev) => prev - 1)}
-										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-									>
-										Previous
-									</button>
-									<span className="text-sm text-gray-300">
-										Page {currentNextPage} of {totalNextPages}
-									</span>
-									<button
-										disabled={currentNextPage === totalNextPages}
-										onClick={() => setCurrentNextPage((prev) => prev + 1)}
-										className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-									>
-										Next
-									</button>
-								</div>
+								<Pagination currentPage={currentNextPage} totalPages={totalNextPages} onPageChange={setCurrentNextPage} />
 							)}
 						</>
 					)}
