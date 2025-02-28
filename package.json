@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "NODE_ENV=development bun scripts/dev.ts",
+		"dev": "NODE_ENV=development pnpm scripts/dev.ts",
 		"build": "rm -rf dist && vite build",
 		"start": "NODE_ENV=production tsx scripts/start.ts",
 		"client:dev": "NODE_ENV=development vite",
@@ -16,7 +16,7 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier --write \"**/*.{ts,tsx}\" --cache",
-		"scan": "bun dev & bunx react-scan@latest localhost:3000"
+		"scan": "pnpm dev & pnpmx react-scan@latest localhost:3000"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.8",
