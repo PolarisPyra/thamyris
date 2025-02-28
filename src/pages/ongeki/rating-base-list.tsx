@@ -85,7 +85,7 @@ const OngekiRatingFrames = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Rating Frame" />
-			<div className="container mx-auto space-y-6">
+			<div className="container mx-auto space-y-6 pb-6">
 				{/* Quote Cards */}
 				<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
 					<QouteCard
@@ -98,7 +98,7 @@ const OngekiRatingFrames = () => {
 				</div>
 
 				{/* All tables wrapped in a single div with padding classes */}
-				<div className="mb-4 p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
+				<div className="p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
 					{/* Base List Table */}
 					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingFrameTable
