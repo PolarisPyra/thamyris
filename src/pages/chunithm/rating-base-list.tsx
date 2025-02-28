@@ -240,7 +240,7 @@ const ChunithmRatingBaseList = () => {
 					{/* Potential Plays Table - Only show if version is 17 or higher */}
 					{(version ?? 0) >= 17 && (
 						<>
-							<h3 className="mb-4 text-xl font-semibold text-gray-100">Potential Plays</h3>
+							<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Potential Plays</h3>
 							<RatingFrameTable
 								songs={paginatedNextSongs.map((song) => ({
 									title: song.title,
