@@ -11,7 +11,7 @@ import Spinner from "@/components/common/spinner";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/chunithm/use-rivals";
 import { useUsername } from "@/hooks/common/use-username";
 
-const ITEMS_PER_PAGE = 10;
+const itemsPerPage = 10;
 
 const ChunithmRivals = () => {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -26,8 +26,8 @@ const ChunithmRivals = () => {
 
 	const filteredRivals = users.filter((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
-	const totalPages = Math.ceil(filteredRivals.length / ITEMS_PER_PAGE);
-	const paginatedRivals = filteredRivals.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filteredRivals.length / itemsPerPage);
+	const paginatedRivals = filteredRivals.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	const handleAddRival = (id: number) => {
 		if (rivalCount >= 4) {
@@ -74,61 +74,68 @@ const ChunithmRivals = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title={`Rivals ${rivalCount}/4`} />
-			<main className="mx-auto h-[calc(100vh-64px)] max-w-full px-4 py-6 lg:px-8">
-				<div className="flex flex-col gap-4">
-					<div className="grid py-6">
-						<QouteCard
-							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline={""}
-							icon={Swords}
-							color={"yellow"}
-						/>
-						<div className="mt-6 space-y-6"></div>
-						<RivalsTable
-							rivals={paginatedRivals.map((user) => ({
-								id: user.id,
-								username: user.username,
-								mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
-								rivalIcon: (
-									<Skull
-										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
-										onClick={() => {
-											const isRival = rivalIds.includes(user.id);
-											if (isRival) {
-												handleRemoveRival(user.id);
-											} else {
-												handleAddRival(user.id);
-											}
-										}}
-									/>
-								),
-							}))}
-							searchQuery={searchQuery}
-							onSearchChange={(e) => setSearchQuery(e.target.value)}
-							rivalCount={rivalCount}
-						/>
-					</div>
-					<div className="mb-4 flex items-center justify-center space-x-4">
-						<button
-							disabled={currentPage === 1}
-							onClick={() => setCurrentPage((prev) => prev - 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Previous
-						</button>
-						<span className="text-sm text-gray-300">
-							Page {currentPage} of {totalPages}
-						</span>
-						<button
-							disabled={currentPage === totalPages}
-							onClick={() => setCurrentPage((prev) => prev + 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Next
-						</button>
-					</div>
+			<div className="container mx-auto space-y-6">
+				{/* Quote Cards */}
+				<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
+					<QouteCard
+						icon={Swords}
+						tagline={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+						value={`Rivals: ${rivalCount}/4`}
+						color="yellow"
+						welcomeMessage="Manage and compete with your rivals"
+					/>
 				</div>
-			</main>
+
+				{/* Rivals table */}
+				<div className="mb-4 p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
+					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Rivals</h3>
+					<RivalsTable
+						rivals={paginatedRivals.map((user) => ({
+							id: user.id,
+							username: user.username,
+							mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
+							rivalIcon: (
+								<Skull
+									className={`h-8 w-8 cursor-pointer ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+									onClick={() => {
+										const isRival = rivalIds.includes(user.id);
+										if (isRival) {
+											handleRemoveRival(user.id);
+										} else {
+											handleAddRival(user.id);
+										}
+									}}
+								/>
+							),
+						}))}
+						searchQuery={searchQuery}
+						onSearchChange={(e) => setSearchQuery(e.target.value)}
+						rivalCount={rivalCount}
+					/>
+
+					{totalPages > 1 && (
+						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
+							<button
+								disabled={currentPage === 1}
+								onClick={() => setCurrentPage((prev) => prev - 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Previous
+							</button>
+							<span className="text-sm text-gray-300">
+								Page {currentPage} of {totalPages}
+							</span>
+							<button
+								disabled={currentPage === totalPages}
+								onClick={() => setCurrentPage((prev) => prev + 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Next
+							</button>
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

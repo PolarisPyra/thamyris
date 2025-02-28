@@ -13,7 +13,7 @@ import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
 import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
-const ITEMS_PER_PAGE = 10;
+const itemsPerPage = 10;
 
 const ChunithmFavorites = () => {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -29,8 +29,8 @@ const ChunithmFavorites = () => {
 		.filter((song) => song.chartId === 3)
 		.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
-	const totalPages = Math.ceil(filter.length / ITEMS_PER_PAGE);
-	const paginatedSongs = filter.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filter.length / itemsPerPage);
+	const paginatedSongs = filter.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	if (isLoadingSongs || isLoadingFavorites || isLoadingUsername) {
 		return (
@@ -48,85 +48,92 @@ const ChunithmFavorites = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Overview" />
-			<main className="mx-auto h-[calc(100vh-64px)] max-w-full px-4 py-6 lg:px-8">
-				<div className="flex flex-col gap-4">
-					<div className="grid py-6">
-						<QouteCard
-							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline={""}
-							icon={Heart}
-							color={"yellow"}
-						/>
-						<div className="mt-6 space-y-6"></div>
-
-						<FavoritesTable
-							favorites={paginatedSongs.map((song) => ({
-								id: song.id,
-								songId: song.songId,
-								chartId: getDifficultyFromChunithmChart(song.chartId),
-								title: (
-									<div className="`max-w-[200px] `flex group relative items-center space-x-1">
-										<span className="truncate">{song.title}</span>
-									</div>
-								),
-								level: song.level,
-								genre: song.genre,
-								jacketPath: song.jacketPath,
-								artist: song.artist,
-								icon: (
-									<HeartIcon
-										className={`h-8 w-8 ${favoriteSongIds.includes(song.songId) ? "text-red-500" : "text-gray-500"}`}
-										onClick={() => {
-											const isFavorited = favoriteSongIds.includes(song.songId);
-											if (isFavorited) {
-												removeFavorite(song.songId, {
-													onSuccess: () => {
-														toast.success("Removed from favorites");
-													},
-													onError: () => {
-														toast.error("Failed to remove from favorites");
-													},
-												});
-											} else {
-												addFavorite(song.songId, {
-													onSuccess: () => {
-														toast.success("Added to favorites");
-													},
-													onError: () => {
-														toast.error("Failed to add to favorites");
-													},
-												});
-											}
-										}}
-									/>
-								),
-							}))}
-							searchQuery={searchQuery}
-							onSearchChange={(e) => setSearchQuery(e.target.value)}
-						/>
-					</div>
-
-					<div className="mb-4 flex items-center justify-center space-x-4">
-						<button
-							disabled={currentPage === 1}
-							onClick={() => setCurrentPage((prev) => prev - 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Previous
-						</button>
-						<span className="text-sm text-gray-300">
-							Page {currentPage} of {totalPages}
-						</span>
-						<button
-							disabled={currentPage === totalPages}
-							onClick={() => setCurrentPage((prev) => prev + 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Next
-						</button>
-					</div>
+			<div className="container mx-auto space-y-6">
+				{/* Quote Cards */}
+				<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
+					<QouteCard
+						icon={Heart}
+						tagline={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+						value="Your favorite songs"
+						color="yellow"
+						welcomeMessage="Manage and explore your favorite songs"
+					/>
 				</div>
-			</main>
+
+				{/* Favorites table */}
+				<div className="mb-4 p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
+					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Favorites</h3>
+					<FavoritesTable
+						favorites={paginatedSongs.map((song) => ({
+							id: song.id,
+							songId: song.songId,
+							chartId: getDifficultyFromChunithmChart(song.chartId),
+							title: (
+								<div className="group relative flex items-center space-x-1">
+									<span className="truncate">{song.title}</span>
+								</div>
+							),
+							level: song.level,
+							genre: song.genre,
+							jacketPath: song.jacketPath,
+							artist: song.artist,
+							icon: (
+								<HeartIcon
+									className={`h-8 w-8 cursor-pointer ${
+										favoriteSongIds.includes(song.songId) ? "text-red-500" : "text-gray-500"
+									}`}
+									onClick={() => {
+										const isFavorited = favoriteSongIds.includes(song.songId);
+										if (isFavorited) {
+											removeFavorite(song.songId, {
+												onSuccess: () => {
+													toast.success("Removed from favorites");
+												},
+												onError: () => {
+													toast.error("Failed to remove from favorites");
+												},
+											});
+										} else {
+											addFavorite(song.songId, {
+												onSuccess: () => {
+													toast.success("Added to favorites");
+												},
+												onError: () => {
+													toast.error("Failed to add to favorites");
+												},
+											});
+										}
+									}}
+								/>
+							),
+						}))}
+						searchQuery={searchQuery}
+						onSearchChange={(e) => setSearchQuery(e.target.value)}
+					/>
+
+					{totalPages > 1 && (
+						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
+							<button
+								disabled={currentPage === 1}
+								onClick={() => setCurrentPage((prev) => prev - 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Previous
+							</button>
+							<span className="text-sm text-gray-300">
+								Page {currentPage} of {totalPages}
+							</span>
+							<button
+								disabled={currentPage === totalPages}
+								onClick={() => setCurrentPage((prev) => prev + 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Next
+							</button>
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

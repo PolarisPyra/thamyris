@@ -17,7 +17,7 @@ import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
-const ITEMS_PER_PAGE = 15;
+const itemsPerPage = 15;
 
 const ChunithmRatingBaseList = () => {
 	const [currentHotPage, setCurrentHotPage] = useState(1);
@@ -50,23 +50,17 @@ const ChunithmRatingBaseList = () => {
 	const filteredHotSongs = hotSongs.filter((song) => song.title.toLowerCase().includes(searchHotQuery.toLowerCase()));
 	const filteredNextSongs = nextSongs.filter((song) => song.title.toLowerCase().includes(searchNextQuery.toLowerCase()));
 
-	const totalBasePages = Math.ceil(filteredBaseSongs.length / ITEMS_PER_PAGE);
-	const totalNewPages = Math.ceil(filteredNewSongs.length / ITEMS_PER_PAGE);
-	const totalHotPages = Math.ceil(filteredHotSongs.length / ITEMS_PER_PAGE);
-	const totalNextPages = Math.ceil(filteredNextSongs.length / ITEMS_PER_PAGE);
+	const totalBasePages = Math.ceil(filteredBaseSongs.length / itemsPerPage);
+	const totalNewPages = Math.ceil(filteredNewSongs.length / itemsPerPage);
+	const totalHotPages = Math.ceil(filteredHotSongs.length / itemsPerPage);
+	const totalNextPages = Math.ceil(filteredNextSongs.length / itemsPerPage);
 
-	const paginatedBaseSongs = filteredBaseSongs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-	const paginatedNewSongs = filteredNewSongs.slice(
-		(currentNewPage - 1) * ITEMS_PER_PAGE,
-		currentNewPage * ITEMS_PER_PAGE
-	);
-	const paginatedHotSongs = filteredHotSongs.slice(
-		(currentHotPage - 1) * ITEMS_PER_PAGE,
-		currentHotPage * ITEMS_PER_PAGE
-	);
+	const paginatedBaseSongs = filteredBaseSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+	const paginatedNewSongs = filteredNewSongs.slice((currentNewPage - 1) * itemsPerPage, currentNewPage * itemsPerPage);
+	const paginatedHotSongs = filteredHotSongs.slice((currentHotPage - 1) * itemsPerPage, currentHotPage * itemsPerPage);
 	const paginatedNextSongs = filteredNextSongs.slice(
-		(currentNextPage - 1) * ITEMS_PER_PAGE,
-		currentNextPage * ITEMS_PER_PAGE
+		(currentNextPage - 1) * itemsPerPage,
+		currentNextPage * itemsPerPage
 	);
 
 	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingNextList || isLoadingUsername) {
@@ -89,7 +83,7 @@ const ChunithmRatingBaseList = () => {
 			<Header title="Rating Frame" />
 			<div className="container mx-auto space-y-6">
 				{(version ?? 0) >= 17 ? (
-					<div className="grid grid-cols-1 gap-4 py-6 md:grid-cols-2 lg:grid-cols-3">
+					<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
 						<QouteCard
 							icon={ChartNoAxesCombined}
 							tagline=""
@@ -124,9 +118,9 @@ const ChunithmRatingBaseList = () => {
 					</div>
 				)}
 
-				<div className="space-y-4">
+				<div className="p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
 					{/* Highest Rating Table */}
-					<h3 className="text-xl font-semibold text-gray-100">Highest Rating</h3>
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Highest Rating</h3>
 					<RatingFrameTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,
@@ -142,7 +136,7 @@ const ChunithmRatingBaseList = () => {
 						onSearchChange={(e) => setSearchQuery(e.target.value)}
 					/>
 					{totalBasePages > 1 && (
-						<div className="mb-4 flex items-center justify-center space-x-4">
+						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
 							<button
 								disabled={currentPage === 1}
 								onClick={() => setCurrentPage((prev) => prev - 1)}
@@ -164,7 +158,7 @@ const ChunithmRatingBaseList = () => {
 					)}
 
 					{/* Recent Plays Table */}
-					<h3 className="text-xl font-semibold text-gray-100">Recent Plays</h3>
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Recent Plays</h3>
 					<RatingFrameTable
 						songs={paginatedHotSongs.map((song) => ({
 							title: song.title,
@@ -180,7 +174,7 @@ const ChunithmRatingBaseList = () => {
 						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
 					/>
 					{totalHotPages > 1 && (
-						<div className="mb-4 flex items-center justify-center space-x-4">
+						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
 							<button
 								disabled={currentHotPage === 1}
 								onClick={() => setCurrentHotPage((prev) => prev - 1)}
@@ -204,7 +198,7 @@ const ChunithmRatingBaseList = () => {
 					{/* Current Version Table - Only show if version is 17 or higher */}
 					{(version ?? 0) >= 17 && (
 						<div className="space-y-4">
-							<h3 className="text-xl font-semibold text-gray-100">Current Version</h3>
+							<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Current Version</h3>
 							<RatingFrameTable
 								songs={paginatedNewSongs.map((song) => ({
 									title: song.title,
@@ -220,7 +214,7 @@ const ChunithmRatingBaseList = () => {
 								onSearchChange={(e) => setSearchNewQuery(e.target.value)}
 							/>
 							{totalNewPages > 1 && (
-								<div className="mb-4 flex items-center justify-center space-x-4">
+								<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
 									<button
 										disabled={currentNewPage === 1}
 										onClick={() => setCurrentNewPage((prev) => prev - 1)}
@@ -246,7 +240,7 @@ const ChunithmRatingBaseList = () => {
 					{/* Potential Plays Table - Only show if version is 17 or higher */}
 					{(version ?? 0) >= 17 && (
 						<>
-							<h3 className="text-xl font-semibold text-gray-100">Potential Plays</h3>
+							<h3 className="mb-4 text-xl font-semibold text-gray-100">Potential Plays</h3>
 							<RatingFrameTable
 								songs={paginatedNextSongs.map((song) => ({
 									title: song.title,
@@ -262,7 +256,7 @@ const ChunithmRatingBaseList = () => {
 								onSearchChange={(e) => setSearchNextQuery(e.target.value)}
 							/>
 							{totalNextPages > 1 && (
-								<div className="mb-4 flex items-center justify-center space-x-4">
+								<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
 									<button
 										disabled={currentNextPage === 1}
 										onClick={() => setCurrentNextPage((prev) => prev - 1)}
@@ -285,7 +279,6 @@ const ChunithmRatingBaseList = () => {
 						</>
 					)}
 				</div>
-				<div className="mb-4 flex items-center justify-center space-x-4" />
 			</div>
 		</div>
 	);

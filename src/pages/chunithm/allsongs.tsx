@@ -11,7 +11,7 @@ import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
 import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
-const ITEMS_PER_PAGE = 10;
+const itemsPerPage = 10;
 
 const ChunithmAllSongs = () => {
 	const { data: songs = [], isLoading } = useChunithmSongs();
@@ -21,8 +21,8 @@ const ChunithmAllSongs = () => {
 
 	const filteredSongs = songs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
-	const totalPages = Math.ceil(filteredSongs.length / ITEMS_PER_PAGE);
-	const paginatedSongs = filteredSongs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
+	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	if (isLoading || isLoadingUsername) {
 		return (
@@ -40,68 +40,73 @@ const ChunithmAllSongs = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="All Songs" />
-			<main className="mx-auto h-[calc(100vh-64px)] max-w-full px-2 py-4 sm:px-4 lg:px-8">
-				<div className="flex flex-col gap-4">
-					<div className="grid py-6">
-						<QouteCard
-							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline={""}
-							icon={BoomBox}
-							color={"yellow"}
-						/>
-						<div className="mt-6 space-y-6"></div>
-
-						<AllSongsTable
-							allsongs={paginatedSongs.map((song) => ({
-								id: song.id,
-								songId: song.songId,
-								chartId: getDifficultyFromChunithmChart(song.chartId),
-								title: (
-									<div className="group relative flex items-center space-x-1">
-										<span className="">{song.title}</span>
-									</div>
-								),
-								level: (
-									<div className="flex flex-col items-start">
-										<span>{song.level.toString()}</span>
-										<span className="text-sm text-gray-400">{getDifficultyFromChunithmChart(song.chartId)}</span>
-									</div>
-								),
-								genre: song.genre,
-								artist: (
-									<div className="group relative flex max-w-[150px] items-center space-x-1">
-										<span className="truncate">{song.artist}</span>
-									</div>
-								),
-								jacketPath: song.jacketPath,
-								icon: null,
-							}))}
-							searchQuery={searchQuery}
-							onSearchChange={(e) => setSearchQuery(e.target.value)}
-						/>
-					</div>
-
-					<div className="mb-4 flex items-center justify-center space-x-4">
-						<button
-							disabled={currentPage === 1}
-							onClick={() => setCurrentPage((prev) => prev - 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Previous
-						</button>
-						<span className="text-sm text-gray-300">
-							Page {currentPage} of {totalPages}
-						</span>
-						<button
-							disabled={currentPage === totalPages}
-							onClick={() => setCurrentPage((prev) => prev + 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Next
-						</button>
-					</div>
+			<div className="container mx-auto space-y-6">
+				{/* Quote Cards */}
+				<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
+					<QouteCard
+						icon={BoomBox}
+						tagline={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+						value="Explore all available songs"
+						color="yellow"
+						welcomeMessage="Browse and discover new songs"
+					/>
 				</div>
-			</main>
+
+				{/* All songs table */}
+				<div className="mb-4 p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
+					<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">All Songs</h3>
+					<AllSongsTable
+						allsongs={paginatedSongs.map((song) => ({
+							id: song.id,
+							songId: song.songId,
+							chartId: getDifficultyFromChunithmChart(song.chartId),
+							title: (
+								<div className="group relative flex items-center space-x-1">
+									<span className="truncate">{song.title}</span>
+								</div>
+							),
+							level: (
+								<div className="flex flex-col items-start">
+									<span>{song.level.toString()}</span>
+									<span className="text-sm text-gray-400">{getDifficultyFromChunithmChart(song.chartId)}</span>
+								</div>
+							),
+							genre: song.genre,
+							artist: (
+								<div className="group relative flex max-w-[150px] items-center space-x-1">
+									<span className="truncate">{song.artist}</span>
+								</div>
+							),
+							jacketPath: song.jacketPath,
+							icon: null,
+						}))}
+						searchQuery={searchQuery}
+						onSearchChange={(e) => setSearchQuery(e.target.value)}
+					/>
+
+					{totalPages > 1 && (
+						<div className="mt-6 mb-8 flex items-center justify-center space-x-4">
+							<button
+								disabled={currentPage === 1}
+								onClick={() => setCurrentPage((prev) => prev - 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Previous
+							</button>
+							<span className="text-sm text-gray-300">
+								Page {currentPage} of {totalPages}
+							</span>
+							<button
+								disabled={currentPage === totalPages}
+								onClick={() => setCurrentPage((prev) => prev + 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Next
+							</button>
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };
