@@ -184,7 +184,7 @@ const unprotectedRoutes = new Hono()
 			if (result.affectedRows === 0) {
 				return c.json({ error: "User not found" }, 404);
 			}
-
+			// NOTE: aimedb makes default users have a placeholder NULL name so we need to get the new username after we insert it
 			const [updatedUser] = await db.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
 
 			// NOTE:
