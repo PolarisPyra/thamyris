@@ -79,7 +79,7 @@ const OngekiRivals = () => {
 					<div className="grid py-6">
 						<QouteCard
 							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline={"Challege your friends!"}
+							tagline={"Challenge your friends!"}
 							icon={Swords}
 							color={"yellow"}
 						/>
