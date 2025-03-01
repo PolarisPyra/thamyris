@@ -7,7 +7,7 @@ import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
-const favoritesRoutes = new Hono()
+const FavoritesRoutes = new Hono()
 
 	.post("/favorites/add", async (c) => {
 		try {
@@ -89,4 +89,4 @@ const favoritesRoutes = new Hono()
 			return c.json({ error: "Failed to fetch favorites" }, 500);
 		}
 	});
-export { favoritesRoutes };
+export { FavoritesRoutes };

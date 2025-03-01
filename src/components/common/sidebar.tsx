@@ -1,6 +1,17 @@
 import React from "react";
 
-import { BoomBox, ChevronDown, HeartIcon, Home, List, Newspaper, NotepadText, Pencil, Swords } from "lucide-react";
+import {
+	BoomBox,
+	ChevronDown,
+	HeartIcon,
+	Home,
+	List,
+	Newspaper,
+	NotepadText,
+	Pencil,
+	Swords,
+	Trophy,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 import {
@@ -45,6 +56,12 @@ const chunithmSubnav = [
 		color: "#e0d531",
 	},
 	{
+		name: "Leaderboard",
+		href: "/chunithm/leaderboard",
+		icon: Trophy,
+		color: "#e0d531",
+	},
+	{
 		name: "All Songs",
 		href: "/chunithm/allsongs",
 		icon: BoomBox,
@@ -63,6 +80,12 @@ const ongekiSubnav = [
 		name: "Scores",
 		href: "/ongeki/scores",
 		icon: NotepadText,
+		color: "#f067e9",
+	},
+	{
+		name: "Leaderboard",
+		href: "/ongeki/leaderboard",
+		icon: Trophy,
 		color: "#f067e9",
 	},
 	{

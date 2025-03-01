@@ -1,37 +1,43 @@
 import { Hono } from "hono";
 
 import { AdminRoutes } from "./admin/admin";
-import { aimeCardRoute } from "./common/aime";
-import { userRoutes } from "./common/users";
+import { AimeCardRoute } from "./common/aime";
+import { UserRoutes } from "./common/users";
 import { AvatarRoutes } from "./titles/chunithm/avatar";
 import { ChunithmRoutes } from "./titles/chunithm/chunithm";
-import { favoritesRoutes } from "./titles/chunithm/favorites";
-import { mapIconRoutes } from "./titles/chunithm/mapicon";
-import { nameplateRoutes } from "./titles/chunithm/nameplate";
+import { FavoritesRoutes } from "./titles/chunithm/favorites";
+import { ChunithmLeaderboardRoutes } from "./titles/chunithm/leaderboard";
+import { MapIconRoutes } from "./titles/chunithm/mapicon";
+import { NameplateRoutes } from "./titles/chunithm/nameplate";
 import { UserRatingFramesRoutes } from "./titles/chunithm/rating";
-import { rivalsRoutes } from "./titles/chunithm/rivals";
-import { chunithmSettingsRoute } from "./titles/chunithm/settings";
-import { systemvoiceRoutes } from "./titles/chunithm/systemvoice";
+import { RivalsRoutes } from "./titles/chunithm/rivals";
+import { ChunithmSettingsRoute } from "./titles/chunithm/settings";
+import { SystemvoiceRoutes } from "./titles/chunithm/systemvoice";
+import { OngekiLeaderboadRoutes } from "./titles/ongeki/leaderboard";
 import { OngekiRoutes } from "./titles/ongeki/ongeki";
 import { OngekiRatingRoutes } from "./titles/ongeki/rating";
-import { ongekiSettingsRoute } from "./titles/ongeki/settings";
+import { OngekiSettingsRoutes } from "./titles/ongeki/settings";
 import { unprotectedRoutes } from "./unprotected";
 
 const routes = new Hono()
-	.route("/aime", aimeCardRoute)
+	.route("/aime", AimeCardRoute)
 	.route("/chunithm", ChunithmRoutes)
 	.route("/chunithm", AvatarRoutes)
-	.route("/users", userRoutes)
-	.route("/chunithm", nameplateRoutes)
-	.route("/chunithm", systemvoiceRoutes)
-	.route("/chunithm", favoritesRoutes)
-	.route("/chunithm", rivalsRoutes)
-	.route("/chunithm", mapIconRoutes)
-	.route("/chunithm", chunithmSettingsRoute)
+	.route("/users", UserRoutes)
+	.route("/chunithm", NameplateRoutes)
+	.route("/chunithm", SystemvoiceRoutes)
+	.route("/chunithm", FavoritesRoutes)
+	.route("/chunithm", RivalsRoutes)
+	.route("/chunithm", ChunithmLeaderboardRoutes)
+
+	.route("/chunithm", MapIconRoutes)
+	.route("/chunithm", ChunithmSettingsRoute)
 	.route("/chunithm", UserRatingFramesRoutes)
 	.route("/ongeki", OngekiRoutes)
 	.route("/ongeki", OngekiRatingRoutes)
-	.route("/ongeki", ongekiSettingsRoute)
+	.route("/ongeki", OngekiSettingsRoutes)
+	.route("/ongeki", OngekiLeaderboadRoutes)
+
 	.route("/admin", AdminRoutes);
 
 export { routes, unprotectedRoutes };

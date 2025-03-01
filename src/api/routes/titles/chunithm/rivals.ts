@@ -7,7 +7,7 @@ import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
-const rivalsRoutes = new Hono()
+const RivalsRoutes = new Hono()
 
 	.post("/rivals/add", async (c) => {
 		try {
@@ -186,4 +186,4 @@ const rivalsRoutes = new Hono()
 			return c.json({ error: "Failed to count rivals" }, 500);
 		}
 	});
-export { rivalsRoutes };
+export { RivalsRoutes };

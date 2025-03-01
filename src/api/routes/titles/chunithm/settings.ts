@@ -5,7 +5,7 @@ import { verify } from "hono/jwt";
 import { db } from "@/api/db";
 import { env } from "@/env";
 
-const chunithmSettingsRoute = new Hono()
+const ChunithmSettingsRoute = new Hono()
 
 	.get("/settings/get", async (c) => {
 		try {
@@ -83,4 +83,4 @@ const chunithmSettingsRoute = new Hono()
 		}
 	});
 
-export { chunithmSettingsRoute };
+export { ChunithmSettingsRoute };

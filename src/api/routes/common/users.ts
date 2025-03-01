@@ -6,7 +6,7 @@ import { db } from "@/api/db";
 import { DB } from "@/api/types/db";
 import { env } from "@/env";
 
-const userRoutes = new Hono()
+const UserRoutes = new Hono()
 	.post("/logout", async (c) => {
 		// Clear the auth_token cookie
 		setCookie(c, "auth_token", "", {
@@ -48,4 +48,4 @@ const userRoutes = new Hono()
 		return c.json({ username: user.username });
 	});
 
-export { userRoutes };
+export { UserRoutes };

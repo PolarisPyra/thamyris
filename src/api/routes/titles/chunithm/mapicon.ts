@@ -7,7 +7,7 @@ import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
-const mapIconRoutes = new Hono()
+const MapIconRoutes = new Hono()
 
 	.get("/mapicon/current", async (c) => {
 		try {
@@ -111,4 +111,4 @@ const mapIconRoutes = new Hono()
 			return c.json({ error: "Failed to fetch mapicons" }, 500);
 		}
 	});
-export { mapIconRoutes };
+export { MapIconRoutes };

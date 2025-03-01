@@ -12,6 +12,7 @@ import "./index.css";
 import Account from "./pages/account/account";
 import ChunithmAllSongs from "./pages/chunithm/allsongs";
 import ChunithmFavorites from "./pages/chunithm/favorites";
+import ChunithmLeaderboard from "./pages/chunithm/leaderboard";
 import ChunithmRatingBaseList from "./pages/chunithm/rating-base-list";
 import ChunithmRivals from "./pages/chunithm/rivals";
 import ChunithmScorePage from "./pages/chunithm/scores";
@@ -19,6 +20,7 @@ import ChunithmSettingsPage from "./pages/chunithm/settings";
 import ChunithmUserbox from "./pages/chunithm/userbox";
 import ServerNews from "./pages/common/server-news";
 import OngekiAllSongs from "./pages/ongeki/allsongs";
+import OngekiLeaderboard from "./pages/ongeki/leaderboard";
 import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
 import OngekiScorePage from "./pages/ongeki/scores";
 import OngekiSettingsPage from "./pages/ongeki/settings";
@@ -64,12 +66,16 @@ const app = (
 							<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
 							<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
 							<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
+							<Route path="/chunithm/leaderboard" element={<ChunithmLeaderboard />} />
 
 							<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
 							<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
 							<Route path="/ongeki/scores" element={<OngekiScorePage />} />
 							<Route path="/chunithm/rating" element={<ChunithmRatingBaseList />} />
 							<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
+							<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
+							<Route path="/ongeki/leaderboard" element={<OngekiLeaderboard />} />
+
 							<Route path="/account" element={<Account />} />
 						</Route>
 					</Route>

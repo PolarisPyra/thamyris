@@ -6,7 +6,7 @@ import { db } from "@/api/db";
 import { getUserVersionOngeki } from "@/api/version";
 import { env } from "@/env";
 
-const ongekiSettingsRoute = new Hono()
+const OngekiSettingsRoutes = new Hono()
 
 	.get("/settings/get", async (c) => {
 		try {
@@ -206,4 +206,4 @@ const ongekiSettingsRoute = new Hono()
 		}
 	});
 
-export { ongekiSettingsRoute };
+export { OngekiSettingsRoutes };

@@ -7,7 +7,7 @@ import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
-const nameplateRoutes = new Hono()
+const NameplateRoutes = new Hono()
 
 	.get("/nameplates/current", async (c) => {
 		try {
@@ -111,4 +111,4 @@ const nameplateRoutes = new Hono()
 			return c.json({ error: "Failed to fetch nameplates" }, 500);
 		}
 	});
-export { nameplateRoutes };
+export { NameplateRoutes };

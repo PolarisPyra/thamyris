@@ -7,7 +7,7 @@ import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
-const systemvoiceRoutes = new Hono()
+const SystemvoiceRoutes = new Hono()
 
 	.get("/systemvoice/current", async (c) => {
 		try {
@@ -111,4 +111,4 @@ const systemvoiceRoutes = new Hono()
 			return c.json({ error: "Failed to fetch systemvoices" }, 500);
 		}
 	});
-export { systemvoiceRoutes };
+export { SystemvoiceRoutes };

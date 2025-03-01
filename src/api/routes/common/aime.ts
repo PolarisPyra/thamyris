@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { DB } from "@/api/types";
 
-const aimeCardRoute = new Hono()
+const AimeCardRoute = new Hono()
 	.get("/aime_card", async (c) => {
 		try {
 			const rows = await db.select<DB.AimeCard>("SELECT * FROM aime_card");
@@ -23,4 +23,4 @@ const aimeCardRoute = new Hono()
 		}
 	});
 
-export { aimeCardRoute };
+export { AimeCardRoute };
