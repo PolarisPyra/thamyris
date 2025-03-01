@@ -1,9 +1,6 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
-import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -11,12 +8,8 @@ const ChunithmRoutes = new Hono()
 
 	.get("/chuni_static_music", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
+			const userId = c.payload.userId;
+
 			const version = await getUserVersionChunithm(userId);
 			const results = await db.query(
 				`SELECT id, songId, chartId, title, level, artist, genre  
@@ -33,13 +26,8 @@ const ChunithmRoutes = new Hono()
 	})
 	.get("/chuni_score_playlog", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			const results = await db.query(

@@ -1,24 +1,14 @@
 import { Hono } from "hono";
-import type { Context } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
-import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
 const AvatarRoutes = new Hono()
 
-	.get("/avatar/current", async (c: Context) => {
+	.get("/avatar/current", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
+			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
 			const results = await db.query(
 				`
@@ -69,15 +59,10 @@ AND cp.version = ?;
 		}
 	})
 
-	.post("/avatar/update", async (c: Context) => {
+	.post("/avatar/update", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const { avatarParts } = await c.req.json();
 			const version = await getUserVersionChunithm(userId);
 
@@ -105,15 +90,10 @@ AND cp.version = ?;
 		}
 	})
 
-	.get("/avatar/parts/all", async (c: Context) => {
+	.get("/avatar/parts/all", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			// Get unlocked avatar parts

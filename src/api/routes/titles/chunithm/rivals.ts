@@ -1,9 +1,6 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
-import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -11,13 +8,8 @@ const RivalsRoutes = new Hono()
 
 	.post("/rivals/add", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const { favId } = await c.req.json();
 			const version = await getUserVersionChunithm(userId);
 
@@ -39,13 +31,8 @@ const RivalsRoutes = new Hono()
 
 	.post("/rivals/remove", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const { favId } = await c.req.json();
 			const version = await getUserVersionChunithm(userId);
 
@@ -67,13 +54,8 @@ const RivalsRoutes = new Hono()
 
 	.get("/rivals/all", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			const results = await db.query(
@@ -92,13 +74,8 @@ const RivalsRoutes = new Hono()
 
 	.get("/rivals/mutual", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			const results = await db.query(
@@ -136,13 +113,8 @@ const RivalsRoutes = new Hono()
 
 	.get("/rivals/userlookup", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			const results = await db.query(
@@ -164,13 +136,8 @@ const RivalsRoutes = new Hono()
 
 	.get("/rivals/count", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(

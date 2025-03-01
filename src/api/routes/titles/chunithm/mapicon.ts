@@ -1,9 +1,6 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
-import { env } from "@/env";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -11,13 +8,7 @@ const MapIconRoutes = new Hono()
 
 	.get("/mapicon/current", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
+			const userId = c.payload.userId;
 
 			const version = await getUserVersionChunithm(userId);
 
@@ -44,13 +35,8 @@ const MapIconRoutes = new Hono()
 
 	.post("/mapicon/update", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const { mapIconId } = await c.req.json();
 			const version = await getUserVersionChunithm(userId);
 
@@ -73,13 +59,8 @@ const MapIconRoutes = new Hono()
 	})
 	.get("/mapicon/all", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const supportedVersionNumber = 17;
 
 			// Get unlocked mapicons

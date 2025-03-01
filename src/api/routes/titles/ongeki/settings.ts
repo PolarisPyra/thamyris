@@ -1,22 +1,13 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
 import { getUserVersionOngeki } from "@/api/version";
-import { env } from "@/env";
 
 const OngekiSettingsRoutes = new Hono()
 
 	.get("/settings/get", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
+			const userId = c.payload.userId;
 
 			const [versionResult] = await db.query(
 				`SELECT value 
@@ -33,13 +24,8 @@ const OngekiSettingsRoutes = new Hono()
 	})
 	.post("/settings/update", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const { version } = await c.req.json();
 
 			const result = await db.query(
@@ -61,13 +47,8 @@ const OngekiSettingsRoutes = new Hono()
 	})
 	.post("settings/unlockcards", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const { version } = await c.req.json();
 
 			await db.query(
@@ -121,13 +102,8 @@ const OngekiSettingsRoutes = new Hono()
 
 	.post("settings/unlockspecificitem", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const { itemKind, version } = await c.req.json();
 
 			await db.query(
@@ -151,13 +127,8 @@ const OngekiSettingsRoutes = new Hono()
 
 	.post("settings/unlockallitems", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionOngeki(userId);
 
 			const itemKinds = [2, 3, 17, 19];
@@ -183,13 +154,7 @@ const OngekiSettingsRoutes = new Hono()
 	})
 	.get("/settings/versions", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
+			const userId = c.payload.userId;
 
 			const versions = await db.query(
 				`SELECT DISTINCT version 

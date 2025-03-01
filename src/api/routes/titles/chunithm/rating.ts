@@ -1,9 +1,6 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
-import { env } from "@/env";
 import { UserRatingBaseEntry } from "@/utils/types";
 
 import { getUserVersionChunithm } from "../../../version";
@@ -11,13 +8,8 @@ import { getUserVersionChunithm } from "../../../version";
 const UserRatingFramesRoutes = new Hono()
 	.get("/user_rating_base_hot_list", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			// First get the user rating base list
@@ -94,13 +86,8 @@ const UserRatingFramesRoutes = new Hono()
 	})
 	.get("/user_rating_base_list", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			// Get base list entries
@@ -177,13 +164,8 @@ const UserRatingFramesRoutes = new Hono()
 	})
 	.get("/user_rating_base_new_list", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			// Get new list entries
@@ -260,13 +242,8 @@ const UserRatingFramesRoutes = new Hono()
 	})
 	.get("/user_rating_base_next_list", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const userId = c.payload.userId;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			const typeFilter = Number(version) >= 17 ? "userRatingBaseNewNextList" : "userRatingBaseNextList";

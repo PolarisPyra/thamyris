@@ -1,21 +1,14 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
-import { env } from "@/env";
 
 import { getUserVersionOngeki } from "../../../version";
 
 const OngekiRoutes = new Hono()
 	.get("/ongeki_score_playlog", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
+			const userId = c.payload.userId;
+
 			const version = await getUserVersionOngeki(userId);
 
 			const results = await db.query(
@@ -98,12 +91,8 @@ ORDER BY
 	})
 	.get("/ongeki_static_music", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
+			const userId = c.payload.userId;
+
 			const version = await getUserVersionOngeki(userId);
 			const results = await db.query(
 				`SELECT id, songId, chartId, title, level, artist, genre  
