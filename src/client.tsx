@@ -22,6 +22,7 @@ import ServerNews from "./pages/common/server-news";
 import OngekiAllSongs from "./pages/ongeki/allsongs";
 import OngekiLeaderboard from "./pages/ongeki/leaderboard";
 import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
+import OngekiRivals from "./pages/ongeki/rivals";
 import OngekiScorePage from "./pages/ongeki/scores";
 import OngekiSettingsPage from "./pages/ongeki/settings";
 import { LoginPage } from "./pages/public/login-page";
@@ -75,6 +76,7 @@ const app = (
 							<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
 							<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
 							<Route path="/ongeki/leaderboard" element={<OngekiLeaderboard />} />
+							<Route path="/ongeki/rivals" element={<OngekiRivals />} />
 
 							<Route path="/account" element={<Account />} />
 						</Route>

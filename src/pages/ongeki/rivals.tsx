@@ -8,12 +8,12 @@ import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
-import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/chunithm/use-rivals";
 import { useUsername } from "@/hooks/common/use-username";
+import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/ongeki/use-rivals";
 
 const ITEMS_PER_PAGE = 10;
 
-const ChunithmRivals = () => {
+const OngekiRivals = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 
@@ -133,4 +133,4 @@ const ChunithmRivals = () => {
 	);
 };
 
-export default ChunithmRivals;
+export default OngekiRivals;

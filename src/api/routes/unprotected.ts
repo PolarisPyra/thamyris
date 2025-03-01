@@ -41,7 +41,7 @@ const signAndSetCookie = async (c: Context, user: DB.AimeUser, card: DB.AimeCard
 	});
 };
 
-const unprotectedRoutes = new Hono()
+const UnprotectedRoutes = new Hono()
 	// Apply rate limiting to all unprotected routes
 	// NOTE: Might want to see about applying this to all routes,
 	//       a user doesn't have to be logged in to hit protected routes
@@ -248,4 +248,4 @@ const unprotectedRoutes = new Hono()
 		}
 	});
 
-export { unprotectedRoutes };
+export { UnprotectedRoutes };

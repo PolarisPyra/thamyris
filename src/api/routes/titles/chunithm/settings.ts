@@ -2,7 +2,7 @@ import { Hono } from "hono";
 
 import { db } from "@/api/db";
 
-const ChunithmSettingsRoute = new Hono()
+const ChunithmSettingsRoutes = new Hono()
 
 	.get("/settings/get", async (c) => {
 		try {
@@ -63,4 +63,4 @@ const ChunithmSettingsRoute = new Hono()
 		}
 	});
 
-export { ChunithmSettingsRoute };
+export { ChunithmSettingsRoutes };

@@ -11,7 +11,7 @@ import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 
 import { jwtPayloadMiddleware } from "./api/middleware/jwtPayload";
-import { routes, unprotectedRoutes } from "./api/routes";
+import { Routes, UnprotectedRoutes } from "./api/routes";
 import { env } from "./env";
 
 const protocol = env.NODE_ENV === "production" ? "https" : "http";
@@ -66,7 +66,7 @@ const server = new Hono()
 	})
 
 	// Non-authenticated routes
-	.route("/api", unprotectedRoutes)
+	.route("/api", UnprotectedRoutes)
 
 	// Authenticated routes
 	.use(jwt({ secret: env.JWT_SECRET, cookie: "auth_token" }))
@@ -74,7 +74,7 @@ const server = new Hono()
 	// They think people'll access the payload with a string everywhere?
 	// Just add it as an explicit object to the context, this is typescript for god's sake
 	.use(jwtPayloadMiddleware())
-	.route("/api", routes)
+	.route("/api", Routes)
 
 	// Public assets
 	.use("/public/*", serveStatic({ root: "./public" }))

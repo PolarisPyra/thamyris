@@ -11,15 +11,16 @@ import { MapIconRoutes } from "./titles/chunithm/mapicon";
 import { NameplateRoutes } from "./titles/chunithm/nameplate";
 import { UserRatingFramesRoutes } from "./titles/chunithm/rating";
 import { RivalsRoutes } from "./titles/chunithm/rivals";
-import { ChunithmSettingsRoute } from "./titles/chunithm/settings";
+import { ChunithmSettingsRoutes } from "./titles/chunithm/settings";
 import { SystemvoiceRoutes } from "./titles/chunithm/systemvoice";
 import { OngekiLeaderboadRoutes } from "./titles/ongeki/leaderboard";
 import { OngekiRoutes } from "./titles/ongeki/ongeki";
 import { OngekiRatingRoutes } from "./titles/ongeki/rating";
+import { OngekiRivalsRoutes } from "./titles/ongeki/rivals";
 import { OngekiSettingsRoutes } from "./titles/ongeki/settings";
-import { unprotectedRoutes } from "./unprotected";
+import { UnprotectedRoutes } from "./unprotected";
 
-const routes = new Hono()
+const Routes = new Hono()
 	.route("/aime", AimeCardRoute)
 	.route("/chunithm", ChunithmRoutes)
 	.route("/chunithm", AvatarRoutes)
@@ -31,16 +32,17 @@ const routes = new Hono()
 	.route("/chunithm", ChunithmLeaderboardRoutes)
 
 	.route("/chunithm", MapIconRoutes)
-	.route("/chunithm", ChunithmSettingsRoute)
+	.route("/chunithm", ChunithmSettingsRoutes)
 	.route("/chunithm", UserRatingFramesRoutes)
 	.route("/ongeki", OngekiRoutes)
 	.route("/ongeki", OngekiRatingRoutes)
 	.route("/ongeki", OngekiSettingsRoutes)
 	.route("/ongeki", OngekiLeaderboadRoutes)
+	.route("/ongeki", OngekiRivalsRoutes)
 
 	.route("/admin", AdminRoutes);
 
-export { routes, unprotectedRoutes };
+export { Routes, UnprotectedRoutes };
 
 /**
  *
@@ -55,4 +57,4 @@ export { routes, unprotectedRoutes };
  *
  */
 
-export type ApiRouteType = typeof routes | typeof unprotectedRoutes;
+export type ApiRouteType = typeof Routes | typeof UnprotectedRoutes;

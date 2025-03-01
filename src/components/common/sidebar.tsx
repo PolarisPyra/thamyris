@@ -83,6 +83,12 @@ const ongekiSubnav = [
 		color: "#f067e9",
 	},
 	{
+		name: "Rivals",
+		href: "/ongeki/rivals",
+		icon: Swords,
+		color: "#f067e9",
+	},
+	{
 		name: "Leaderboard",
 		href: "/ongeki/leaderboard",
 		icon: Trophy,
