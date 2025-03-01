@@ -6,10 +6,9 @@ import Spinner from "@/components/common/spinner";
 import { useAuth } from "@/hooks/auth/use-auth";
 
 export const LoginPage: React.FC = () => {
-	const { login, isLoading, error, isAuthenticated } = useAuth();
+	const { login, isLoading, isAuthenticated } = useAuth();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [localError, setLocalError] = useState("");
 
 	if (isAuthenticated) {
 		return <Navigate to="/overview" replace />;
@@ -17,11 +16,10 @@ export const LoginPage: React.FC = () => {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setLocalError("");
 		try {
 			await login(username, password);
 		} catch (err) {
-			setLocalError(err instanceof Error ? err.message : "Login failed");
+			console.error(err);
 		}
 	};
 
@@ -30,7 +28,6 @@ export const LoginPage: React.FC = () => {
 			<div className="mx-4 w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
 				<h1 className="mb-8 text-center text-4xl font-bold text-gray-800">Welcome Back</h1>
 				<form className="space-y-6" onSubmit={handleSubmit}>
-					{(error || localError) && <div className="text-center text-sm text-red-500">{error || localError}</div>}
 					<div>
 						<label htmlFor="username" className="block text-sm font-medium text-gray-700">
 							Username

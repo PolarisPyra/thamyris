@@ -6,7 +6,7 @@ const SignUpPage = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [accessCode, setAccessCode] = useState("");
-	const { signup, isLoading, error } = useAuth();
+	const { signup, isLoading } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -59,8 +59,6 @@ const SignUpPage = () => {
 							onChange={(e) => setAccessCode(e.target.value)}
 						/>
 					</div>
-
-					{error && <div className="text-center text-sm text-red-500">{error}</div>}
 
 					<button
 						type="submit"
