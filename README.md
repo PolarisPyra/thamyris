@@ -16,19 +16,40 @@ A modern web application built with React, Hono, and TypeScript.
 
 ## 📋 Prerequisites
 
-- [Bun](https://bun.sh/) (Latest version)
+- [pnpm](https://bun.sh/) (Latest version)
 - [Node.js](https://nodejs.org/) (v19 or higher)
 - MySQL Server
 - TypeScript knowledge
 
-## 🛠 Setup
+## 🔢 Node.js Version Management
+
+This project includes a `.npmrc` file that specifies Node.js version 22.14.0. To manage Node.js versions with pnpm, you can use the following commands:
+
+### Installing Node.js Versions
+
+````bash
+# Install LTS version
+pnpm env use --global lts
+
+# Install specific version
+pnpm env use --global 22.14.0
+
+# Install latest version
+pnpm env use --global latest
+
+# Install by name (e.g. hydrogen)
+pnpm env use --global lts
+
+# or just use pnpm once in the projects root directory and it will install the version in the npmrc
+
+### 🛠 Setup
 
 1. **Clone the repository**
 
    ```bash
    git clone <your-repo-url>
    cd thamyris
-   ```
+````
 
 2. **Install dependencies**
 
