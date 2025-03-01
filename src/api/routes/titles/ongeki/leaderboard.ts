@@ -24,8 +24,7 @@ const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c) => {
                 opd.userName as username
             FROM ongeki_profile_data opd
             WHERE opd.version = ?
-            ORDER BY opd.playerRating DESC
-            LIMIT 100`,
+            ORDER BY opd.playerRating DESC`,
 			[version]
 		);
 

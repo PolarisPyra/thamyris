@@ -17,7 +17,6 @@ const ChunithmLeaderboardRoutes = new Hono().get("/leaderboard", async (c) => {
 		const userId = payload.userId;
 		const version = await getUserVersionChunithm(userId);
 
-		// Get all users and their ratings from chuni_profile_data
 		const results = await db.query(
 			`SELECT 
                 cpd.user,
@@ -25,8 +24,7 @@ const ChunithmLeaderboardRoutes = new Hono().get("/leaderboard", async (c) => {
                 cpd.userName as username
             FROM chuni_profile_data cpd
             WHERE cpd.version = ?
-            ORDER BY cpd.playerRating DESC
-            LIMIT 100`,
+            ORDER BY cpd.playerRating DESC`,
 			[version]
 		);
 
