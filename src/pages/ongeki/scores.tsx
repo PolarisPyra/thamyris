@@ -52,7 +52,7 @@ const OngekiScorePage = () => {
 			<Header title="Overview" />
 			<div className="container mx-auto space-y-6">
 				{/* Quote Cards */}
-				<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
+				<div className="gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
 					<QouteCard
 						icon={Trophy}
 						tagline={`Rating: ${currentRating}`}

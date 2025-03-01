@@ -43,13 +43,13 @@ const ChunithmAllSongs = () => {
 			<Header title="All Songs" />
 			<div className="container mx-auto space-y-6">
 				{/* Quote Cards */}
-				<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
+				<div className="gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
 					<QouteCard
 						icon={BoomBox}
 						tagline={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-						value="Explore all available songs"
+						value=""
 						color="yellow"
-						welcomeMessage="Browse and discover new songs"
+						welcomeMessage="Explore all available songs"
 					/>
 				</div>
 
