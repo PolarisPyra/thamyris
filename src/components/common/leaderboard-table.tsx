@@ -48,13 +48,26 @@ export const LeaderboardTable = ({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{players.map((player, index) => (
-							<TableRow key={player.userId} className="border-b border-gray-700 hover:bg-gray-700">
-								<TableCell className="text-sm text-gray-300">#{(page - 1) * itemsPerPage + index + 1}</TableCell>
-								<TableCell className="text-sm text-gray-300">{player.username}</TableCell>
-								<TableCell className="text-sm text-gray-300">{player.rating}</TableCell>
-							</TableRow>
-						))}
+						{players.map((player, index) => {
+							const rank = (page - 1) * itemsPerPage + index + 1;
+							let rowClass = "border-b border-gray-700 ";
+
+							if (rank === 1) {
+								rowClass += "bg-yellow-300/20 hover:bg-amber-300/30";
+							} else if (rank === 2) {
+								rowClass += "bg-teal-500/20 hover:bg-teal-500/30";
+							} else {
+								rowClass += "hover:bg-gray-700";
+							}
+
+							return (
+								<TableRow key={player.userId} className={rowClass}>
+									<TableCell className="text-sm text-gray-300">#{rank}</TableCell>
+									<TableCell className="text-sm text-gray-300">{player.username}</TableCell>
+									<TableCell className="text-sm text-gray-300">{player.rating}</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</div>
