@@ -1,1 +1,1 @@
-export const cdnUrl = process.env.CDN_URL;
+export const authCookieName = "auth_token";

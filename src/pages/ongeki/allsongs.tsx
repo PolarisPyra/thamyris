@@ -14,10 +14,11 @@ import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 const itemsPerPage = 10;
 
 const OngekiAllSongs = () => {
+	const { username } = useUser();
+
 	const { data: songs = [], isLoading } = useOngekiSongs();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
-	const { username } = useUser();
 
 	const filteredSongs = songs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 

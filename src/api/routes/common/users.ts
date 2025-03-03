@@ -19,7 +19,7 @@ const UserRoutes = new Hono()
 		//   Unless we're displaying these messages to the user,
 		//   or including specific information in the response,
 		//   a status code is probably sufficient.
-		return c.json({ message: "Logout successful" });
+		return c.status(200);
 	})
 	.post("/verify", async (c) => {
 		// The JWT middleware will have already verified the token

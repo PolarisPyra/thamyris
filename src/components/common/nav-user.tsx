@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import { useQuery } from "@tanstack/react-query";
 import { ChevronsUpDown, LogOut, SettingsIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +17,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useAuth } from "@/hooks/auth/use-auth";
+import { api } from "@/utils";
 
 export function NavUser({
 	user,
@@ -28,8 +29,13 @@ export function NavUser({
 	};
 }) {
 	const { isMobile } = useSidebar();
-	const { logout } = useAuth();
 	const navigate = useNavigate();
+
+	const { refetch } = useQuery({
+		queryKey: ["nav-user-logout"],
+		queryFn: async () => api.users.logout.$post(),
+		enabled: false,
+	});
 
 	return (
 		<SidebarMenu>
@@ -103,7 +109,7 @@ export function NavUser({
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator className="bg-gray-700" />
-						<DropdownMenuItem onClick={logout} className="text-gray-100 focus:bg-gray-700 focus:text-gray-100">
+						<DropdownMenuItem onClick={() => refetch()} className="text-gray-100 focus:bg-gray-700 focus:text-gray-100">
 							<LogOut className="text-gray-400" />
 							Log out
 						</DropdownMenuItem>

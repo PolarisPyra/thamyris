@@ -1,11 +1,9 @@
 import { useContext } from "react";
 
-import { redirect } from "react-router-dom";
-
-import { AuthContext } from "@/context/auth-context-provider";
+import { AuthContext, AuthContextValue } from "@/context-providers/auth";
 import { User } from "@/utils/types";
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextValue => {
 	const context = useContext(AuthContext);
 	if (context === undefined) {
 		throw new Error("useAuth must be used within an AuthProvider");
@@ -15,5 +13,8 @@ export const useAuth = () => {
 
 export const useUser = (): User => {
 	const { user } = useAuth();
-	return user || (redirect("/") as any as User);
+	if (!user) {
+		throw new Error("useUser must be used within an authenticated context");
+	}
+	return user;
 };

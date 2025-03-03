@@ -2,6 +2,7 @@ import argon2 from "argon2";
 import { Context, Hono } from "hono";
 import { rateLimiter } from "hono-rate-limiter";
 import { setCookie } from "hono/cookie";
+import { HTTPException } from "hono/http-exception";
 import { sign } from "hono/jwt";
 import { z } from "zod";
 
@@ -15,7 +16,7 @@ import { JWTPayload } from "../types/jwt";
 /**
  * Unprotected routes which should not require authentication.
  */
-const signAndSetCookie = async (c: Context, user: DB.AimeUser, card: DB.AimeCard) => {
+const signAndSetCookie = async (c: Context, user: DB.AimeUser, card: DB.AimeCard): Promise<JWTPayload> => {
 	// Create JWT token
 	const payload: JWTPayload = {
 		userId: user.id,
@@ -39,6 +40,8 @@ const signAndSetCookie = async (c: Context, user: DB.AimeUser, card: DB.AimeCard
 		path: "/",
 		domain: env.NODE_ENV === "production" ? env.DOMAIN : "localhost",
 	});
+
+	return payload;
 };
 
 const UnprotectedRoutes = new Hono()
@@ -71,13 +74,13 @@ const UnprotectedRoutes = new Hono()
 
 				// Check if user exists
 				if (!user) {
-					return c.json({ error: "Invalid username or password" }, 401);
+					throw new HTTPException(401, { message: "Invalid username or password" });
 				}
 
 				// Verify password
 				const passwordMatch = await argon2.verify(user.password, password);
 				if (!passwordMatch) {
-					return c.json({ error: "Invalid username or password" }, 401);
+					throw new HTTPException(401, { message: "Invalid username or password" });
 				}
 
 				const [aimeCard] = await db.select<DB.AimeCard>("SELECT access_code FROM aime_card WHERE user = ?", [user.id]);
@@ -113,8 +116,7 @@ const UnprotectedRoutes = new Hono()
 						[user.id, user.id]
 					);
 				}
-
-				await signAndSetCookie(c, user, aimeCard);
+				const userPayload = await signAndSetCookie(c, user, aimeCard);
 
 				// Update last login date
 				await db.update(
@@ -126,12 +128,10 @@ const UnprotectedRoutes = new Hono()
 
 				// Successful login
 				return c.json({
-					message: "Login successful",
-					userId: user.id,
+					user: userPayload,
 				});
-			} catch (error) {
-				console.error("Login error:", error);
-				return c.json({ error: "Failed to login" }, 500);
+			} catch (error: HTTPException | any) {
+				throw new HTTPException(error?.status || 500, { message: "Failed to login", cause: error });
 			}
 		}
 	)
@@ -144,14 +144,14 @@ const UnprotectedRoutes = new Hono()
 
 			// Validate input
 			if (!username || !password || !accessCode) {
-				return c.json({ error: "Username, password, and access code are required" }, 400);
+				throw new HTTPException(400, { message: "Username, password, and access code are required" });
 			}
 
 			// Verify access code and get user ID
 			const [aimeCard] = await db.select<DB.AimeCard>("SELECT user FROM aime_card WHERE access_code = ?", [accessCode]);
 
 			if (!aimeCard) {
-				return c.json({ error: "Invalid access code" }, 404);
+				throw new HTTPException(400, { message: "Invalid access code" });
 			}
 
 			const userId = aimeCard.user;
@@ -161,13 +161,13 @@ const UnprotectedRoutes = new Hono()
 
 			// check contents of json payload against existing users
 			if (existingUser && (existingUser.username || existingUser.password)) {
-				return c.json({ error: "Account already exists for this user" }, 409);
+				throw new HTTPException(409, { message: "Account already exists for this user" });
 			}
 
 			// Check if username is already taken
 			const [usernameCheck] = await db.select<DB.AimeUser>("SELECT * FROM aime_user WHERE username = ?", [username]);
 			if (usernameCheck) {
-				return c.json({ error: "Username already exists" }, 409);
+				throw new HTTPException(409, { message: "Username already exists" });
 			}
 
 			// Hash password
@@ -182,8 +182,9 @@ const UnprotectedRoutes = new Hono()
 
 			// Check if the update was successful
 			if (result.affectedRows === 0) {
-				return c.json({ error: "User not found" }, 404);
+				throw new HTTPException(404, { message: "User not found" });
 			}
+
 			// NOTE: aimedb makes default users have a placeholder NULL name so we need to get the new username after we insert it
 			const [updatedUser] = await db.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
 
@@ -224,7 +225,7 @@ const UnprotectedRoutes = new Hono()
 				);
 			}
 
-			await signAndSetCookie(c, updatedUser, aimeCard);
+			const userPayload = await signAndSetCookie(c, updatedUser, aimeCard);
 			// Update last login date
 			await db.update(
 				`UPDATE aime_user 
@@ -234,17 +235,10 @@ const UnprotectedRoutes = new Hono()
 			);
 
 			return c.json({
-				message: "Signup successful",
-				userId: userId,
-				// NOTE: Hmmm, if we're going to return errors,
-				//       we might want to override types to include it
-				//	     in every response. Getting a type issue here in client
-				//	   because it's not included in the happy path.
-				error: null,
+				user: userPayload,
 			});
-		} catch (error) {
-			console.error("Signup error:", error);
-			return c.json({ error: "Failed to signup" }, 500);
+		} catch (error: HTTPException | any) {
+			throw new HTTPException(error?.status || 500, { message: "Failed to create account", cause: error });
 		}
 	});
 

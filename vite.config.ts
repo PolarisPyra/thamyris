@@ -1,6 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import { defineConfig } from "vite";
+import eslintPlugin from "vite-plugin-eslint";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import { env } from "./src/env";
@@ -44,7 +45,14 @@ export default defineConfig({
 		copyPublicDir: true,
 	},
 	assetsInclude: ["**/*.png"],
-	plugins: [tsconfigPaths(), tailwindcss()],
+	plugins: [
+		tsconfigPaths(),
+		tailwindcss(),
+		eslintPlugin({
+			failOnError: false,
+			include: ["src/**/*.{js,jsx,ts,tsx}"],
+		}),
+	],
 	base: "/",
 	server: {
 		proxy: {

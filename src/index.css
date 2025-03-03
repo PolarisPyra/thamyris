@@ -7,7 +7,13 @@
 ---break---
 */
 @custom-variant dark (&:is(.dark *));
-
+/* In your global CSS file */
+html,
+body {
+	background-color: var(--secondary-foreground);
+	margin: 0;
+	padding: 0;
+}
 /*
 * CHUSAN AVATAR
 */
