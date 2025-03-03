@@ -8,7 +8,6 @@ import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
 import RatingFrameTable from "@/components/common/rating-table";
 import Spinner from "@/components/common/spinner";
-import { useUsername } from "@/hooks/common/use-username";
 import {
 	useUserRatingBaseBestList,
 	useUserRatingBaseBestNewList,
@@ -33,7 +32,6 @@ const OngekiRatingFrames = () => {
 	const { data: newList = [], isLoading: isLoadingNewList } = useUserRatingBaseBestNewList();
 	const { data: hotList = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
 	const { data: nextList = [], isLoading: isLoadingNextList } = useUserRatingBaseNextList();
-	const { isLoading: isLoadingUsername } = useUsername();
 
 	// Separate base and new songs
 	const baseSongs = baseList.filter((song) => song.musicId != 0);
@@ -70,7 +68,7 @@ const OngekiRatingFrames = () => {
 		currentNextPage * itemsPerPage
 	);
 
-	if (isLoadingBaseList || isLoadingNewList || isLoadingNextList || isLoadingHotList || isLoadingUsername) {
+	if (isLoadingBaseList || isLoadingNewList || isLoadingNextList || isLoadingHotList) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Rating Frame" />

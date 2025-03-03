@@ -8,12 +8,14 @@ import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
-import { useUsername } from "@/hooks/common/use-username";
+import { useUser } from "@/hooks/auth/use-auth";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/ongeki/use-rivals";
 
 const ITEMS_PER_PAGE = 10;
 
 const OngekiRivals = () => {
+	const { username } = useUser();
+
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 
@@ -22,7 +24,6 @@ const OngekiRivals = () => {
 	const { data: users = [], isLoading: isLoadingUsers } = useRivalUsers();
 	const { mutate: addRival } = useAddRival();
 	const { mutate: removeRival } = useRemoveRival();
-	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
 	const filteredRivals = users.filter((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -56,7 +57,7 @@ const OngekiRivals = () => {
 		});
 	};
 
-	const isLoading = isLoadingRivals || isLoadingCount || isLoadingUsers || isLoadingUsername;
+	const isLoading = isLoadingRivals || isLoadingCount || isLoadingUsers;
 
 	if (isLoading) {
 		return (

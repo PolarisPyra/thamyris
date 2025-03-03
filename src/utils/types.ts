@@ -1,3 +1,7 @@
+import { InferResponseType } from "hono";
+
+import { api } from "./api";
+
 export interface currentAvatarApiResponse {
 	results: currentAvatarParts[];
 }
@@ -31,18 +35,6 @@ export interface allUnlockedOutfits {
 	texturePath: string;
 }
 
-export interface User {
-	sub: string;
-	role: string;
-	exp: number;
-}
-
-export interface CustomContext {
-	Variables: {
-		user: User;
-	};
-}
-
 export interface avatarData {
 	image: string;
 	label: string;
@@ -54,6 +46,7 @@ export interface mapData {
 	label: string;
 	avatarAccessoryId: number;
 }
+export type User = InferResponseType<typeof api.users.verify.$post>["user"];
 
 export interface UserRatingBaseEntry {
 	type: string;

@@ -16,7 +16,6 @@ import {
 	useUserRatingBaseNextList,
 } from "@/hooks/chunithm/use-rating";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
-import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const itemsPerPage = 15;
@@ -36,7 +35,6 @@ const ChunithmRatingBaseList = () => {
 	const { data: newSongs = [], isLoading: isLoadingNewList } = useUserRatingBaseNewList();
 	const { data: nextSongs = [], isLoading: isLoadingNextList } = useUserRatingBaseNextList();
 
-	const { isLoading: isLoadingUsername } = useUsername();
 	const { data: version } = useChunithmVersion();
 
 	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
@@ -65,7 +63,7 @@ const ChunithmRatingBaseList = () => {
 		currentNextPage * itemsPerPage
 	);
 
-	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingNextList || isLoadingUsername) {
+	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingNextList) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Rating Frame" />

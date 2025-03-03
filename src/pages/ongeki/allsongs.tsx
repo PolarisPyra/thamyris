@@ -7,7 +7,7 @@ import AllSongsTable from "@/components/common/allsongs-table";
 import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
-import { useUsername } from "@/hooks/common/use-username";
+import { useUser } from "@/hooks/auth/use-auth";
 import { useOngekiSongs } from "@/hooks/ongeki/use-songs";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 
@@ -17,14 +17,14 @@ const OngekiAllSongs = () => {
 	const { data: songs = [], isLoading } = useOngekiSongs();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
-	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
+	const { username } = useUser();
 
 	const filteredSongs = songs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
 	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
 	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-	if (isLoading || isLoadingUsername) {
+	if (isLoading) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="All Songs" />

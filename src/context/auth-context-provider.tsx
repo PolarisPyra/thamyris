@@ -1,15 +1,25 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { createContext } from "react";
 
-import type { InferResponseType } from "hono";
 import { useNavigate } from "react-router-dom";
 
-import { AuthContext } from "@/context/auth-context";
 import { api } from "@/utils";
+import { User } from "@/utils/types";
 
-type User = InferResponseType<typeof api.users.verify.$post>["user"];
+interface AuthContextType {
+	user?: User;
+	isAuthenticated: boolean | null;
+	isLoading: boolean;
+	error: string;
+	login: (username: string, password: string) => Promise<void>;
+	logout: () => Promise<void>;
+	signup: (username: string, password: string, accessCode: string) => Promise<void>;
+}
+
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<User>();
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -27,7 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 			setIsAuthenticated(true);
 			return true;
 		} catch (err) {
-			setUser(null);
+			setUser(undefined);
 			setIsAuthenticated(false);
 
 			if (isAuthenticated !== null) {
@@ -105,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		try {
 			const response = await api.users.logout.$post();
 			if (response.ok) {
-				setUser(null);
+				setUser(undefined);
 				setIsAuthenticated(false);
 				navigate("");
 			}

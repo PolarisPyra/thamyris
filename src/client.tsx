@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { SidebarComponent } from "./components/common/sidebar";
 import { SidebarProvider } from "./components/ui/sidebar";
+import { AuthProvider } from "./context/auth-context-provider";
 import "./index.css";
 import Account from "./pages/account/account";
 import ChunithmAllSongs from "./pages/chunithm/allsongs";
@@ -30,7 +31,6 @@ import { NotFound } from "./pages/public/not-found";
 import OverviewPage from "./pages/public/overview-page";
 import SignUpPage from "./pages/public/signup-page";
 import WelcomePage from "./pages/public/welcome-page";
-import { AuthProvider } from "./providers/auth-provider";
 import { ProtectedRoute } from "./utils/protected";
 
 const queryClient = new QueryClient();

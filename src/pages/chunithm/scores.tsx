@@ -8,9 +8,9 @@ import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
 import ScoreTable from "@/components/common/score-table";
 import Spinner from "@/components/common/spinner";
+import { useUser } from "@/hooks/auth/use-auth";
 // Import the Pagination component
 import { useChunithmScores } from "@/hooks/chunithm/use-scores";
-import { useUsername } from "@/hooks/common/use-username";
 import {
 	getChunithmClearStatus,
 	getChunithmComboStatus,
@@ -21,11 +21,12 @@ import {
 const itemsPerPage = 10;
 
 const ChunithmScorePage = () => {
+	const { username } = useUser();
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 
 	const { data: scores = [], isLoading: isLoadingScores } = useChunithmScores();
-	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
 	const currentRating =
 		scores?.length > 0 && scores[0]?.playerRating != null ? (scores[0].playerRating / 100).toFixed(2) : "0.00";
@@ -35,7 +36,7 @@ const ChunithmScorePage = () => {
 	const totalPages = Math.ceil(filteredScores.length / itemsPerPage);
 	const paginatedScores = filteredScores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-	if (isLoadingScores || isLoadingUsername) {
+	if (isLoadingScores) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Overview" />
