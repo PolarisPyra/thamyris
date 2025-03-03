@@ -122,19 +122,19 @@ class Connection {
 
 export class Database {
 	private static pool: mysql.Pool = ((): mysql.Pool => {
-		console.log("Creating DB Pool...");
+		// console.log("Creating DB Pool...");
 		const pool = mysql.createPool(getDbConnectionConfig());
-		console.log("DB Pool created with parameters:", {
-			connectConfig: {
-				...pool.config.connectionConfig,
-				password: "********",
-				pool: undefined,
-			},
-			poolConfig: {
-				...pool.config,
-				connectionConfig: undefined,
-			},
-		});
+		// console.log("DB Pool created with parameters:", {
+		// 	connectConfig: {
+		// 		...pool.config.connectionConfig,
+		// 		password: "********",
+		// 		pool: undefined,
+		// 	},
+		// 	poolConfig: {
+		// 		...pool.config,
+		// 		connectionConfig: undefined,
+		// 	},
+		// });
 		return pool;
 	})();
 
