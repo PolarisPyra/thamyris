@@ -2,6 +2,7 @@
 import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { Hono } from "hono";
+import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { csrf } from "hono/csrf";
 import { HTTPException } from "hono/http-exception";
@@ -64,6 +65,9 @@ const server = new Hono()
 		}
 		return c.json({ error: "Internal server error" }, 500);
 	})
+
+	// Compression
+	.use(compress())
 
 	// Non-authenticated routes
 	.route("/api", UnprotectedRoutes)
