@@ -28,7 +28,7 @@ const getDbConnectionConfig = (): mysql.PoolActualConfig => {
 	};
 	const dbConfig: mysql.PoolActualConfig = {
 		connectionConfig,
-		// defaults are fine
+		// defaults are fine... for now
 	};
 
 	// validate
@@ -121,7 +121,22 @@ class Connection {
 }
 
 export class Database {
-	private static pool: mysql.Pool = mysql.createPool(getDbConnectionConfig());
+	private static pool: mysql.Pool = ((): mysql.Pool => {
+		console.log("Creating DB Pool...");
+		const pool = mysql.createPool(getDbConnectionConfig());
+		console.log("DB Pool created with parameters:", {
+			connectConfig: {
+				...pool.config.connectionConfig,
+				password: "********",
+				pool: undefined,
+			},
+			poolConfig: {
+				...pool.config,
+				connectionConfig: undefined,
+			},
+		});
+		return pool;
+	})();
 
 	// I don't trust the connections to be released properly
 	// so not exposing this method
