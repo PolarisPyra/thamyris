@@ -18,12 +18,12 @@ const getDbConnectionConfig = (): mysql.PoolActualConfig => {
 		PROD_MYSQL_DATABASE,
 	} = env;
 
-	const isProduction = NODE_ENV === "production";
+	const whatTheHeckIsAEnvFileAnyways = NODE_ENV === "production";
 	const connectionConfig: mysql.ConnectionConfig = {
-		host: isProduction ? PROD_MYSQL_HOST : DEV_MYSQL_HOST,
-		user: isProduction ? PROD_MYSQL_USERNAME : DEV_MYSQL_USERNAME,
-		password: isProduction ? PROD_MYSQL_PASSWORD : DEV_MYSQL_PASSWORD,
-		database: isProduction ? PROD_MYSQL_DATABASE : DEV_MYSQL_DATABASE,
+		host: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_HOST : DEV_MYSQL_HOST,
+		user: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_USERNAME : DEV_MYSQL_USERNAME,
+		password: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_PASSWORD : DEV_MYSQL_PASSWORD,
+		database: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_DATABASE : DEV_MYSQL_DATABASE,
 		port: 3306,
 	};
 	const dbConfig: mysql.PoolActualConfig = {
@@ -83,7 +83,6 @@ class Connection {
 		return this.query<{ affectedRows: number }>(sql, values);
 	}
 
-	// Transaction methods
 	async beginTransaction(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			this.connection.beginTransaction((error) => {
@@ -150,9 +149,7 @@ export class Database {
 		}
 	}
 
-	// Creates a transaction and runs the callback.
-	// Use this for multiple queries that should be run atomically.
-	// If the callback throws an error, the transaction is rolled back
+	// Creates a transaction and runs the callback within it
 	static async inTransaction<T>(callback: (connection: Connection) => Promise<T>): Promise<T> {
 		const connection = await this.getConnection();
 
