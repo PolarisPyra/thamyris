@@ -83,6 +83,9 @@ importers:
       next-themes:
         specifier: ^0.4.4
         version: 0.4.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      node-cache:
+        specifier: ^5.1.2
+        version: 5.1.2
       path:
         specifier: ^0.12.7
         version: 0.12.7
@@ -1346,6 +1349,10 @@ packages:
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
+  clone@2.1.2:
+    resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
+    engines: {node: '>=0.8'}
+
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
     engines: {node: '>=6'}
@@ -2119,6 +2126,10 @@ packages:
   node-addon-api@8.3.1:
     resolution: {integrity: sha512-lytcDEdxKjGJPTLEfW4mYMigRezMlyJY8W4wxJK8zE533Jlb8L8dRuObJFWg2P+AuOIxoCgKF+2Oq4d4Zd0OUA==}
     engines: {node: ^18 || ^20 || >= 21}
+
+  node-cache@5.1.2:
+    resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
+    engines: {node: '>= 8.0.0'}
 
   node-gyp-build@4.8.4:
     resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
@@ -3869,6 +3880,8 @@ snapshots:
     dependencies:
       clsx: 2.1.1
 
+  clone@2.1.2: {}
+
   clsx@2.1.1: {}
 
   color-convert@2.0.1:
@@ -4675,6 +4688,10 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
 
   node-addon-api@8.3.1: {}
+
+  node-cache@5.1.2:
+    dependencies:
+      clone: 2.1.2
 
   node-gyp-build@4.8.4: {}
 
