@@ -5,7 +5,7 @@ import { env } from "@/env";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // When every query is typed, this can be removed :)
 
-const getDbConnectionConfig = (): mysql.PoolActualConfig => {
+const getDbConnectionConfig = (): mysql.PoolConfig => {
 	const {
 		NODE_ENV,
 		DEV_MYSQL_HOST,
@@ -26,8 +26,8 @@ const getDbConnectionConfig = (): mysql.PoolActualConfig => {
 		database: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_DATABASE : DEV_MYSQL_DATABASE,
 		port: 3306,
 	};
-	const dbConfig: mysql.PoolActualConfig = {
-		connectionConfig,
+	const dbConfig: mysql.PoolConfig = {
+		...connectionConfig,
 		// defaults are fine... for now
 	};
 
