@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
@@ -41,47 +42,57 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	};
 
 	const handleUnlockAllCards = async () => {
-		const confirmed = window.confirm(
-			`Are you sure you want to unlock all cards for ${getGameTitle(selectedVersion || ongekiVersion)}?`
-		);
-		if (!confirmed || !ongekiVersion) return;
+		if (!ongekiVersion) return;
 
 		setIsUnlocking((prev) => ({ ...prev, cards: true }));
 		try {
-			await unlockAllCards(ongekiVersion);
-		} catch (error) {
-			console.error("Error unlocking all cards:", error);
+			unlockAllCards(ongekiVersion, {
+				onSuccess: () => {
+					toast.success("Successfully unlocked all cards");
+				},
+				onError: () => {
+					toast.error("Failed to unlock cards");
+				},
+			});
 		} finally {
 			setIsUnlocking((prev) => ({ ...prev, cards: false }));
 		}
 	};
 
 	const handleUnlockAllItems = async () => {
-		const confirmed = window.confirm(
-			`Are you sure you want to unlock all items for ${getGameTitle(selectedVersion || ongekiVersion)}?`
-		);
-		if (!confirmed || !ongekiVersion) return;
+		if (!ongekiVersion) return;
 
 		setIsUnlocking((prev) => ({ ...prev, items: true }));
 		try {
-			await unlockAllItems(ongekiVersion);
-			console.log("All items unlocked successfully");
-		} catch (error) {
-			console.error("Error unlocking all items:", error);
+			unlockAllItems(ongekiVersion, {
+				onSuccess: () => {
+					toast.success("Successfully unlocked all items");
+				},
+				onError: () => {
+					toast.error("Failed to unlock items");
+				},
+			});
 		} finally {
 			setIsUnlocking((prev) => ({ ...prev, items: false }));
 		}
 	};
 
 	const handleUnlockSpecificItem = async (itemKind: number) => {
-		const confirmed = window.confirm(`Are you sure you want to unlock this item type?`);
-		if (!confirmed || !ongekiVersion) return;
+		if (!ongekiVersion) return;
 
 		setIsUnlocking((prev) => ({ ...prev, specific: true }));
 		try {
-			await unlockSpecificItem({ itemKind, version: ongekiVersion });
-		} catch (error) {
-			console.error(`Error unlocking items of kind ${itemKind}:`, error);
+			unlockSpecificItem(
+				{ itemKind, version: ongekiVersion },
+				{
+					onSuccess: () => {
+						toast.success("Successfully unlocked items");
+					},
+					onError: () => {
+						toast.error("Failed to unlock items");
+					},
+				}
+			);
 		} finally {
 			setIsUnlocking((prev) => ({ ...prev, specific: false }));
 		}
@@ -98,13 +109,16 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 
 	const handleUpdate = () => {
 		if (!selectedVersion) {
-			console.error("Please select a version first");
+			toast.error("Please select a version first");
 			return;
 		}
 
 		updateVersion(selectedVersion.toString(), {
 			onSuccess: () => {
-				console.log("Updated Ongeki settings to version:", selectedVersion);
+				toast.success("Successfully updated game version");
+			},
+			onError: () => {
+				toast.error("Failed to update game version");
 			},
 		});
 	};
