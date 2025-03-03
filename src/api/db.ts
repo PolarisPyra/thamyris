@@ -1,85 +1,55 @@
-import mysql from "mysql";
-import util from "util";
+import mysql, { MysqlError } from "mysql";
 
 import { env } from "@/env";
 
-const getDbConnectionConfig = (): mysql.ConnectionConfig => {
-	const isProduction = env.NODE_ENV === "production";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// When every query is typed, this can be removed :)
 
-	// NOTE:
-	//   Isn't the point of .env files to have different values for different environments?
-	if (isProduction) {
-		if (!env.PROD_MYSQL_HOST || !env.PROD_MYSQL_USERNAME || !env.PROD_MYSQL_PASSWORD || !env.PROD_MYSQL_DATABASE) {
-			throw new Error("Missing required production database envuration");
+const getDbConnectionConfig = (): mysql.PoolConfig => {
+	const {
+		NODE_ENV,
+		DEV_MYSQL_HOST,
+		DEV_MYSQL_USERNAME,
+		DEV_MYSQL_PASSWORD,
+		DEV_MYSQL_DATABASE,
+		PROD_MYSQL_HOST,
+		PROD_MYSQL_USERNAME,
+		PROD_MYSQL_PASSWORD,
+		PROD_MYSQL_DATABASE,
+	} = env;
+
+	const whatTheHeckIsAEnvFileAnyways = NODE_ENV === "production";
+	const connectionConfig: mysql.ConnectionConfig = {
+		host: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_HOST : DEV_MYSQL_HOST,
+		user: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_USERNAME : DEV_MYSQL_USERNAME,
+		password: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_PASSWORD : DEV_MYSQL_PASSWORD,
+		database: whatTheHeckIsAEnvFileAnyways ? PROD_MYSQL_DATABASE : DEV_MYSQL_DATABASE,
+		port: 3306,
+	};
+	const dbConfig: mysql.PoolConfig = {
+		...connectionConfig,
+		// defaults are fine... for now
+	};
+
+	// validate
+	for (const [key, value] of Object.entries(dbConfig)) {
+		if (!value) {
+			throw new Error(`Missing required database configuration: ${key}`);
 		}
-		return {
-			host: env.PROD_MYSQL_HOST,
-			user: env.PROD_MYSQL_USERNAME,
-			password: env.PROD_MYSQL_PASSWORD,
-			database: env.PROD_MYSQL_DATABASE,
-			port: 3306,
-		};
-	} else {
-		if (!env.DEV_MYSQL_HOST || !env.DEV_MYSQL_USERNAME || !env.DEV_MYSQL_PASSWORD || !env.DEV_MYSQL_DATABASE) {
-			throw new Error("Missing required development database envuration");
-		}
-		return {
-			host: env.DEV_MYSQL_HOST,
-			user: env.DEV_MYSQL_USERNAME,
-			password: env.DEV_MYSQL_PASSWORD,
-			database: env.DEV_MYSQL_DATABASE,
-			port: 3306,
-		};
 	}
+	return dbConfig;
 };
 
-type UpdateResult = { affectedRows: number };
-export class Database {
-	private static instance: Database;
-	private connection: mysql.Connection;
-	// TODO: Connection Pooling (right now it's just a single connection for all queries?)
-	//       Transactions
+// Bunch of bs to promisify the mysql connection and type the results.
+class Connection {
+	private connection: mysql.PoolConnection;
+	private originalQuery: mysql.Connection["query"];
 
-	// Not used but serves as definition for the query method
-	// @ts-expect-error
-	public query<T = any>(sql: string, values?: any[]): Promise<T> {
-		// This will be replaced in the constructor with the promisified version
-		throw new Error("Query method not initialized");
-	}
+	constructor(connection: mysql.PoolConnection) {
+		this.connection = connection;
+		this.originalQuery = connection.query.bind(connection);
 
-	// Select always returns an array of results, could maybe add a select one or something
-	public select<T = any>(sql: string, values?: any[]): Promise<T[]> {
-		return this.query<T[]>(sql, values) as Promise<T[]>;
-	}
-
-	public update(sql: string, values?: any[]): Promise<UpdateResult> {
-		return this.query(sql, values) as Promise<UpdateResult>;
-	}
-
-	private constructor(config: mysql.ConnectionConfig) {
-		// Initialize connection first
-		this.connection = mysql.createConnection(config);
-
-		// Initialize the promisified query with type annotations
-		this.query = util.promisify(this.connection.query).bind(this.connection) as <T>(
-			sql: string,
-			values?: any[]
-		) => Promise<T>;
-
-		// Setup connection handlers after initialization
-		this.setupConnectionHandlers();
-	}
-
-	private setupConnectionHandlers() {
-		this.connection.connect((err) => {
-			if (err) {
-				console.error("Error connecting to database:", err);
-				return;
-			}
-			console.log("Connected to database");
-		});
-
-		this.connection.on("error", (err) => {
+		this.connection.on("error", (err: MysqlError) => {
 			console.error("Database error:", err);
 			if (err.code === "PROTOCOL_CONNECTION_LOST") {
 				this.connection.connect();
@@ -89,13 +59,158 @@ export class Database {
 		});
 	}
 
-	public static getInstance(): Database {
-		if (!Database.instance) {
-			const config = getDbConnectionConfig();
-			Database.instance = new Database(config);
-		}
-		return Database.instance;
+	release(): void {
+		this.connection.release();
+	}
+
+	async query<T = any>(sql: string, values?: any[]): Promise<T> {
+		return new Promise<T>((resolve, reject) => {
+			this.originalQuery(sql, values, (error: MysqlError | null, results: T) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve(results);
+				}
+			});
+		});
+	}
+
+	async select<T = any>(sql: string, values?: any[]): Promise<T[]> {
+		return this.query<T[]>(sql, values);
+	}
+
+	async update(sql: string, values?: any[]): Promise<{ affectedRows: number }> {
+		return this.query<{ affectedRows: number }>(sql, values);
+	}
+
+	async beginTransaction(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.connection.beginTransaction((error) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve();
+				}
+			});
+		});
+	}
+
+	async commit(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.connection.commit((error) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve();
+				}
+			});
+		});
+	}
+
+	async rollback(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.connection.rollback((error) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve();
+				}
+			});
+		});
 	}
 }
 
-export const db = Database.getInstance();
+export class Database {
+	private static pool: mysql.Pool = ((): mysql.Pool => {
+		console.log("Creating DB Pool...");
+		const pool = mysql.createPool(getDbConnectionConfig());
+		console.log("DB Pool created with parameters:", {
+			connectConfig: {
+				...pool.config.connectionConfig,
+				password: "********",
+				pool: undefined,
+			},
+			poolConfig: {
+				...pool.config,
+				connectionConfig: undefined,
+			},
+		});
+		return pool;
+	})();
+
+	// I don't trust the connections to be released properly
+	// so not exposing this method
+	private static async getConnection(): Promise<Connection> {
+		return new Promise((resolve, reject) => {
+			this.pool.getConnection((error, mysqlConnection) => {
+				if (error) {
+					reject(error);
+					return;
+				}
+
+				const connection = new Connection(mysqlConnection);
+				resolve(connection);
+			});
+		});
+	}
+
+	private static async withConnection<T>(callback: (connection: Connection) => Promise<T>): Promise<T> {
+		const connection = await this.getConnection();
+
+		try {
+			return await callback(connection);
+		} finally {
+			connection.release();
+		}
+	}
+
+	// Creates a transaction and runs the callback within it
+	static async inTransaction<T>(callback: (connection: Connection) => Promise<T>): Promise<T> {
+		const connection = await this.getConnection();
+
+		try {
+			await connection.beginTransaction();
+			const result = await callback(connection);
+			await connection.commit();
+			return result;
+		} catch (error) {
+			await connection.rollback();
+			throw error;
+		} finally {
+			connection.release();
+		}
+	}
+
+	// Single-use methods
+	static async query<T = any>(sql: string, values?: any[]): Promise<T> {
+		return this.withConnection((conn) => conn.query<T>(sql, values));
+	}
+
+	static async select<T = any>(sql: string, values?: any[]): Promise<T[]> {
+		return this.withConnection((conn) => conn.select<T>(sql, values));
+	}
+
+	static async update(sql: string, values?: any[]): Promise<{ affectedRows: number }> {
+		return this.withConnection((conn) => conn.update(sql, values));
+	}
+}
+
+// Backwards compatibility layer
+export const db = {
+	//  Single-use methods
+	query: Database.query.bind(Database),
+	select: Database.select.bind(Database),
+	update: Database.update.bind(Database),
+
+	// Transaction methods (use this for multiple queries that should be run atomically)
+	// Example:
+	// await db.inTransaction(async (conn) => {
+	//   await conn.query("INSERT INTO ...");
+	//   await conn.query("UPDATE ...");
+	// });
+	//
+	// If either query throws an error, both are rolled back and no changes are made.
+	inTransaction: Database.inTransaction.bind(Database),
+};
+
+export default db;
