@@ -132,7 +132,7 @@ const PenguinDressup = () => {
 	}
 
 	return (
-		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 md:flex-row md:gap-8 md:pt-15">
+		<div className="z-0 flex w-full flex-col justify-center gap-4 px-4 pt-4 md:flex-row md:gap-8 md:pt-15">
 			<div className="relative mb-6 h-[300px] w-full md:mb-0 md:h-[400px] md:w-[300px]">
 				<div className="avatar_base relative h-[400px] w-[300px]">
 					<div className="avatar_back">
