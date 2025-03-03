@@ -2,23 +2,31 @@ import React, { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
+import { useLimitedTickets, useLockSongs, useUnlimitedTickets, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
 
 interface GameSettingsProps {
 	onUpdate?: () => void;
 }
+
 const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: chunithmVersion } = useChunithmVersion();
 	const { data: versions } = useChunithmVersions();
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
+	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
+	const { mutate: lockSongs, isPending: isLockingSongs } = useLockSongs();
+	const { mutate: enableUnlimited, isPending: isEnablingUnlimited } = useUnlimitedTickets();
+	const { mutate: disableUnlimited, isPending: isDisablingUnlimited } = useLimitedTickets();
+
 	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-	const [selectedVersion, setSelectedVersion] = useState<number>(chunithmVersion || 0);
+	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
 
 	const getGameTitle = (version: number | undefined): string => {
-		if (!version) return "Unknown Version";
+		if (!version) return "Select a version";
 
 		const versionMap: Record<number, string> = {
 			11: "Chunithm New",
@@ -35,6 +43,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 
 	const handleVersionChange = (version: number) => {
 		setSelectedVersion(version);
+		setOpenDropdown(null);
 	};
 
 	const handleDropdownToggle = (section: number) => {
@@ -42,9 +51,17 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	};
 
 	const handleUpdate = () => {
+		if (!selectedVersion) {
+			toast.error("Please select a version first");
+			return;
+		}
+
 		updateVersion(selectedVersion.toString(), {
 			onSuccess: () => {
-				console.log("Updated Chunithm settings to version:", selectedVersion);
+				toast.success("Successfully updated game version");
+			},
+			onError: () => {
+				toast.error("Failed to update game version");
 			},
 		});
 	};
@@ -54,6 +71,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 			<Header title={"Chunithm Settings"} />
 
 			<div className="flex w-full flex-col gap-4 px-4 pt-4 md:gap-8 md:pt-15">
+				{/* Version Settings Section */}
 				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Set Chunithm version</h2>
 
@@ -97,8 +115,70 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 						defaultLabel="Update Chunithm settings"
 						updatingLabel="Updating..."
 						className="bg-red-600 hover:bg-red-700"
-						disabled={isPending}
+						disabled={isPending || !selectedVersion}
 					/>
+				</div>
+
+				{/* Song Management Section */}
+				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
+					<h2 className="mb-4 text-xl font-semibold text-gray-100">Manage Songs</h2>
+					<div className="flex gap-4">
+						<SubmitButton
+							onClick={() => {
+								unlockSongs(undefined, {
+									onSuccess: () => toast.success("Successfully unlocked all songs"),
+									onError: () => toast.error("Failed to unlock songs"),
+								});
+							}}
+							defaultLabel="Unlock All Songs"
+							updatingLabel="Unlocking..."
+							className="bg-green-600 hover:bg-green-700"
+							disabled={isUnlockingSongs}
+						/>
+						<SubmitButton
+							onClick={() => {
+								lockSongs(undefined, {
+									onSuccess: () => toast.success("Successfully locked songs"),
+									onError: () => toast.error("Failed to lock songs"),
+								});
+							}}
+							defaultLabel="Lock Songs"
+							updatingLabel="Locking..."
+							className="bg-red-600 hover:bg-red-700"
+							disabled={isLockingSongs}
+						/>
+					</div>
+				</div>
+
+				{/* Ticket Management Section */}
+				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
+					<h2 className="mb-4 text-xl font-semibold text-gray-100">Manage Tickets</h2>
+					<div className="flex gap-4">
+						<SubmitButton
+							onClick={() => {
+								enableUnlimited(undefined, {
+									onSuccess: () => toast.success("Successfully enabled unlimited tickets"),
+									onError: () => toast.error("Failed to enable unlimited tickets"),
+								});
+							}}
+							defaultLabel="Enable Unlimited Tickets"
+							updatingLabel="Enabling..."
+							className="bg-green-600 hover:bg-green-700"
+							disabled={isEnablingUnlimited}
+						/>
+						<SubmitButton
+							onClick={() => {
+								disableUnlimited(undefined, {
+									onSuccess: () => toast.success("Successfully disabled unlimited tickets"),
+									onError: () => toast.error("Failed to disable unlimited tickets"),
+								});
+							}}
+							defaultLabel="Disable Unlimited Tickets"
+							updatingLabel="Disabling..."
+							className="bg-red-600 hover:bg-red-700"
+							disabled={isDisablingUnlimited}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

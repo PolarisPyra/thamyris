@@ -5,7 +5,7 @@ import { api } from "@/utils";
 export const useUnlockAllCards = () => {
 	return useMutation({
 		mutationFn: async (version: number) => {
-			const response = await api.ongeki.settings.unlockcards.$post({
+			const response = await api.ongeki.unlockcards.$post({
 				json: { version },
 			});
 
@@ -21,7 +21,7 @@ export const useUnlockAllCards = () => {
 export const useUnlockAllItems = () => {
 	return useMutation({
 		mutationFn: async (version: number) => {
-			const response = await api.ongeki.settings.unlockallitems.$post({
+			const response = await api.ongeki.unlockallitems.$post({
 				json: { version },
 			});
 
@@ -37,7 +37,7 @@ export const useUnlockAllItems = () => {
 export const useUnlockSpecificItem = () => {
 	return useMutation({
 		mutationFn: async ({ itemKind, version }: { itemKind: number; version: number }) => {
-			const response = await api.ongeki.settings.unlockspecificitem.$post({
+			const response = await api.ongeki.unlockspecificitem.$post({
 				json: { itemKind, version },
 			});
 

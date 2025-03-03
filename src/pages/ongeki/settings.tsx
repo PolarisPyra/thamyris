@@ -18,7 +18,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { mutate: updateVersion, isPending: isUpdatingVersion } = useUpdateOngekiVersion();
 
 	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-	const [selectedVersion, setSelectedVersion] = useState<number>(ongekiVersion || 0);
+	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
 	const [isUnlocking, setIsUnlocking] = useState<{ [key: string]: boolean }>({
 		cards: false,
 		items: false,
@@ -30,7 +30,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { mutate: unlockSpecificItem } = useUnlockSpecificItem();
 
 	const getGameTitle = (version: number | undefined): string => {
-		if (!version) return "Unknown Version";
+		if (!version) return "Select a version";
 
 		const versionMap: Record<number, string> = {
 			6: "Ongeki Bright",
@@ -97,6 +97,11 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	};
 
 	const handleUpdate = () => {
+		if (!selectedVersion) {
+			console.error("Please select a version first");
+			return;
+		}
+
 		updateVersion(selectedVersion.toString(), {
 			onSuccess: () => {
 				console.log("Updated Ongeki settings to version:", selectedVersion);
@@ -152,7 +157,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 						defaultLabel="Update Ongeki settings"
 						updatingLabel="Updating..."
 						className="bg-red-600 text-lg hover:bg-red-700"
-						disabled={isUpdatingVersion}
+						disabled={isUpdatingVersion || !selectedVersion}
 					/>
 				</div>
 
