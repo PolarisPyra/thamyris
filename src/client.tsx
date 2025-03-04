@@ -18,6 +18,8 @@ import ChunithmRivals from "./pages/chunithm/rivals";
 import ChunithmScorePage from "./pages/chunithm/scores";
 import ChunithmSettingsPage from "./pages/chunithm/settings";
 import ChunithmUserbox from "./pages/chunithm/userbox";
+import { NotFound } from "./pages/common/not-found";
+import OverviewPage from "./pages/common/overview-page";
 import ServerNews from "./pages/common/server-news";
 import OngekiAllSongs from "./pages/ongeki/allsongs";
 import OngekiLeaderboard from "./pages/ongeki/leaderboard";
@@ -25,11 +27,9 @@ import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
 import OngekiRivals from "./pages/ongeki/rivals";
 import OngekiScorePage from "./pages/ongeki/scores";
 import OngekiSettingsPage from "./pages/ongeki/settings";
-import { LoginPage } from "./pages/public/login-page";
-import { NotFound } from "./pages/public/not-found";
-import OverviewPage from "./pages/public/overview-page";
-import SignUpPage from "./pages/public/signup-page";
-import WelcomePage from "./pages/public/welcome-page";
+import { LoginContent } from "./pages/public/login-comp";
+import SignUpContent from "./pages/public/signup-comp";
+import WelcomePage, { WelcomeContent } from "./pages/public/welcome-page";
 import { AuthProvider } from "./providers/auth-provider";
 import { ProtectedRoute } from "./utils/protected";
 
@@ -41,10 +41,11 @@ const app = (
 			<AuthProvider>
 				<Toaster />
 				<Routes>
-					<Route path="/" element={<WelcomePage />} />
-					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/login" element={<LoginPage />} />
-
+					<Route path="/" element={<WelcomePage />}>
+						<Route index element={<WelcomeContent />} />
+						<Route path="/signup" element={<SignUpContent />} />
+						<Route path="/login" element={<LoginContent />} />
+					</Route>
 					{/* Protected routes with sidebar */}
 					<Route element={<ProtectedRoute />}>
 						<Route

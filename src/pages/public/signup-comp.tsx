@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
+
 import { useAuth } from "@/hooks/auth/use-auth";
 
-const SignUpPage = () => {
+const SignUpContent = () => {
+	const { signup, isLoading } = useAuth();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [accessCode, setAccessCode] = useState("");
-	const { signup, isLoading } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		await signup(username, password, accessCode);
+		try {
+			await signup(username, password, accessCode);
+		} catch (err: any) {
+			toast.error(err);
+		}
 	};
 
 	return (
-		<div className="z-10 flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 p-4">
+		<div className="z-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-50 to-purple-100 p-4">
 			<div className="mx-4 w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
 				<h1 className="mb-8 text-center text-4xl font-bold text-gray-800">Create Account</h1>
 				<form className="space-y-6" onSubmit={handleSubmit}>
@@ -62,7 +69,6 @@ const SignUpPage = () => {
 
 					<button
 						type="submit"
-						disabled={isLoading}
 						className="block w-full transform rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white transition duration-300 hover:scale-105 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						{isLoading ? "Creating Account..." : "Create Account"}
@@ -70,13 +76,13 @@ const SignUpPage = () => {
 				</form>
 				<p className="mt-6 text-center text-sm text-gray-500">
 					Already have an account?{" "}
-					<a href="/" className="text-blue-600 hover:text-blue-500">
+					<Link to="/login" className="text-blue-600 hover:text-blue-500">
 						Log in
-					</a>
+					</Link>
 				</p>
 			</div>
 		</div>
 	);
 };
 
-export default SignUpPage;
+export default SignUpContent;
