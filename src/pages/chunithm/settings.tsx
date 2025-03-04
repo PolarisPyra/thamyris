@@ -6,8 +6,10 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
+import { useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
 import { useLimitedTickets, useLockSongs, useUnlimitedTickets, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
+import { getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
 
 interface GameSettingsProps {
 	onUpdate?: () => void;
@@ -16,6 +18,8 @@ interface GameSettingsProps {
 const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: chunithmVersion } = useChunithmVersion();
 	const { data: versions } = useChunithmVersions();
+	const { data: bestList = [] } = useUserRatingBaseList();
+
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
 	const { mutate: lockSongs, isPending: isLockingSongs } = useLockSongs();
@@ -24,6 +28,33 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 
 	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
+
+	const handleExportB30 = () => {
+		const formattedData = bestList.map((song) => ({
+			title: song.title,
+			artist: song.artist,
+			score: song.score,
+			rank: getGrade(song.score),
+			diff: getDifficultyFromChunithmChart(song.chartId),
+			const: song.level,
+			rating: (song.rating / 100).toFixed(2),
+			date: Date.now(),
+			is_fullcombo: false,
+			is_alljustice: false,
+		}));
+
+		const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: "application/json" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = "chunithm_b30_export.json";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(url);
+
+		toast.success("Successfully exported B30 data");
+	};
 
 	const getGameTitle = (version: number | undefined): string => {
 		if (!version) return "Select a version";
@@ -179,6 +210,15 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 							disabled={isDisablingUnlimited}
 						/>
 					</div>
+				</div>
+				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
+					<h2 className="mb-4 text-xl font-semibold text-gray-100">Export Data</h2>
+					<SubmitButton
+						onClick={handleExportB30}
+						defaultLabel="Export Best 30"
+						updatingLabel="Exporting..."
+						className="bg-green-600 text-lg hover:bg-green-700"
+					/>
 				</div>
 			</div>
 		</div>

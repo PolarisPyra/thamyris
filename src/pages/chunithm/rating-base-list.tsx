@@ -122,7 +122,7 @@ const ChunithmRatingBaseList = () => {
 
 				<div className="p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
 					{/* Highest Rating Table */}
-					<h3 className="mb-4 text-xl font-semibold text-gray-100">Highest Rating</h3>
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Best 30</h3>
 					<RatingFrameTable
 						songs={paginatedBaseSongs.map((song) => ({
 							title: song.title,

@@ -6,8 +6,10 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
+import { useUserRatingBaseBestList, useUserRatingBaseBestNewList } from "@/hooks/ongeki/use-rating";
 import { useUnlockAllCards, useUnlockAllItems, useUnlockSpecificItem } from "@/hooks/ongeki/use-unlocks";
 import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki/use-version";
+import { getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
 
 interface GameSettingsProps {
 	onUpdate?: () => void;
@@ -17,6 +19,8 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: ongekiVersion } = useOngekiVersion();
 	const { data: versions } = useOngekiVersions();
 	const { mutate: updateVersion, isPending: isUpdatingVersion } = useUpdateOngekiVersion();
+	const { data: bestList = [] } = useUserRatingBaseBestList();
+	const { data: newList = [] } = useUserRatingBaseBestNewList();
 
 	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
@@ -29,6 +33,37 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { mutate: unlockAllCards } = useUnlockAllCards();
 	const { mutate: unlockAllItems } = useUnlockAllItems();
 	const { mutate: unlockSpecificItem } = useUnlockSpecificItem();
+
+	const handleExportB45 = () => {
+		const b30 = bestList.filter((song) => song.musicId !== 0);
+		const new15 = newList.filter((song) => song.musicId !== 0);
+
+		const formattedData = [...b30, ...new15].map((song) => ({
+			title: song.title,
+			artist: song.artist,
+			score: song.score,
+			rank: getOngekiGrade(song.score),
+			diff: getDifficultyFromOngekiChart(song.chartId),
+			const: song.level,
+			rating: (song.rating / 100).toFixed(2),
+			date: Date.now(),
+			is_fullbell: false,
+			is_allbreak: false,
+			is_fullcombo: false,
+		}));
+
+		const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: "application/json" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = "ongeki_b45_export.json";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(url);
+
+		toast.success("Successfully exported B45 data");
+	};
 
 	const getGameTitle = (version: number | undefined): string => {
 		if (!version) return "Select a version";
@@ -219,6 +254,15 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 						updatingLabel="Unlocking..."
 						className="bg-red-600 text-lg hover:bg-red-700"
 						disabled={isUnlocking.items}
+					/>
+				</div>
+				<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
+					<h2 className="mb-4 text-xl font-semibold text-gray-100">Export Data</h2>
+					<SubmitButton
+						onClick={handleExportB45}
+						defaultLabel="Export B45 (Best 30 + New 15)"
+						updatingLabel="Exporting..."
+						className="bg-green-600 text-lg hover:bg-green-700"
 					/>
 				</div>
 			</div>
