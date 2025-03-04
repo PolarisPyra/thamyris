@@ -302,7 +302,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Export Data</h2>
 					<SubmitButton
 						onClick={handleExportB45}
-						defaultLabel="export ratings as json (for reiwa.f5.si)"
+						defaultLabel="Export ratings as json (for reiwa.f5.si)"
 						updatingLabel="Exporting..."
 						className="bg-green-600 text-lg hover:bg-green-700"
 					/>
