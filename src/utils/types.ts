@@ -1,3 +1,7 @@
+import { InferResponseType } from "hono";
+
+import { api } from "./api";
+
 export interface currentAvatarApiResponse {
 	results: currentAvatarParts[];
 }
@@ -36,6 +40,7 @@ export interface assetData {
 	label: string;
 	avatarAccessoryId: number;
 }
+export type User = InferResponseType<typeof api.users.verify.$post>["user"];
 
 export interface UserRatingBaseEntry {
 	type: string;

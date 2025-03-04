@@ -25,10 +25,6 @@ const UserRoutes = new Hono()
 		// The JWT middleware will have already verified the token
 		// and added the payload to the context
 		return c.json({ user: c.payload });
-	})
-	.get("/username", async (c) => {
-		const { username } = c.payload;
-		return c.json({ username });
 	});
 
 export { UserRoutes };

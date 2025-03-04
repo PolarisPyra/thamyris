@@ -8,24 +8,24 @@ import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
+import { useUser } from "@/hooks/auth/use-auth";
 import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
-import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const itemsPerPage = 10;
 
 const ChunithmAllSongs = () => {
+	const { username } = useUser();
 	const { data: songs = [], isLoading } = useChunithmSongs();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
-	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
 	const filteredSongs = songs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
 	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
 	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-	if (isLoading || isLoadingUsername) {
+	if (isLoading) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="All Songs" />

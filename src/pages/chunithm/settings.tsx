@@ -6,10 +6,10 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
+import { useUser } from "@/hooks/auth/use-auth";
 import { usePlayerRating, useUserRatingBaseHotList, useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
 import { useLimitedTickets, useLockSongs, useUnlimitedTickets, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
-import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
 
 interface GameSettingsProps {
@@ -17,10 +17,10 @@ interface GameSettingsProps {
 }
 
 const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
+	const { username } = useUser();
 	const { data: chunithmVersion } = useChunithmVersion();
 	const { data: versions } = useChunithmVersions();
 	const { data: baseList = [] } = useUserRatingBaseList();
-	const { data: usernameData } = useUsername();
 	const { data: playerRating } = usePlayerRating();
 	const { data: hotList = [] } = useUserRatingBaseHotList();
 
@@ -34,8 +34,6 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
 
 	const handleExportB30 = () => {
-		const username = usernameData;
-
 		const b30 = baseList.sort((a, b) => b.rating - a.rating);
 
 		const formattedData = {

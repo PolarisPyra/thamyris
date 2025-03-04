@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
-import { useUsername } from "@/hooks/common/use-username";
+import { useUser } from "@/hooks/auth/use-auth";
 import {
 	useHighestRating,
 	usePlayerRating,
@@ -23,11 +23,12 @@ interface GameSettingsProps {
 }
 
 const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
+	const { username } = useUser();
+
 	const { data: ongekiVersion } = useOngekiVersion();
 	const { data: versions } = useOngekiVersions();
 	const { data: bestList = [] } = useUserRatingBaseBestList();
 	const { data: newList = [] } = useUserRatingBaseBestNewList();
-	const { data: usernameData } = useUsername();
 	const { data: playerRating } = usePlayerRating();
 	const { data: highestRating } = useHighestRating();
 	const { data: hotList = [] } = useUserRatingBaseHotList();
@@ -48,7 +49,6 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 		const b30 = bestList.filter((song) => song.musicId !== 0);
 		const new15 = newList.filter((song) => song.musicId !== 0);
 		const recent = hotList.filter((song) => song.musicId !== 0);
-		const username = usernameData;
 
 		const formattedData = {
 			honor: "",
