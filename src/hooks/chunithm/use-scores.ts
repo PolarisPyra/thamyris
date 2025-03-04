@@ -74,6 +74,8 @@ export function useChunithmScores() {
 				userPlayDate: new Date(new Date(score.userPlayDate).getTime() - 9 * 60 * 60 * 1000).toISOString(), // Convert JST to UTC
 				playerRating: Math.floor(score.playerRating),
 				score: Math.floor(score.score),
+				scoreChange: score.score_change,
+				ratingChange: score.rating_change,
 			}));
 		},
 	});
@@ -86,7 +88,7 @@ export function useOngekiScores() {
 		queryFn: async () => {
 			const response = await api.ongeki.ongeki_score_playlog.$get();
 			const data = (await response.json()) as OngekiScoreResponse;
-
+			console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
 			}

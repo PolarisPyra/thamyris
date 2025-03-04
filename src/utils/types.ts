@@ -1,49 +1,50 @@
-export interface currentAvatarApiResponse {
-	results: currentAvatarParts[];
+// Avatar Related Interfaces
+export interface CurrentAvatarApiResponse {
+	results: AvatarPart[];
 }
 
-export interface currentAvatarParts {
-	avatarFaceTexture: string;
-	avatarWearTexture: string;
-	avatarBackTexture: string;
-	avatarHeadTexture: string;
-	avatarItemTexture: string;
+export interface AvatarPart {
+	faceTexture: string;
+	wearTexture: string;
+	backTexture: string;
+	headTexture: string;
+	itemTexture: string;
 }
 
-export interface allAvatarApiResponse {
-	results?: allUnlockedOutfits[];
+export interface AllAvatarApiResponse {
+	results?: UnlockedOutfit[];
 	error?: string;
 }
 
-export interface allUnlockedOutfits {
+export interface UnlockedOutfit {
 	id: string;
 	name: string;
-	avatarHeadId: number;
-	avatarBackId: number;
-	avatarWearId: number;
-	avatarFaceId: number;
-	avatarItemId: number;
-	avatarAccessoryId: number;
-
+	headId: number;
+	backId: number;
+	wearId: number;
+	faceId: number;
+	itemId: number;
+	accessoryId: number;
 	category: string;
 	version: string;
 	iconPath: string;
 	texturePath: string;
 }
 
-export interface assetData {
+export interface AssetData {
 	image: string;
 	label: string;
-	avatarAccessoryId: number;
+	accessoryId: number;
 }
 
-export interface UserRatingBaseEntry {
+// User Rating Related Interfaces
+export interface UserRatingEntry {
 	type: string;
 	version: number;
 	index: number;
 	musicId: number;
 	score: number;
-	difficultId: string;
+	difficultyId: string;
 	chartId: number;
 	title: string;
 	artist: string;
@@ -53,13 +54,27 @@ export interface UserRatingBaseEntry {
 	rating: number;
 	isFullBell?: boolean;
 	isFullCombo?: boolean;
-	isAllBreake?: boolean;
+	isAllBreak?: boolean;
 	isAllJustice?: boolean;
 }
 
 export interface RatingResponse {
-	results: UserRatingBaseEntry[];
+	results: UserRatingEntry[];
 	error?: string;
+}
+
+// Song Related Interfaces
+export interface Song {
+	id?: number;
+	songId: number;
+	musicId: number;
+	title: string;
+	score: number;
+	level: number;
+	chartId: number;
+	genre: string;
+	artist: string;
+	rating: number;
 }
 
 export interface SongResponse {
@@ -67,7 +82,7 @@ export interface SongResponse {
 	error?: string;
 }
 
-interface Song {
+export interface RatingTable {
 	id?: number;
 	musicId: number;
 	title: string;
@@ -80,6 +95,103 @@ interface Song {
 }
 
 export interface RatingFrameTableProps {
-	data: Song[];
+	data: RatingTable[];
 	title: string;
+}
+
+// Favorites Related Interfaces
+export interface FavoriteSong {
+	id?: number;
+	title: React.ReactNode;
+	chartId: number;
+	level: number | React.ReactNode;
+	genre: string;
+	artist: React.ReactNode;
+	icon?: React.ReactNode;
+}
+
+export interface ChunithmFavoritesTableProps {
+	favorites: FavoriteSong[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+// All Songs Related Interfaces
+export interface AllSongs {
+	id?: number;
+	title: React.ReactNode;
+	chartId: number;
+	level: number | React.ReactNode;
+	genre: string;
+	artist: React.ReactNode;
+	icon?: React.ReactNode;
+}
+
+export interface AllSongsTableProps {
+	allSongs: AllSongs[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+// Ongeki Score Related Interfaces
+export interface OngekiScore {
+	id: number;
+	userPlayDate: string;
+	maxCombo: number;
+	isFullCombo: number;
+	playerRating: number;
+	isAllBreak: number;
+	isFullBell: number;
+	techScore: number;
+	battleScore: number;
+	judgeMiss: number;
+	judgeHit: number;
+	judgeBreak: number;
+	judgeCriticalBreak: number;
+	clearStatus: number;
+	cardId1: number;
+	chartId: number;
+	title: string;
+	level: number;
+	genre: string;
+	artist: string;
+}
+
+export interface OngekiScoreTableProps {
+	scores: OngekiScore[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+// Chunithm Score Related Interfaces
+export interface ChunithmScore {
+	id: number;
+	userPlayDate: string;
+	maxCombo: number;
+	isFullCombo: number;
+	playerRating: number;
+	isAllJustice: number;
+	score: number;
+	judgeHeaven: number;
+	judgeGuilty: number;
+	judgeJustice: number;
+	judgeAttack: number;
+	judgeCritical: number;
+	isClear: number;
+	skillId: number;
+	isNewRecord: number;
+	chartId: number;
+	title: string;
+	level: number;
+	genre: string;
+	jacketPath: string;
+	artist: string;
+	scoreChange: string;
+	ratingChange: string;
+}
+
+export interface ChunithmScoreTableProps {
+	scores: ChunithmScore[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

@@ -1,25 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Search } from "lucide-react";
 
+import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ChunithmFavoritesTableProps } from "@/utils/types";
 
-interface FavoritesTableProps {
-	favorites: {
-		id: number;
-		songId: number;
-		chartId: string;
-		title: React.ReactNode;
-		level: number | React.ReactNode;
-		genre: string;
-		artist: React.ReactNode;
-		icon: React.ReactNode;
-	}[];
-	searchQuery: string;
-	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+const ChunithmFavoritesTable = ({ favorites, searchQuery, onSearchChange }: ChunithmFavoritesTableProps) => {
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 15;
 
-const FavoritesTable = ({ favorites, searchQuery, onSearchChange }: FavoritesTableProps) => {
+	const filteredSongs = favorites.filter((song) => String(song.title).toLowerCase().includes(searchQuery.toLowerCase()));
+
+	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
+	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
 	return (
 		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 shadow-lg backdrop-blur-md sm:p-6">
 			<div className="mb-4 flex flex-col items-center justify-between gap-4 sm:mb-6 sm:flex-row">
@@ -35,20 +30,21 @@ const FavoritesTable = ({ favorites, searchQuery, onSearchChange }: FavoritesTab
 					<Search className="absolute top-2.5 left-3 text-gray-400" size={18} />
 				</div>
 			</div>
+
 			<div className="overflow-x-auto">
 				<Table>
 					<TableHeader>
 						<TableRow className="hover:bg-transparent">
-							<TableHead>Song</TableHead>
-							<TableHead>Difficulty</TableHead>
-							<TableHead>Level</TableHead>
-							<TableHead>Genre</TableHead>
-							<TableHead>Artist</TableHead>
-							<TableHead>Favorite</TableHead>
+							<TableHead className="text-gray-400">Song</TableHead>
+							<TableHead className="text-gray-400">Difficulty</TableHead>
+							<TableHead className="text-gray-400">Level</TableHead>
+							<TableHead className="text-gray-400">Genre</TableHead>
+							<TableHead className="text-gray-400">Artist</TableHead>
+							<TableHead className="text-gray-400">Favorite</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{favorites.map((favorite) => (
+						{paginatedSongs.map((favorite) => (
 							<TableRow key={favorite.id} className="border-b border-gray-700 hover:bg-gray-700">
 								<TableCell className="max-w-[140px] truncate text-sm text-gray-300">{favorite.title}</TableCell>
 								<TableCell className="text-sm text-gray-300">{favorite.chartId}</TableCell>
@@ -61,8 +57,14 @@ const FavoritesTable = ({ favorites, searchQuery, onSearchChange }: FavoritesTab
 					</TableBody>
 				</Table>
 			</div>
+
+			{totalPages > 1 && (
+				<div className="mt-4">
+					<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+				</div>
+			)}
 		</div>
 	);
 };
 
-export default FavoritesTable;
+export default ChunithmFavoritesTable;
