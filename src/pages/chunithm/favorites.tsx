@@ -1,5 +1,4 @@
-// src/pages/chunithm/favorites.tsx
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import React from "react";
 
 import { Heart } from "lucide-react";
@@ -48,23 +47,19 @@ const ChunithmFavorites = () => {
 		[favoriteSongIds, addFavorite, removeFavorite]
 	);
 
-	const filteredSongs = useMemo(
-		() =>
-			songs
-				.filter((song) => song.chartId === 3)
-				.map((song) => ({
-					...song,
-					icon: (
-						<Heart
-							className={`h-5 w-5 cursor-pointer ${
-								favoriteSongIds.includes(song.songId) ? "fill-current text-red-500" : "text-gray-500"
-							}`}
-							onClick={() => handleToggleFavorite(song.songId)}
-						/>
-					),
-				})),
-		[songs, favoriteSongIds, handleToggleFavorite]
-	);
+	const filteredSongs = songs
+		.filter((song) => song.chartId === 3)
+		.map((song) => ({
+			...song,
+			icon: (
+				<Heart
+					className={`h-5 w-5 cursor-pointer ${
+						favoriteSongIds.includes(song.songId) ? "fill-current text-red-500" : "text-gray-500"
+					}`}
+					onClick={() => handleToggleFavorite(song.songId)}
+				/>
+			),
+		}));
 
 	if (isLoadingSongs || isLoadingFavorites || isLoadingUsername) {
 		return (

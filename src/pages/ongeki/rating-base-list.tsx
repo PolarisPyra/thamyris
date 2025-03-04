@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import React from "react";
 
 import { ChartNoAxesCombined } from "lucide-react";
@@ -19,11 +18,9 @@ const OngekiRatingFrames = () => {
 	const { data: newSongs = [] } = useUserRatingBaseBestNewList();
 	const { data: nextSongs = [] } = useUserRatingBaseNextList();
 
-	const totalAverageRating = useMemo(() => {
-		const totalSongs = [...baseSongs, ...newSongs, ...hotSongs];
-		const totalRating = totalSongs.reduce((sum, song) => sum + song.rating, 0);
-		return totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
-	}, [baseSongs, newSongs, hotSongs]);
+	const totalSongs = [...baseSongs, ...newSongs, ...hotSongs];
+	const totalRating = totalSongs.reduce((sum, song) => sum + song.rating, 0);
+	const totalAverageRating = totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
 
 	return (
 		<div className="relative flex-1 overflow-auto">

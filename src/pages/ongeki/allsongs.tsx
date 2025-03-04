@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import React from "react";
 
 import AllSongsTable from "@/components/common/allsongs-table";
@@ -13,7 +13,7 @@ const OngekiAllSongs = () => {
 	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 	const [searchQuery, setSearchQuery] = useState("");
 
-	const filteredSongs = useMemo(() => songs, [songs]);
+	const filteredSongs = songs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
 	if (isLoadingSongs || isLoadingUsername) {
 		return (
