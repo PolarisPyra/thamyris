@@ -38,19 +38,21 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 		const b30 = bestList.filter((song) => song.musicId !== 0);
 		const new15 = newList.filter((song) => song.musicId !== 0);
 
-		const formattedData = [...b30, ...new15].map((song) => ({
-			title: song.title,
-			artist: song.artist,
-			score: song.score,
-			rank: getOngekiGrade(song.score),
-			diff: getDifficultyFromOngekiChart(song.chartId),
-			const: song.level,
-			rating: (song.rating / 100).toFixed(2),
-			date: Date.now(),
-			is_fullbell: false,
-			is_allbreak: false,
-			is_fullcombo: false,
-		}));
+		const formattedData = [...b30, ...new15]
+			.map((song) => ({
+				title: song.title,
+				artist: song.artist,
+				score: song.score,
+				rank: getOngekiGrade(song.score),
+				diff: getDifficultyFromOngekiChart(song.chartId),
+				const: song.level,
+				rating: Number((song.rating / 100).toFixed(2)),
+				date: Date.now(),
+				is_fullbell: song.isFullBell ? true : false,
+				is_allbreake: song.isAllBreake ? true : false,
+				is_fullcombo: song.isFullCombo ? true : false,
+			}))
+			.sort((a, b) => b.rating - a.rating); // Sort by score in descending order
 
 		const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: "application/json" });
 		const url = URL.createObjectURL(blob);

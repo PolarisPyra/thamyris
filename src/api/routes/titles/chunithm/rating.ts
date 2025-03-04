@@ -15,15 +15,30 @@ const UserRatingFramesRoutes = new Hono()
 			// First get the user rating base list
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-          musicId,
-          score,
-          difficultId,
-          version,
-          type
-        FROM chuni_profile_rating
-        WHERE user = ?
-          AND type = 'userRatingBaseHotList'
-          AND version = ?`,
+        r.musicId,
+        b.scoreMax as score,
+        r.difficultId,
+        r.version,
+        r.type,
+        b.isFullCombo,
+        b.isAllJustice,
+        m.title,
+        m.artist,
+        m.level,
+        m.genre,
+        m.chartId
+    FROM chuni_profile_rating r
+    LEFT JOIN chuni_score_best b 
+        ON r.musicId = b.musicId 
+        AND r.difficultId = b.level
+        AND b.user = r.user
+    LEFT JOIN chuni_static_music m
+        ON r.musicId = m.songId
+        AND r.difficultId = m.chartId
+        AND r.version = m.version
+    WHERE r.user = ?
+        AND r.type = 'userRatingBaseHotList'
+        AND r.version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -93,15 +108,30 @@ const UserRatingFramesRoutes = new Hono()
 			// Get base list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-                musicId,
-                score,
-                difficultId,
-                version,
-                type
-            FROM chuni_profile_rating
-            WHERE user = ?
-                AND type = 'userRatingBaseList'
-                AND version = ?`,
+        r.musicId,
+        b.scoreMax as score,
+        r.difficultId,
+        r.version,
+        r.type,
+        b.isFullCombo,
+        b.isAllJustice,
+        m.title,
+        m.artist,
+        m.level,
+        m.genre,
+        m.chartId
+    FROM chuni_profile_rating r
+    LEFT JOIN chuni_score_best b 
+        ON r.musicId = b.musicId 
+        AND r.difficultId = b.level
+        AND b.user = r.user
+    LEFT JOIN chuni_static_music m
+        ON r.musicId = m.songId
+        AND r.difficultId = m.chartId
+        AND r.version = m.version
+    WHERE r.user = ?
+        AND r.type = 'userRatingBaseList'
+        AND r.version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -152,6 +182,9 @@ const UserRatingFramesRoutes = new Hono()
 					genre: staticMusic?.genre || "Unknown Genre",
 					level: staticMusic?.level || "Unknown Level",
 					jacketPath: staticMusic?.jacketPath || "",
+					isAllJustice: entry.isAllJustice ?? null,
+					isFullCombo: entry.isFullCombo ?? null,
+
 					rating,
 				};
 			});
@@ -171,15 +204,30 @@ const UserRatingFramesRoutes = new Hono()
 			// Get new list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-                musicId,
-                score,
-                difficultId,
-                version,
-                type
-            FROM chuni_profile_rating
-            WHERE user = ?
-                AND type = 'userRatingBaseNewList'
-                AND version = ?`,
+        r.musicId,
+        b.scoreMax as score,
+        r.difficultId,
+        r.version,
+        r.type,
+        b.isFullCombo,
+        b.isAllJustice,
+        m.title,
+        m.artist,
+        m.level,
+        m.genre,
+        m.chartId
+    FROM chuni_profile_rating r
+    LEFT JOIN chuni_score_best b 
+        ON r.musicId = b.musicId 
+        AND r.difficultId = b.level
+        AND b.user = r.user
+    LEFT JOIN chuni_static_music m
+        ON r.musicId = m.songId
+        AND r.difficultId = m.chartId
+        AND r.version = m.version
+    WHERE r.user = ?
+        AND r.type = 'userRatingBaseNewList'
+        AND r.version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -251,15 +299,31 @@ const UserRatingFramesRoutes = new Hono()
 			// Get next list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-          musicId,
-          score,
-          difficultId,
-          version,
-          type
-        FROM chuni_profile_rating
-        WHERE user = ?
-          AND type = ?
-          AND version = ?`,
+        r.musicId,
+        b.scoreMax as score,
+        r.difficultId,
+        r.version,
+        r.type,
+        b.isFullCombo,
+        b.isAllJustice,
+        m.title,
+        m.artist,
+        m.level,
+        m.genre,
+        m.chartId
+    FROM chuni_profile_rating r
+    LEFT JOIN chuni_score_best b 
+        ON r.musicId = b.musicId 
+        AND r.difficultId = b.level
+        AND b.user = r.user
+    LEFT JOIN chuni_static_music m
+        ON r.musicId = m.songId
+        AND r.difficultId = m.chartId
+        AND r.version = m.version
+    WHERE r.user = ?
+        AND r.type = ?
+        AND r.version = ?
+   `,
 				[userId, typeFilter, version]
 			)) as UserRatingBaseEntry[];
 

@@ -44,7 +44,7 @@ export const useUserRatingBaseBestList = () => {
 };
 
 /**
- * Fetches and returns the 10 most recent plays that contribute to the user's rating.
+ * Fetches and returns the 15 most recent plays from the current version that contribute to the user's rating.
  */
 
 export const useUserRatingBaseBestNewList = () => {

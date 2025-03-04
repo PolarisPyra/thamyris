@@ -18,7 +18,7 @@ interface GameSettingsProps {
 const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: chunithmVersion } = useChunithmVersion();
 	const { data: versions } = useChunithmVersions();
-	const { data: bestList = [] } = useUserRatingBaseList();
+	const { data: baseList = [] } = useUserRatingBaseList();
 
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
@@ -30,18 +30,20 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
 
 	const handleExportB30 = () => {
-		const formattedData = bestList.map((song) => ({
-			title: song.title,
-			artist: song.artist,
-			score: song.score,
-			rank: getGrade(song.score),
-			diff: getDifficultyFromChunithmChart(song.chartId),
-			const: song.level,
-			rating: (song.rating / 100).toFixed(2),
-			date: Date.now(),
-			is_fullcombo: false,
-			is_alljustice: false,
-		}));
+		const formattedData = baseList
+			.map((song) => ({
+				title: song.title,
+				artist: song.artist,
+				score: song.score,
+				rank: getGrade(song.score),
+				diff: getDifficultyFromChunithmChart(song.chartId),
+				const: song.level,
+				rating: Number((song.rating / 100).toFixed(2)),
+				date: Date.now(),
+				is_fullcombo: song.isFullCombo ? true : false,
+				is_alljustice: song.isAllJustice ? true : false,
+			}))
+			.sort((a, b) => b.rating - a.rating); // Sort by rating in descending order
 
 		const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: "application/json" });
 		const url = URL.createObjectURL(blob);

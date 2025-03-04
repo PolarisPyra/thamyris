@@ -69,6 +69,10 @@ export interface UserRatingBaseEntry {
 	level: number;
 	jacketPath: string;
 	rating: number;
+	isFullBell?: boolean;
+	isFullCombo?: boolean;
+	isAllBreake?: boolean;
+	isAllJustice?: boolean;
 }
 
 export interface RatingResponse {

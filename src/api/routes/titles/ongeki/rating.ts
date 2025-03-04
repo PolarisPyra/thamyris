@@ -15,15 +15,31 @@ const OngekiRatingRoutes = new Hono()
 			// Get the user rating base hot list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-					musicId,
-					score,
-					difficultId,
-					version,
-					type
-				FROM ongeki_profile_rating
-				WHERE user = ?
-					AND type = 'userRatingBaseHotList'
-					AND version = ?`,
+                r.musicId,
+                b.techScoreMax as score,
+                r.difficultId,
+                r.version,
+                r.type,
+                b.isFullBell,
+                b.isFullCombo,
+                b.isAllBreake,
+                m.title,
+                m.artist,
+                m.level,
+                m.genre,
+                m.chartId
+            FROM ongeki_profile_rating r
+            LEFT JOIN ongeki_score_best b 
+                ON r.musicId = b.musicId 
+                AND r.difficultId = b.level
+                AND b.user = r.user
+            LEFT JOIN ongeki_static_music m
+                ON r.musicId = m.songId
+                AND r.difficultId = m.chartId
+                AND r.version = m.version
+            WHERE r.user = ?
+                AND r.type = 'userRatingBaseHotList'
+                AND r.version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -83,6 +99,101 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
 		}
 	})
+
+	// .get("/user_rating_base_hot_next_list", async (c) => {
+	// 	try {
+	// 		const userId = c.payload.userId;
+
+	// 		const version = await getUserVersionOngeki(userId);
+
+	// 		// Get the user rating base hot list entries
+	// 		const userRatingBaseList = (await db.query(
+	// 			`SELECT
+	//               r.musicId,
+	//               b.techScoreMax as score,
+	//               r.difficultId,
+	//               r.version,
+	//               r.type,
+	//               b.isFullBell,
+	//               b.isFullCombo,
+	//               b.isAllBreake,
+	//               m.title,
+	//               m.artist,
+	//               m.level,
+	//               m.genre,
+	//               m.chartId
+	//           FROM ongeki_profile_rating r
+	//           LEFT JOIN ongeki_score_best b
+	//               ON r.musicId = b.musicId
+	//               AND r.difficultId = b.level
+	//               AND b.user = r.user
+	//           LEFT JOIN ongeki_static_music m
+	//               ON r.musicId = m.songId
+	//               AND r.difficultId = m.chartId
+	//               AND r.version = m.version
+	//           WHERE r.user = ?
+	//               AND r.type = 'userRatingBaseHotNextList'
+	//               AND r.version = ?`,
+	// 			[userId, version]
+	// 		)) as UserRatingBaseEntry[];
+
+	// 		if (!userRatingBaseList.length) {
+	// 			return c.json({ results: [] });
+	// 		}
+
+	// 		// Get the music IDs to fetch static music info
+	// 		const musicIds = userRatingBaseList.map((entry) => entry.musicId);
+
+	// 		// Get static music information
+	// 		const staticMusicInfo = (await db.query(
+	// 			`SELECT
+	// 				songId,
+	// 				title,
+	// 				artist,
+	// 				chartId,
+	// 				level,
+	// 				genre
+	// 				FROM ongeki_static_music
+	// 			WHERE songId IN (?)
+	// 				AND version = ?`,
+	// 			[musicIds, version]
+	// 		)) as any[];
+
+	// 		// Create a map for easy lookup
+	// 		const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
+
+	// 		// Calculate ratings and combine data
+	// 		const results = userRatingBaseList.map((entry) => {
+	// 			const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
+	// 			const level = staticMusic?.level ?? 0;
+	// 			const score = entry.score ?? 0;
+
+	// 			const rating = calculateRating(level, score);
+
+	// 			return {
+	// 				type: entry.type,
+	// 				version: entry.version,
+	// 				index: entry.index,
+	// 				musicId: entry.musicId,
+	// 				score: entry.score,
+	// 				difficultId: entry.difficultId,
+	// 				chartId: staticMusic?.chartId || "Unknown chartId",
+	// 				title: staticMusic?.title || "Unknown Title",
+	// 				artist: staticMusic?.artist || "Unknown Artist",
+	// 				genre: staticMusic?.genre || "Unknown Genre",
+	// 				level: staticMusic?.level || "Unknown Level",
+	// 				jacketPath: staticMusic?.jacketPath || "",
+	// 				rating,
+	// 			};
+	// 		});
+
+	// 		return c.json({ results });
+	// 	} catch (error) {
+	// 		console.error("Error executing query:", error);
+	// 		return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
+	// 	}
+	// })
+
 	.get("/user_rating_base_next_list", async (c) => {
 		try {
 			const userId = c.payload.userId;
@@ -91,16 +202,32 @@ const OngekiRatingRoutes = new Hono()
 
 			// Get the user rating base hot list entries
 			const userRatingBaseList = (await db.query(
-				`SELECT
-					musicId,
-					score,
-					difficultId,
-					version,
-					type
-				FROM ongeki_profile_rating
-				WHERE user = ?
-					AND type = 'userRatingBaseNextList'
-					AND version = ?`,
+				`SELECT 
+                r.musicId,
+                b.techScoreMax as score,
+                r.difficultId,
+                r.version,
+                r.type,
+                b.isFullBell,
+                b.isFullCombo,
+                b.isAllBreake,
+                m.title,
+                m.artist,
+                m.level,
+                m.genre,
+                m.chartId
+            FROM ongeki_profile_rating r
+            LEFT JOIN ongeki_score_best b 
+                ON r.musicId = b.musicId 
+                AND r.difficultId = b.level
+                AND b.user = r.user
+            LEFT JOIN ongeki_static_music m
+                ON r.musicId = m.songId
+                AND r.difficultId = m.chartId
+                AND r.version = m.version
+            WHERE r.user = ?
+                AND r.type = 'userRatingBaseNextList'
+                AND r.version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -163,21 +290,35 @@ const OngekiRatingRoutes = new Hono()
 	.get("/user_rating_base_best_list", async (c) => {
 		try {
 			const userId = c.payload.userId;
-
 			const version = await getUserVersionOngeki(userId);
 
-			// Get base list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-					musicId,
-					score,
-					difficultId,
-					version,
-					type
-				FROM ongeki_profile_rating
-				WHERE user = ?
-					AND type = 'userRatingBaseBestList'
-					AND version = ?`,
+                r.musicId,
+                b.techScoreMax as score,
+                r.difficultId,
+                r.version,
+                r.type,
+                b.isFullBell,
+                b.isFullCombo,
+                b.isAllBreake,
+                m.title,
+                m.artist,
+                m.level,
+                m.genre,
+                m.chartId
+            FROM ongeki_profile_rating r
+            LEFT JOIN ongeki_score_best b 
+                ON r.musicId = b.musicId 
+                AND r.difficultId = b.level
+                AND b.user = r.user
+            LEFT JOIN ongeki_static_music m
+                ON r.musicId = m.songId
+                AND r.difficultId = m.chartId
+                AND r.version = m.version
+            WHERE r.user = ?
+                AND r.type = 'userRatingBaseBestList'
+                AND r.version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -185,34 +326,8 @@ const OngekiRatingRoutes = new Hono()
 				return c.json({ results: [] });
 			}
 
-			// Get the music IDs to fetch static music info
-			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
-
-			// Get static music information
-			const staticMusicInfo = (await db.query(
-				`SELECT 
-					songId,
-					title,
-					artist,
-					chartId,
-					level,
-					genre
-				FROM ongeki_static_music
-				WHERE songId IN (?)
-					AND version = ?`,
-				[musicIds, version]
-			)) as any[];
-
-			// Create a map for easy lookup
-			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
-
-			// Calculate ratings and combine data
 			const results = userRatingBaseList.map((entry) => {
-				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
-				const level = staticMusic?.level ?? 0;
-				const score = entry.score ?? 0;
-
-				const rating = calculateRating(level, score);
+				const rating = calculateRating(entry.level, entry.score);
 
 				return {
 					type: entry.type,
@@ -221,13 +336,15 @@ const OngekiRatingRoutes = new Hono()
 					musicId: entry.musicId,
 					score: entry.score,
 					difficultId: entry.difficultId,
-					chartId: staticMusic?.chartId || "Unknown chartId",
-					title: staticMusic?.title || "Unknown Title",
-					artist: staticMusic?.artist || "Unknown Artist",
-					genre: staticMusic?.genre || "Unknown Genre",
-					level: staticMusic?.level || "Unknown Level",
-					jacketPath: staticMusic?.jacketPath || "",
+					chartId: entry.chartId,
+					title: entry.title || "Unknown Title",
+					artist: entry.artist || "Unknown Artist",
+					genre: entry.genre || "Unknown Genre",
+					level: entry.level || 0,
 					rating,
+					isFullBell: entry.isFullBell ?? null,
+					isFullCombo: entry.isFullCombo ?? null,
+					isAllBreake: entry.isAllBreake ?? null,
 				};
 			});
 
@@ -240,21 +357,35 @@ const OngekiRatingRoutes = new Hono()
 	.get("/user_rating_base_best_new_list", async (c) => {
 		try {
 			const userId = c.payload.userId;
-
 			const version = await getUserVersionOngeki(userId);
 
-			// Get new list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
-					musicId,
-					score,
-					difficultId,
-					version,
-					type
-				FROM ongeki_profile_rating
-				WHERE user = ?
-					AND type = 'userRatingBaseBestNewList'
-					AND version = ?`,
+                r.musicId,
+                b.techScoreMax as score,
+                r.difficultId,
+                r.version,
+                r.type,
+                b.isFullBell,
+                b.isFullCombo,
+                b.isAllBreake,
+                m.title,
+                m.artist,
+                m.level,
+                m.genre,
+                m.chartId
+            FROM ongeki_profile_rating r
+            LEFT JOIN ongeki_score_best b 
+                ON r.musicId = b.musicId 
+                AND r.difficultId = b.level
+                AND b.user = r.user
+            LEFT JOIN ongeki_static_music m
+                ON r.musicId = m.songId
+                AND r.difficultId = m.chartId
+                AND r.version = m.version
+            WHERE r.user = ?
+                AND r.type = 'userRatingBaseBestNewList'
+                AND r.version = ?`,
 				[userId, version]
 			)) as UserRatingBaseEntry[];
 
@@ -262,34 +393,8 @@ const OngekiRatingRoutes = new Hono()
 				return c.json({ results: [] });
 			}
 
-			// Get the music IDs to fetch static music info
-			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
-
-			// Get static music information
-			const staticMusicInfo = (await db.query(
-				`SELECT 
-					songId,
-					title,
-					artist,
-					chartId,
-					level,
-					genre
-				FROM ongeki_static_music
-				WHERE songId IN (?)
-					AND version = ?`,
-				[musicIds, version]
-			)) as any[];
-
-			// Create a map for easy lookup
-			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
-
-			// Calculate ratings and combine data
 			const results = userRatingBaseList.map((entry) => {
-				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
-				const level = staticMusic?.level ?? 0;
-				const score = entry.score ?? 0;
-
-				const rating = calculateRating(level, score);
+				const rating = calculateRating(entry.level, entry.score);
 
 				return {
 					type: entry.type,
@@ -298,13 +403,15 @@ const OngekiRatingRoutes = new Hono()
 					musicId: entry.musicId,
 					score: entry.score,
 					difficultId: entry.difficultId,
-					chartId: staticMusic?.chartId || "Unknown chartId",
-					title: staticMusic?.title || "Unknown Title",
-					artist: staticMusic?.artist || "Unknown Artist",
-					genre: staticMusic?.genre || "Unknown Genre",
-					level: staticMusic?.level || "Unknown Level",
-					jacketPath: staticMusic?.jacketPath || "",
+					chartId: entry.chartId,
+					title: entry.title || "Unknown Title",
+					artist: entry.artist || "Unknown Artist",
+					genre: entry.genre || "Unknown Genre",
+					level: entry.level || 0,
 					rating,
+					isFullBell: entry.isFullBell ?? null,
+					isFullCombo: entry.isFullCombo ?? null,
+					isAllBreake: entry.isAllBreake ?? null,
 				};
 			});
 
@@ -314,7 +421,6 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ error: "Failed to fetch user rating base best new list" }, 500);
 		}
 	});
-
 // Rating calculation function
 function calculateRating(level: number, score: number): number {
 	const iclInt = level * 100;

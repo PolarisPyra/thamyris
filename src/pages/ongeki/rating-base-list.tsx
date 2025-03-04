@@ -120,26 +120,6 @@ const OngekiRatingFrames = () => {
 						<Pagination currentPage={currentPage} totalPages={totalBasePages} onPageChange={setCurrentPage} />
 					)}
 
-					{/* Hot List Table */}
-					<h3 className="mb-4 text-xl font-semibold text-gray-100">Recent</h3>
-					<RatingFrameTable
-						songs={paginatedHotSongs.map((song) => ({
-							title: song.title,
-							score: song.score,
-							level: song.level,
-							difficulty: getDifficultyFromOngekiChart(song.chartId),
-							genre: song.genre,
-							artist: song.artist,
-							rating: song.rating,
-							type: song.type,
-						}))}
-						searchQuery={searchHotQuery}
-						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
-					/>
-					{totalHotPages > 1 && (
-						<Pagination currentPage={currentHotPage} totalPages={totalHotPages} onPageChange={setCurrentHotPage} />
-					)}
-
 					{/* New List Table */}
 					<h3 className="mb-4 text-xl font-semibold text-gray-100">Current Version</h3>
 					<RatingFrameTable
@@ -158,6 +138,26 @@ const OngekiRatingFrames = () => {
 					/>
 					{totalNewPages > 1 && (
 						<Pagination currentPage={currentNewPage} totalPages={totalNewPages} onPageChange={setCurrentNewPage} />
+					)}
+
+					{/* Hot List Table */}
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Recent</h3>
+					<RatingFrameTable
+						songs={paginatedHotSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							difficulty: getDifficultyFromOngekiChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+							type: song.type,
+						}))}
+						searchQuery={searchHotQuery}
+						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
+					/>
+					{totalHotPages > 1 && (
+						<Pagination currentPage={currentHotPage} totalPages={totalHotPages} onPageChange={setCurrentHotPage} />
 					)}
 
 					{/* Potential Plays Table */}

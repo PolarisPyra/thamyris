@@ -141,26 +141,6 @@ const ChunithmRatingBaseList = () => {
 						<Pagination currentPage={currentPage} totalPages={totalBasePages} onPageChange={setCurrentPage} />
 					)}
 
-					{/* Recent Plays Table */}
-					<h3 className="mb-4 text-xl font-semibold text-gray-100">Recent Plays</h3>
-					<RatingFrameTable
-						songs={paginatedHotSongs.map((song) => ({
-							title: song.title,
-							score: song.score,
-							level: song.level,
-							difficulty: getDifficultyFromChunithmChart(song.chartId),
-							genre: song.genre,
-							artist: song.artist,
-							rating: song.rating,
-							type: song.type,
-						}))}
-						searchQuery={searchHotQuery}
-						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
-					/>
-					{totalHotPages > 1 && (
-						<Pagination currentPage={currentHotPage} totalPages={totalHotPages} onPageChange={setCurrentHotPage} />
-					)}
-
 					{/* Current Version Table - Only show if version is 17 or higher */}
 					{(version ?? 0) >= 17 && (
 						<div className="space-y-4">
@@ -183,6 +163,26 @@ const ChunithmRatingBaseList = () => {
 								<Pagination currentPage={currentNewPage} totalPages={totalNewPages} onPageChange={setCurrentNewPage} />
 							)}
 						</div>
+					)}
+
+					{/* Recent Plays Table */}
+					<h3 className="mb-4 text-xl font-semibold text-gray-100">Recent Plays</h3>
+					<RatingFrameTable
+						songs={paginatedHotSongs.map((song) => ({
+							title: song.title,
+							score: song.score,
+							level: song.level,
+							difficulty: getDifficultyFromChunithmChart(song.chartId),
+							genre: song.genre,
+							artist: song.artist,
+							rating: song.rating,
+							type: song.type,
+						}))}
+						searchQuery={searchHotQuery}
+						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
+					/>
+					{totalHotPages > 1 && (
+						<Pagination currentPage={currentHotPage} totalPages={totalHotPages} onPageChange={setCurrentHotPage} />
 					)}
 
 					{/* Potential Plays Table - Only show if version is 17 or higher */}
