@@ -302,7 +302,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Export Data</h2>
 					<SubmitButton
 						onClick={handleExportB45}
-						defaultLabel="Export B45 (Best 30 + Current version (New 15))"
+						defaultLabel="Export Ratings"
 						updatingLabel="Exporting..."
 						className="bg-green-600 text-lg hover:bg-green-700"
 					/>

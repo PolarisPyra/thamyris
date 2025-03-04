@@ -227,7 +227,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Export Data</h2>
 					<SubmitButton
 						onClick={handleExportB30}
-						defaultLabel="Export Best 30"
+						defaultLabel="Export Ratings"
 						updatingLabel="Exporting..."
 						className="bg-green-600 text-lg hover:bg-green-700"
 					/>
