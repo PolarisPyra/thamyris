@@ -7,13 +7,13 @@ import { toast } from "sonner";
 import { SubmitButton } from "@/components/common/button";
 import { useAllAvatarParts, useCurrentAvatar, useUpdateAvatar } from "@/hooks/chunithm/use-avatar";
 import { cdnUrl } from "@/lib/cdn";
-import { avatarData } from "@/utils/types";
+import { assetData } from "@/utils/types";
 
 import Spinner from "../common/spinner";
 
 interface AvatarDropdownProps {
 	category: string;
-	options: avatarData[];
+	options: assetData[];
 	openDropdown: string | null;
 	handleDropdownToggle: (part: string) => void;
 	handleChange: (part: string, image: string) => void;

@@ -31,25 +31,7 @@ export interface allUnlockedOutfits {
 	texturePath: string;
 }
 
-export interface User {
-	sub: string;
-	role: string;
-	exp: number;
-}
-
-export interface CustomContext {
-	Variables: {
-		user: User;
-	};
-}
-
-export interface avatarData {
-	image: string;
-	label: string;
-	avatarAccessoryId: number;
-}
-
-export interface mapData {
+export interface assetData {
 	image: string;
 	label: string;
 	avatarAccessoryId: number;
@@ -80,34 +62,24 @@ export interface RatingResponse {
 	error?: string;
 }
 
-export interface Song {
-	id: number;
-	songId: number;
-	chartId: number;
-	title: string;
-	level: number;
-	genre: string;
-	artist: string;
-	jacketPath: string;
-}
-
 export interface SongResponse {
 	results: Song[];
 	error?: string;
 }
 
-export interface RatingTableProps {
-	songs: {
-		id?: number;
-		title: string | React.ReactNode;
-		score: number;
-		level: number;
-		difficulty: string;
-		genre: string;
-		artist: string | React.ReactNode;
-		rating: number;
-		type?: string;
-	}[];
-	searchQuery: string;
-	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface Song {
+	id?: number;
+	musicId: number;
+	title: string;
+	score: number;
+	level: number;
+	chartId: number;
+	genre: string;
+	artist: string;
+	rating: number;
+}
+
+export interface RatingFrameTableProps {
+	data: Song[];
+	title: string;
 }

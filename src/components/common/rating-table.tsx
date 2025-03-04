@@ -5,23 +5,7 @@ import { Search } from "lucide-react";
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
-
-interface Song {
-	id?: number;
-	musicId: number;
-	title: string;
-	score: number;
-	level: number;
-	chartId: number;
-	genre: string;
-	artist: string;
-	rating: number;
-}
-
-interface RatingFrameTableProps {
-	data: Song[];
-	title: string;
-}
+import { RatingFrameTableProps } from "@/utils/types";
 
 const RatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);
