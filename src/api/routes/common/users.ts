@@ -1,9 +1,6 @@
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { HTTPException } from "hono/http-exception";
 
-import { db } from "@/api/db";
-import { DB } from "@/api/types/db";
 import { env } from "@/env";
 
 const UserRoutes = new Hono()
