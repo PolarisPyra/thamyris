@@ -12,7 +12,6 @@ import {
 	usePlayerRating,
 	useUserRatingBaseBestList,
 	useUserRatingBaseBestNewList,
-	useUserRatingBaseHotList,
 } from "@/hooks/ongeki/use-rating";
 import { useUnlockAllCards, useUnlockAllItems, useUnlockSpecificItem } from "@/hooks/ongeki/use-unlocks";
 import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki/use-version";
@@ -30,7 +29,6 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: usernameData } = useUsername();
 	const { data: playerRating } = usePlayerRating();
 	const { data: highestRating } = useHighestRating();
-	const { data: hotList = [] } = useUserRatingBaseHotList();
 
 	const { mutate: unlockAllCards } = useUnlockAllCards();
 	const { mutate: unlockAllItems } = useUnlockAllItems();
@@ -47,7 +45,6 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	const handleExportB45 = () => {
 		const b30 = bestList.filter((song) => song.musicId !== 0);
 		const new15 = newList.filter((song) => song.musicId !== 0);
-		const recent = hotList.filter((song) => song.musicId !== 0);
 		const username = usernameData;
 
 		const formattedData = {
@@ -81,16 +78,6 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 				is_fullbell: song.isFullBell,
 				is_allbreak: song.isAllBreake,
 				is_fullcombo: song.isFullCombo,
-			})),
-			recent: recent.slice(0, 10).map((song) => ({
-				title: song.title,
-				artist: song.artist,
-				score: song.score,
-				rank: getOngekiGrade(song.score),
-				diff: getDifficultyFromOngekiChart(song.chartId),
-				const: song.level,
-				rating: Number((song.rating / 100).toFixed(2)),
-				date: Date.now(),
 			})),
 		};
 
