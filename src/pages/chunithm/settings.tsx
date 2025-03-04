@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
-import { usePlayerRating, useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
+import { usePlayerRating, useUserRatingBaseHotList, useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
 import { useLimitedTickets, useLockSongs, useUnlimitedTickets, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/common/use-username";
@@ -22,6 +22,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: baseList = [] } = useUserRatingBaseList();
 	const { data: usernameData } = useUsername();
 	const { data: playerRating } = usePlayerRating();
+	const { data: hotList = [] } = useUserRatingBaseHotList();
 
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
@@ -41,6 +42,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 			honor: "",
 			name: username || "Player",
 			rating: Number(((playerRating ?? 0) / 100).toFixed(2)),
+			ratingMax: Number(((playerRating ?? 0) / 100).toFixed(2)),
 			updatedAt: new Date().toISOString(),
 			best: b30.map((song) => ({
 				title: song.title,
@@ -51,8 +53,19 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 				const: song.level,
 				rating: Number((song.rating / 100).toFixed(2)),
 				date: Date.now(),
-				is_fullcombo: song.isFullCombo ?? false,
-				is_alljustice: song.isAllJustice ?? false,
+				is_fullbell: song.isFullBell,
+				is_allbreak: song.isAllBreake,
+				is_fullcombo: song.isFullCombo,
+			})),
+			recent: hotList.slice(0, 10).map((song) => ({
+				title: song.title,
+				artist: song.artist,
+				score: song.score,
+				rank: getGrade(song.score),
+				diff: getDifficultyFromChunithmChart(song.chartId),
+				const: song.level,
+				rating: Number((song.rating / 100).toFixed(2)),
+				date: Date.now(),
 			})),
 		};
 
@@ -227,7 +240,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 					<h2 className="mb-4 text-xl font-semibold text-gray-100">Export Data</h2>
 					<SubmitButton
 						onClick={handleExportB30}
-						defaultLabel="Export Ratings"
+						defaultLabel="Export ratings as json (for reiwa.f5.si)"
 						updatingLabel="Exporting..."
 						className="bg-green-600 text-lg hover:bg-green-700"
 					/>
