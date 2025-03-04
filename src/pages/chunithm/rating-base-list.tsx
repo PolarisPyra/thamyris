@@ -1,14 +1,11 @@
-import { useState } from "react";
+import { useMemo } from "react";
 import React from "react";
 
 import { ChartNoAxesCombined } from "lucide-react";
 
 import Header from "@/components/common/header";
-import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
 import RatingFrameTable from "@/components/common/rating-table";
-import Spinner from "@/components/common/spinner";
-// Import the new Pagination component
 import {
 	useUserRatingBaseHotList,
 	useUserRatingBaseList,
@@ -16,204 +13,48 @@ import {
 	useUserRatingBaseNextList,
 } from "@/hooks/chunithm/use-rating";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
-import { useUsername } from "@/hooks/common/use-username";
-import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
-const itemsPerPage = 15;
-
-const ChunithmRatingBaseList = () => {
-	const [currentHotPage, setCurrentHotPage] = useState(1);
-	const [searchHotQuery, setSearchHotQuery] = useState("");
-	const [currentPage, setCurrentPage] = useState(1);
-	const [currentNewPage, setCurrentNewPage] = useState(1);
-	const [currentNextPage, setCurrentNextPage] = useState(1);
-	const [searchQuery, setSearchQuery] = useState("");
-	const [searchNewQuery, setSearchNewQuery] = useState("");
-	const [searchNextQuery, setSearchNextQuery] = useState("");
-
-	const { data: baseSongs = [], isLoading: isLoadingBaseList } = useUserRatingBaseList();
-	const { data: hotSongs = [], isLoading: isLoadingHotList } = useUserRatingBaseHotList();
-	const { data: newSongs = [], isLoading: isLoadingNewList } = useUserRatingBaseNewList();
-	const { data: nextSongs = [], isLoading: isLoadingNextList } = useUserRatingBaseNextList();
-
-	const { isLoading: isLoadingUsername } = useUsername();
+const ChunithmRatingFrames = () => {
 	const { data: version } = useChunithmVersion();
+	const { data: baseSongs = [] } = useUserRatingBaseList();
+	const { data: hotSongs = [] } = useUserRatingBaseHotList();
+	const { data: newSongs = [] } = useUserRatingBaseNewList();
+	const { data: nextSongs = [] } = useUserRatingBaseNextList();
 
-	const totalBaseRating = baseSongs.reduce((sum, song) => sum + song.rating, 0);
-	const totalNewRating = newSongs.reduce((sum, song) => sum + song.rating, 0);
-	const totalNextRating = nextSongs.reduce((sum, song) => sum + song.rating, 0);
+	const totalAverageRating = useMemo(() => {
+		const totalSongs = [...baseSongs, ...newSongs, ...hotSongs];
+		const totalRating = totalSongs.reduce((sum, song) => sum + song.rating, 0);
+		return totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
+	}, [baseSongs, newSongs, hotSongs]);
 
-	const averageBaseRating = baseSongs.length > 0 ? (totalBaseRating / baseSongs.length / 100).toFixed(2) : "0.00";
-	const averageNewRating = newSongs.length > 0 ? (totalNewRating / newSongs.length / 100).toFixed(2) : "0.00";
-	const averageNextRating = nextSongs.length > 0 ? (totalNextRating / nextSongs.length / 100).toFixed(2) : "0.00";
-
-	const filteredBaseSongs = baseSongs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
-	const filteredNewSongs = newSongs.filter((song) => song.title.toLowerCase().includes(searchNewQuery.toLowerCase()));
-	const filteredHotSongs = hotSongs.filter((song) => song.title.toLowerCase().includes(searchHotQuery.toLowerCase()));
-	const filteredNextSongs = nextSongs.filter((song) => song.title.toLowerCase().includes(searchNextQuery.toLowerCase()));
-
-	const totalBasePages = Math.ceil(filteredBaseSongs.length / itemsPerPage);
-	const totalNewPages = Math.ceil(filteredNewSongs.length / itemsPerPage);
-	const totalHotPages = Math.ceil(filteredHotSongs.length / itemsPerPage);
-	const totalNextPages = Math.ceil(filteredNextSongs.length / itemsPerPage);
-
-	const paginatedBaseSongs = filteredBaseSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-	const paginatedNewSongs = filteredNewSongs.slice((currentNewPage - 1) * itemsPerPage, currentNewPage * itemsPerPage);
-	const paginatedHotSongs = filteredHotSongs.slice((currentHotPage - 1) * itemsPerPage, currentHotPage * itemsPerPage);
-	const paginatedNextSongs = filteredNextSongs.slice(
-		(currentNextPage - 1) * itemsPerPage,
-		currentNextPage * itemsPerPage
-	);
-
-	if (isLoadingBaseList || isLoadingNewList || isLoadingHotList || isLoadingNextList || isLoadingUsername) {
-		return (
-			<div className="relative flex-1 overflow-auto">
-				<Header title="Rating Frame" />
-				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
-					<div className="text-lg text-gray-400">
-						<Spinner size={24} color="#ffffff" />
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	const newNextListCount = nextSongs.filter((song) => song.type === "userRatingBaseNewNextList").length;
+	const isVerseOrAbove = Number(version) >= 17;
 
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Rating Frame" />
 			<div className="container mx-auto space-y-6">
-				{(version ?? 0) >= 17 ? (
-					<div className="grid grid-cols-1 gap-4 p-4 py-6 sm:p-0 md:grid-cols-2 md:p-0 lg:grid-cols-3 lg:p-0 xl:p-0 2xl:p-0">
-						<QouteCard
-							icon={ChartNoAxesCombined}
-							tagline=""
-							value={`Average Rating: ${averageBaseRating}`}
-							color="#f067e9"
-							welcomeMessage={`Based on ${baseSongs.length} base plays`}
-						/>
-						<QouteCard
-							icon={ChartNoAxesCombined}
-							tagline=""
-							value={`Average Rating: ${averageNewRating}`}
-							color="#f067e9"
-							welcomeMessage={`Based on ${newSongs.length} new plays`}
-						/>
-						<QouteCard
-							icon={ChartNoAxesCombined}
-							tagline=""
-							value={`Average Rating: ${averageNextRating}`}
-							color="#f067e9"
-							welcomeMessage={`Based on ${newNextListCount} potential plays`}
-						/>
-					</div>
-				) : (
-					<div className="flex flex-col gap-4 py-6">
-						<QouteCard
-							icon={ChartNoAxesCombined}
-							tagline=""
-							value={`Average Rating: ${averageBaseRating}`}
-							color="#f067e9"
-							welcomeMessage={`Based on ${baseSongs.length} base plays`}
-						/>
-					</div>
-				)}
-
-				<div className="p-4 sm:p-0 md:p-0 lg:p-0 xl:p-0 2xl:p-0">
-					{/* Highest Rating Table */}
-					<h3 className="mb-4 text-xl font-semibold text-gray-100">Best 30</h3>
-					<RatingFrameTable
-						songs={paginatedBaseSongs.map((song) => ({
-							title: song.title,
-							score: song.score,
-							level: song.level,
-							difficulty: getDifficultyFromChunithmChart(song.chartId),
-							genre: song.genre,
-							artist: song.artist,
-							rating: song.rating,
-							type: song.type,
-						}))}
-						searchQuery={searchQuery}
-						onSearchChange={(e) => setSearchQuery(e.target.value)}
+				<div className="gap-4 p-4 py-6 sm:p-0">
+					<QouteCard
+						icon={ChartNoAxesCombined}
+						tagline=""
+						value={`Average Rating: ${totalAverageRating}`}
+						color="#ffaa00"
+						welcomeMessage={`Based on ${baseSongs.length} best plays, ${hotSongs.length} recent plays and ${newSongs.length} current version plays`}
 					/>
-					{totalBasePages > 1 && (
-						<Pagination currentPage={currentPage} totalPages={totalBasePages} onPageChange={setCurrentPage} />
-					)}
+				</div>
 
-					{/* Current Version Table - Only show if version is 17 or higher */}
-					{(version ?? 0) >= 17 && (
-						<div className="space-y-4">
-							<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Current Version</h3>
-							<RatingFrameTable
-								songs={paginatedNewSongs.map((song) => ({
-									title: song.title,
-									score: song.score,
-									level: song.level,
-									difficulty: getDifficultyFromChunithmChart(song.chartId),
-									genre: song.genre,
-									artist: song.artist,
-									rating: song.rating,
-									type: song.type,
-								}))}
-								searchQuery={searchNewQuery}
-								onSearchChange={(e) => setSearchNewQuery(e.target.value)}
-							/>
-							{totalNewPages > 1 && (
-								<Pagination currentPage={currentNewPage} totalPages={totalNewPages} onPageChange={setCurrentNewPage} />
-							)}
-						</div>
-					)}
+				<div className="mb-4sm:p-0 space-y-8 p-4">
+					<RatingFrameTable data={baseSongs} title="Best 30" />
 
-					{/* Recent Plays Table */}
-					<h3 className="mb-4 text-xl font-semibold text-gray-100">Recent Plays</h3>
-					<RatingFrameTable
-						songs={paginatedHotSongs.map((song) => ({
-							title: song.title,
-							score: song.score,
-							level: song.level,
-							difficulty: getDifficultyFromChunithmChart(song.chartId),
-							genre: song.genre,
-							artist: song.artist,
-							rating: song.rating,
-							type: song.type,
-						}))}
-						searchQuery={searchHotQuery}
-						onSearchChange={(e) => setSearchHotQuery(e.target.value)}
-					/>
-					{totalHotPages > 1 && (
-						<Pagination currentPage={currentHotPage} totalPages={totalHotPages} onPageChange={setCurrentHotPage} />
-					)}
+					{isVerseOrAbove && <RatingFrameTable data={newSongs} title="Current Version" />}
 
-					{/* Potential Plays Table - Only show if version is 17 or higher */}
-					{(version ?? 0) >= 17 && (
-						<>
-							<h3 className="mt-4 mb-4 text-xl font-semibold text-gray-100">Potential Plays</h3>
-							<div className="pb-4">
-								<RatingFrameTable
-									songs={paginatedNextSongs.map((song) => ({
-										title: song.title,
-										score: song.score,
-										level: song.level,
-										difficulty: getDifficultyFromChunithmChart(song.chartId),
-										genre: song.genre,
-										artist: song.artist,
-										rating: song.rating,
-										type: song.type,
-									}))}
-									searchQuery={searchNextQuery}
-									onSearchChange={(e) => setSearchNextQuery(e.target.value)}
-								/>
-							</div>
-							{totalNextPages > 1 && (
-								<Pagination currentPage={currentNextPage} totalPages={totalNextPages} onPageChange={setCurrentNextPage} />
-							)}
-						</>
-					)}
+					<RatingFrameTable data={hotSongs} title="Recent" />
+
+					{isVerseOrAbove && <RatingFrameTable data={nextSongs} title="Potential Plays" />}
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default ChunithmRatingBaseList;
+export default ChunithmRatingFrames;
