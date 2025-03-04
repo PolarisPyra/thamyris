@@ -9,6 +9,7 @@ import Header from "@/components/common/header";
 import { useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
 import { useLimitedTickets, useLockSongs, useUnlimitedTickets, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
+import { useUsername } from "@/hooks/common/use-username";
 import { getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
 
 interface GameSettingsProps {
@@ -19,6 +20,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: chunithmVersion } = useChunithmVersion();
 	const { data: versions } = useChunithmVersions();
 	const { data: baseList = [] } = useUserRatingBaseList();
+	const { data: usernameData } = useUsername();
 
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
@@ -30,8 +32,19 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
 
 	const handleExportB30 = () => {
-		const formattedData = baseList
-			.map((song) => ({
+		const username = usernameData;
+
+		const b30 = baseList.sort((a, b) => b.rating - a.rating);
+		const currentRating = Math.max(...b30.map((song) => song.rating));
+		const maxRating = currentRating; // For Chunithm, current and max are the same
+
+		const formattedData = {
+			honor: "",
+			name: username || "Player",
+			rating: Number((currentRating / 100).toFixed(2)),
+			ratingMax: Number((maxRating / 100).toFixed(2)),
+			updatedAt: new Date().toISOString(),
+			best: b30.map((song) => ({
 				title: song.title,
 				artist: song.artist,
 				score: song.score,
@@ -40,10 +53,10 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 				const: song.level,
 				rating: Number((song.rating / 100).toFixed(2)),
 				date: Date.now(),
-				is_fullcombo: song.isFullCombo ? true : false,
-				is_alljustice: song.isAllJustice ? true : false,
-			}))
-			.sort((a, b) => b.rating - a.rating); // Sort by rating in descending order
+				is_fullcombo: song.isFullCombo ?? false,
+				is_alljustice: song.isAllJustice ?? false,
+			})),
+		};
 
 		const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: "application/json" });
 		const url = URL.createObjectURL(blob);
@@ -57,7 +70,6 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 
 		toast.success("Successfully exported B30 data");
 	};
-
 	const getGameTitle = (version: number | undefined): string => {
 		if (!version) return "Select a version";
 

@@ -29,23 +29,9 @@ const UserRoutes = new Hono()
 		// and added the payload to the context
 		return c.json({ user: c.payload });
 	})
-	// NOTE:
-	//  ...doesn't the JWT already have the user's username?
 	.get("/username", async (c) => {
-		const userId = c.payload.userId;
-		const [user] = await db.query<DB.AimeUser[]>(
-			`
-				SELECT username 
-				FROM aime_user 
-				WHERE id = ?
-				;
-			`,
-			[userId]
-		);
-		if (!user) {
-			throw new HTTPException(401, { message: "User not found" });
-		}
-		return c.json({ username: user.username });
+		const { username } = c.payload;
+		return c.json({ username });
 	});
 
 export { UserRoutes };
