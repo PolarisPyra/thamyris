@@ -7,7 +7,13 @@ import { toast } from "sonner";
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
 import { useUsername } from "@/hooks/common/use-username";
-import { useUserRatingBaseBestList, useUserRatingBaseBestNewList } from "@/hooks/ongeki/use-rating";
+import {
+	useHighestRating,
+	usePlayerRating,
+	useUserRatingBaseBestList,
+	useUserRatingBaseBestNewList,
+	useUserRatingBaseHotList,
+} from "@/hooks/ongeki/use-rating";
 import { useUnlockAllCards, useUnlockAllItems, useUnlockSpecificItem } from "@/hooks/ongeki/use-unlocks";
 import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki/use-version";
 import { getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
@@ -19,14 +25,17 @@ interface GameSettingsProps {
 const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: ongekiVersion } = useOngekiVersion();
 	const { data: versions } = useOngekiVersions();
-	const { mutate: updateVersion, isPending: isUpdatingVersion } = useUpdateOngekiVersion();
 	const { data: bestList = [] } = useUserRatingBaseBestList();
 	const { data: newList = [] } = useUserRatingBaseBestNewList();
 	const { data: usernameData } = useUsername();
+	const { data: playerRating } = usePlayerRating();
+	const { data: highestRating } = useHighestRating();
+	const { data: hotList = [] } = useUserRatingBaseHotList();
 
 	const { mutate: unlockAllCards } = useUnlockAllCards();
 	const { mutate: unlockAllItems } = useUnlockAllItems();
 	const { mutate: unlockSpecificItem } = useUnlockSpecificItem();
+	const { mutate: updateVersion, isPending: isUpdatingVersion } = useUpdateOngekiVersion();
 
 	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
@@ -35,22 +44,17 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 		items: false,
 		specific: false,
 	});
-
 	const handleExportB45 = () => {
 		const b30 = bestList.filter((song) => song.musicId !== 0);
 		const new15 = newList.filter((song) => song.musicId !== 0);
+		const recent = hotList.filter((song) => song.musicId !== 0);
 		const username = usernameData;
-
-		// Calculate max rating
-		const allSongs = [...b30, ...new15];
-		const maxRating = Math.max(...allSongs.map((song) => song.rating));
-		const currentRating = Math.max(...b30.map((song) => song.rating));
 
 		const formattedData = {
 			honor: "",
 			name: username || "Player",
-			rating: Number((currentRating / 100).toFixed(2)),
-			ratingMax: Number((maxRating / 100).toFixed(2)),
+			rating: Number(((playerRating ?? 0) / 100).toFixed(2)),
+			ratingMax: Number(((highestRating ?? 0) / 100).toFixed(2)),
 			updatedAt: new Date().toISOString(),
 			best: b30.map((song) => ({
 				title: song.title,
@@ -78,7 +82,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 				is_allbreak: song.isAllBreake,
 				is_fullcombo: song.isFullCombo,
 			})),
-			recent: allSongs.slice(0, 10).map((song) => ({
+			recent: recent.slice(0, 10).map((song) => ({
 				title: song.title,
 				artist: song.artist,
 				score: song.score,

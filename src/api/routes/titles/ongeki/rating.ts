@@ -420,6 +420,52 @@ const OngekiRatingRoutes = new Hono()
 			console.error("Error executing query:", error);
 			return c.json({ error: "Failed to fetch user rating base best new list" }, 500);
 		}
+	})
+	.get("/player_rating", async (c) => {
+		try {
+			const userId = c.payload.userId;
+			const version = await getUserVersionOngeki(userId);
+
+			const result = await db.query(
+				`SELECT playerRating 
+                FROM ongeki_profile_data 
+                WHERE user = ? 
+                AND version = ?`,
+				[userId, version]
+			);
+
+			if (!result || !result[0]) {
+				return c.json({ rating: 0 });
+			}
+
+			return c.json({ rating: result[0].playerRating || 0 });
+		} catch (error) {
+			console.error("Error executing query:", error);
+			return c.json({ error: "Failed to fetch player rating" }, 500);
+		}
+	})
+	.get("/highest_rating", async (c) => {
+		try {
+			const userId = c.payload.userId;
+			const version = await getUserVersionOngeki(userId);
+
+			const result = await db.query(
+				`SELECT highestRating 
+                FROM ongeki_profile_data 
+                WHERE user = ? 
+                AND version = ?`,
+				[userId, version]
+			);
+
+			if (!result || !result[0]) {
+				return c.json({ rating: 0 });
+			}
+
+			return c.json({ rating: result[0].highestRating || 0 });
+		} catch (error) {
+			console.error("Error executing query:", error);
+			return c.json({ error: "Failed to fetch highest rating" }, 500);
+		}
 	});
 // Rating calculation function
 function calculateRating(level: number, score: number): number {

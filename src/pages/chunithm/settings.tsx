@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
-import { useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
+import { usePlayerRating, useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
 import { useLimitedTickets, useLockSongs, useUnlimitedTickets, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/common/use-username";
@@ -21,6 +21,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: versions } = useChunithmVersions();
 	const { data: baseList = [] } = useUserRatingBaseList();
 	const { data: usernameData } = useUsername();
+	const { data: playerRating } = usePlayerRating();
 
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
@@ -35,14 +36,11 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 		const username = usernameData;
 
 		const b30 = baseList.sort((a, b) => b.rating - a.rating);
-		const currentRating = Math.max(...b30.map((song) => song.rating));
-		const maxRating = currentRating; // For Chunithm, current and max are the same
 
 		const formattedData = {
 			honor: "",
 			name: username || "Player",
-			rating: Number((currentRating / 100).toFixed(2)),
-			ratingMax: Number((maxRating / 100).toFixed(2)),
+			rating: Number(((playerRating ?? 0) / 100).toFixed(2)),
 			updatedAt: new Date().toISOString(),
 			best: b30.map((song) => ({
 				title: song.title,

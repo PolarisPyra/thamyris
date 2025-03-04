@@ -82,3 +82,41 @@ export const useUserRatingBaseNextList = () => {
 		},
 	});
 };
+
+/**
+ * Fetches and returns the player's current rating.
+ */
+export const usePlayerRating = () => {
+	return useQuery<number>({
+		queryKey: ["playerRating"],
+		queryFn: async () => {
+			const response = await api.ongeki.player_rating.$get();
+			const data = (await response.json()) as { rating: number; error?: string };
+
+			if (data.error) {
+				throw new Error(data.error);
+			}
+
+			return data.rating;
+		},
+	});
+};
+
+/**
+ * Fetches and returns the player's highest achieved rating.
+ */
+export const useHighestRating = () => {
+	return useQuery<number>({
+		queryKey: ["highestRating"],
+		queryFn: async () => {
+			const response = await api.ongeki.highest_rating.$get();
+			const data = (await response.json()) as { rating: number; error?: string };
+
+			if (data.error) {
+				throw new Error(data.error);
+			}
+
+			return data.rating;
+		},
+	});
+};
