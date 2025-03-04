@@ -39,7 +39,7 @@ const ChunithmRatingFrames = () => {
 						tagline=""
 						value={`Average Rating: ${totalAverageRating}`}
 						color="#ffaa00"
-						welcomeMessage={`Based on ${baseSongs.length} best plays, ${hotSongs.length} recent plays and ${newSongs.length} current version plays`}
+						welcomeMessage={`Based on ${baseSongs.length} best plays`}
 					/>
 				</div>
 
