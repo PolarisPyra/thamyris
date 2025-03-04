@@ -52,9 +52,9 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 								<TableCell className="text-sm text-gray-300">
 									<div className="flex items-center">
 										<span className="mr-4">{(score.playerRating / 100).toFixed(2)}</span>
-										{score.ratingChange === "Increase" && <CircleArrowUp className="h-6 w-6 text-green-500" />}
-										{score.ratingChange === "Decrease" && <CircleArrowDown className="h-6 w-6 text-red-500" />}
-										{score.ratingChange === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
+										{score.rating_change === "Increase" && <CircleArrowUp className="h-6 w-6 text-green-500" />}
+										{score.rating_change === "Decrease" && <CircleArrowDown className="h-6 w-6 text-red-500" />}
+										{score.rating_change === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
 									</div>
 								</TableCell>
 								<TableCell className="text-sm text-gray-300">

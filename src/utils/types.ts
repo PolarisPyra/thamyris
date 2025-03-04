@@ -155,6 +155,7 @@ export interface OngekiScore {
 	level: number;
 	genre: string;
 	artist: string;
+	rating_change: string;
 }
 
 export interface OngekiScoreTableProps {
@@ -186,8 +187,7 @@ export interface ChunithmScore {
 	genre: string;
 	jacketPath: string;
 	artist: string;
-	scoreChange: string;
-	ratingChange: string;
+	rating_change: string;
 }
 
 export interface ChunithmScoreTableProps {

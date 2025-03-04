@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Search } from "lucide-react";
+import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -10,8 +10,10 @@ const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTa
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 15;
 
+	// Filter scores based on search query
 	const filteredScores = scores.filter((score) => score.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
+	// Pagination
 	const totalPages = Math.ceil(filteredScores.length / itemsPerPage);
 	const paginatedScores = filteredScores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -49,7 +51,14 @@ const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTa
 							<TableRow key={score.id} className="border-b border-gray-700 hover:bg-gray-700/50">
 								<TableCell className="max-w-[140px] truncate text-sm font-medium text-gray-200">{score.title}</TableCell>
 								<TableCell className="text-sm font-medium text-gray-300">{score.techScore.toLocaleString()}</TableCell>
-								<TableCell className="text-sm text-gray-300">{(score.playerRating / 100).toFixed(2)}</TableCell>
+								<TableCell className="text-sm text-gray-300">
+									<div className="flex items-center">
+										<span className="mr-4">{(score.playerRating / 100).toFixed(2)}</span>
+										{score.rating_change === "Increase" && <CircleArrowUp className="h-6 w-6 text-green-500" />}
+										{score.rating_change === "Decrease" && <CircleArrowDown className="h-6 w-6 text-red-500" />}
+										{score.rating_change === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
+									</div>
+								</TableCell>
 								<TableCell className="text-sm text-gray-300">{score.clearStatus}</TableCell>
 								<TableCell className="text-sm text-gray-300">{new Date(score.userPlayDate).toLocaleString()}</TableCell>
 								<TableCell className="text-sm text-gray-300">{score.level}</TableCell>
