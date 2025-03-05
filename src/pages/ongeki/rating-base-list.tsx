@@ -4,7 +4,7 @@ import { ChartNoAxesCombined } from "lucide-react";
 
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
-import OngekiRatingFrameTable from "@/components/ongeki/rating-table copy";
+import OngekiRatingFrameTable from "@/components/ongeki/rating-table";
 import {
 	useUserRatingBaseBestList,
 	useUserRatingBaseBestNewList,
