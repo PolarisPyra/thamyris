@@ -28,11 +28,11 @@ const UserRatingFramesRoutes = new Hono()
         m.genre,
         m.chartId
     FROM chuni_profile_rating r
-    LEFT JOIN chuni_score_best b 
+    JOIN chuni_score_best b 
         ON r.musicId = b.musicId 
         AND r.difficultId = b.level
         AND b.user = r.user
-    LEFT JOIN chuni_static_music m
+    JOIN chuni_static_music m
         ON r.musicId = m.songId
         AND r.difficultId = m.chartId
         AND r.version = m.version
@@ -121,11 +121,11 @@ const UserRatingFramesRoutes = new Hono()
         m.genre,
         m.chartId
     FROM chuni_profile_rating r
-    LEFT JOIN chuni_score_best b 
+    JOIN chuni_score_best b 
         ON r.musicId = b.musicId 
         AND r.difficultId = b.level
         AND b.user = r.user
-    LEFT JOIN chuni_static_music m
+    JOIN chuni_static_music m
         ON r.musicId = m.songId
         AND r.difficultId = m.chartId
         AND r.version = m.version
@@ -217,11 +217,11 @@ const UserRatingFramesRoutes = new Hono()
         m.genre,
         m.chartId
     FROM chuni_profile_rating r
-    LEFT JOIN chuni_score_best b 
+    JOIN chuni_score_best b 
         ON r.musicId = b.musicId 
         AND r.difficultId = b.level
         AND b.user = r.user
-    LEFT JOIN chuni_static_music m
+    JOIN chuni_static_music m
         ON r.musicId = m.songId
         AND r.difficultId = m.chartId
         AND r.version = m.version
@@ -312,11 +312,11 @@ const UserRatingFramesRoutes = new Hono()
         m.genre,
         m.chartId
     FROM chuni_profile_rating r
-    LEFT JOIN chuni_score_best b 
+    JOIN chuni_score_best b 
         ON r.musicId = b.musicId 
         AND r.difficultId = b.level
         AND b.user = r.user
-    LEFT JOIN chuni_static_music m
+    JOIN chuni_static_music m
         ON r.musicId = m.songId
         AND r.difficultId = m.chartId
         AND r.version = m.version

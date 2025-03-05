@@ -29,11 +29,11 @@ const OngekiRatingRoutes = new Hono()
                 m.genre,
                 m.chartId
             FROM ongeki_profile_rating r
-            LEFT JOIN ongeki_score_best b 
+            JOIN ongeki_score_best b 
                 ON r.musicId = b.musicId 
                 AND r.difficultId = b.level
                 AND b.user = r.user
-            LEFT JOIN ongeki_static_music m
+            JOIN ongeki_static_music m
                 ON r.musicId = m.songId
                 AND r.difficultId = m.chartId
                 AND r.version = m.version
@@ -123,11 +123,11 @@ const OngekiRatingRoutes = new Hono()
 	//               m.genre,
 	//               m.chartId
 	//           FROM ongeki_profile_rating r
-	//           LEFT JOIN ongeki_score_best b
+	//           JOIN ongeki_score_best b
 	//               ON r.musicId = b.musicId
 	//               AND r.difficultId = b.level
 	//               AND b.user = r.user
-	//           LEFT JOIN ongeki_static_music m
+	//           JOIN ongeki_static_music m
 	//               ON r.musicId = m.songId
 	//               AND r.difficultId = m.chartId
 	//               AND r.version = m.version
@@ -217,11 +217,11 @@ const OngekiRatingRoutes = new Hono()
                 m.genre,
                 m.chartId
             FROM ongeki_profile_rating r
-            LEFT JOIN ongeki_score_best b 
+            JOIN ongeki_score_best b 
                 ON r.musicId = b.musicId 
                 AND r.difficultId = b.level
                 AND b.user = r.user
-            LEFT JOIN ongeki_static_music m
+            JOIN ongeki_static_music m
                 ON r.musicId = m.songId
                 AND r.difficultId = m.chartId
                 AND r.version = m.version
@@ -308,11 +308,11 @@ const OngekiRatingRoutes = new Hono()
                 m.genre,
                 m.chartId
             FROM ongeki_profile_rating r
-            LEFT JOIN ongeki_score_best b 
+            JOIN ongeki_score_best b 
                 ON r.musicId = b.musicId 
                 AND r.difficultId = b.level
                 AND b.user = r.user
-            LEFT JOIN ongeki_static_music m
+            JOIN ongeki_static_music m
                 ON r.musicId = m.songId
                 AND r.difficultId = m.chartId
                 AND r.version = m.version
@@ -375,11 +375,11 @@ const OngekiRatingRoutes = new Hono()
                 m.genre,
                 m.chartId
             FROM ongeki_profile_rating r
-            LEFT JOIN ongeki_score_best b 
+            JOIN ongeki_score_best b 
                 ON r.musicId = b.musicId 
                 AND r.difficultId = b.level
                 AND b.user = r.user
-            LEFT JOIN ongeki_static_music m
+            JOIN ongeki_static_music m
                 ON r.musicId = m.songId
                 AND r.difficultId = m.chartId
                 AND r.version = m.version
