@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { api } from "@/utils";
-import { RatingResponse, UserRatingBaseEntry } from "@/utils/types";
+import { RatingResponse, UserRatingEntry } from "@/utils/types";
 
 /**
  * Fetches and returns the 10 most recent plays that could increase the user's rating.
  */
 
 export const useUserRatingBaseHotList = () => {
-	return useQuery<UserRatingBaseEntry[]>({
+	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseHotList"],
 		queryFn: async () => {
 			const response = await api.ongeki.user_rating_base_hot_list.$get();
@@ -28,7 +28,7 @@ export const useUserRatingBaseHotList = () => {
  */
 
 export const useUserRatingBaseBestList = () => {
-	return useQuery<UserRatingBaseEntry[]>({
+	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseBestList"],
 		queryFn: async () => {
 			const response = await api.ongeki.user_rating_base_best_list.$get();
@@ -48,7 +48,7 @@ export const useUserRatingBaseBestList = () => {
  */
 
 export const useUserRatingBaseBestNewList = () => {
-	return useQuery<UserRatingBaseEntry[]>({
+	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseBestNewList"],
 		queryFn: async () => {
 			const response = await api.ongeki.user_rating_base_best_new_list.$get();
@@ -68,7 +68,7 @@ export const useUserRatingBaseBestNewList = () => {
  */
 
 export const useUserRatingBaseNextList = () => {
-	return useQuery<UserRatingBaseEntry[]>({
+	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseNextList"],
 		queryFn: async () => {
 			const response = await api.ongeki.user_rating_base_next_list.$get();
