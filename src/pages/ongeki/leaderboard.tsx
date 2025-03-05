@@ -6,6 +6,7 @@ import { LeaderboardTable } from "@/components/common/leaderboard-table";
 import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
 import { useLeaderboard } from "@/hooks/ongeki/use-leaderboard";
+import { useOngekiVersion } from "@/hooks/ongeki/use-version";
 
 const ITEMS_PER_PAGE = 50;
 
@@ -13,6 +14,7 @@ const OngekiLeaderboard = () => {
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
 	const { data: leaderboard = [], isLoading } = useLeaderboard();
+	const { data: version } = useOngekiVersion();
 
 	const filteredData = leaderboard.filter((player) => player.username.toLowerCase().includes(search.toLowerCase()));
 
@@ -33,21 +35,27 @@ const OngekiLeaderboard = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Leaderboard" />
-			<div className="container mx-auto p-4">
-				<LeaderboardTable
-					players={currentData}
-					searchQuery={search}
-					onSearchChange={(e) => setSearch(e.target.value)}
-					page={page}
-					itemsPerPage={ITEMS_PER_PAGE}
-				/>
+			{version ? (
+				<div className="container mx-auto p-4">
+					<LeaderboardTable
+						players={currentData}
+						searchQuery={search}
+						onSearchChange={(e) => setSearch(e.target.value)}
+						page={page}
+						itemsPerPage={ITEMS_PER_PAGE}
+					/>
 
-				{totalPages > 1 && (
-					<div className="mt-4 flex justify-center">
-						<Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
-					</div>
-				)}
-			</div>
+					{totalPages > 1 && (
+						<div className="mt-4 flex justify-center">
+							<Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+						</div>
+					)}
+				</div>
+			) : (
+				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
+					<p className="text-gray-400">Please set your Ongeki version in settings first</p>
+				</div>
+			)}
 		</div>
 	);
 };
