@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 import { AllSongsTableProps } from "@/utils/types";
 
-const ChunithmallSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
+const ChunithmAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 15;
 
@@ -66,4 +66,4 @@ const ChunithmallSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSon
 	);
 };
 
-export default ChunithmallSongsTable;
+export default ChunithmAllSongsTable;

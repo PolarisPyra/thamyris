@@ -33,27 +33,33 @@ const ChunithmRatingFrames = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Rating Frame" />
-			<div className="container mx-auto space-y-6">
-				<div className="gap-4 p-4 py-6 sm:p-0">
-					<QouteCard
-						icon={ChartNoAxesCombined}
-						tagline=""
-						value={`Average Rating: ${totalAverageRating}`}
-						color="#ffaa00"
-						welcomeMessage={`Based on ${baseSongs.length} best plays`}
-					/>
+			{version ? (
+				<div className="container mx-auto space-y-6">
+					<div className="gap-4 p-4 py-6 sm:p-0">
+						<QouteCard
+							icon={ChartNoAxesCombined}
+							tagline=""
+							value={`Average Rating: ${totalAverageRating}`}
+							color="#ffaa00"
+							welcomeMessage={`Based on ${baseSongs.length} best plays`}
+						/>
+					</div>
+
+					<div className="mb-4 space-y-8 p-4 sm:p-0">
+						<ChunithmRatingFrameTable data={baseSongs} title="Best 30" />
+
+						{isVerseOrAbove && <RatingFrameTable data={newSongs} title="Current Version" />}
+
+						<ChunithmRatingFrameTable data={hotSongs} title="Recent" />
+
+						{isVerseOrAbove && <ChunithmRatingFrameTable data={nextSongs} title="Potential Plays" />}
+					</div>
 				</div>
-
-				<div className="mb-4 space-y-8 p-4 sm:p-0">
-					<ChunithmRatingFrameTable data={baseSongs} title="Best 30" />
-
-					{isVerseOrAbove && <RatingFrameTable data={newSongs} title="Current Version" />}
-
-					<ChunithmRatingFrameTable data={hotSongs} title="Recent" />
-
-					{isVerseOrAbove && <ChunithmRatingFrameTable data={nextSongs} title="Potential Plays" />}
+			) : (
+				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
+					<p className="text-gray-400">Please set your Chunithm version in settings first</p>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 };

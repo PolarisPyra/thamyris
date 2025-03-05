@@ -10,9 +10,11 @@ import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import { useAddFavorite, useFavorites, useRemoveFavorite } from "@/hooks/chunithm/use-favorites";
 import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
+import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/users/use-username";
 
 const ChunithmFavorites = () => {
+	const { data: version } = useChunithmVersion();
 	const { data: songs = [], isLoading: isLoadingSongs } = useChunithmSongs();
 	const { data: favoriteSongIds = [], isLoading: isLoadingFavorites } = useFavorites();
 	const { mutate: addFavorite } = useAddFavorite();
@@ -75,25 +77,31 @@ const ChunithmFavorites = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Favorites" />
-			<div className="container mx-auto space-y-6">
-				<div className="gap-4 p-4 py-6 sm:p-0">
-					<QouteCard
-						icon={Heart}
-						tagline=""
-						value={`Total Favorites: ${favoriteSongIds.length}`}
-						color="#ffaa00"
-						welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-					/>
-				</div>
+			{version ? (
+				<div className="container mx-auto space-y-6">
+					<div className="gap-4 p-4 py-6 sm:p-0">
+						<QouteCard
+							icon={Heart}
+							tagline=""
+							value={`Total Favorites: ${favoriteSongIds.length}`}
+							color="#ffaa00"
+							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+						/>
+					</div>
 
-				<div className="mb-4 space-y-8 p-4 sm:p-0">
-					<ChunithmFavoritesTable
-						favorites={filteredSongs}
-						searchQuery={searchQuery}
-						onSearchChange={(e) => setSearchQuery(e.target.value)}
-					/>
+					<div className="mb-4 space-y-8 p-4 sm:p-0">
+						<ChunithmFavoritesTable
+							favorites={filteredSongs}
+							searchQuery={searchQuery}
+							onSearchChange={(e) => setSearchQuery(e.target.value)}
+						/>
+					</div>
 				</div>
-			</div>
+			) : (
+				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
+					<p className="text-gray-400">Please set your Chunithm version in settings first</p>
+				</div>
+			)}
 		</div>
 	);
 };

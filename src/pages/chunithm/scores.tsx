@@ -8,6 +8,7 @@ import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import { useChunithmScores } from "@/hooks/chunithm/use-scores";
+import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/users/use-username";
 
 const ChunithmScorePage = () => {
@@ -15,6 +16,7 @@ const ChunithmScorePage = () => {
 
 	const { data: scores = [], isLoading: isLoadingScores } = useChunithmScores();
 	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
+	const { data: version } = useChunithmVersion();
 
 	if (isLoadingScores || isLoadingUsername) {
 		return (
@@ -32,25 +34,31 @@ const ChunithmScorePage = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Scores" />
-			<div className="container mx-auto space-y-6">
-				<div className="gap-4 p-4 py-6 sm:p-0">
-					<QouteCard
-						tagline=""
-						value="View your scores"
-						color="#f067e9"
-						welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-						icon={Heart}
-					/>
-				</div>
+			{version ? (
+				<div className="container mx-auto space-y-6">
+					<div className="gap-4 p-4 py-6 sm:p-0">
+						<QouteCard
+							tagline=""
+							value="View your scores"
+							color="#f067e9"
+							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+							icon={Heart}
+						/>
+					</div>
 
-				<div className="mb-4 space-y-8 p-4 sm:p-0">
-					<ChunithmScoreTable
-						scores={scores}
-						searchQuery={searchQuery}
-						onSearchChange={(e) => setSearchQuery(e.target.value)}
-					/>
+					<div className="mb-4 space-y-8 p-4 sm:p-0">
+						<ChunithmScoreTable
+							scores={scores}
+							searchQuery={searchQuery}
+							onSearchChange={(e) => setSearchQuery(e.target.value)}
+						/>
+					</div>
 				</div>
-			</div>
+			) : (
+				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
+					<p className="text-gray-400">Please set your Chunithm version in settings first</p>
+				</div>
+			)}
 		</div>
 	);
 };

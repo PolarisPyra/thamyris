@@ -9,6 +9,7 @@ import QouteCard from "@/components/common/qoutecard";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/chunithm/use-rivals";
+import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { useUsername } from "@/hooks/users/use-username";
 
 const ITEMS_PER_PAGE = 10;
@@ -17,6 +18,7 @@ const ChunithmRivals = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 
+	const { data: version } = useChunithmVersion();
 	const { data: rivalIds = [], isLoading: isLoadingRivals } = useRivals();
 	const { data: rivalCount = 0, isLoading: isLoadingCount } = useRivalCount();
 	const { data: users = [], isLoading: isLoadingUsers } = useRivalUsers();
@@ -74,61 +76,67 @@ const ChunithmRivals = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title={`Rivals ${rivalCount}/4`} />
-			<main className="mx-auto h-[calc(100vh-64px)] max-w-full px-4 py-6 lg:px-8">
-				<div className="flex flex-col gap-4">
-					<div className="grid py-6">
-						<QouteCard
-							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-							tagline={"Challenge your friends!"}
-							icon={Swords}
-							color={"yellow"}
-						/>
-						<div className="mt-6 space-y-6"></div>
-						<RivalsTable
-							rivals={paginatedRivals.map((user) => ({
-								id: user.id,
-								username: user.username,
-								mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
-								rivalIcon: (
-									<Skull
-										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
-										onClick={() => {
-											const isRival = rivalIds.includes(user.id);
-											if (isRival) {
-												handleRemoveRival(user.id);
-											} else {
-												handleAddRival(user.id);
-											}
-										}}
-									/>
-								),
-							}))}
-							searchQuery={searchQuery}
-							onSearchChange={(e) => setSearchQuery(e.target.value)}
-							rivalCount={rivalCount}
-						/>
+			{version ? (
+				<main className="mx-auto h-[calc(100vh-64px)] max-w-full px-4 py-6 lg:px-8">
+					<div className="flex flex-col gap-4">
+						<div className="grid py-6">
+							<QouteCard
+								welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+								tagline={"Challenge your friends!"}
+								icon={Swords}
+								color={"yellow"}
+							/>
+							<div className="mt-6 space-y-6"></div>
+							<RivalsTable
+								rivals={paginatedRivals.map((user) => ({
+									id: user.id,
+									username: user.username,
+									mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
+									rivalIcon: (
+										<Skull
+											className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+											onClick={() => {
+												const isRival = rivalIds.includes(user.id);
+												if (isRival) {
+													handleRemoveRival(user.id);
+												} else {
+													handleAddRival(user.id);
+												}
+											}}
+										/>
+									),
+								}))}
+								searchQuery={searchQuery}
+								onSearchChange={(e) => setSearchQuery(e.target.value)}
+								rivalCount={rivalCount}
+							/>
+						</div>
+						<div className="mb-4 flex items-center justify-center space-x-4">
+							<button
+								disabled={currentPage === 1}
+								onClick={() => setCurrentPage((prev) => prev - 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Previous
+							</button>
+							<span className="text-sm text-gray-300">
+								Page {currentPage} of {totalPages}
+							</span>
+							<button
+								disabled={currentPage === totalPages}
+								onClick={() => setCurrentPage((prev) => prev + 1)}
+								className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Next
+							</button>
+						</div>
 					</div>
-					<div className="mb-4 flex items-center justify-center space-x-4">
-						<button
-							disabled={currentPage === 1}
-							onClick={() => setCurrentPage((prev) => prev - 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Previous
-						</button>
-						<span className="text-sm text-gray-300">
-							Page {currentPage} of {totalPages}
-						</span>
-						<button
-							disabled={currentPage === totalPages}
-							onClick={() => setCurrentPage((prev) => prev + 1)}
-							className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							Next
-						</button>
-					</div>
+				</main>
+			) : (
+				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
+					<p className="text-gray-400">Please set your Chunithm version in settings first</p>
 				</div>
-			</main>
+			)}
 		</div>
 	);
 };
