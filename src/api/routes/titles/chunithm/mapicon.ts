@@ -61,7 +61,7 @@ const MapIconRoutes = new Hono()
 		try {
 			const userId = c.payload.userId;
 
-			const supportedVersionNumber = 17;
+			const version = await getUserVersionChunithm(userId);
 
 			// Get unlocked mapicons
 			const unlockedResults = await db.query(
@@ -78,7 +78,7 @@ const MapIconRoutes = new Hono()
 				`SELECT mapIconId AS id, version, name, sortName, imagePath 
      FROM daphnis_static_map_icon
      WHERE version=?`,
-				[supportedVersionNumber]
+				[version]
 			);
 
 			// Filter unlocked mapicons
