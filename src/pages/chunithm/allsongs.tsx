@@ -3,7 +3,7 @@ import React from "react";
 
 import { Notebook } from "lucide-react";
 
-import AllSongsTable from "@/components/common/allsongs-table";
+import ChunithmallSongsTable from "@/components/chunithm/allsongs-table";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
@@ -43,7 +43,7 @@ const ChunithmFavorites = () => {
 				</div>
 
 				<div className="mb-4 space-y-8 p-4 sm:p-0">
-					<AllSongsTable
+					<ChunithmallSongsTable
 						allSongs={filteredSongs}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}

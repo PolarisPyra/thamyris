@@ -5,13 +5,13 @@ import { Search } from "lucide-react";
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
-import { ChunithmFavoritesTableProps } from "@/utils/types";
+import { AllSongsTableProps } from "@/utils/types";
 
-const ChunithmFavoritesTable = ({ favorites, searchQuery, onSearchChange }: ChunithmFavoritesTableProps) => {
+const ChunithmallSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 15;
 
-	const filteredSongs = favorites.filter((song) => String(song.title).toLowerCase().includes(searchQuery.toLowerCase()));
+	const filteredSongs = allSongs.filter((song) => String(song.title).toLowerCase().includes(searchQuery.toLowerCase()));
 
 	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
 	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -41,18 +41,16 @@ const ChunithmFavoritesTable = ({ favorites, searchQuery, onSearchChange }: Chun
 							<TableHead className="text-gray-400">Level</TableHead>
 							<TableHead className="text-gray-400">Genre</TableHead>
 							<TableHead className="text-gray-400">Artist</TableHead>
-							<TableHead className="text-gray-400">Favorite</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{paginatedSongs.map((favorite) => (
 							<TableRow key={favorite.id} className="border-b border-gray-700 hover:bg-gray-700">
 								<TableCell className="max-w-[140px] truncate text-sm text-gray-300">{favorite.title}</TableCell>
-								<TableCell className="text-sm text-gray-300">{getDifficultyFromChunithmChart(favorite.chartId)}</TableCell>
+								<TableCell className="text-sm text-gray-300">{getDifficultyFromChunithmChart(favorite.chartId)}</TableCell>{" "}
 								<TableCell className="text-sm text-gray-300">{favorite.level}</TableCell>
 								<TableCell className="text-sm text-gray-300">{favorite.genre}</TableCell>
 								<TableCell className="max-w-[140px] truncate text-sm text-gray-300">{favorite.artist}</TableCell>
-								<TableCell className="cursor-pointer text-sm text-gray-300">{favorite.icon}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
@@ -68,4 +66,4 @@ const ChunithmFavoritesTable = ({ favorites, searchQuery, onSearchChange }: Chun
 	);
 };
 
-export default ChunithmFavoritesTable;
+export default ChunithmallSongsTable;

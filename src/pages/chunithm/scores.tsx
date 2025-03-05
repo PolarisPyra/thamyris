@@ -3,7 +3,7 @@ import React from "react";
 
 import { Heart } from "lucide-react";
 
-import ChunithmScoreTable from "@/components/chunithm/chunithm-score-table";
+import ChunithmScoreTable from "@/components/chunithm/score-table";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";

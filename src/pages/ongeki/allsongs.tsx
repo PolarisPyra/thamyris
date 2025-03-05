@@ -3,10 +3,10 @@ import React from "react";
 
 import { Notebook } from "lucide-react";
 
-import AllSongsTable from "@/components/common/allsongs-table";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
+import OngekiAllSongsTable from "@/components/ongeki/allsongs-table";
 import { useOngekiSongs } from "@/hooks/ongeki/use-songs";
 import { useUsername } from "@/hooks/users/use-username";
 
@@ -43,7 +43,7 @@ const OngekiAllSongs = () => {
 				</div>
 
 				<div className="mb-4 space-y-8 p-4 sm:p-0">
-					<AllSongsTable
+					<OngekiAllSongsTable
 						allSongs={filteredSongs}
 						searchQuery={searchQuery}
 						onSearchChange={(e) => setSearchQuery(e.target.value)}

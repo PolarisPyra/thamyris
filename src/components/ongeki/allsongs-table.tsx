@@ -4,9 +4,10 @@ import { Search } from "lucide-react";
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 import { AllSongsTableProps } from "@/utils/types";
 
-const AllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
+const OngekiAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 15;
 
@@ -46,7 +47,7 @@ const AllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableP
 						{paginatedSongs.map((favorite) => (
 							<TableRow key={favorite.id} className="border-b border-gray-700 hover:bg-gray-700">
 								<TableCell className="max-w-[140px] truncate text-sm text-gray-300">{favorite.title}</TableCell>
-								<TableCell className="text-sm text-gray-300">{favorite.chartId}</TableCell>
+								{getDifficultyFromOngekiChart(favorite.chartId)}
 								<TableCell className="text-sm text-gray-300">{favorite.level}</TableCell>
 								<TableCell className="text-sm text-gray-300">{favorite.genre}</TableCell>
 								<TableCell className="max-w-[140px] truncate text-sm text-gray-300">{favorite.artist}</TableCell>
@@ -65,4 +66,4 @@ const AllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableP
 	);
 };
 
-export default AllSongsTable;
+export default OngekiAllSongsTable;

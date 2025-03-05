@@ -4,6 +4,7 @@ import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 import { ChunithmScoreTableProps } from "@/utils/types";
 
 const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmScoreTableProps) => {
@@ -37,7 +38,7 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 							<TableHead className="whitespace-nowrap text-gray-400">Song</TableHead>
 							<TableHead className="whitespace-nowrap text-gray-400">Score</TableHead>
 							<TableHead className="whitespace-nowrap text-gray-400">Rating</TableHead>
-							<TableHead className="whitespace-nowrap text-gray-400">Grade</TableHead>
+							<TableHead className="whitespace-nowrap text-gray-400">Difficulty</TableHead>
 							<TableHead className="whitespace-nowrap text-gray-400">Playdate</TableHead>
 							<TableHead className="whitespace-nowrap text-gray-400">Level</TableHead>
 							<TableHead className="whitespace-nowrap text-gray-400">Combo Lamp</TableHead>
@@ -57,9 +58,7 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 										{score.rating_change === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
 									</div>
 								</TableCell>
-								<TableCell className="text-sm text-gray-300">
-									{score.isClear === 1 ? "Clear" : score.isClear === 0 ? "Failed" : "Unknown"}
-								</TableCell>
+								<TableCell className="text-sm text-gray-300">{getDifficultyFromChunithmChart(score.chartId)}</TableCell>
 								<TableCell className="text-sm text-gray-300">{new Date(score.userPlayDate).toLocaleString()}</TableCell>
 								<TableCell className="text-sm text-gray-300">{score.level}</TableCell>
 								<TableCell className="text-sm text-gray-300">

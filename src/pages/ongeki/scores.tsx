@@ -6,7 +6,7 @@ import { Heart } from "lucide-react";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
-import OngekiScoreTable from "@/components/ongeki/ongeki-score-table";
+import OngekiScoreTable from "@/components/ongeki/score-table";
 import { useOngekiScores } from "@/hooks/chunithm/use-scores";
 import { useUsername } from "@/hooks/users/use-username";
 
