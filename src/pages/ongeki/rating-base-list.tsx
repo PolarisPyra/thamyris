@@ -4,7 +4,7 @@ import { ChartNoAxesCombined } from "lucide-react";
 
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
-import RatingFrameTable from "@/components/common/rating-table";
+import OngekiRatingFrameTable from "@/components/ongeki/rating-table copy";
 import {
 	useUserRatingBaseBestList,
 	useUserRatingBaseBestNewList,
@@ -37,13 +37,13 @@ const OngekiRatingFrames = () => {
 				</div>
 
 				<div className="mb-4 space-y-8 p-4 sm:p-0">
-					<RatingFrameTable data={baseSongs} title="Best 30" />
+					<OngekiRatingFrameTable data={baseSongs} title="Best 30" />
 
-					<RatingFrameTable data={newSongs} title="Current Version" />
+					<OngekiRatingFrameTable data={newSongs} title="Current Version" />
 
-					<RatingFrameTable data={hotSongs} title="Recent" />
+					<OngekiRatingFrameTable data={hotSongs} title="Recent" />
 
-					<RatingFrameTable data={nextSongs} title="Potential Plays" />
+					<OngekiRatingFrameTable data={nextSongs} title="Potential Plays" />
 				</div>
 			</div>
 		</div>

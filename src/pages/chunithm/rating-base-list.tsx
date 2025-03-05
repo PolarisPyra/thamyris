@@ -3,9 +3,10 @@ import React from "react";
 
 import { ChartNoAxesCombined } from "lucide-react";
 
+import RatingFrameTable from "@/components/chunithm/rating-table";
+import ChunithmRatingFrameTable from "@/components/chunithm/rating-table";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
-import RatingFrameTable from "@/components/common/rating-table";
 import {
 	useUserRatingBaseHotList,
 	useUserRatingBaseList,
@@ -44,13 +45,13 @@ const ChunithmRatingFrames = () => {
 				</div>
 
 				<div className="mb-4 space-y-8 p-4 sm:p-0">
-					<RatingFrameTable data={baseSongs} title="Best 30" />
+					<ChunithmRatingFrameTable data={baseSongs} title="Best 30" />
 
 					{isVerseOrAbove && <RatingFrameTable data={newSongs} title="Current Version" />}
 
-					<RatingFrameTable data={hotSongs} title="Recent" />
+					<ChunithmRatingFrameTable data={hotSongs} title="Recent" />
 
-					{isVerseOrAbove && <RatingFrameTable data={nextSongs} title="Potential Plays" />}
+					{isVerseOrAbove && <ChunithmRatingFrameTable data={nextSongs} title="Potential Plays" />}
 				</div>
 			</div>
 		</div>

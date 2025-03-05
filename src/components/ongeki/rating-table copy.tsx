@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 import { RatingFrameTableProps } from "@/utils/types";
 
-const RatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
+const OngekiRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [searchQuery, setSearchQuery] = useState("");
 	const itemsPerPage = 15;
@@ -73,4 +73,4 @@ const RatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 	);
 };
 
-export default RatingFrameTable;
+export default OngekiRatingFrameTable;
