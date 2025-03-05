@@ -9,7 +9,7 @@ import QouteCard from "@/components/common/qoutecard";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/chunithm/use-rivals";
-import { useUsername } from "@/hooks/common/use-username";
+import { useUsername } from "@/hooks/users/use-username";
 
 const ITEMS_PER_PAGE = 10;
 

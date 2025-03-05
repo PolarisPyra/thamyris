@@ -8,8 +8,8 @@ import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
-import { useUsername } from "@/hooks/common/use-username";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/ongeki/use-rivals";
+import { useUsername } from "@/hooks/users/use-username";
 
 const ITEMS_PER_PAGE = 10;
 

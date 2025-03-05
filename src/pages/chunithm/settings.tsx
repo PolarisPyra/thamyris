@@ -9,7 +9,7 @@ import Header from "@/components/common/header";
 import { usePlayerRating, useUserRatingBaseHotList, useUserRatingBaseList } from "@/hooks/chunithm/use-rating";
 import { useLimitedTickets, useLockSongs, useUnlimitedTickets, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
-import { useUsername } from "@/hooks/common/use-username";
+import { useUsername } from "@/hooks/users/use-username";
 import { getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
 
 interface GameSettingsProps {

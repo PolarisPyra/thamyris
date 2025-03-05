@@ -26,7 +26,7 @@ const KeychipGenerator = () => {
 		{ value: "SDEW", label: "SDEW (Namco PCB)" },
 	];
 
-	const handleChange = (e: { target: { name: any; value: any } }) => {
+	const handleChange = (e: { target: { name: string; value: string } }) => {
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,

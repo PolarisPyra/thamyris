@@ -8,7 +8,7 @@ import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import OngekiScoreTable from "@/components/ongeki/ongeki-score-table";
 import { useOngekiScores } from "@/hooks/chunithm/use-scores";
-import { useUsername } from "@/hooks/common/use-username";
+import { useUsername } from "@/hooks/users/use-username";
 
 const OngekiScorePage = () => {
 	const [searchQuery, setSearchQuery] = useState("");

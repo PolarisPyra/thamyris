@@ -6,7 +6,6 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Header from "@/components/common/header";
-import { useUsername } from "@/hooks/common/use-username";
 import {
 	useHighestRating,
 	usePlayerRating,
@@ -16,6 +15,7 @@ import {
 } from "@/hooks/ongeki/use-rating";
 import { useUnlockAllCards, useUnlockAllItems, useUnlockSpecificItem } from "@/hooks/ongeki/use-unlocks";
 import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki/use-version";
+import { useUsername } from "@/hooks/users/use-username";
 import { getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
 
 interface GameSettingsProps {

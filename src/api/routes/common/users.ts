@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
 
+import db from "@/api/db";
 import { env } from "@/env";
 
 const UserRoutes = new Hono()
@@ -29,6 +30,28 @@ const UserRoutes = new Hono()
 	.get("/username", async (c) => {
 		const { username } = c.payload;
 		return c.json({ username });
+	})
+	.post("/update-aimecard", async (c) => {
+		try {
+			const userId = c.payload.userId;
+			const { accessCode } = await c.req.json();
+
+			const result = await db.query(
+				`UPDATE aime_card 
+            SET access_code = ? 
+            WHERE user = ?`,
+				[accessCode, userId]
+			);
+
+			if (result.affectedRows === 0) {
+				return c.json({ error: "User not found" }, 404);
+			}
+
+			return c.json({ success: true });
+		} catch (error) {
+			console.error("Error updating aime card:", error);
+			return c.json({ error: "Failed to update aime card" }, 500);
+		}
 	});
 
 export { UserRoutes };
