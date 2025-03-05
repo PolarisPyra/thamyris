@@ -7,13 +7,13 @@ import { toast } from "sonner";
 import { SubmitButton } from "@/components/common/button";
 import { useAllAvatarParts, useCurrentAvatar, useUpdateAvatar } from "@/hooks/chunithm/use-avatar";
 import { cdnUrl } from "@/lib/cdn";
-import { assetData } from "@/utils/types";
+import { AvatarParts } from "@/utils/types";
 
 import Spinner from "../common/spinner";
 
 interface AvatarDropdownProps {
 	category: string;
-	options: assetData[];
+	options: AvatarParts[];
 	openDropdown: string | null;
 	handleDropdownToggle: (part: string) => void;
 	handleChange: (part: string, image: string) => void;
@@ -78,6 +78,7 @@ const PenguinDressup = () => {
 		face: "",
 		item: "",
 	});
+
 	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
 	// Set initial selected accessories when data loads
@@ -104,7 +105,7 @@ const PenguinDressup = () => {
 
 	const handleSubmit = () => {
 		if (!availableAccessories) return;
-		const avatarParts = {
+		const avatarParts: Partial<AvatarParts> = {
 			head: availableAccessories.head?.find((item) => item.image === selectedAccessories.head)?.avatarAccessoryId || 0,
 			face: availableAccessories.face?.find((item) => item.image === selectedAccessories.face)?.avatarAccessoryId || 0,
 			back: availableAccessories.back?.find((item) => item.image === selectedAccessories.back)?.avatarAccessoryId || 0,
@@ -112,7 +113,7 @@ const PenguinDressup = () => {
 			item: availableAccessories.item?.find((item) => item.image === selectedAccessories.item)?.avatarAccessoryId || 0,
 		};
 
-		updateAvatar(avatarParts, {
+		updateAvatar(avatarParts as AvatarParts, {
 			onSuccess: () => {
 				toast.success("Avatar updated successfully");
 				setOpenDropdown(null);

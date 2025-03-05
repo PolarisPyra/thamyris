@@ -1,52 +1,18 @@
 // Avatar Related Interfaces
-export interface CurrentAvatarApiResponse {
-	results: AvatarPart[];
-}
-
-export interface AvatarPart {
-	faceTexture: string;
-	wearTexture: string;
-	backTexture: string;
-	headTexture: string;
-	itemTexture: string;
-}
-
-export interface AllAvatarApiResponse {
-	results?: UnlockedOutfit[];
-	error?: string;
-}
-
-export interface UnlockedOutfit {
-	id: string;
-	name: string;
-	headId: number;
-	backId: number;
-	wearId: number;
-	faceId: number;
-	itemId: number;
-	accessoryId: number;
-	category: string;
-	version: string;
-	iconPath: string;
-	texturePath: string;
-}
 export interface AvatarParts {
-	head: string;
-	face: string;
-	back: string;
-	wear: string;
-	item: string;
+	head: number;
+	back: number;
+	wear: number;
+	face: number;
+	item: number;
+	image: string;
+	label: string;
 	avatarHeadTexture?: string;
 	avatarFaceTexture?: string;
 	avatarBackTexture?: string;
 	avatarWearTexture?: string;
 	avatarItemTexture?: string;
-}
-
-export interface AssetData {
-	image: string;
-	label: string;
-	accessoryId: number;
+	avatarAccessoryId?: number;
 }
 
 // User Rating Related Interfaces
@@ -206,4 +172,25 @@ export interface ChunithmScoreTableProps {
 	scores: ChunithmScore[];
 	searchQuery: string;
 	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+/// avatar use-avatar.ts
+export interface AllAvatarApiResponse {
+	results?: UnlockedOutfit[];
+	error?: string;
+}
+
+export interface UnlockedOutfit {
+	id: string;
+	name: string;
+	headId: number;
+	backId: number;
+	wearId: number;
+	faceId: number;
+	itemId: number;
+	accessoryId: number;
+	category: string;
+	version: string;
+	iconPath: string;
+	texturePath: string;
 }
