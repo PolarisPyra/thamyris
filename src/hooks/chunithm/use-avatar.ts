@@ -1,23 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/utils";
-import { avatarData, currentAvatarParts } from "@/utils/types";
+import { AvatarParts } from "@/utils/types";
 
 interface CurrentAvatarResponse {
-	results: currentAvatarParts[];
+	results: AvatarParts[];
 	error?: string;
 }
 
-interface AvatarParts {
-	head: number;
-	face: number;
-	back: number;
-	wear: number;
-	item: number;
-}
-
 interface AllAvatarPartsResponse {
-	results?: Record<string, avatarData[]>;
+	results?: Record<string, AvatarParts[]>;
 	error?: string;
 }
 

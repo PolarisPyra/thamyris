@@ -30,6 +30,18 @@ export interface UnlockedOutfit {
 	iconPath: string;
 	texturePath: string;
 }
+export interface AvatarParts {
+	head: string;
+	face: string;
+	back: string;
+	wear: string;
+	item: string;
+	avatarHeadTexture?: string;
+	avatarFaceTexture?: string;
+	avatarBackTexture?: string;
+	avatarWearTexture?: string;
+	avatarItemTexture?: string;
+}
 
 export interface AssetData {
 	image: string;
@@ -54,7 +66,7 @@ export interface UserRatingEntry {
 	rating: number;
 	isFullBell?: boolean;
 	isFullCombo?: boolean;
-	isAllBreak?: boolean;
+	isAllBreake?: boolean;
 	isAllJustice?: boolean;
 }
 

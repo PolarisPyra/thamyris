@@ -1,6 +1,8 @@
 import { useState } from "react";
 import React from "react";
 
+import { Notebook } from "lucide-react";
+
 import AllSongsTable from "@/components/common/allsongs-table";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
@@ -36,7 +38,7 @@ const ChunithmFavorites = () => {
 						value="View all songs"
 						color="#ffaa00"
 						welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-						icon={"symbol"}
+						icon={Notebook}
 					/>
 				</div>
 

@@ -88,7 +88,6 @@ export function useOngekiScores() {
 		queryFn: async () => {
 			const response = await api.ongeki.ongeki_score_playlog.$get();
 			const data = (await response.json()) as OngekiScoreResponse;
-			console.log(data);
 			if (data.error) {
 				throw new Error(data.error);
 			}
