@@ -25,4 +25,4 @@ const OverviewPage = () => {
 	);
 };
 
-export default OverviewPage;
+export default React.memo(OverviewPage);

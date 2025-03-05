@@ -11,6 +11,10 @@
 /*
 * CHUSAN AVATAR
 */
+html,
+body {
+	background-color: var(--secondary-foreground);
+}
 
 img,
 video {
