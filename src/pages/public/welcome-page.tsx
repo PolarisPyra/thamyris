@@ -15,7 +15,7 @@ export const WelcomeContent = () => (
 				</button>
 			</Link>
 			<Link to="/signup">
-				<button className="w-full transform rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-105 hover:bg-blue-700">
+				<button className="mt-4 w-full transform rounded-lg bg-blue-600 px-6 py-3 pt-2 font-semibold text-white transition duration-300 hover:scale-105 hover:bg-blue-700">
 					Sign up
 				</button>
 			</Link>

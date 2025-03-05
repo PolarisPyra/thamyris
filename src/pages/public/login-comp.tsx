@@ -21,7 +21,7 @@ export const LoginContent = () => {
 	};
 
 	return (
-		<div className="mx-4 rounded-2xl bg-white p-8 shadow-2xl">
+		<div className="mx-4 w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
 			<h1 className="mb-8 text-center text-4xl font-bold text-gray-800">Welcome Back</h1>
 			<form className="space-y-6" onSubmit={handleSubmit}>
 				<div>
