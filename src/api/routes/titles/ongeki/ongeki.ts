@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { longCache } from "@/api/middleware/cache";
 
 import { getUserVersionOngeki } from "../../../version";
 
@@ -89,7 +90,7 @@ ORDER BY
 			return c.json({ error: "Failed to fetch playlog" }, 500);
 		}
 	})
-	.get("/ongeki_static_music", async (c) => {
+	.get("/ongeki_static_music", longCache("ongeki_static"), async (c) => {
 		try {
 			const userId = c.payload.userId;
 
