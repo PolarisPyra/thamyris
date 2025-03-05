@@ -6,7 +6,9 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/sonner";
 
+import SignUpContent from "./components/common/login";
 import { SidebarComponent } from "./components/common/sidebar";
+import { LoginContent } from "./components/common/signup";
 import { SidebarProvider } from "./components/ui/sidebar";
 import "./index.css";
 import Account from "./pages/account/account";
@@ -27,8 +29,6 @@ import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
 import OngekiRivals from "./pages/ongeki/rivals";
 import OngekiScorePage from "./pages/ongeki/scores";
 import OngekiSettingsPage from "./pages/ongeki/settings";
-import { LoginContent } from "./pages/public/login-comp";
-import SignUpContent from "./pages/public/signup-comp";
 import WelcomePage, { WelcomeContent } from "./pages/public/welcome-page";
 import { AuthProvider } from "./providers/auth-provider";
 import { ProtectedRoute } from "./utils/protected";
