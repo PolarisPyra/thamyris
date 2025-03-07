@@ -31,10 +31,14 @@ const SystemvoiceSelector = () => {
 		setOpenDropdown(!openDropdown);
 	};
 
+	const hasChanges = () => {
+		return selectedVoice !== currentVoice?.imagePath;
+	};
+
 	const handleSubmit = () => {
 		const selected = systemVoices?.find((voice) => voice.imagePath === selectedVoice);
 
-		if (selected) {
+		if (selected && hasChanges()) {
 			updateVoice(selected.id, {
 				onSuccess: () => {
 					toast.success("System voice updated successfully!");
@@ -109,7 +113,7 @@ const SystemvoiceSelector = () => {
 					onClick={handleSubmit}
 					defaultLabel="Update System Voice"
 					updatingLabel="Updating..."
-					disabled={isPending}
+					disabled={isPending || !hasChanges()}
 				/>
 			</div>
 		</div>

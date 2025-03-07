@@ -18,6 +18,10 @@ const MapiconSelector = () => {
 
 	const [selectedIcon, setSelectedIcon] = useState<string>("");
 
+	const hasChanges = () => {
+		return selectedIcon !== currentIcon?.imagePath;
+	};
+
 	// Set initial selected icon when data loads
 	React.useEffect(() => {
 		if (currentIcon) {
@@ -34,7 +38,7 @@ const MapiconSelector = () => {
 	const handleSubmit = () => {
 		const selected = mapIcons?.find((icon) => icon.imagePath === selectedIcon);
 
-		if (selected) {
+		if (selected && hasChanges()) {
 			updateIcon(selected.id, {
 				onSuccess: () => {
 					toast.success("Map icon updated successfully!");
@@ -108,7 +112,7 @@ const MapiconSelector = () => {
 					onClick={handleSubmit}
 					defaultLabel="Update Map Icon"
 					updatingLabel="Updating..."
-					disabled={isPending}
+					disabled={isPending || !hasChanges()}
 				/>
 			</div>
 		</div>

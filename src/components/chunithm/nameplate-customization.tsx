@@ -18,6 +18,10 @@ const NameplateSelector = () => {
 
 	const [selectedNameplate, setSelectedNameplate] = useState<string>("");
 
+	const hasChanges = () => {
+		return selectedNameplate !== currentNameplate?.imagePath;
+	};
+
 	// Set initial selected nameplate when data loads
 	React.useEffect(() => {
 		if (currentNameplate) {
@@ -34,7 +38,7 @@ const NameplateSelector = () => {
 	const handleSubmit = () => {
 		const selected = nameplates?.find((nameplate) => nameplate.imagePath === selectedNameplate);
 
-		if (selected) {
+		if (selected && hasChanges()) {
 			updateNameplate(selected.id, {
 				onSuccess: () => {
 					toast.success("Nameplate updated successfully!");
@@ -106,7 +110,7 @@ const NameplateSelector = () => {
 					onClick={handleSubmit}
 					defaultLabel="Update Nameplate"
 					updatingLabel="Updating..."
-					disabled={isPending}
+					disabled={isPending || !hasChanges()}
 				/>
 			</div>
 		</div>

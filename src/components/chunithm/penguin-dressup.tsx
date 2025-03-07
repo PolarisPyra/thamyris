@@ -65,7 +65,6 @@ const AvatarDropdown = ({
 		</AnimatePresence>
 	</div>
 );
-
 const PenguinDressup = () => {
 	const { data: currentAvatar, isLoading: isLoadingCurrent } = useCurrentAvatar();
 	const { data: availableAccessories, isLoading: isLoadingParts } = useAllAvatarParts();
@@ -101,6 +100,14 @@ const PenguinDressup = () => {
 
 	const toggleDropdown = (part: string) => {
 		setOpenDropdown(openDropdown === part ? null : part);
+	};
+
+	const hasChanges = () => {
+		if (!currentAvatar) return false;
+		return Object.keys(selectedAccessories).some(
+			(key) =>
+				selectedAccessories[key as keyof typeof selectedAccessories] !== currentAvatar[key as keyof typeof currentAvatar]
+		);
 	};
 
 	const handleSubmit = () => {
@@ -191,7 +198,7 @@ const PenguinDressup = () => {
 					onClick={handleSubmit}
 					defaultLabel="Update Avatar"
 					updatingLabel="Updating..."
-					disabled={isPending}
+					disabled={isPending || !hasChanges()}
 				/>
 			</div>
 		</div>
