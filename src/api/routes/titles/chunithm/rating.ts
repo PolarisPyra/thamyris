@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// we will eventually need to type this out properly
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { UserRatingBaseEntry } from "@/types/types";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -40,7 +41,7 @@ const UserRatingFramesRoutes = new Hono()
         AND r.type = 'userRatingBaseHotList'
         AND r.version = ?`,
 				[userId, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });
@@ -133,7 +134,7 @@ const UserRatingFramesRoutes = new Hono()
         AND r.type = 'userRatingBaseList'
         AND r.version = ?`,
 				[userId, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });
@@ -229,7 +230,7 @@ const UserRatingFramesRoutes = new Hono()
         AND r.type = 'userRatingBaseNewList'
         AND r.version = ?`,
 				[userId, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });
@@ -325,7 +326,7 @@ const UserRatingFramesRoutes = new Hono()
         AND r.version = ?
    `,
 				[userId, typeFilter, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });

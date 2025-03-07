@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// we will eventually need to type this out properly
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { UserRatingBaseEntry } from "@/types/types";
 
 import { getUserVersionOngeki } from "../../../version";
 
@@ -41,7 +42,7 @@ const OngekiRatingRoutes = new Hono()
                 AND r.type = 'userRatingBaseHotList'
                 AND r.version = ?`,
 				[userId, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });
@@ -229,7 +230,7 @@ const OngekiRatingRoutes = new Hono()
                 AND r.type = 'userRatingBaseNextList'
                 AND r.version = ?`,
 				[userId, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });
@@ -320,7 +321,7 @@ const OngekiRatingRoutes = new Hono()
                 AND r.type = 'userRatingBaseBestList'
                 AND r.version = ?`,
 				[userId, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });
@@ -387,7 +388,7 @@ const OngekiRatingRoutes = new Hono()
                 AND r.type = 'userRatingBaseBestNewList'
                 AND r.version = ?`,
 				[userId, version]
-			)) as UserRatingBaseEntry[];
+			)) as any[];
 
 			if (!userRatingBaseList.length) {
 				return c.json({ results: [] });

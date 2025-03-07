@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// we will eventually need to type this out properly
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
