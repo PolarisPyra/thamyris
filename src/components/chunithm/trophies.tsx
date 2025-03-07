@@ -6,16 +6,9 @@ import { toast } from "sonner";
 
 import { useCurrentTrophy, useUnlockedTrophies, useUpdateTrophy } from "@/hooks/chunithm/use-trophies";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { Trophy } from "@/types/types";
 
 import { SubmitButton } from "../common/button";
-
-interface Trophy {
-	id: number;
-	name: string;
-	description: string;
-	rareType: number;
-	trophyId: number;
-}
 
 export const TrophySelector = () => {
 	const { data: version } = useChunithmVersion();

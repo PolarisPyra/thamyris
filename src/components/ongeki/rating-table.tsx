@@ -4,8 +4,8 @@ import { Search } from "lucide-react";
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { RatingFrameTableProps } from "@/types/types";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
-import { RatingFrameTableProps } from "@/utils/types";
 
 const OngekiRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);

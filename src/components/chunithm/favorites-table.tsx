@@ -4,8 +4,8 @@ import { Search } from "lucide-react";
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ChunithmFavoritesTableProps } from "@/types/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
-import { ChunithmFavoritesTableProps } from "@/utils/types";
 
 const ChunithmFavoritesTable = ({ favorites, searchQuery, onSearchChange }: ChunithmFavoritesTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);

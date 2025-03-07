@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { UserRatingBaseEntry } from "@/utils/types";
+import { UserRatingBaseEntry } from "@/types/types";
 
 import { getUserVersionChunithm } from "../../../version";
 

@@ -4,8 +4,8 @@ import { Search } from "lucide-react";
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AllSongsTableProps } from "@/types/types";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
-import { AllSongsTableProps } from "@/utils/types";
 
 const OngekiAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);

@@ -4,8 +4,8 @@ import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ChunithmScoreTableProps } from "@/types/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
-import { ChunithmScoreTableProps } from "@/utils/types";
 
 const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmScoreTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);

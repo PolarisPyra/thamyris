@@ -4,8 +4,8 @@ import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { OngekiScoreTableProps } from "@/types/types";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
-import { OngekiScoreTableProps } from "@/utils/types";
 
 const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);

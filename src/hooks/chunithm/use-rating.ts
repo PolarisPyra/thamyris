@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { RatingResponse, UserRatingEntry } from "@/types/types";
 import { api } from "@/utils";
-import { RatingResponse, UserRatingEntry } from "@/utils/types";
 
 /**
  * Fetches and returns the 10 most recent plays that contribute to their rating.

@@ -194,3 +194,11 @@ export interface UnlockedOutfit {
 	iconPath: string;
 	texturePath: string;
 }
+
+export interface Trophy {
+	id: number;
+	name: string;
+	description: string;
+	rareType: number;
+	trophyId: number;
+}
