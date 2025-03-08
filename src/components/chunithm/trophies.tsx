@@ -136,8 +136,8 @@ export const TrophySelector = () => {
 	};
 
 	return (
-		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 md:flex-row md:gap-8 md:pt-15">
-			<div className="relative h-[100px] w-full flex-col items-center justify-center md:w-[300px]">
+		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
+			<div className="relative h-[40px] w-full flex-col items-center justify-center md:w-[300px]">
 				{selectedBackgrounds.map((bg, index) => (
 					<div key={index} className="relative flex h-[40px] w-full items-center justify-center">
 						{bg && (
