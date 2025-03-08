@@ -27,7 +27,10 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 	const getSelectedLabel = () => {
 		const trophyId = selectedTrophies[type];
 		const trophy = unlockedTrophies?.find((t) => t.trophyId === trophyId);
-		return trophy?.name || `Select ${type === "main" ? "Main" : `Sub ${type === "sub1" ? "1" : "2"}`} Trophy`;
+		if (trophy) {
+			return trophy.name;
+		}
+		return "Select Trophy";
 	};
 
 	const renderTrophyOption = (trophy: Trophy) => {
