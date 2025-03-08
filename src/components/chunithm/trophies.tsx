@@ -4,25 +4,10 @@ import { toast } from "sonner";
 
 import { useCurrentTrophy, useUnlockedTrophies, useUpdateTrophy } from "@/hooks/chunithm/use-trophies";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
-import { cdnUrl } from "@/lib/cdn";
+import { honorBackgrounds } from "@/utils/consts";
 
 import { SubmitButton } from "../common/button";
 import TrophyDropdown from "./TrophyDropdown";
-
-const honorBackgrounds = {
-	0: `${cdnUrl}assets/honorBackgrounds/honor_bg_normal.png`,
-	1: `${cdnUrl}assets/honorBackgrounds/honor_bg_bronze.png`,
-	2: `${cdnUrl}assets/honorBackgrounds/honor_bg_silver.png`,
-	3: `${cdnUrl}assets/honorBackgrounds/honor_bg_gold.png`,
-	4: `${cdnUrl}assets/honorBackgrounds/honor_bg_gold.png`,
-	5: `${cdnUrl}assets/honorBackgrounds/honor_bg_platina.png`,
-	6: `${cdnUrl}assets/honorBackgrounds/honor_bg_platina.png`,
-	7: `${cdnUrl}assets/honorBackgrounds/honor_bg_rainbow.png`,
-	9: `${cdnUrl}assets/honorBackgrounds/honor_bg_staff.png`,
-	10: `${cdnUrl}assets/honorBackgrounds/honor_bg_ongeki.png`,
-	11: `${cdnUrl}assets/honorBackgrounds/honor_bg_maimai.png`,
-	null: "",
-};
 
 export const TrophySelector = () => {
 	const { data: version } = useChunithmVersion();
