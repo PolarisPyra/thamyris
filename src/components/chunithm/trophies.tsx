@@ -193,8 +193,8 @@ export const TrophySelector = () => {
 	};
 
 	return (
-		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
-			<div className="relative flex h-[300px] w-[300px] flex-col items-center justify-center">
+		<div className="flex w-full flex-col items-center justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
+			<div className="relative flex w-[300px] flex-col items-center justify-center">
 				{selectedBackgrounds.map((bg, index) => (
 					<div key={index} className="relative flex h-[40px] w-[300px] items-center justify-center">
 						{bg && (
@@ -271,7 +271,6 @@ export const TrophySelector = () => {
 								)}
 							</AnimatePresence>
 						</div>
-
 						{/* Sub Trophy 2 Dropdown */}
 						<div className="mb-4">
 							<button
@@ -297,7 +296,7 @@ export const TrophySelector = () => {
 									</motion.div>
 								)}
 							</AnimatePresence>
-						</div>
+						</div>{" "}
 					</>
 				)}
 
