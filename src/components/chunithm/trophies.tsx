@@ -135,9 +135,10 @@ export const TrophySelector = () => {
 
 	return (
 		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
-			<div className="relative flex h-[100px] w-full items-center justify-center md:w-[300px]">
-				{/* TODO: Add trophy preview image */}
-			</div>
+			{/* TODO: Add trophy preview image */}
+
+			{/* <div className="relative flex h-[100px] w-full items-center justify-center md:w-[300px]">
+			</div> */}
 			<div className="bg-opacity-50 w-full rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:w-[400px] md:p-6">
 				<h2 className="mb-4 text-xl font-semibold text-gray-100">Trophy Settings</h2>
 
