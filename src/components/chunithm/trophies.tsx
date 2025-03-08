@@ -50,19 +50,24 @@ export const TrophySelector = () => {
 			}
 		}
 	}, [currentTrophy, unlockedTrophies, isVerseOrAbove]);
-
 	const handleTrophySelect = (type: "main" | "sub1" | "sub2", trophyId: number) => {
 		if (!isVerseOrAbove && (type === "sub1" || type === "sub2")) {
 			toast.error("Sub trophies are only available in VERSE");
 			return;
 		}
 
-		const currentTrophyId =
-			type === "main"
-				? currentTrophy?.trophyId
-				: type === "sub1"
-					? currentTrophy?.trophyIdSub1
-					: currentTrophy?.trophyIdSub2;
+		const isMainTrophy = type === "main";
+		const isSubTrophy1 = type === "sub1";
+		const isSubTrophy2 = type === "sub2";
+
+		let currentTrophyId: number | null | undefined;
+		if (isMainTrophy) {
+			currentTrophyId = currentTrophy?.trophyId;
+		} else if (isSubTrophy1) {
+			currentTrophyId = currentTrophy?.trophyIdSub1;
+		} else if (isSubTrophy2) {
+			currentTrophyId = currentTrophy?.trophyIdSub2;
+		}
 
 		if (trophyId === currentTrophyId) {
 			return;
@@ -75,24 +80,16 @@ export const TrophySelector = () => {
 
 		const selectedTrophy = unlockedTrophies?.find((t) => t.trophyId === trophyId);
 		if (selectedTrophy) {
-			if (type === "main") {
-				setSelectedBackgrounds((prev) => [
-					honorBackgrounds[selectedTrophy.rareType as keyof typeof honorBackgrounds] || honorBackgrounds[0],
-					...prev.slice(1),
-				]);
+			const background = honorBackgrounds[selectedTrophy.rareType as keyof typeof honorBackgrounds];
+
+			if (isMainTrophy) {
+				setSelectedBackgrounds((prev) => [background, ...prev.slice(1)]);
 				setSelectedTrophyNames((prev) => [selectedTrophy.name, ...prev.slice(1)]);
-			} else if (type === "sub1") {
-				setSelectedBackgrounds((prev) => [
-					...prev.slice(0, 1),
-					honorBackgrounds[selectedTrophy.rareType as keyof typeof honorBackgrounds] || honorBackgrounds[0],
-					...prev.slice(2),
-				]);
+			} else if (isSubTrophy1) {
+				setSelectedBackgrounds((prev) => [...prev.slice(0, 1), background, ...prev.slice(2)]);
 				setSelectedTrophyNames((prev) => [prev[0], selectedTrophy.name, prev[2]]);
-			} else if (type === "sub2") {
-				setSelectedBackgrounds((prev) => [
-					...prev.slice(0, 2),
-					honorBackgrounds[selectedTrophy.rareType as keyof typeof honorBackgrounds] || honorBackgrounds[0],
-				]);
+			} else if (isSubTrophy2) {
+				setSelectedBackgrounds((prev) => [...prev.slice(0, 2), background]);
 				setSelectedTrophyNames((prev) => [prev[0], prev[1], selectedTrophy.name]);
 			}
 		}
@@ -139,10 +136,10 @@ export const TrophySelector = () => {
 	};
 
 	return (
-		<div className="flex w-full flex-col items-center justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
-			<div className="relative flex w-[300px] flex-col items-center justify-center">
+		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 md:flex-row md:gap-8 md:pt-15">
+			<div className="relative h-[100px] w-full flex-col items-center justify-center md:w-[300px]">
 				{selectedBackgrounds.map((bg, index) => (
-					<div key={index} className="relative flex h-[40px] w-[300px] items-center justify-center">
+					<div key={index} className="relative flex h-[40px] w-full items-center justify-center">
 						{bg && (
 							<div className="absolute inset-0 h-full w-full">
 								<img className="w-full object-cover" src={bg} />
