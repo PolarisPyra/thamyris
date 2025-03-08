@@ -6,22 +6,23 @@ import { toast } from "sonner";
 
 import { useCurrentTrophy, useUnlockedTrophies, useUpdateTrophy } from "@/hooks/chunithm/use-trophies";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { cdnUrl } from "@/lib/cdn";
 import { Trophy } from "@/types/types";
 
 import { SubmitButton } from "../common/button";
 
 const honorBackgrounds = {
-	0: "/assets/honorBackgrounds/honor_bg_normal.png",
-	1: "/assets/honorBackgrounds/honor_bg_bronze.png",
-	2: "/assets/honorBackgrounds/honor_bg_silver.png",
-	3: "/assets/honorBackgrounds/honor_bg_gold.png",
-	4: "/assets/honorBackgrounds/honor_bg_gold.png",
-	5: "/assets/honorBackgrounds/honor_bg_platina.png",
-	6: "/assets/honorBackgrounds/honor_bg_platina.png",
-	7: "/assets/honorBackgrounds/honor_bg_rainbow.png",
-	9: "/assets/honorBackgrounds/honor_bg_staff.png",
-	10: "/assets/honorBackgrounds/honor_bg_ongeki.png",
-	11: "/assets/honorBackgrounds/honor_bg_maimai.png",
+	0: `${cdnUrl}assets/honorBackgrounds/honor_bg_normal.png`,
+	1: `${cdnUrl}assets/honorBackgrounds/honor_bg_bronze.png`,
+	2: `${cdnUrl}assets/honorBackgrounds/honor_bg_silver.png`,
+	3: `${cdnUrl}assets/honorBackgrounds/honor_bg_gold.png`,
+	4: `${cdnUrl}assets/honorBackgrounds/honor_bg_gold.png`,
+	5: `${cdnUrl}assets/honorBackgrounds/honor_bg_platina.png`,
+	6: `${cdnUrl}assets/honorBackgrounds/honor_bg_platina.png`,
+	7: `${cdnUrl}assets/honorBackgrounds/honor_bg_rainbow.png`,
+	9: `${cdnUrl}assets/honorBackgrounds/honor_bg_staff.png`,
+	10: `${cdnUrl}assets/honorBackgrounds/honor_bg_ongeki.png`,
+	11: `${cdnUrl}assets/honorBackgrounds/honor_bg_maimai.png`,
 	null: "",
 };
 
@@ -193,27 +194,20 @@ export const TrophySelector = () => {
 
 	return (
 		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
-			<div className="relative flex w-full flex-col items-center justify-center md:w-[300px]">
+			<div className="relative flex h-[300px] w-[300px] flex-col items-center justify-center">
 				{selectedBackgrounds.map((bg, index) => (
-					<div key={index} className="relative h-[50px] w-full">
+					<div key={index} className="relative flex h-[40px] w-[300px] items-center justify-center">
 						{bg && (
-							<>
-								<img
-									className="absolute h-full w-full object-cover p-3 opacity-50"
-									src={bg}
-									alt={`Trophy Background ${index + 1}`}
-								/>
+							<div className="absolute inset-0 h-full w-full">
+								<img className="w-full object-cover" src={bg} />
 								{selectedTrophyNames[index] && (
-									<div className="absolute inset-0 z-10 flex items-center justify-center">
-										<span
-											className="text-center text-sm leading-none font-bold text-white drop-shadow-lg"
-											style={{ transform: "translateY(1px)" }}
-										>
+									<div className="absolute inset-0 flex items-center justify-center">
+										<span className="mr-2 mb-2 ml-2 max-w-[300px] truncate text-center text-sm font-bold text-black">
 											{selectedTrophyNames[index]}
 										</span>
 									</div>
 								)}
-							</>
+							</div>
 						)}
 					</div>
 				))}
@@ -222,7 +216,7 @@ export const TrophySelector = () => {
 				<h2 className="mb-4 text-xl font-semibold text-gray-100">Trophy Settings</h2>
 
 				{/* Main Trophy Dropdown */}
-				<div className="relative mb-4">
+				<div className="mb-4">
 					<button
 						onClick={() => handleDropdownToggle("main")}
 						className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
@@ -238,7 +232,7 @@ export const TrophySelector = () => {
 								initial={{ opacity: 0, height: 0 }}
 								animate={{ opacity: 1, height: "auto", maxHeight: "285px" }}
 								exit={{ opacity: 0, height: 0 }}
-								className="absolute mt-2 w-full overflow-hidden"
+								className="mt-2 overflow-hidden"
 							>
 								<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
 									{unlockedTrophies?.map((trophy) => renderTrophyOption("main", trophy))}
@@ -252,7 +246,7 @@ export const TrophySelector = () => {
 				{isVerseOrAbove && (
 					<>
 						{/* Sub Trophy 1 Dropdown */}
-						<div className="relative mb-4">
+						<div className="mb-4">
 							<button
 								onClick={() => handleDropdownToggle("sub1")}
 								className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
@@ -268,7 +262,7 @@ export const TrophySelector = () => {
 										initial={{ opacity: 0, height: 0 }}
 										animate={{ opacity: 1, height: "auto", maxHeight: "285px" }}
 										exit={{ opacity: 0, height: 0 }}
-										className="absolute mt-2 w-full overflow-hidden"
+										className="mt-2 overflow-hidden"
 									>
 										<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
 											{unlockedTrophies?.map((trophy) => renderTrophyOption("sub1", trophy))}
@@ -279,7 +273,7 @@ export const TrophySelector = () => {
 						</div>
 
 						{/* Sub Trophy 2 Dropdown */}
-						<div className="relative mb-4">
+						<div className="mb-4">
 							<button
 								onClick={() => handleDropdownToggle("sub2")}
 								className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
@@ -295,7 +289,7 @@ export const TrophySelector = () => {
 										initial={{ opacity: 0, height: 0 }}
 										animate={{ opacity: 1, height: "auto", maxHeight: "285px" }}
 										exit={{ opacity: 0, height: 0 }}
-										className="absolute mt-2 w-full overflow-hidden"
+										className="mt-2 overflow-hidden"
 									>
 										<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
 											{unlockedTrophies?.map((trophy) => renderTrophyOption("sub2", trophy))}
