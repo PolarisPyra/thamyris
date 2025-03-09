@@ -50,48 +50,48 @@ export const TrophySelector = () => {
 			}
 		}
 	}, [currentTrophy, unlockedTrophies, isVerseOrAbove]);
+
 	const handleTrophySelect = (type: "main" | "sub1" | "sub2", trophyId: number) => {
+		// Verify version
 		if (!isVerseOrAbove && (type === "sub1" || type === "sub2")) {
 			toast.error("Sub trophies are only available in VERSE");
 			return;
 		}
 
-		const isMainTrophy = type === "main";
-		const isSubTrophy1 = type === "sub1";
-		const isSubTrophy2 = type === "sub2";
-
-		let currentTrophyId: number | null | undefined;
-		if (isMainTrophy) {
-			currentTrophyId = currentTrophy?.trophyId;
-		} else if (isSubTrophy1) {
-			currentTrophyId = currentTrophy?.trophyIdSub1;
-		} else if (isSubTrophy2) {
-			currentTrophyId = currentTrophy?.trophyIdSub2;
+		// Get trophy index based on type
+		let trophyIndex = 0;
+		if (type === "main") {
+			trophyIndex = 0;
+		} else if (type === "sub1") {
+			trophyIndex = 1;
+		} else if (type === "sub2") {
+			trophyIndex = 2;
 		}
 
-		if (trophyId === currentTrophyId) {
-			return;
-		}
-
+		// Update selected trophies object
 		setSelectedTrophies((prev) => ({
 			...prev,
 			[type]: trophyId,
 		}));
 
+		// Find trophy and update visuals
 		const selectedTrophy = unlockedTrophies?.find((t) => t.trophyId === trophyId);
 		if (selectedTrophy) {
 			const background = honorBackgrounds[selectedTrophy.rareType as keyof typeof honorBackgrounds];
 
-			if (isMainTrophy) {
-				setSelectedBackgrounds((prev) => [background, ...prev.slice(1)]);
-				setSelectedTrophyNames((prev) => [selectedTrophy.name, ...prev.slice(1)]);
-			} else if (isSubTrophy1) {
-				setSelectedBackgrounds((prev) => [...prev.slice(0, 1), background, ...prev.slice(2)]);
-				setSelectedTrophyNames((prev) => [prev[0], selectedTrophy.name, prev[2]]);
-			} else if (isSubTrophy2) {
-				setSelectedBackgrounds((prev) => [...prev.slice(0, 2), background]);
-				setSelectedTrophyNames((prev) => [prev[0], prev[1], selectedTrophy.name]);
-			}
+			// Update background at specific index
+			setSelectedBackgrounds((prev) => {
+				const newBackgrounds = [...prev];
+				newBackgrounds[trophyIndex] = background;
+				return newBackgrounds;
+			});
+
+			// Update trophy name at specific index
+			setSelectedTrophyNames((prev) => {
+				const newNames = [...prev];
+				newNames[trophyIndex] = selectedTrophy.name;
+				return newNames;
+			});
 		}
 	};
 
