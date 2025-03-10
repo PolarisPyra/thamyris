@@ -30,6 +30,7 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { data: playerRating } = usePlayerRating();
 	const { data: hotList = [] } = useUserRatingBaseHotList();
 	const { data: highestRating } = useHighestRating();
+	const { data: teams } = useTeams();
 
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
@@ -38,7 +39,6 @@ const ChunithmSettingsPage: React.FC<GameSettingsProps> = () => {
 	const { mutate: disableUnlimited, isPending: isDisablingUnlimited } = useLimitedTickets();
 	const { mutate: updateTeamMutation, isPending: isUpdatingTeam } = useUpdateTeam();
 
-	const { data: teams } = useTeams();
 	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
 	const [selectedTeam, setSelectedTeam] = useState<string>("Select Team");
