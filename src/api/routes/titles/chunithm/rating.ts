@@ -385,21 +385,21 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ error: "Failed to fetch user rating base next list" }, 500);
 		}
 	})
-	.get("/player_rating", async (c) => {
+	.get("/playerRating", async (c) => {
 		try {
 			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
 			// Get player rating from profile data
 			const [ratingData] = (await db.query(
-				`SELECT rating 
+				`SELECT playerRating
                 FROM chuni_profile_data 
                 WHERE user = ? 
                 AND version = ?`,
 				[userId, version]
 			)) as [{ rating: number }];
 
-			return c.json({ rating: ratingData.rating });
+			return c.json({ playerRating: ratingData.playerRating });
 		} catch (error) {
 			console.error("Error executing query:", error);
 			return c.json({ error: "Failed to fetch player rating" }, 500);

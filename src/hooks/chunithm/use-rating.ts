@@ -92,14 +92,14 @@ export const usePlayerRating = () => {
 	return useQuery<number>({
 		queryKey: ["playerRating"],
 		queryFn: async () => {
-			const response = await api.chunithm.player_rating.$get();
-			const data = (await response.json()) as { rating: number; error?: string };
+			const response = await api.chunithm.playerRating.$get();
+			const data = (await response.json()) as { playerRating: number; error?: string };
 
 			if (data.error) {
 				throw new Error(data.error);
 			}
 
-			return data.rating;
+			return data.playerRating;
 		},
 	});
 };
