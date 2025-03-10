@@ -7,7 +7,7 @@ import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { honorBackgrounds } from "@/utils/consts";
 
 import { SubmitButton } from "../common/button";
-import TrophyDropdown from "./TrophyDropdown";
+import TrophyDropdown from "./trophy-dropdown";
 
 export const TrophySelector = () => {
 	const { data: version } = useChunithmVersion();
