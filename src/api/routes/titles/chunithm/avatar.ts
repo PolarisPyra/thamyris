@@ -96,7 +96,6 @@ AND cp.version = ?;
 
 			const version = await getUserVersionChunithm(userId);
 
-			// Get unlocked avatar parts
 			const unlockedResults = await db.query(
 				`SELECT itemId 
 				FROM chuni_item_item 
@@ -106,7 +105,6 @@ AND cp.version = ?;
 
 			const unlockedParts = unlockedResults.map((item: { itemId: number }) => item.itemId);
 
-			// Get all avatar parts
 			const allParts = await db.query(
 				`SELECT 
 					id,
@@ -121,7 +119,6 @@ AND cp.version = ?;
 				[version]
 			);
 
-			// Filter unlocked parts and group by category
 			const groupedResults = allParts
 				.filter((part: { avatarAccessoryId: number }) => unlockedParts.includes(part.avatarAccessoryId))
 				.reduce((acc: any, item: any) => {

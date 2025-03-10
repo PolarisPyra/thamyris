@@ -13,7 +13,6 @@ const UserRatingFramesRoutes = new Hono()
 
 			const version = await getUserVersionChunithm(userId);
 
-			// First get the user rating base list
 			const userRatingBaseList = (await db.query(
 				`SELECT 
         r.musicId,
@@ -47,10 +46,8 @@ const UserRatingFramesRoutes = new Hono()
 				return c.json({ results: [] });
 			}
 
-			// Get the music IDs to fetch static music info
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
 
-			// Get static music information
 			const staticMusicInfo = (await db.query(
 				`SELECT 
           songId,
@@ -66,10 +63,8 @@ const UserRatingFramesRoutes = new Hono()
 				[musicIds, version]
 			)) as any[];
 
-			// Create a map for easy lookup
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
-			// Calculate ratings and combine data
 			const results = userRatingBaseList.map((entry) => {
 				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
 				const level = staticMusic?.level ?? 0;
@@ -140,10 +135,8 @@ const UserRatingFramesRoutes = new Hono()
 				return c.json({ results: [] });
 			}
 
-			// Get the music IDs to fetch static music info
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
 
-			// Get static music information
 			const staticMusicInfo = (await db.query(
 				`SELECT 
                 songId,
@@ -159,10 +152,8 @@ const UserRatingFramesRoutes = new Hono()
 				[musicIds, version]
 			)) as any[];
 
-			// Create a map for easy lookup
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
-			// Calculate ratings and combine data
 			const results = userRatingBaseList.map((entry) => {
 				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
 				const level = staticMusic?.level ?? 0;
@@ -202,7 +193,6 @@ const UserRatingFramesRoutes = new Hono()
 
 			const version = await getUserVersionChunithm(userId);
 
-			// Get new list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
         r.musicId,
@@ -236,10 +226,8 @@ const UserRatingFramesRoutes = new Hono()
 				return c.json({ results: [] });
 			}
 
-			// Get the music IDs to fetch static music info
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
 
-			// Get static music information
 			const staticMusicInfo = (await db.query(
 				`SELECT 
                 songId,
@@ -255,10 +243,8 @@ const UserRatingFramesRoutes = new Hono()
 				[musicIds, version]
 			)) as any[];
 
-			// Create a map for easy lookup
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
-			// Calculate ratings and combine data
 			const results = userRatingBaseList.map((entry) => {
 				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
 				const level = staticMusic?.level ?? 0;
@@ -297,7 +283,6 @@ const UserRatingFramesRoutes = new Hono()
 
 			const typeFilter = Number(version) >= 17 ? "userRatingBaseNewNextList" : "userRatingBaseNextList";
 
-			// Get next list entries
 			const userRatingBaseList = (await db.query(
 				`SELECT 
         r.musicId,
@@ -332,10 +317,8 @@ const UserRatingFramesRoutes = new Hono()
 				return c.json({ results: [] });
 			}
 
-			// Get the music IDs to fetch static music info
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
 
-			// Get static music information
 			const staticMusicInfo = (await db.query(
 				`SELECT 
           songId,
@@ -351,10 +334,8 @@ const UserRatingFramesRoutes = new Hono()
 				[musicIds, version]
 			)) as any[];
 
-			// Create a map for easy lookup
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
-			// Calculate ratings and combine data
 			const results = userRatingBaseList.map((entry) => {
 				const staticMusic = songIdtoChartId.get(`${entry.musicId}-${entry.difficultId}`);
 				const level = staticMusic?.level ?? 0;
@@ -390,23 +371,42 @@ const UserRatingFramesRoutes = new Hono()
 			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
-			// Get player rating from profile data
 			const [ratingData] = (await db.query(
 				`SELECT playerRating
                 FROM chuni_profile_data 
                 WHERE user = ? 
                 AND version = ?`,
 				[userId, version]
-			)) as [{ rating: number }];
+			)) as [{ playerRating: number }];
 
 			return c.json({ playerRating: ratingData.playerRating });
 		} catch (error) {
 			console.error("Error executing query:", error);
 			return c.json({ error: "Failed to fetch player rating" }, 500);
 		}
+	})
+
+	.get("/highestRating", async (c) => {
+		try {
+			const userId = c.payload.userId;
+			const version = await getUserVersionChunithm(userId);
+
+			const [ratingData] = (await db.query(
+				`SELECT 
+								highestRating
+                FROM chuni_profile_data 
+                WHERE user = ? 
+                AND version = ?`,
+				[userId, version]
+			)) as [{ highestRating: number }];
+
+			return c.json({ highestRating: ratingData.highestRating });
+		} catch (error) {
+			console.error("Error executing query:", error);
+			return c.json({ error: "Failed to fetch player rating" }, 500);
+		}
 	});
 
-// Rating calculation function
 function calculateRating(level: number, score: number): number {
 	if (score >= 1009000) {
 		return level * 100 + 215;

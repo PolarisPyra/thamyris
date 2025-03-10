@@ -103,3 +103,22 @@ export const usePlayerRating = () => {
 		},
 	});
 };
+
+/**
+ * Fetches and returns the player's highest achieved rating.
+ */
+export const useHighestRating = () => {
+	return useQuery<number>({
+		queryKey: ["highestRating"],
+		queryFn: async () => {
+			const response = await api.chunithm.highestRating.$get();
+			const data = (await response.json()) as { highestRating: number; error?: string };
+
+			if (data.error) {
+				throw new Error(data.error);
+			}
+
+			return data.highestRating;
+		},
+	});
+};
