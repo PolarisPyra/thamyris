@@ -7,7 +7,7 @@ import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } fro
 
 const ChunithmVersionManager = () => {
 	const { data: chunithmVersion } = useChunithmVersion();
-	const { data: versions } = useChunithmVersions();
+	const { data: availableVersions } = useChunithmVersions();
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 
 	const chunithmVersions: Record<number, string> = {
@@ -35,7 +35,7 @@ const ChunithmVersionManager = () => {
 		<VersionManagement
 			title="Set Chunithm version"
 			currentVersion={chunithmVersion}
-			availableVersions={versions}
+			availableVersions={availableVersions}
 			isUpdating={isPending}
 			onUpdateVersion={handleUpdateVersion}
 			versions={chunithmVersions}

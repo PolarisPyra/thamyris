@@ -7,7 +7,7 @@ import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/h
 
 const OngekiVersionManager = () => {
 	const { data: ongekiVersion } = useOngekiVersion();
-	const { data: versions } = useOngekiVersions();
+	const { data: availableVersions } = useOngekiVersions();
 	const { mutate: updateVersion, isPending } = useUpdateOngekiVersion();
 
 	const ongekiVersions: Record<number, string> = {
@@ -30,7 +30,7 @@ const OngekiVersionManager = () => {
 		<VersionManagement
 			title="Set Ongeki version"
 			currentVersion={ongekiVersion}
-			availableVersions={versions}
+			availableVersions={availableVersions}
 			isUpdating={isPending}
 			onUpdateVersion={handleUpdateVersion}
 			versions={ongekiVersions}
