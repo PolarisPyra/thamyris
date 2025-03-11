@@ -10,6 +10,7 @@ interface VersionsResponse {
 interface UpdateVersionResponse {
 	version: number;
 	error?: string;
+	message?: string;
 }
 
 interface VersionResponse {
@@ -70,7 +71,7 @@ export const useUpdateOngekiVersion = () => {
 				throw new Error(data.error);
 			}
 
-			return data.version;
+			return data;
 		},
 	});
 };

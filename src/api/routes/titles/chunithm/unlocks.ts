@@ -14,7 +14,7 @@ const ChunithmUnlockRoutes = new Hono()
 				[userId]
 			);
 
-			return c.json({ success: true });
+			return c.json({ success: true, message: "Successfully unlocked all songs" });
 		} catch (error) {
 			console.error("Error unlocking all songs:", error);
 			return c.json({ error: "Failed to unlock all songs" }, 500);
@@ -31,7 +31,7 @@ const ChunithmUnlockRoutes = new Hono()
 				[userId]
 			);
 
-			return c.json({ success: true });
+			return c.json({ success: true, message: "Successfully locked songs" });
 		} catch (error) {
 			console.error("Error locking songs:", error);
 			return c.json({ error: "Failed to lock songs" }, 500);
@@ -48,7 +48,7 @@ const ChunithmUnlockRoutes = new Hono()
 				[userId]
 			);
 
-			return c.json({ success: true });
+			return c.json({ success: true, message: "Successfully enabled unlimited tickets" });
 		} catch (error) {
 			console.error("Error enabling unlimited tickets:", error);
 			return c.json({ error: "Failed to enable unlimited tickets" }, 500);
@@ -65,7 +65,7 @@ const ChunithmUnlockRoutes = new Hono()
 				[userId]
 			);
 
-			return c.json({ success: true });
+			return c.json({ success: true, message: "Successfully disabled unlimited tickets" });
 		} catch (error) {
 			console.error("Error disabling unlimited tickets:", error);
 			return c.json({ error: "Failed to disable unlimited tickets" }, 500);

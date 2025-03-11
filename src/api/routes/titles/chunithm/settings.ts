@@ -38,7 +38,7 @@ const ChunithmSettingsRoutes = new Hono()
 				return c.json({ error: "Profile not found" }, 404);
 			}
 
-			return c.json({ success: true, version });
+			return c.json({ success: true, version, message: "Successfully updated game version" });
 		} catch (error) {
 			console.error("Error updating settings:", error);
 			return c.json({ error: "Failed to update settings" }, 500);

@@ -22,12 +22,9 @@ const CardManagement = () => {
 		setIsUnlocking((prev) => ({ ...prev, cards: true }));
 		try {
 			unlockAllCards(ongekiVersion, {
-				onSuccess: () => {
-					toast.success("Successfully unlocked all cards");
-				},
-				onError: () => {
-					toast.error("Failed to unlock cards");
-				},
+				onSuccess: (success) => toast.success(success.message),
+
+				onError: (error) => toast.error(error.message),
 			});
 		} finally {
 			setIsUnlocking((prev) => ({ ...prev, cards: false }));

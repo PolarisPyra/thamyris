@@ -24,12 +24,9 @@ const ItemManagement = () => {
 		setIsUnlocking((prev) => ({ ...prev, items: true }));
 		try {
 			unlockAllItems(ongekiVersion, {
-				onSuccess: () => {
-					toast.success("Successfully unlocked all items");
-				},
-				onError: () => {
-					toast.error("Failed to unlock items");
-				},
+				onSuccess: (success) => toast.success(success.message),
+
+				onError: (error) => toast.error(error.message),
 			});
 		} finally {
 			setIsUnlocking((prev) => ({ ...prev, items: false }));
@@ -44,12 +41,9 @@ const ItemManagement = () => {
 			unlockSpecificItem(
 				{ itemKind, version: ongekiVersion },
 				{
-					onSuccess: () => {
-						toast.success("Successfully unlocked items");
-					},
-					onError: () => {
-						toast.error("Failed to unlock items");
-					},
+					onSuccess: (success) => toast.success(success.message),
+
+					onError: (error) => toast.error(error.message),
 				}
 			);
 		} finally {

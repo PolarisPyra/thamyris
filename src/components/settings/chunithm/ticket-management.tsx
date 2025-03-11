@@ -17,8 +17,8 @@ const TicketManagement = () => {
 				<SubmitButton
 					onClick={() => {
 						enableUnlimited(undefined, {
-							onSuccess: () => toast.success("Successfully enabled unlimited tickets"),
-							onError: () => toast.error("Failed to enable unlimited tickets"),
+							onSuccess: (success) => toast.success(success.message),
+							onError: (error) => toast.error(error.message),
 						});
 					}}
 					defaultLabel="Enable Unlimited Tickets"
@@ -29,8 +29,8 @@ const TicketManagement = () => {
 				<SubmitButton
 					onClick={() => {
 						disableUnlimited(undefined, {
-							onSuccess: () => toast.success("Successfully disabled unlimited tickets"),
-							onError: () => toast.error("Failed to disable unlimited tickets"),
+							onSuccess: (success) => toast.success(success.message),
+							onError: (error) => toast.error(error.message),
 						});
 					}}
 					defaultLabel="Disable Unlimited Tickets"

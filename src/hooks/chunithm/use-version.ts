@@ -5,16 +5,19 @@ import { api } from "@/utils";
 interface VersionsResponse {
 	versions?: number[];
 	error?: string;
+	message?: string;
 }
 
 interface UpdateVersionResponse {
 	version: number;
 	error?: string;
+	message?: string;
 }
 
 interface VersionResponse {
 	version?: number;
 	error?: string;
+	message?: string;
 }
 
 export const useChunithmVersion = () => {
@@ -70,7 +73,7 @@ export const useUpdateChunithmVersion = () => {
 				throw new Error(data.error);
 			}
 
-			return data.version;
+			return data;
 		},
 	});
 };

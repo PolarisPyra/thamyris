@@ -13,12 +13,9 @@ const OngekiVersionManager = () => {
 
 	const handleUpdateVersion = (version: string) => {
 		updateVersion(version, {
-			onSuccess: () => {
-				toast.success("Successfully updated game version");
-			},
-			onError: () => {
-				toast.error("Failed to update game version");
-			},
+			onSuccess: (success) => toast.success(success.message),
+
+			onError: (error) => toast.error(error.message),
 		});
 	};
 

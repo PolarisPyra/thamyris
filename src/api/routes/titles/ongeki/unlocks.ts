@@ -53,7 +53,7 @@ const OngekiUnlockRoutes = new Hono()
 				[userId]
 			);
 
-			return c.json({ success: true, result });
+			return c.json({ message: "Successfully unlocked cards", success: true, result });
 		} catch (error) {
 			console.error("Error unlocking cards:", error);
 			return c.json({ error: "Failed to unlock cards" }, 500);
@@ -78,7 +78,7 @@ const OngekiUnlockRoutes = new Hono()
 				[userId, version, itemKind]
 			);
 
-			return c.json({ success: true });
+			return c.json({ success: true, message: "Successfully unlocked specific item" });
 		} catch (error) {
 			console.error("Error unlocking specific item:", error);
 			return c.json({ error: "Failed to unlock specific item" }, 500);
@@ -106,7 +106,7 @@ const OngekiUnlockRoutes = new Hono()
 				);
 			}
 
-			return c.json({ success: true });
+			return c.json({ success: true, message: "Successfully unlocked all items" });
 		} catch (error) {
 			console.error("Error unlocking all items:", error);
 			return c.json({ error: "Failed to unlock all items" }, 500);

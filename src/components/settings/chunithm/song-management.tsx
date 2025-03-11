@@ -16,8 +16,8 @@ const SongManagement = () => {
 				<SubmitButton
 					onClick={() => {
 						unlockSongs(undefined, {
-							onSuccess: () => toast.success("Successfully unlocked all songs"),
-							onError: () => toast.error("Failed to unlock songs"),
+							onSuccess: (success) => toast.success(success.message),
+							onError: (error) => toast.error(error.message),
 						});
 					}}
 					defaultLabel="Unlock All Songs"
@@ -28,8 +28,8 @@ const SongManagement = () => {
 				<SubmitButton
 					onClick={() => {
 						lockSongs(undefined, {
-							onSuccess: () => toast.success("Successfully locked songs"),
-							onError: () => toast.error("Failed to lock songs"),
+							onSuccess: (success) => toast.success(success.message),
+							onError: (error) => toast.error(error.message),
 						});
 					}}
 					defaultLabel="Lock Songs"
