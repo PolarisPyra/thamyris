@@ -4,21 +4,12 @@ import { toast } from "sonner";
 
 import VersionManagement from "@/components/common/version-management";
 import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
+import { ChunithmVersions } from "@/types/games";
 
 const ChunithmVersionManager = () => {
 	const { data: chunithmVersion } = useChunithmVersion();
 	const { data: availableVersions } = useChunithmVersions();
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
-
-	const chunithmVersions: Record<number, string> = {
-		11: "Chunithm New",
-		12: "Chunithm New Plus",
-		13: "Chunithm Sun",
-		14: "Chunithm Sun Plus",
-		15: "Chunithm Luminous",
-		16: "Chunithm Luminous Plus",
-		17: "Chunithm Verse",
-	};
 
 	const handleUpdateVersion = (version: string) => {
 		updateVersion(version, {
@@ -38,7 +29,7 @@ const ChunithmVersionManager = () => {
 			availableVersions={availableVersions}
 			isUpdating={isPending}
 			onUpdateVersion={handleUpdateVersion}
-			versions={chunithmVersions}
+			versions={ChunithmVersions}
 			buttonLabel="Update Chunithm settings"
 			updatingLabel="Updating..."
 		/>
