@@ -147,6 +147,27 @@ const ChunithmRoutes = new Hono()
 			console.error("Error updating team:", error);
 			return c.json({ error: "Failed to update team" }, 500);
 		}
+	})
+
+	.post("/addteam", async (c) => {
+		try {
+			const { teamName } = await c.req.json();
+
+			if (!teamName) {
+				return c.json({ error: "Team name is required" }, 400);
+			}
+
+			const result = await db.query(`INSERT INTO chuni_profile_team (teamName) VALUES (?)`, [teamName]);
+
+			return c.json({
+				success: true,
+				message: "Team created successfully",
+				teamId: result.insertId,
+			});
+		} catch (error) {
+			console.error("Error creating team:", error);
+			return c.json({ error: "Failed to create team" }, 500);
+		}
 	});
 
 export { ChunithmRoutes };

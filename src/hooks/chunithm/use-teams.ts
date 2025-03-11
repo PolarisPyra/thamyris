@@ -49,3 +49,24 @@ export function useUpdateTeam() {
 		},
 	});
 }
+
+// Create team mutation
+export function useCreateTeam() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (teamName: string) => {
+			const response = await api.chunithm.addteam.$post({
+				json: { teamName },
+			});
+			if (!response.ok) {
+				throw new Error("Failed to create team");
+			}
+			return response.json();
+		},
+		onSuccess: () => {
+			// Invalidate and refetch teams query
+			queryClient.invalidateQueries({ queryKey: ["teams"] });
+		},
+	});
+}
