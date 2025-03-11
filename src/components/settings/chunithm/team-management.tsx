@@ -47,7 +47,7 @@ const TeamManagement = () => {
 				toast.success("Successfully created team");
 				setNewTeamName("");
 			},
-			onError: (error) => toast.error(error instanceof Error ? error.message : "Failed to create team"),
+			onError: (error) => toast.error(error.message),
 		});
 	};
 
