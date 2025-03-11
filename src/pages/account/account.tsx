@@ -2,7 +2,7 @@ import React from "react";
 
 import KeychipGenerator from "@/components/admin/keychip-generator";
 import Header from "@/components/common/header";
-import AimeCardSwap from "@/components/settings/aime-card";
+import AimeCardSwap from "@/components/settings/common/aime-card";
 import { useAdminPermissions } from "@/hooks/admin/use-admin";
 
 const Account = () => {
