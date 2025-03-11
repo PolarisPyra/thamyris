@@ -72,12 +72,13 @@ export function useCreateTeam() {
 				json: { teamName },
 			});
 			const data = (await response.json()) as CreateTeamResponse;
-			console.log(data);
-			if ("error" in data) {
-				throw new Error(data.error);
+
+			if (!response.ok) {
+				const errorMessage = "error" in data ? data.error : "Failed to create team";
+				throw new Error(errorMessage);
 			}
 
-			return data;
+			return data as CreateTeamSuccess;
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["teams"] });

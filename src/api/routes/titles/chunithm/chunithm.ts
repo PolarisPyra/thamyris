@@ -171,8 +171,7 @@ const ChunithmRoutes = new Hono()
 				message: "Team created successfully",
 				teamId: result.insertId,
 			});
-		} catch (error) {
-			console.error("Error creating team:", error);
+		} catch {
 			return c.json({ error: "Failed to create team" }, 500);
 		}
 	});
