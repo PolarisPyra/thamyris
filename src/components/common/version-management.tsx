@@ -5,34 +5,43 @@ import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki/use-version";
 
-const VersionManagement = () => {
-	const { data: ongekiVersion } = useOngekiVersion();
-	const { data: versions } = useOngekiVersions();
-	const { mutate: updateVersion, isPending: isUpdatingVersion } = useUpdateOngekiVersion();
+interface VersionManagementProps {
+	title: string;
+	currentVersion: number | undefined;
+	availableVersions: number[] | undefined;
+	isUpdating: boolean;
+	onUpdateVersion: (version: string) => void;
+	versions: Record<number, string>;
+	buttonLabel?: string;
+	updatingLabel?: string;
+}
 
+const VersionManagement: React.FC<VersionManagementProps> = ({
+	title,
+	currentVersion,
+	availableVersions,
+	isUpdating,
+	onUpdateVersion,
+	versions,
+	buttonLabel = "Update settings",
+	updatingLabel = "Updating...",
+}) => {
 	const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
-	const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+	const [openDropdown, setOpenDropdown] = useState<boolean>(false);
 
 	const getGameTitle = (version: number | undefined): string => {
 		if (!version) return "Select a version";
-
-		const versionMap: Record<number, string> = {
-			6: "Ongeki Bright",
-			7: "Ongeki Bright Memory",
-		};
-
-		return versionMap[version] || `Version ${version}`;
+		return versions[version] || `Version ${version}`;
 	};
 
 	const handleVersionChange = (version: number) => {
 		setSelectedVersion(version);
-		setOpenDropdown(null);
+		setOpenDropdown(false);
 	};
 
-	const handleDropdownToggle = (section: number) => {
-		setOpenDropdown(openDropdown === section ? null : section);
+	const handleDropdownToggle = () => {
+		setOpenDropdown(!openDropdown);
 	};
 
 	const handleUpdate = () => {
@@ -40,30 +49,25 @@ const VersionManagement = () => {
 			toast.error("Please select a version first");
 			return;
 		}
-		updateVersion(selectedVersion.toString(), {
-			onSuccess: () => {
-				toast.success("Successfully updated game version");
-			},
-			onError: () => {
-				toast.error("Failed to update game version");
-			},
-		});
+
+		onUpdateVersion(selectedVersion.toString());
 	};
+
 	return (
 		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="mb-4 text-xl font-semibold text-gray-100">Set Ongeki version</h2>
+			<h2 className="mb-4 text-xl font-semibold text-gray-100">{title}</h2>
 
 			<div className="mb-4">
 				<button
-					onClick={() => handleDropdownToggle(0)}
+					onClick={handleDropdownToggle}
 					className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
 				>
-					<span className="text-gray-200">{getGameTitle(selectedVersion || ongekiVersion)}</span>
-					<ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown === 0 ? "rotate-180" : ""}`} />
+					<span className="text-gray-200">{getGameTitle(selectedVersion || currentVersion)}</span>
+					<ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown ? "rotate-180" : ""}`} />
 				</button>
 
 				<AnimatePresence>
-					{openDropdown === 0 && (
+					{openDropdown && (
 						<motion.div
 							initial={{ opacity: 0, height: 0 }}
 							animate={{ opacity: 1, height: "auto" }}
@@ -71,7 +75,7 @@ const VersionManagement = () => {
 							className="mt-2"
 						>
 							<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
-								{versions?.map((version) => (
+								{availableVersions?.map((version) => (
 									<div
 										key={version}
 										onClick={() => handleVersionChange(version)}
@@ -88,10 +92,10 @@ const VersionManagement = () => {
 
 			<SubmitButton
 				onClick={handleUpdate}
-				defaultLabel="Update Ongeki settings"
-				updatingLabel="Updating..."
+				defaultLabel={buttonLabel}
+				updatingLabel={updatingLabel}
 				className="bg-red-600 text-lg hover:bg-red-700"
-				disabled={isUpdatingVersion || !selectedVersion}
+				disabled={isUpdating || !selectedVersion}
 			/>
 		</div>
 	);

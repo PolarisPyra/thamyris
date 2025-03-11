@@ -4,7 +4,7 @@ import Header from "@/components/common/header";
 import CardManagement from "@/components/settings/ongeki/card-managment";
 import ItemManagement from "@/components/settings/ongeki/item-management";
 import JsonExport from "@/components/settings/ongeki/json-export";
-import VersionManagement from "@/components/settings/ongeki/version-selection";
+import VersionManagement from "@/components/settings/ongeki/version-management";
 
 interface GameSettingsProps {
 	onUpdate?: () => void;
