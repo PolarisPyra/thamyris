@@ -11,12 +11,12 @@ const FavoritesRoutes = new Hono()
 			const userId = c.payload.userId;
 
 			const { favId } = await c.req.json();
-			const supportedVersionNumber = 17;
+			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`INSERT INTO chuni_item_favorite (user, version, favId, favKind)
        VALUES (?, ?, ?, 1)`,
-				[userId, supportedVersionNumber, favId]
+				[userId, version, favId]
 			);
 
 			if (result.affectedRows === 0) {
