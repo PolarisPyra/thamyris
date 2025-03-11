@@ -23,7 +23,6 @@ const CardManagement = () => {
 		try {
 			unlockAllCards(ongekiVersion, {
 				onSuccess: (success) => toast.success(success.message),
-
 				onError: (error) => toast.error(error.message),
 			});
 		} finally {

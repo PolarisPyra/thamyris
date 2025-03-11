@@ -25,7 +25,6 @@ const ItemManagement = () => {
 		try {
 			unlockAllItems(ongekiVersion, {
 				onSuccess: (success) => toast.success(success.message),
-
 				onError: (error) => toast.error(error.message),
 			});
 		} finally {
@@ -42,7 +41,6 @@ const ItemManagement = () => {
 				{ itemKind, version: ongekiVersion },
 				{
 					onSuccess: (success) => toast.success(success.message),
-
 					onError: (error) => toast.error(error.message),
 				}
 			);

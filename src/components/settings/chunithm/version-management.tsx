@@ -14,7 +14,6 @@ const ChunithmVersionManager = () => {
 	const handleUpdateVersion = (version: string) => {
 		updateVersion(version, {
 			onSuccess: (success) => toast.success(success.message),
-
 			onError: (error) => toast.error(error.message),
 		});
 	};
