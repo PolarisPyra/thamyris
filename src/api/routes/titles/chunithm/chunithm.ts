@@ -157,6 +157,13 @@ const ChunithmRoutes = new Hono()
 				return c.json({ error: "Team name is required" }, 400);
 			}
 
+			// Check if team name already exists
+			const existingTeam = await db.query(`SELECT id FROM chuni_profile_team WHERE teamName = ?`, [teamName]);
+
+			if (existingTeam.length > 0) {
+				return c.json({ error: "Team name already exists" }, 400);
+			}
+
 			const result = await db.query(`INSERT INTO chuni_profile_team (teamName) VALUES (?)`, [teamName]);
 
 			return c.json({

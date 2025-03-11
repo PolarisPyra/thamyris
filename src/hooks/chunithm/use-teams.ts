@@ -12,6 +12,18 @@ interface TeamResponse {
 	error?: string;
 }
 
+interface CreateTeamSuccess {
+	success: boolean;
+	message: string;
+	teamId: number;
+}
+
+interface CreateTeamError {
+	error: string;
+}
+
+type CreateTeamResponse = CreateTeamSuccess | CreateTeamError;
+
 // Fetch all teams
 export function useTeams() {
 	return useQuery({
@@ -59,13 +71,15 @@ export function useCreateTeam() {
 			const response = await api.chunithm.addteam.$post({
 				json: { teamName },
 			});
-			if (!response.ok) {
-				throw new Error("Failed to create team");
+			const data = (await response.json()) as CreateTeamResponse;
+			console.log(data);
+			if ("error" in data) {
+				throw new Error(data.error);
 			}
-			return response.json();
+
+			return data;
 		},
 		onSuccess: () => {
-			// Invalidate and refetch teams query
 			queryClient.invalidateQueries({ queryKey: ["teams"] });
 		},
 	});

@@ -47,7 +47,13 @@ const TeamManagement = () => {
 				toast.success("Successfully created team");
 				setNewTeamName("");
 			},
-			onError: () => toast.error("Failed to create team"),
+			onError: (error) => {
+				if (error instanceof Error && error.message === "Team name already exists") {
+					toast.error("This team name already exists. Please choose a different name.");
+				} else {
+					toast.error("Failed to create team");
+				}
+			},
 		});
 	};
 
