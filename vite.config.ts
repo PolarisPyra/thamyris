@@ -5,14 +5,14 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 import { env } from "./src/env";
 
-const buildDateFullString = (date) => {
+const buildDateFullString = (date, revision) => {
 	const d = new Date(date);
 	const year = d.getFullYear();
 	const month = String(d.getMonth() + 1).padStart(2, "0");
 	const day = String(d.getDate()).padStart(2, "0");
-	const time = String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0");
-	return `${year}${month}${day}${time}`;
+	return `${year}${month}${day}${String(revision).padStart(2, "0")}`; // YearMonthDayRevision
 };
+
 const buildDateYearMonthDay = (date) => {
 	const d = new Date(date);
 	const year = d.getFullYear();
@@ -92,7 +92,7 @@ export default defineConfig({
 		// For client env variables, add the type in src/vite-env.d.ts
 		env: {
 			BUILD_DATE_YEAR_MONTH_DAY: buildDateYearMonthDay(new Date().toISOString()),
-			BUILD_DATE_FULL: buildDateFullString(new Date().toISOString()),
+			BUILD_DATE_FULL: buildDateFullString(new Date().toISOString(), 1),
 			BUILD_TIME_24_HOUR: buildTime12HourFormat(new Date().toISOString()),
 			CDN_URL: env.CDN_URL,
 			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
