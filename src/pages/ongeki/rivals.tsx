@@ -1,16 +1,14 @@
 import { useState } from "react";
 import React from "react";
 
-import { Handshake, Skull, Swords } from "lucide-react";
+import { Handshake, Skull } from "lucide-react";
 import { toast } from "sonner";
 
 import Header from "@/components/common/header";
-import QouteCard from "@/components/common/qoutecard";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/ongeki/use-rivals";
 import { useOngekiVersion } from "@/hooks/ongeki/use-version";
-import { useUsername } from "@/hooks/users/use-username";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -24,7 +22,6 @@ const OngekiRivals = () => {
 	const { data: users = [], isLoading: isLoadingUsers } = useRivalUsers();
 	const { mutate: addRival } = useAddRival();
 	const { mutate: removeRival } = useRemoveRival();
-	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 
 	const filteredRivals = users.filter((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -58,7 +55,7 @@ const OngekiRivals = () => {
 		});
 	};
 
-	const isLoading = isLoadingRivals || isLoadingCount || isLoadingUsers || isLoadingUsername;
+	const isLoading = isLoadingRivals || isLoadingCount || isLoadingUsers;
 
 	if (isLoading) {
 		return (
@@ -77,63 +74,54 @@ const OngekiRivals = () => {
 		<div className="relative flex-1 overflow-auto">
 			<Header title={`Rivals ${rivalCount}/4`} />
 			{version ? (
-				<main className="mx-auto h-[calc(100vh-64px)] max-w-full px-4 py-6 lg:px-8">
-					<div className="flex flex-col gap-4">
-						<div className="grid py-6">
-							<QouteCard
-								welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-								tagline={"Challenge your friends!"}
-								icon={Swords}
-								color={"#f067e9"}
-							/>
-							<div className="mt-6 space-y-6" />
-							<RivalsTable
-								rivals={paginatedRivals.map((user) => ({
-									id: user.id,
-									username: user.username,
-									mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
-									rivalIcon: (
-										<Skull
-											className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
-											onClick={() => {
-												const isRival = rivalIds.includes(user.id);
-												if (isRival) {
-													handleRemoveRival(user.id);
-												} else {
-													handleAddRival(user.id);
-												}
-											}}
-										/>
-									),
-								}))}
-								searchQuery={searchQuery}
-								onSearchChange={(e) => setSearchQuery(e.target.value)}
-								rivalCount={rivalCount}
-							/>
-						</div>
-						{totalPages > 1 && (
-							<div className="mb-4 flex items-center justify-center space-x-4">
-								<button
-									disabled={currentPage === 1}
-									onClick={() => setCurrentPage((prev) => prev - 1)}
-									className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-								>
-									Previous
-								</button>
-								<span className="text-primary text-sm">
-									Page {currentPage} of {totalPages}
-								</span>
-								<button
-									disabled={currentPage === totalPages}
-									onClick={() => setCurrentPage((prev) => prev + 1)}
-									className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-								>
-									Next
-								</button>
-							</div>
-						)}
+				<div className="container mx-auto space-y-6">
+					<div className="mb-4 space-y-8 p-4 sm:p-0">
+						<RivalsTable
+							rivals={paginatedRivals.map((user) => ({
+								id: user.id,
+								username: user.username,
+								mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
+								rivalIcon: (
+									<Skull
+										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+										onClick={() => {
+											const isRival = rivalIds.includes(user.id);
+											if (isRival) {
+												handleRemoveRival(user.id);
+											} else {
+												handleAddRival(user.id);
+											}
+										}}
+									/>
+								),
+							}))}
+							searchQuery={searchQuery}
+							onSearchChange={(e) => setSearchQuery(e.target.value)}
+							rivalCount={rivalCount}
+						/>
 					</div>
-				</main>
+					{totalPages > 1 && (
+						<div className="mb-4 flex items-center justify-center space-x-4">
+							<button
+								disabled={currentPage === 1}
+								onClick={() => setCurrentPage((prev) => prev - 1)}
+								className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Previous
+							</button>
+							<span className="text-primary text-sm">
+								Page {currentPage} of {totalPages}
+							</span>
+							<button
+								disabled={currentPage === totalPages}
+								onClick={() => setCurrentPage((prev) => prev + 1)}
+								className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+							>
+								Next
+							</button>
+						</div>
+					)}
+				</div>
 			) : (
 				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
 					<p className="text-primary">Please set your Ongeki version in settings first</p>

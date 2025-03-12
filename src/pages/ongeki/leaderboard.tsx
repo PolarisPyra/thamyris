@@ -36,24 +36,26 @@ const OngekiLeaderboard = () => {
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Leaderboard" />
 			{version ? (
-				<div className="container mx-auto p-4">
-					<LeaderboardTable
-						players={currentData}
-						searchQuery={search}
-						onSearchChange={(e) => setSearch(e.target.value)}
-						page={page}
-						itemsPerPage={ITEMS_PER_PAGE}
-					/>
+				<div className="container mx-auto space-y-6">
+					<div className="mb-4 space-y-8 p-4 sm:p-0">
+						<LeaderboardTable
+							players={currentData}
+							searchQuery={search}
+							onSearchChange={(e) => setSearch(e.target.value)}
+							page={page}
+							itemsPerPage={ITEMS_PER_PAGE}
+						/>
 
-					{totalPages > 1 && (
-						<div className="mt-4 flex justify-center">
-							<Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
-						</div>
-					)}
+						{totalPages > 1 && (
+							<div className="mt-4 flex justify-center">
+								<Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+							</div>
+						)}
+					</div>
 				</div>
 			) : (
 				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
-					<p className="text-primary">Please set your Ongeki version in settings first</p>
+					<p className="text-primary">Please set your Chunithm version in settings first</p>
 				</div>
 			)}
 		</div>

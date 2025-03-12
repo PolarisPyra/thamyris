@@ -75,36 +75,38 @@ const ChunithmRivals = () => {
 		<div className="relative flex-1 overflow-auto">
 			<Header title={`Rivals ${rivalCount}/4`} />
 			{version ? (
-				<div className="container mx-auto p-4">
-					<RivalsTable
-						rivals={paginatedRivals.map((user) => ({
-							id: user.id,
-							username: user.username,
-							mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
-							rivalIcon: (
-								<Skull
-									className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
-									onClick={() => {
-										const isRival = rivalIds.includes(user.id);
-										if (isRival) {
-											handleRemoveRival(user.id);
-										} else {
-											handleAddRival(user.id);
-										}
-									}}
-								/>
-							),
-						}))}
-						searchQuery={searchQuery}
-						onSearchChange={(e) => setSearchQuery(e.target.value)}
-						rivalCount={rivalCount}
-					/>
+				<div className="container mx-auto space-y-6">
+					<div className="mb-4 space-y-8 p-4 sm:p-0">
+						<RivalsTable
+							rivals={paginatedRivals.map((user) => ({
+								id: user.id,
+								username: user.username,
+								mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
+								rivalIcon: (
+									<Skull
+										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+										onClick={() => {
+											const isRival = rivalIds.includes(user.id);
+											if (isRival) {
+												handleRemoveRival(user.id);
+											} else {
+												handleAddRival(user.id);
+											}
+										}}
+									/>
+								),
+							}))}
+							searchQuery={searchQuery}
+							onSearchChange={(e) => setSearchQuery(e.target.value)}
+							rivalCount={rivalCount}
+						/>
 
-					{totalPages > 1 && (
-						<div className="mt-4 flex justify-center">
-							<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-						</div>
-					)}
+						{totalPages > 1 && (
+							<div className="mt-4 flex justify-center">
+								<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+							</div>
+						)}
+					</div>
 				</div>
 			) : (
 				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
