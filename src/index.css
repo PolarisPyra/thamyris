@@ -313,8 +313,10 @@ video {
 	--sidebar-border: hsl(220, 13%, 85%);
 	--searchbar: hsl(220, 3%, 87%);
 	--textbox: hsl(220, 3%, 87%);
+	--buttontext: hsl(0, 0%, 100%);
+
 	--seperator: hsl(240, 2%, 75%);
-	--button: hsla(131, 97%, 23%, 0.801);
+	--button: hsl(114, 62%, 28%);
 	--buttonhover: hsla(129, 47%, 39%, 0.7);
 	--dropdown: hsl(0, 2%, 80%);
 	--dropdownhover: hsl(0, 3%, 65%);
@@ -355,7 +357,6 @@ video {
 	--sidebar-accent: hsl(240 3.7% 15.9%);
 	--sidebar-accent-foreground: hsl(240 4.8% 95.9%);
 	--sidebar-ring: hsl(217.2 91.2% 59.8%);
-
 	--border: hsl(0, 2%, 35%);
 	--card: hsl(0 0% 17.6%);
 	--sidebar-border: hsl(240 3.7% 15.9%);
@@ -366,10 +367,11 @@ video {
 	--buttonlockcontenthover: hsl(355, 97%, 61%);
 	--buttonunlockcontent: hsl(120, 61%, 24%);
 	--buttonunlockcontenthover: hsl(135, 86%, 31%);
-	--button: hsl(120, 61%, 24%);
+	--button: hsl(120, 85%, 26%);
 	--buttonhover: hsla(129, 47%, 49%, 0.514);
 	--dropdown: hsl(0, 0%, 29%);
 	--dropdownhover: hsl(0, 4%, 49%);
+	--buttontext: hsl(213, 21%, 83%);
 }
 
 /*
@@ -425,6 +427,7 @@ video {
 	--color-buttonunlockcontent: var(--buttonunlockcontent);
 	--color-buttonunlockcontenthover: var(--buttonunlockcontenthover);
 	--color-textbox: var(--textbox);
+	--color-buttontext: var(--buttontext);
 }
 
 /*

@@ -176,7 +176,7 @@ const KeychipGenerator = () => {
 					type="button"
 					onClick={generateRandomSerial}
 					disabled={isLoading}
-					className="bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
+					className="text-buttontext bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
 				>
 					Generate random serial
 				</button>
@@ -184,7 +184,7 @@ const KeychipGenerator = () => {
 				<button
 					type="submit"
 					disabled={isLoading || !hasSerialId}
-					className="bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
+					className="text-buttontext bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
 				>
 					{isLoading ? "Generating..." : "Add new keychip"}
 				</button>

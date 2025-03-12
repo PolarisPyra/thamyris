@@ -63,9 +63,9 @@ const AimeCardSwap = () => {
 				<button
 					type="submit"
 					disabled={updateAimecard.isPending || accessCode.length !== 20}
-					className="bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
+					className="text-buttontext bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
 				>
-					{updateAimecard.isPending ? "Updating..." : "Update Aime Card"}
+					{updateAimecard.isPending ? "Updating..." : "Update aime ard"}
 				</button>
 			</form>
 		</div>
