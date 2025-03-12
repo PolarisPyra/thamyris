@@ -80,6 +80,7 @@ const TrophyRoutes = new Hono()
 	.get("/trophies/unlocked", async (c) => {
 		try {
 			const userId = c.payload.userId;
+			const version = await getUserVersionChunithm(userId);
 
 			const unlockedResults = await db.query<Array<{ itemId: number }>>(
 				`SELECT itemId 
@@ -107,8 +108,8 @@ const TrophyRoutes = new Hono()
 			>(
 				`SELECT id, name, rareType, trophyId
         FROM daphnis_static_trophy
-        WHERE trophyId IN (?)`,
-				[unlockedTrophyIds]
+        WHERE trophyId IN (?) AND version = ?`,
+				[unlockedTrophyIds, version]
 			);
 
 			return c.json<UnlockedTrophyResponse>({
@@ -132,20 +133,6 @@ const TrophyRoutes = new Hono()
 			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
 			const body = await c.req.json();
-
-			if (
-				body.mainTrophyId === body.subTrophy1Id ||
-				body.mainTrophyId === body.subTrophy2Id ||
-				body.subTrophy1Id === body.subTrophy2Id
-			) {
-				return c.json<UpdateTrophyResponse>(
-					{
-						success: false,
-						error: "Duplicate trophy IDs are not allowed.",
-					},
-					400
-				);
-			}
 
 			const updateFields: string[] = [];
 			const updateValues: (number | null)[] = [];
