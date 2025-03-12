@@ -34,16 +34,16 @@ const AimeCardSwap = () => {
 	};
 
 	return (
-		<div className="rounded-lg bg-gray-800 p-6 shadow-md">
-			<h2 className="mb-2 text-xl font-semibold">Aime Card Settings</h2>
-			<div className="mb-4 text-sm text-gray-400">
+		<div className="bg-card rounded-md p-6">
+			<h2 className="text-primary mb-2 text-xl font-semibold">Aime Card Settings</h2>
+			<div className="text-primary mb-4 text-sm">
 				Changes the in-game aime card (affects the aime.txt for artemis games dont forget to update it)
 			</div>
 
-			<div className="mb-2 text-sm text-gray-400">Current Aime Card: {user?.aimeCardId || "Not set"}</div>
+			<div className="text-primary mb-2 text-sm">Current Aime Card: {user?.aimeCardId || "Not set"}</div>
 			<form onSubmit={handleUpdateAimecard} className="space-y-4">
 				<div>
-					<label htmlFor="accessCode" className="mb-1 block text-sm font-medium">
+					<label htmlFor="accessCode" className="text-primary mb-1 block text-sm font-medium">
 						Access Code ({accessCode.length}/20 digits)
 					</label>
 					<input
@@ -51,7 +51,7 @@ const AimeCardSwap = () => {
 						id="accessCode"
 						value={accessCode}
 						onChange={handleInputChange}
-						className="w-full rounded border border-gray-600 bg-gray-700 p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+						className="bg-textbox text-primary w-full p-2"
 						placeholder="Enter 20-digit access code"
 						required
 						pattern="\d{20}"
@@ -63,7 +63,7 @@ const AimeCardSwap = () => {
 				<button
 					type="submit"
 					disabled={updateAimecard.isPending || accessCode.length !== 20}
-					className="w-full rounded bg-blue-600 p-2 transition-colors hover:bg-blue-700 disabled:opacity-50"
+					className="bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
 				>
 					{updateAimecard.isPending ? "Updating..." : "Update Aime Card"}
 				</button>

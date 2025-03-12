@@ -54,16 +54,16 @@ const VersionManagement: React.FC<VersionManagementProps> = ({
 	};
 
 	return (
-		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="mb-4 text-xl font-semibold text-gray-100">{title}</h2>
+		<div className="bg-card rounded-md p-4 md:p-6">
+			<h2 className="text-primary mb-4 text-xl font-semibold">{title}</h2>
 
 			<div className="mb-4">
 				<button
 					onClick={handleDropdownToggle}
-					className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
+					className="bg-dropdown hover:bg-dropdownhover flex w-full items-center justify-between rounded-md p-3 transition-colors"
 				>
-					<span className="text-gray-200">{getGameTitle(selectedVersion || currentVersion)}</span>
-					<ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown ? "rotate-180" : ""}`} />
+					<span className="text-primary">{getGameTitle(selectedVersion || currentVersion)}</span>
+					<ChevronDown className={`text-pritext-primary transition-transform ${openDropdown ? "rotate-180" : ""}`} />
 				</button>
 
 				<AnimatePresence>
@@ -79,9 +79,9 @@ const VersionManagement: React.FC<VersionManagementProps> = ({
 									<div
 										key={version}
 										onClick={() => handleVersionChange(version)}
-										className="cursor-pointer rounded-md bg-gray-700 p-2 transition-colors hover:bg-gray-600"
+										className="bg-dropdown hover:bg-dropdownhover cursor-pointer rounded-md p-2 transition-colors"
 									>
-										<span className="text-gray-200">{getGameTitle(version)}</span>
+										<span className="text-primary">{getGameTitle(version)}</span>
 									</div>
 								))}
 							</div>
@@ -94,7 +94,7 @@ const VersionManagement: React.FC<VersionManagementProps> = ({
 				onClick={handleUpdate}
 				defaultLabel={buttonLabel}
 				updatingLabel={updatingLabel}
-				className="bg-red-600 text-lg hover:bg-red-700"
+				className="bg-button hover:bg-buttonhover text-lg"
 				disabled={isUpdating || !selectedVersion}
 			/>
 		</div>

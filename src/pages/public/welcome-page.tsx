@@ -6,21 +6,21 @@ import BgGame from "@/components/bgGame/bgGame";
 import { useAuth } from "@/hooks/auth/use-auth";
 
 export const WelcomeContent = () => (
-	<div className="mx-4 w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
-		<h1 className="mb-8 text-center text-4xl font-bold text-gray-800">Welcome</h1>
+	<div className="bg-card mx-4 w-full max-w-md rounded-md p-8">
+		<h1 className="text-primary mb-8 text-center text-4xl font-bold">Welcome</h1>
 		<div className="space-y-6">
 			<Link to="/login">
-				<button className="w-full transform rounded-lg border border-gray-300 px-6 py-3 font-semibold text-gray-700 transition duration-300 hover:scale-105 hover:bg-gray-50">
+				<button className="text-primary hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105">
 					Login
 				</button>
 			</Link>
 			<Link to="/signup">
-				<button className="mt-4 w-full transform rounded-lg bg-blue-600 px-6 py-3 pt-2 font-semibold text-white transition duration-300 hover:scale-105 hover:bg-blue-700">
+				<button className="bg-button text-primary hover:bg-buttonhover mt-4 w-full transform rounded-md px-6 py-3 pt-2 font-semibold transition duration-300 hover:scale-105">
 					Sign up
 				</button>
 			</Link>
 		</div>
-		<p className="mt-6 text-center text-sm text-gray-500">Join our community today!</p>
+		<p className="text-primary mt-6 text-center text-sm">Join our community today!</p>
 	</div>
 );
 
@@ -32,7 +32,7 @@ const WelcomePage = () => {
 	) : (
 		<>
 			<BgGame />
-			<div className="z-10 flex min-h-screen items-center justify-center from-blue-50 to-purple-100 p-4">
+			<div className="bg-background z-10 flex min-h-screen items-center justify-center p-4">
 				<Outlet />
 			</div>
 		</>

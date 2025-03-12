@@ -31,13 +31,13 @@ const CardManagement = () => {
 	};
 
 	return (
-		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="mb-4 text-xl font-semibold text-gray-100">Card Management</h2>
+		<div className="bg-card rounded-md p-4 md:p-6">
+			<h2 className="text-primary mb-4 text-xl font-semibold">Card Management</h2>
 			<SubmitButton
 				onClick={handleUnlockAllCards}
 				defaultLabel="Unlock all cards"
 				updatingLabel="Unlocking..."
-				className="bg-red-600 text-lg hover:bg-red-700"
+				className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 				disabled={isUnlocking.cards}
 			/>
 		</div>

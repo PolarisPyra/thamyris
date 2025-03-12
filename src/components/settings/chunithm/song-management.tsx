@@ -10,8 +10,8 @@ const SongManagement = () => {
 	const { mutate: unlockSongs, isPending: isUnlockingSongs } = useUnlockAllSongs();
 	const { mutate: lockSongs, isPending: isLockingSongs } = useLockSongs();
 	return (
-		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="mb-4 text-xl font-semibold text-gray-100">Manage Songs</h2>
+		<div className="bg-card rounded-md p-4 md:p-6">
+			<h2 className="text-primary mb-4 text-xl font-semibold">Manage Songs</h2>
 			<div className="flex gap-4">
 				<SubmitButton
 					onClick={() => {
@@ -22,7 +22,7 @@ const SongManagement = () => {
 					}}
 					defaultLabel="Unlock All Songs"
 					updatingLabel="Unlocking..."
-					className="bg-green-600 hover:bg-green-700"
+					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 					disabled={isUnlockingSongs}
 				/>
 				<SubmitButton
@@ -34,7 +34,7 @@ const SongManagement = () => {
 					}}
 					defaultLabel="Lock Songs"
 					updatingLabel="Locking..."
-					className="bg-red-600 hover:bg-red-700"
+					className="bg-buttonlockcontent hover:bg-buttonlockcontenthover"
 					disabled={isLockingSongs}
 				/>
 			</div>

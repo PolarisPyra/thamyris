@@ -92,44 +92,46 @@ const KeychipGenerator = () => {
 	};
 
 	return (
-		<div className="rounded-lg bg-gray-800 p-6 shadow-md">
+		<div className="bg-card rounded-md p-6">
 			<h2 className="mb-4 text-xl font-semibold">Keychip Generator</h2>
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
-					<label className="mb-1 block text-sm font-medium">Arcade Nickname</label>
+					<label className="text-primary mb-1 block text-sm font-medium">Arcade Nickname</label>
 					<input
 						type="text"
 						name="arcade_nickname"
+						placeholder="Enter arcade nickname"
 						value={formData.arcade_nickname}
 						onChange={handleChange}
-						className="w-full rounded border border-gray-600 bg-gray-700 p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+						className="bg-textbox text-primary w-full rounded border p-2"
 						required
 					/>
 				</div>
 
 				<div>
-					<label className="mb-1 block text-sm font-medium">Arcade Name</label>
+					<label className="text-primary mb-1 block text-sm font-medium">Arcade Name</label>
 					<input
 						type="text"
 						name="name"
+						placeholder="Enter arcade name"
 						value={formData.name}
 						onChange={handleChange}
-						className="w-full rounded border border-gray-600 bg-gray-700 p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+						className="bg-textbox text-primary w-full rounded border p-2"
 						required
 					/>
 				</div>
 
 				<div>
-					<label className="mb-1 block text-sm font-medium">Game Type</label>
+					<label className="text-primary mb-1 block text-sm font-medium">Game Type</label>
 					<button
 						type="button"
 						onClick={() => setOpenDropdown(!openDropdown)}
-						className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
+						className="bg-dropdown hover:bg-dropdownhover flex w-full items-center justify-between rounded-lg p-3 transition-colors"
 					>
-						<span className="truncate text-gray-200">
+						<span className="text-primary truncate">
 							{gameOptions.find((opt) => opt.value === formData.game)?.label || "Select Game Type"}
 						</span>
-						<ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown ? "rotate-180" : ""}`} />
+						<ChevronDown className={`text-primary h-5 w-5 transition-transform ${openDropdown ? "rotate-180" : ""}`} />
 					</button>
 
 					<AnimatePresence>
@@ -145,9 +147,9 @@ const KeychipGenerator = () => {
 										<div
 											key={option.value}
 											onClick={() => handleGameChange(option.value)}
-											className="cursor-pointer rounded-md bg-gray-700 p-2 hover:bg-gray-600"
+											className="bg-dropdown hover:bg-dropdownhover cursor-pointer rounded-md p-2"
 										>
-											<span className="text-gray-200">{option.label}</span>
+											<span className="text-primary">{option.label}</span>
 										</div>
 									))}
 								</div>
@@ -160,10 +162,11 @@ const KeychipGenerator = () => {
 					<label className="mb-1 block text-sm font-medium">{showNamcoPcbId ? "Namco PCBID" : "Aime Card"}</label>
 					<input
 						type="text"
+						placeholder={showNamcoPcbId ? "Enter Namco PCBID" : "Enter Aime Card"}
 						name={showNamcoPcbId ? "namcopcbid" : "aimecard"}
 						value={showNamcoPcbId ? formData.namcopcbid : formData.aimecard}
 						onChange={handleChange}
-						className="w-full rounded border border-gray-600 bg-gray-700 p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+						className="bg-textbox text-primary w-full rounded border p-2"
 						required
 						readOnly
 					/>
@@ -173,7 +176,7 @@ const KeychipGenerator = () => {
 					type="button"
 					onClick={generateRandomSerial}
 					disabled={isLoading}
-					className="w-full rounded bg-gray-700 p-2 transition-colors hover:bg-gray-600 disabled:opacity-50"
+					className="bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
 				>
 					Generate random serial
 				</button>
@@ -181,9 +184,9 @@ const KeychipGenerator = () => {
 				<button
 					type="submit"
 					disabled={isLoading || !hasSerialId}
-					className="w-full rounded bg-blue-600 p-2 transition-colors hover:bg-blue-700 disabled:opacity-50"
+					className="bg-button hover:bg-buttonhover w-full rounded p-2 transition-colors disabled:opacity-50"
 				>
-					{isLoading ? "Generating..." : "Generate keychip"}
+					{isLoading ? "Generating..." : "Add new keychip"}
 				</button>
 			</form>
 		</div>

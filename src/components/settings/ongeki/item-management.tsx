@@ -49,28 +49,28 @@ const ItemManagement = () => {
 		}
 	};
 	return (
-		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="text-xl font-semibold text-gray-100">Item Management</h2>
+		<div className="bg-card rounded-md p-4 md:p-6">
+			<h2 className="text-primary text-xl font-semibold">Item Management</h2>
 			<div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
 				<SubmitButton
 					onClick={() => handleUnlockSpecificItem(2)}
 					defaultLabel="Unlock nameplates"
 					updatingLabel="Unlocking..."
-					className="bg-blue-400 text-lg hover:bg-blue-500"
+					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 					disabled={isUnlocking.specific}
 				/>
 				<SubmitButton
 					onClick={() => handleUnlockSpecificItem(17)}
 					defaultLabel="Unlock costumes"
 					updatingLabel="Unlocking..."
-					className="bg-blue-400 text-lg hover:bg-blue-500"
+					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 					disabled={isUnlocking.specific}
 				/>
 				<SubmitButton
 					onClick={() => handleUnlockSpecificItem(19)}
 					defaultLabel="Unlock attachments"
 					updatingLabel="Unlocking..."
-					className="bg-blue-400 text-lg hover:bg-blue-500"
+					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 					disabled={isUnlocking.specific}
 				/>
 			</div>
@@ -78,7 +78,7 @@ const ItemManagement = () => {
 				onClick={handleUnlockAllItems}
 				defaultLabel="Unlock all items"
 				updatingLabel="Unlocking..."
-				className="bg-red-600 text-lg hover:bg-red-700"
+				className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 				disabled={isUnlocking.items}
 			/>
 		</div>

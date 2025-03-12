@@ -6,9 +6,9 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/sonner";
 
-import SignUpContent from "./components/common/login";
+import { LoginContent } from "./components/common/login";
 import { SidebarComponent } from "./components/common/sidebar";
-import { LoginContent } from "./components/common/signup";
+import SignUpContent from "./components/common/signup";
 import { SidebarProvider } from "./components/ui/sidebar";
 import "./index.css";
 import Account from "./pages/account/account";

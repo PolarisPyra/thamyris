@@ -11,8 +11,8 @@ const TicketManagement = () => {
 	const { mutate: disableUnlimited, isPending: isDisablingUnlimited } = useLimitedTickets();
 
 	return (
-		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="mb-4 text-xl font-semibold text-gray-100">Manage Tickets</h2>
+		<div className="bg-card rounded-md p-4 md:p-6">
+			<h2 className="text-primary mb-4 text-xl font-semibold">Manage Tickets</h2>
 			<div className="flex gap-4">
 				<SubmitButton
 					onClick={() => {
@@ -23,7 +23,7 @@ const TicketManagement = () => {
 					}}
 					defaultLabel="Enable Unlimited Tickets"
 					updatingLabel="Enabling..."
-					className="bg-green-600 hover:bg-green-700"
+					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 					disabled={isEnablingUnlimited}
 				/>
 				<SubmitButton
@@ -35,7 +35,7 @@ const TicketManagement = () => {
 					}}
 					defaultLabel="Disable Unlimited Tickets"
 					updatingLabel="Disabling..."
-					className="bg-red-600 hover:bg-red-700"
+					className="bg-buttonlockcontent hover:bg-buttonlockcontenthover"
 					disabled={isDisablingUnlimited}
 				/>
 			</div>

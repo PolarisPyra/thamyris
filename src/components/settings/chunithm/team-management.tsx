@@ -49,16 +49,16 @@ const TeamManagement = () => {
 	};
 
 	return (
-		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="mb-4 text-xl font-semibold text-gray-100">Select Team</h2>
+		<div className="bg-card rounded-md p-4 md:p-6">
+			<h2 className="text-primary mb-4 text-xl font-semibold">Select Team</h2>
 
 			<div className="mb-4">
 				<button
 					onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-					className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
+					className="bg-dropdown hover:bg-dropdownhover flex w-full items-center justify-between rounded-md p-3 transition-colors"
 				>
-					<span className="text-gray-200">{selectedTeam}</span>
-					<ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
+					<span className="text-primary">{selectedTeam}</span>
+					<ChevronDown className={`text-primary h-5 w-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
 				</button>
 
 				<AnimatePresence>
@@ -74,9 +74,9 @@ const TeamManagement = () => {
 									<div
 										key={team.id}
 										onClick={() => handleTeamSelect(team.id, team.teamName)}
-										className="cursor-pointer rounded-md bg-gray-700 p-2 transition-colors hover:bg-gray-600"
+										className="bg-dropdown hover:bg-dropdownhover cursor-pointer rounded-md p-2 transition-colors"
 									>
-										<span className="text-gray-200">{team.teamName}</span>
+										<span className="text-primary">{team.teamName}</span>
 									</div>
 								))}
 							</div>
@@ -89,26 +89,26 @@ const TeamManagement = () => {
 				onClick={handleUpdateTeam}
 				defaultLabel="Update Team"
 				updatingLabel="Updating..."
-				className="bg-blue-600 hover:bg-blue-700"
+				className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 				disabled={isUpdatingTeam || selectedTeamId === null}
 			/>
 
 			<div className="mt-8">
-				<h2 className="mb-4 text-xl font-semibold text-gray-100">Create New Team</h2>
+				<h2 className="text-primary mb-4 text-xl font-semibold">Create New Team</h2>
 				<div className="mb-4">
 					<input
 						type="text"
 						value={newTeamName}
 						onChange={(e) => setNewTeamName(e.target.value)}
 						placeholder="Enter team name"
-						className="w-full rounded-lg bg-gray-700 p-3 text-gray-200 placeholder:text-gray-400"
+						className="bg-textbox text-primary placeholder:text-primary w-full rounded-md p-3"
 					/>
 				</div>
 				<SubmitButton
 					onClick={handleCreateTeam}
 					defaultLabel="Create Team"
 					updatingLabel="Creating..."
-					className="bg-green-600 hover:bg-green-700"
+					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 					disabled={isCreatingTeam || !newTeamName.trim()}
 				/>
 			</div>

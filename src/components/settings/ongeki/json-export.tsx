@@ -80,13 +80,13 @@ const JsonExport = () => {
 	};
 
 	return (
-		<div className="bg-opacity-50 rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:p-6">
-			<h2 className="mb-4 text-xl font-semibold text-gray-100">Export Data</h2>
+		<div className="bg-card rounded-md p-4 md:p-6">
+			<h2 className="text-primary mb-4 text-xl font-semibold">Export Data</h2>
 			<SubmitButton
 				onClick={handleExportB45}
 				defaultLabel="Export ratings as json (for reiwa.f5.si)"
 				updatingLabel="Exporting..."
-				className="bg-green-600 text-lg hover:bg-green-700"
+				className="bg-button hover:bg-buttonhover text-lg"
 			/>
 		</div>
 	);
