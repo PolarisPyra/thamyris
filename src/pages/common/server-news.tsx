@@ -1,6 +1,5 @@
 import React from "react";
 
-import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 
 import Header from "@/components/common/header";
@@ -23,12 +22,7 @@ const ServerNews = () => {
 			<Header title={"Server Updates"} />
 
 			<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-				<motion.div
-					className="space-y-6"
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 1 }}
-				>
+				<div className="space-y-6">
 					{newsBulletin.map((item) => (
 						<NewsCard
 							key={item.id}
@@ -39,7 +33,7 @@ const ServerNews = () => {
 							icon={item.icon}
 						/>
 					))}
-				</motion.div>
+				</div>
 			</div>
 		</div>
 	);

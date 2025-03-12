@@ -12,7 +12,7 @@ interface SubmitButtonProps {
 export const SubmitButton = ({
 	defaultLabel,
 	className = "",
-	textColor = "text-white",
+	textColor = "text-primary",
 	onClick,
 	disabled = false,
 }: SubmitButtonProps) => {
@@ -21,7 +21,7 @@ export const SubmitButton = ({
 			type="button"
 			onClick={onClick}
 			disabled={disabled}
-			className={`mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 p-3 font-bold transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+			className={`bg-button hover:bg-buttonhover text-foreground mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg p-3 font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-80 ${className}`}
 		>
 			<span className={textColor}>{defaultLabel}</span>
 		</button>

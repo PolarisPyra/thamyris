@@ -133,6 +133,20 @@ const TrophyRoutes = new Hono()
 			const version = await getUserVersionChunithm(userId);
 			const body = await c.req.json();
 
+			if (
+				body.mainTrophyId === body.subTrophy1Id ||
+				body.mainTrophyId === body.subTrophy2Id ||
+				body.subTrophy1Id === body.subTrophy2Id
+			) {
+				return c.json<UpdateTrophyResponse>(
+					{
+						success: false,
+						error: "Duplicate trophy IDs are not allowed.",
+					},
+					400
+				);
+			}
+
 			const updateFields: string[] = [];
 			const updateValues: (number | null)[] = [];
 

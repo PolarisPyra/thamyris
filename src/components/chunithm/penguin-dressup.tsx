@@ -31,9 +31,9 @@ const AvatarDropdown = ({
 	<div className="mb-4">
 		<button
 			onClick={() => handleDropdownToggle(category)}
-			className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
+			className="bg-dropdown hover:bg-dropdownhover flex w-full items-center justify-between rounded-lg p-3 transition-colors"
 		>
-			<span className="truncate text-gray-200">{getSelectedLabel(category)}</span>
+			<span className="text-primary truncate">{getSelectedLabel(category)}</span>
 			<ChevronDown
 				className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown === category ? "rotate-180" : ""}`}
 			/>
@@ -56,7 +56,7 @@ const AvatarDropdown = ({
 								}}
 								className="cursor-pointer overflow-x-hidden rounded-md bg-gray-700 p-2 transition-colors hover:bg-gray-600"
 							>
-								<span className="min-w-[150px] truncate text-gray-200">{item.label}</span>
+								<span className="text-primary min-w-[150px] truncate">{item.label}</span>
 							</div>
 						))}
 					</div>
@@ -182,7 +182,7 @@ const PenguinDressup = () => {
 				</div>
 			</div>
 
-			<div className="bg-opacity-50 w-full rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:w-[400px] md:p-6">
+			<div className="bg-card w-full rounded-md p-4 md:w-[400px] md:p-6">
 				{Object.entries(availableAccessories || {}).map(([category, options]) => (
 					<AvatarDropdown
 						key={category}

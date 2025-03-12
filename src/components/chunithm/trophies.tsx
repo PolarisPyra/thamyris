@@ -155,8 +155,8 @@ export const TrophySelector = () => {
 					</div>
 				))}
 			</div>
-			<div className="bg-opacity-50 w-full rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:w-[400px] md:p-6">
-				<h2 className="mb-4 text-xl font-semibold text-gray-100">Trophy Settings</h2>
+			<div className="bg-card w-full rounded-md p-4 md:w-[400px] md:p-6">
+				<h2 className="text-primary mb-4 text-xl font-semibold">Trophy Settings</h2>
 
 				{/* Main Trophy Dropdown */}
 				<TrophyDropdown

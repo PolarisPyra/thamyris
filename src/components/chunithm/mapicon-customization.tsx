@@ -67,20 +67,17 @@ const MapiconSelector = () => {
 
 	return (
 		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
-			<div className="relative flex h-[100px] w-full items-center justify-center md:w-[300px]">
-				<img
-					src={`${cdnUrl}assets/map_icon/${selectedIcon}.png`}
-					className="w-[130px] object-contain pb-4 sm:p-0 md:p-0 lg:p-0 xl:p-0"
-				/>
+			<div className="flex h-full items-center justify-center md:w-[300px]">
+				<img src={`${cdnUrl}assets/map_icon/${selectedIcon}.png`} className="w-[130px] object-contain" />
 			</div>
-			<div className="bg-opacity-50 w-full rounded-xl border border-gray-700 bg-gray-800 p-4 backdrop-blur-md md:w-[400px] md:p-6">
+			<div className="bg-card w-full rounded-md p-4 md:w-[400px] md:p-6">
 				<div className="mb-4">
 					<button
 						onClick={handleDropdownToggle}
-						className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
+						className="bg-dropdown hover:bg-dropdownhover flex w-full items-center justify-between rounded-md p-3"
 					>
-						<span className="truncate text-gray-200">{getSelectedLabel()}</span>
-						<ChevronDown className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown ? "rotate-180" : ""}`} />
+						<span className="text-primary truncate">{getSelectedLabel()}</span>
+						<ChevronDown className={`text-primary h-5 w-5 transition-transform ${openDropdown ? "rotate-180" : ""}`} />
 					</button>
 					<AnimatePresence>
 						{openDropdown && (
@@ -98,9 +95,9 @@ const MapiconSelector = () => {
 											onClick={() => {
 												setSelectedIcon(icon.imagePath);
 											}}
-											className="cursor-pointer overflow-x-hidden rounded-md bg-gray-700 p-2 transition-colors hover:bg-gray-600"
+											className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 										>
-											<span className="min-w-[150px] truncate text-gray-200">{icon.name}</span>
+											<span className="text-primary min-w-[150px] truncate">{icon.name}</span>
 										</div>
 									))}
 								</div>

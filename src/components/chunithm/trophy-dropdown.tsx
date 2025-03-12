@@ -46,7 +46,7 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 				key={trophy.id}
 				onClick={() => handleTrophySelect(type, trophy.trophyId)}
 				className={`relative cursor-pointer rounded-md p-2 transition-colors ${
-					isCurrentSelection ? "cursor-not-allowed bg-gray-600 text-gray-400" : "bg-gray-700 hover:bg-gray-600"
+					isCurrentSelection ? "text-primary cursor-not-allowed bg-gray-500" : "bg-dropdown hover:bg-dropdownhover"
 				}`}
 			>
 				<span className="relative truncate text-gray-200">
@@ -61,12 +61,10 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 		<div className="mb-4">
 			<button
 				onClick={() => handleDropdownToggle(type)}
-				className="flex w-full items-center justify-between rounded-lg bg-gray-700 p-3 transition-colors hover:bg-gray-600"
+				className="bg-dropdown hover:bg-dropdownhover flex w-full items-center justify-between rounded-md p-3"
 			>
-				<span className="truncate text-gray-200">{getSelectedLabel()}</span>
-				<ChevronDown
-					className={`h-5 w-5 text-gray-400 transition-transform ${openDropdown === type ? "rotate-180" : ""}`}
-				/>
+				<span className="text-primary truncate">{getSelectedLabel()}</span>
+				<ChevronDown className={`text-primary h-5 w-5 transition-transform ${openDropdown === type ? "rotate-180" : ""}`} />
 			</button>
 			<AnimatePresence>
 				{openDropdown === type && (

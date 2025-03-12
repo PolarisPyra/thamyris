@@ -99,7 +99,7 @@ const ChunithmFavorites = () => {
 				</div>
 			) : (
 				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
-					<p className="text-gray-400">Please set your Chunithm version in settings first</p>
+					<p className="text-primary">Please set your Chunithm version in settings first</p>
 				</div>
 			)}
 		</div>

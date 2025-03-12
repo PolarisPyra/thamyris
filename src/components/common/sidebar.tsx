@@ -155,11 +155,11 @@ export function SidebarComponent() {
 	};
 
 	return (
-		<Sidebar className="border-r border-gray-700 bg-gray-800 text-white shadow-lg">
-			<SidebarHeader className="bg-gray-800 px-4 py-4">
-				<h2 className="text-2xl font-extrabold text-white">Thamyris</h2>
+		<Sidebar className="text-accent border-sidebar-border border-r">
+			<SidebarHeader className="bg-background px-4 py-4">
+				<h2 className="text-primary text-2xl font-extrabold">Thamyris</h2>
 			</SidebarHeader>
-			<SidebarContent className="bg-gray-800">
+			<SidebarContent className="bg-background">
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
@@ -168,7 +168,7 @@ export function SidebarComponent() {
 									{item.subnav ? (
 										<>
 											<SidebarMenuButton
-												className="text-gray-100 ring-0 hover:bg-gray-700 hover:text-gray-100 active:bg-gray-700 active:text-white data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+												className="text-primary hover:bg-hover active:bg-hover active:text-primary cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
 												onClick={() => toggleCategory(item.name)}
 											>
 												<item.icon style={{ color: item.color }} />
@@ -179,7 +179,7 @@ export function SidebarComponent() {
 													{item.subnav.map((subItem, subIndex) => (
 														<SidebarMenuItem key={`${index}-${subIndex}`}>
 															<SidebarMenuButton
-																className="text-gray-100 ring-0 hover:bg-gray-700 hover:text-gray-100 active:bg-gray-700 active:text-white data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+																className="text-primary hover:bg-hover active:bg-hover active:text-primary cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
 																asChild
 															>
 																<Link to={subItem.href}>
@@ -194,12 +194,12 @@ export function SidebarComponent() {
 										</>
 									) : (
 										<SidebarMenuButton
-											className="text-gray-100 ring-0 hover:bg-gray-700 hover:text-gray-100 active:bg-gray-700 active:text-white data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+											className="text-primary hover:bg-hover active:bg-hover active:text-primary cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
 											asChild
 										>
 											<Link to={item.href}>
 												<item.icon style={{ color: item.color }} />
-												<span className="">{item.name}</span>
+												<span>{item.name}</span>
 											</Link>
 										</SidebarMenuButton>
 									)}
@@ -209,7 +209,7 @@ export function SidebarComponent() {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter className="border-t border-gray-700 bg-gray-800">
+			<SidebarFooter className="bg-background border-sidebar-border border-t">
 				<NavUser user={userData} />
 			</SidebarFooter>
 		</Sidebar>
