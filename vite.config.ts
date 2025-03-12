@@ -5,6 +5,14 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 import { env } from "./src/env";
 
+const buildDate = (date) => {
+	const d = new Date(date);
+	const year = d.getFullYear();
+	const month = String(d.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+	const day = String(d.getDate()).padStart(2, "0");
+	const hours = String(d.getHours()).padStart(2, "0");
+	return `${year}${month}${day}${hours}`;
+};
 export default defineConfig({
 	ssr: {
 		external: ["react", "react-dom"],
@@ -66,7 +74,7 @@ export default defineConfig({
 	define: {
 		// For client env variables, add the type in src/vite-env.d.ts
 		env: {
-			BUILD_DATE: JSON.stringify(new Date().toISOString()),
+			BUILD_DATE: JSON.stringify(buildDate(new Date().toISOString())), // Format the current date
 			CDN_URL: env.CDN_URL,
 			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
 		},
