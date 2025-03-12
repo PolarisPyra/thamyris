@@ -5,6 +5,7 @@ import { Handshake, Skull } from "lucide-react";
 import { toast } from "sonner";
 
 import Header from "@/components/common/header";
+import Pagination from "@/components/common/pagination";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/ongeki/use-rivals";
@@ -101,24 +102,8 @@ const OngekiRivals = () => {
 						/>
 					</div>
 					{totalPages > 1 && (
-						<div className="mb-4 flex items-center justify-center space-x-4">
-							<button
-								disabled={currentPage === 1}
-								onClick={() => setCurrentPage((prev) => prev - 1)}
-								className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Previous
-							</button>
-							<span className="text-primary text-sm">
-								Page {currentPage} of {totalPages}
-							</span>
-							<button
-								disabled={currentPage === totalPages}
-								onClick={() => setCurrentPage((prev) => prev + 1)}
-								className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								Next
-							</button>
+						<div className="mt-4 flex justify-center">
+							<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
 						</div>
 					)}
 				</div>

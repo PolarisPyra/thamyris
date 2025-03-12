@@ -3,6 +3,7 @@ import React from "react";
 
 import ChunithmAllSongsTable from "@/components/chunithm/allsongs-table";
 import Header from "@/components/common/header";
+import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
 import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
 import { useChunithmVersion } from "@/hooks/chunithm/use-version";
@@ -41,24 +42,8 @@ const ChunithmAllSongs = () => {
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
 						{totalPages > 1 && (
-							<div className="mb-4 flex items-center justify-center space-x-4">
-								<button
-									disabled={currentPage === 1}
-									onClick={() => setCurrentPage((prev) => prev - 1)}
-									className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-								>
-									Previous
-								</button>
-								<span className="text-primary text-sm">
-									Page {currentPage} of {totalPages}
-								</span>
-								<button
-									disabled={currentPage === totalPages}
-									onClick={() => setCurrentPage((prev) => prev + 1)}
-									className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-								>
-									Next
-								</button>
+							<div className="mt-4 flex justify-center">
+								<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
 							</div>
 						)}
 					</div>
