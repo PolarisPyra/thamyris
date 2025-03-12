@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Calendar } from "lucide-react";
+import { Hammer } from "lucide-react";
 
 import Header from "@/components/common/header";
 import NewsCard from "@/components/common/newscard";
@@ -8,11 +8,11 @@ import NewsCard from "@/components/common/newscard";
 const newsBulletin = [
 	{
 		id: 1,
-		title: "New Frontend launched",
-		description: "Welcome to Thamyris",
-		date: "2025-23-02",
-		time: "12:00 AM UTC",
-		icon: <Calendar className="h-6 w-6 text-blue-500" />,
+		title: "Build Version",
+		description: `${env.BUILD_DATE_FULL}`,
+		date: `${env.BUILD_DATE_YEAR_MONTH_DAY}`,
+		time: `${env.BUILD_TIME_24_HOUR}`,
+		icon: <Hammer className="h-6 w-6 text-blue-500" />,
 	},
 ];
 

@@ -155,7 +155,7 @@ export function SidebarComponent() {
 	};
 
 	return (
-		<Sidebar className="text-accent border-sidebar-border border-r">
+		<Sidebar className="text-primary border-sidebar-border border-r">
 			<SidebarHeader className="bg-background px-4 py-4">
 				<h2 className="text-primary text-2xl font-extrabold">Thamyris</h2>
 			</SidebarHeader>
@@ -168,7 +168,7 @@ export function SidebarComponent() {
 									{item.subnav ? (
 										<>
 											<SidebarMenuButton
-												className="text-primary hover:bg-hover active:bg-hover active:text-primary cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+												className="text-primary hover:bg-hover data-[state=open]:bg-card data-[state=open]:text-primary cursor-pointer ring-0"
 												onClick={() => toggleCategory(item.name)}
 											>
 												<item.icon style={{ color: item.color }} />
@@ -179,7 +179,7 @@ export function SidebarComponent() {
 													{item.subnav.map((subItem, subIndex) => (
 														<SidebarMenuItem key={`${index}-${subIndex}`}>
 															<SidebarMenuButton
-																className="text-primary hover:bg-hover active:bg-hover active:text-primary cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+																className="text-primary hover:bg-hover cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
 																asChild
 															>
 																<Link to={subItem.href}>
@@ -194,7 +194,7 @@ export function SidebarComponent() {
 										</>
 									) : (
 										<SidebarMenuButton
-											className="text-primary hover:bg-hover active:bg-hover active:text-primary cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+											className="text-primary hover:bg-hover cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
 											asChild
 										>
 											<Link to={item.href}>

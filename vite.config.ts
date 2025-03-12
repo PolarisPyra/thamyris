@@ -5,13 +5,30 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 import { env } from "./src/env";
 
-const buildDate = (date) => {
+const buildDateFullString = (date) => {
 	const d = new Date(date);
 	const year = d.getFullYear();
 	const month = String(d.getMonth() + 1).padStart(2, "0");
 	const day = String(d.getDate()).padStart(2, "0");
 	const time = String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0");
 	return `${year}${month}${day}${time}`;
+};
+const buildDateYearMonthDay = (date) => {
+	const d = new Date(date);
+	const year = d.getFullYear();
+	const month = String(d.getMonth() + 1).padStart(2, "0");
+	const day = String(d.getDate()).padStart(2, "0");
+	return `${year}-${month}-${day}`;
+};
+
+const buildTime12HourFormat = (date) => {
+	const d = new Date(date);
+	let hours = d.getHours();
+	const minutes = String(d.getMinutes()).padStart(2, "0");
+	const ampm = hours >= 12 ? "PM" : "AM";
+	hours = hours % 12; // Convert to 12-hour format
+	hours = hours ? hours : 12; // The hour '0' should be '12'
+	return `${hours}:${minutes} ${ampm}`; // 12-hour format
 };
 export default defineConfig({
 	ssr: {
@@ -74,7 +91,9 @@ export default defineConfig({
 	define: {
 		// For client env variables, add the type in src/vite-env.d.ts
 		env: {
-			BUILD_DATE: JSON.stringify(buildDate(new Date().toISOString())),
+			BUILD_DATE_YEAR_MONTH_DAY: buildDateYearMonthDay(new Date().toISOString()),
+			BUILD_DATE_FULL: buildDateFullString(new Date().toISOString()),
+			BUILD_TIME_24_HOUR: buildTime12HourFormat(new Date().toISOString()),
 			CDN_URL: env.CDN_URL,
 			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
 		},
