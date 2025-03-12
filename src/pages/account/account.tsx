@@ -7,14 +7,6 @@ import { useAdminPermissions } from "@/hooks/admin/use-admin";
 
 const Account = () => {
 	const { isAdmin, isLoading: isCheckingAdmin } = useAdminPermissions();
-	const buildDate = (dateString: string) => {
-		const date = new Date(dateString);
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, "0");
-		const day = String(date.getDate()).padStart(2, "0");
-		const hours = String(date.getHours()).padStart(2, "0");
-		return `${year}${month}${day}${hours}`;
-	};
 
 	return (
 		<div className="relative flex-1 overflow-auto">
@@ -35,7 +27,7 @@ const Account = () => {
 						</>
 					)}
 				</div>
-				<div style={{ position: "absolute", bottom: 0, left: 0 }}>Build Date: {buildDate(env.BUILD_DATE)}</div>{" "}
+				<div style={{ position: "absolute", bottom: 0, left: 0 }}>Build Date: {env.BUILD_DATE}</div>
 			</div>
 		</div>
 	);
