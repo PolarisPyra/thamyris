@@ -116,17 +116,17 @@ const OngekiRivals = () => {
 								<button
 									disabled={currentPage === 1}
 									onClick={() => setCurrentPage((prev) => prev - 1)}
-									className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+									className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
 								>
 									Previous
 								</button>
-								<span className="text-sm text-gray-300">
+								<span className="text-primary text-sm">
 									Page {currentPage} of {totalPages}
 								</span>
 								<button
 									disabled={currentPage === totalPages}
 									onClick={() => setCurrentPage((prev) => prev + 1)}
-									className="rounded-lg bg-gray-700 px-4 py-2 transition-colors hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+									className="text-primary bg-button hover:bg-buttonhover cursor-pointer rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
 								>
 									Next
 								</button>
