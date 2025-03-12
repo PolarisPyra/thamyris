@@ -27,7 +27,7 @@ const Account = () => {
 						</>
 					)}
 				</div>
-				<div style={{ position: "absolute", bottom: 0, left: 0 }}>Build Date: {env.BUILD_DATE}</div>
+				<div className="text-primary absolute bottom-0 left-0 p-2">Build Date: {env.BUILD_DATE}</div>
 			</div>
 		</div>
 	);
