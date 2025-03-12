@@ -2,6 +2,7 @@ import { useState } from "react";
 import React from "react";
 
 import Header from "@/components/common/header";
+import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
 import OngekiScoreTable from "@/components/ongeki/score-table";
 import { useOngekiScores } from "@/hooks/chunithm/use-scores";
@@ -9,10 +10,15 @@ import { useOngekiVersion } from "@/hooks/ongeki/use-version";
 
 const OngekiScorePage = () => {
 	const [searchQuery, setSearchQuery] = useState("");
+	const [currentPage, setCurrentPage] = useState(1);
 
 	const { data: version } = useOngekiVersion();
 
 	const { data: scores = [], isLoading: isLoadingScores } = useOngekiScores();
+
+	const itemsPerPage = 15;
+	const totalPages = Math.ceil(scores.length / itemsPerPage);
+	const paginatedScores = scores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	if (isLoadingScores) {
 		return (
@@ -34,10 +40,15 @@ const OngekiScorePage = () => {
 				<div className="container mx-auto space-y-6">
 					<div className="mb-4 space-y-8 p-4 sm:p-0">
 						<OngekiScoreTable
-							scores={scores}
+							scores={paginatedScores}
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
+						{totalPages > 1 && (
+							<div className="mt-4 flex justify-center">
+								<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+							</div>
+						)}
 					</div>
 				</div>
 			) : (

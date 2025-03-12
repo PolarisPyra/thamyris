@@ -48,7 +48,11 @@ const ChunithmRatingFrames = () => {
 					<div className="mb-4 space-y-8 p-4 sm:p-0">
 						<ChunithmRatingFrameTable data={baseSongs} title="Best 30" />
 
-						{isVerseOrAbove && <RatingFrameTable data={newSongs} title="Current Version" />}
+						{isVerseOrAbove && (
+							<>
+								<RatingFrameTable data={newSongs} title="Current Version" />
+							</>
+						)}
 
 						<ChunithmRatingFrameTable data={hotSongs} title="Recent" />
 

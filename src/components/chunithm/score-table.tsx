@@ -1,20 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
 
-import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChunithmScoreTableProps } from "@/types/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmScoreTableProps) => {
-	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 15;
-
 	const filteredScores = scores.filter((score) => score.title.toLowerCase().includes(searchQuery.toLowerCase()));
-
-	const totalPages = Math.ceil(filteredScores.length / itemsPerPage);
-	const paginatedScores = filteredScores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	return (
 		<div className="bg-card rounded-md p-4 sm:p-6">
@@ -46,7 +39,7 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{paginatedScores.map((score) => (
+						{filteredScores.map((score) => (
 							<TableRow key={score.id} className="border-seperator hover:bg-hover border-b">
 								<TableCell className="text-primary max-w-[140px] truncate text-sm font-medium">{score.title}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{score.score.toLocaleString()}</TableCell>
@@ -71,18 +64,12 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 						))}
 					</TableBody>
 				</Table>
-				{paginatedScores.length === 0 && (
+				{filteredScores.length === 0 && (
 					<div className="text-primary py-8 text-center">
 						<p>No scores found. Try a different search term.</p>
 					</div>
 				)}
 			</div>
-
-			{totalPages > 1 && (
-				<div className="mt-4 flex justify-center">
-					<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />
-				</div>
-			)}
 		</div>
 	);
 };
