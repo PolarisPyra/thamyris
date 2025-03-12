@@ -22,7 +22,6 @@ const SongManagement = () => {
 					}}
 					defaultLabel="Unlock All Songs"
 					updatingLabel="Unlocking..."
-					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 					disabled={isUnlockingSongs}
 				/>
 				<SubmitButton

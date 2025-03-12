@@ -86,7 +86,6 @@ const JsonExport = () => {
 				onClick={handleExportB45}
 				defaultLabel="Export ratings as json (for reiwa.f5.si)"
 				updatingLabel="Exporting..."
-				className="bg-button hover:bg-buttonhover text-lg"
 			/>
 		</div>
 	);

@@ -56,21 +56,18 @@ const ItemManagement = () => {
 					onClick={() => handleUnlockSpecificItem(2)}
 					defaultLabel="Unlock nameplates"
 					updatingLabel="Unlocking..."
-					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 					disabled={isUnlocking.specific}
 				/>
 				<SubmitButton
 					onClick={() => handleUnlockSpecificItem(17)}
 					defaultLabel="Unlock costumes"
 					updatingLabel="Unlocking..."
-					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 					disabled={isUnlocking.specific}
 				/>
 				<SubmitButton
 					onClick={() => handleUnlockSpecificItem(19)}
 					defaultLabel="Unlock attachments"
 					updatingLabel="Unlocking..."
-					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 					disabled={isUnlocking.specific}
 				/>
 			</div>
@@ -78,7 +75,6 @@ const ItemManagement = () => {
 				onClick={handleUnlockAllItems}
 				defaultLabel="Unlock all items"
 				updatingLabel="Unlocking..."
-				className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 				disabled={isUnlocking.items}
 			/>
 		</div>

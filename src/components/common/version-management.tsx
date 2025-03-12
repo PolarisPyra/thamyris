@@ -94,7 +94,6 @@ const VersionManagement: React.FC<VersionManagementProps> = ({
 				onClick={handleUpdate}
 				defaultLabel={buttonLabel}
 				updatingLabel={updatingLabel}
-				className="bg-button hover:bg-buttonhover text-lg"
 				disabled={isUpdating || !selectedVersion}
 			/>
 		</div>

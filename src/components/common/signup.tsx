@@ -68,7 +68,7 @@ const SignUpContent = () => {
 
 				<button
 					type="submit"
-					className="bg-button text-primary hover:bg-buttonhover block w-full transform cursor-pointer rounded-lg px-6 py-3 text-center font-semibold transition duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
+					className="bg-button text-buttontext hover:bg-buttonhover block w-full transform rounded-lg px-6 py-3 text-center font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					{isLoading ? "Creating Account..." : "Create Account"}
 				</button>

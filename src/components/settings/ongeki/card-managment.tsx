@@ -37,7 +37,6 @@ const CardManagement = () => {
 				onClick={handleUnlockAllCards}
 				defaultLabel="Unlock all cards"
 				updatingLabel="Unlocking..."
-				className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover text-lg"
 				disabled={isUnlocking.cards}
 			/>
 		</div>

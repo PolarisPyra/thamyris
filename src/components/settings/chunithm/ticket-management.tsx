@@ -23,7 +23,6 @@ const TicketManagement = () => {
 					}}
 					defaultLabel="Enable Unlimited Tickets"
 					updatingLabel="Enabling..."
-					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 					disabled={isEnablingUnlimited}
 				/>
 				<SubmitButton

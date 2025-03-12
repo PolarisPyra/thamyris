@@ -51,13 +51,14 @@ export const LoginContent = () => {
 						autoComplete="current-password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
+						disabled={isLoading}
 					/>
 				</div>
-				<button className="text-primary hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105">
+				<button className="text-buttontext hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
 					{isLoading ? <Spinner size={24} color="#ffffff" /> : "Login"}
 				</button>
 				<Link to="/">
-					<button className="text-primary hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105">
+					<button className="text-buttontext hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
 						Back
 					</button>
 				</Link>

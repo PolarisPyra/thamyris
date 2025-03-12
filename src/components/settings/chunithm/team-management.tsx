@@ -89,7 +89,6 @@ const TeamManagement = () => {
 				onClick={handleUpdateTeam}
 				defaultLabel="Update Team"
 				updatingLabel="Updating..."
-				className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 				disabled={isUpdatingTeam || selectedTeamId === null}
 			/>
 
@@ -108,7 +107,6 @@ const TeamManagement = () => {
 					onClick={handleCreateTeam}
 					defaultLabel="Create Team"
 					updatingLabel="Creating..."
-					className="bg-buttonunlockcontent hover:bg-buttonunlockcontenthover"
 					disabled={isCreatingTeam || !newTeamName.trim()}
 				/>
 			</div>
