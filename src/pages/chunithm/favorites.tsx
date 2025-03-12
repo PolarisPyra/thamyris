@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import ChunithmFavoritesTable from "@/components/chunithm/favorites-table";
 import Header from "@/components/common/header";
+import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
 import { useAddFavorite, useFavorites, useRemoveFavorite } from "@/hooks/chunithm/use-favorites";
@@ -21,6 +22,8 @@ const ChunithmFavorites = () => {
 	const { mutate: removeFavorite } = useRemoveFavorite();
 	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 	const [searchQuery, setSearchQuery] = useState("");
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 10;
 
 	const handleToggleFavorite = useCallback(
 		(songId: number) => {
@@ -63,6 +66,9 @@ const ChunithmFavorites = () => {
 			),
 		}));
 
+	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
+	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
 	if (isLoadingSongs || isLoadingFavorites || isLoadingUsername) {
 		return (
 			<div className="relative flex-1 overflow-auto">
@@ -91,10 +97,15 @@ const ChunithmFavorites = () => {
 
 					<div className="mb-4 space-y-8 p-4 sm:p-0">
 						<ChunithmFavoritesTable
-							favorites={filteredSongs}
+							favorites={paginatedSongs}
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
+						{totalPages > 1 && (
+							<div className="mt-4 flex justify-center">
+								<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+							</div>
+						)}
 					</div>
 				</div>
 			) : (
