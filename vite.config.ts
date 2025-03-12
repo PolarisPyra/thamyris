@@ -66,7 +66,7 @@ export default defineConfig({
 	define: {
 		// For client env variables, add the type in src/vite-env.d.ts
 		env: {
-			BUILD_DATE: JSON.stringify(new Date().valueOf()),
+			BUILD_DATE: JSON.stringify(new Date().toISOString()),
 			CDN_URL: env.CDN_URL,
 			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
 		},
