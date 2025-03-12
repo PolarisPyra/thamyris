@@ -11,7 +11,7 @@ const newsBulletin = [
 		title: "Build Version",
 		description: `${env.BUILD_DATE_FULL}`,
 		date: `${env.BUILD_DATE_YEAR_MONTH_DAY}`,
-		time: `${env.BUILD_TIME_24_HOUR}`,
+		time: `${env.BUILD_TIME_12_HOUR} UTC`,
 		icon: <Hammer className="h-6 w-6 text-blue-500" />,
 	},
 ];

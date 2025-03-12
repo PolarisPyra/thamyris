@@ -6,7 +6,7 @@ interface ClientEnv {
 	readonly CDN_URL: string;
 	readonly BUILD_DATE_FULL: string;
 	readonly BUILD_DATE_YEAR_MONTH_DAY: string;
-	readonly BUILD_TIME_24_HOUR: string;
+	readonly BUILD_TIME_12_HOUR: string;
 	// Meh, could just expose the NODE_ENV
 	// directly instead of this
 	readonly USE_REACT_STRICT: boolean;

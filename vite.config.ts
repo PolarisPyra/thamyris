@@ -92,7 +92,7 @@ export default defineConfig({
 		env: {
 			BUILD_DATE_YEAR_MONTH_DAY: buildDateYearMonthDay(new Date().toISOString()),
 			BUILD_DATE_FULL: buildDateFullString(new Date().toISOString(), 0, 1), // Pass '12' as a string
-			BUILD_TIME_24_HOUR: buildTime12HourFormat(new Date().toISOString()),
+			BUILD_TIME_12_HOUR: buildTime12HourFormat(new Date().toISOString()),
 			CDN_URL: env.CDN_URL,
 			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
 		},
