@@ -54,7 +54,7 @@ const AvatarDropdown = ({
 								onClick={() => {
 									handleChange(category, item.image);
 								}}
-								className="cursor-pointer overflow-x-hidden rounded-md bg-gray-700 p-2 transition-colors hover:bg-gray-600"
+								className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 							>
 								<span className="text-primary min-w-[150px] truncate">{item.label}</span>
 							</div>
@@ -196,7 +196,7 @@ const PenguinDressup = () => {
 				))}
 				<SubmitButton
 					onClick={handleSubmit}
-					defaultLabel="Update Avatar"
+					defaultLabel="Update avatar"
 					updatingLabel="Updating..."
 					disabled={isPending || !hasChanges()}
 				/>

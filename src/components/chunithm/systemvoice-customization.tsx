@@ -107,7 +107,7 @@ const SystemvoiceSelector = () => {
 				</div>
 				<SubmitButton
 					onClick={handleSubmit}
-					defaultLabel="Update System Voice"
+					defaultLabel="Update system voice"
 					updatingLabel="Updating..."
 					disabled={isPending || !hasChanges()}
 				/>

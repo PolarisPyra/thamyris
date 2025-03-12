@@ -108,7 +108,7 @@ const NameplateSelector = () => {
 				</div>
 				<SubmitButton
 					onClick={handleSubmit}
-					defaultLabel="Update Nameplate"
+					defaultLabel="Update nameplate"
 					updatingLabel="Updating..."
 					disabled={isPending || !hasChanges()}
 				/>

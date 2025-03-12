@@ -107,7 +107,7 @@ const MapiconSelector = () => {
 				</div>
 				<SubmitButton
 					onClick={handleSubmit}
-					defaultLabel="Update Map Icon"
+					defaultLabel="Update map icon"
 					updatingLabel="Updating..."
 					disabled={isPending || !hasChanges()}
 				/>

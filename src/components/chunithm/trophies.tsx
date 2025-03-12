@@ -188,7 +188,7 @@ export const TrophySelector = () => {
 
 				<SubmitButton
 					onClick={handleSubmit}
-					defaultLabel="Update Trophy"
+					defaultLabel="Update trophy"
 					updatingLabel="Updating..."
 					disabled={isPending || !hasChanges()}
 				/>
