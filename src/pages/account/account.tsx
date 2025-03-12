@@ -24,6 +24,7 @@ const Account = () => {
 							<div className="mx-auto max-w-2xl space-y-6">
 								<AimeCardSwap />
 							</div>
+							<div className="text-primary absolute bottom-0 left-0 p-2">Build Date: {env.BUILD_DATE}</div>
 						</>
 					)}
 				</div>
