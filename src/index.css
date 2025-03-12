@@ -366,9 +366,9 @@ video {
 	--seperator: hsl(240, 8%, 74%);
 	--buttonlockcontent: hsl(355, 83%, 45%);
 	--buttonlockcontenthover: hsl(355, 97%, 61%);
-	--buttonunlockcontent: hsl(120, 87%, 27%);
+	--buttonunlockcontent: hsl(120, 61%, 24%);
 	--buttonunlockcontenthover: hsl(135, 86%, 31%);
-	--button: hsla(131, 97%, 23%, 0.801);
+	--button: hsl(120, 61%, 24%);
 	--buttonhover: hsla(129, 47%, 49%, 0.514);
 	--dropdown: hsl(0, 0%, 29%);
 	--dropdownhover: hsl(0, 4%, 49%);
