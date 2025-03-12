@@ -305,8 +305,6 @@ video {
 	--sidebar-accent: hsl(240, 4.8%, 95.9%);
 	--sidebar-accent-foreground: hsl(240, 5.9%, 10%);
 	--sidebar-ring: hsl(217.2, 91.2%, 59.8%);
-
-	--border: hsl(0, 0%, 11%);
 	--buttonlockcontent: hsl(355, 83%, 45%);
 	--buttonlockcontenthover: hsl(355, 97%, 61%);
 	--buttonunlockcontent: hsl(120, 87%, 27%);
@@ -316,7 +314,7 @@ video {
 	--searchbar: hsl(220, 3%, 87%);
 	--textbox: hsl(220, 3%, 87%);
 	--seperator: hsl(240, 2%, 75%);
-	--button: hsla(131, 53%, 57%, 0.801);
+	--button: hsla(131, 97%, 23%, 0.801);
 	--buttonhover: hsla(129, 47%, 39%, 0.7);
 	--dropdown: hsl(0, 2%, 80%);
 	--dropdownhover: hsl(0, 3%, 65%);
