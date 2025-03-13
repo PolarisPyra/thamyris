@@ -21,7 +21,7 @@ const RivalsTable = ({ rivals, searchQuery, onSearchChange, rivalCount }: Rivals
 	return (
 		<div className="bg-card rounded-md p-4 sm:p-6">
 			<div className="mb-4 flex flex-col items-center justify-between gap-4 sm:mb-6 sm:flex-row">
-				<h2 className="text-primary text-lg font-semibold sm:text-xl">Rivals {rivalCount}/4</h2>
+				<h2 className="text-primary text-lg font-semibold sm:text-xl">Rivals {rivalCount}/3</h2>
 				<div className="relative w-full sm:w-auto">
 					<input
 						type="text"
