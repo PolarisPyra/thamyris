@@ -30,8 +30,8 @@ const ChunithmRivals = () => {
 	const paginatedRivals = filteredRivals.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
 	const handleAddRival = (id: number) => {
-		if (rivalCount >= 4) {
-			toast.error("You can only have up to 4 rivals.");
+		if (rivalCount >= 3) {
+			toast.error("You can only have up to 3 rivals.");
 			return;
 		}
 
@@ -73,7 +73,7 @@ const ChunithmRivals = () => {
 
 	return (
 		<div className="relative flex-1 overflow-auto">
-			<Header title={`Rivals ${rivalCount}/4`} />
+			<Header title={`Rivals ${rivalCount}/3`} />
 			{version ? (
 				<div className="container mx-auto space-y-6">
 					<div className="mb-4 space-y-8 p-4 sm:p-0">
