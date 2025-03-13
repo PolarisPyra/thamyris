@@ -97,3 +97,46 @@ export const getOngekiComboStatus = (isFullCombo: number, IsAllBreak: number, is
 	if (isFullCombo === 1) return "FC";
 	return "";
 };
+
+export function OngekiRating(level: number, score: number): number {
+	const iclInt = level * 100;
+
+	// Return 0 if score is too low to earn any rating
+	if (score < 970000) {
+		return 0;
+	}
+
+	if (score >= 1007500) {
+		return iclInt + 200; // +2.00 for SSS+
+	} else if (score >= 1000000) {
+		return iclInt + 150 + Math.floor((score - 1000000) / 150); // +1.50 for SSS, then +0.01 per 150 points
+	} else if (score >= 990000) {
+		return iclInt + 100 + Math.floor((score - 990000) / 200); // +1.00 for SS, then +0.01 per 200 points
+	} else if (score >= 970000) {
+		return iclInt + Math.floor((score - 970000) / 200); // ±0 at 970000, then +0.01 per 200 points
+	}
+
+	return 0; // Fallback return 0
+}
+
+export function ChunitmRating(level: number, score: number): number {
+	if (score >= 1009000) {
+		return level * 100 + 215;
+	} else if (score >= 1007500) {
+		return level * 100 + 200 + (score - 1007500) / 100;
+	} else if (score >= 1005000) {
+		return level * 100 + 150 + (score - 1005000) / 50;
+	} else if (score >= 1000000) {
+		return level * 100 + 100 + (score - 1000000) / 100;
+	} else if (score >= 975000) {
+		return level * 100 + (score - 975000) / 250;
+	} else if (score >= 925000) {
+		return level * 100 - 300 + ((score - 925000) * 3) / 500;
+	} else if (score >= 900000) {
+		return level * 100 - 500 + ((score - 900000) * 4) / 500;
+	} else if (score >= 800000) {
+		return (level * 100 - 500) / 2 + ((score - 800000) * ((level - 500) / 2)) / 100000;
+	} else {
+		return 0;
+	}
+}

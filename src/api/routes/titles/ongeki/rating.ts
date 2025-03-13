@@ -3,6 +3,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { OngekiRating } from "@/utils/helpers";
 
 import { getUserVersionOngeki } from "../../../version";
 
@@ -75,7 +76,7 @@ const OngekiRatingRoutes = new Hono()
 				const level = staticMusic?.level ?? 0;
 				const score = entry.score ?? 0;
 
-				const rating = calculateRating(level, score);
+				const rating = OngekiRating(level, score);
 
 				return {
 					type: entry.type,
@@ -263,7 +264,7 @@ const OngekiRatingRoutes = new Hono()
 				const level = staticMusic?.level ?? 0;
 				const score = entry.score ?? 0;
 
-				const rating = calculateRating(level, score);
+				const rating = OngekiRating(level, score);
 
 				return {
 					type: entry.type,
@@ -328,7 +329,7 @@ const OngekiRatingRoutes = new Hono()
 			}
 
 			const results = userRatingBaseList.map((entry) => {
-				const rating = calculateRating(entry.level, entry.score);
+				const rating = OngekiRating(entry.level, entry.score);
 
 				return {
 					type: entry.type,
@@ -395,7 +396,7 @@ const OngekiRatingRoutes = new Hono()
 			}
 
 			const results = userRatingBaseList.map((entry) => {
-				const rating = calculateRating(entry.level, entry.score);
+				const rating = OngekiRating(entry.level, entry.score);
 
 				return {
 					type: entry.type,
@@ -468,25 +469,5 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ error: "Failed to fetch highest rating" }, 500);
 		}
 	});
-// Rating calculation function
-function calculateRating(level: number, score: number): number {
-	const iclInt = level * 100;
 
-	// Return 0 if score is too low to earn any rating
-	if (score < 970000) {
-		return 0;
-	}
-
-	if (score >= 1007500) {
-		return iclInt + 200; // +2.00 for SSS+
-	} else if (score >= 1000000) {
-		return iclInt + 150 + Math.floor((score - 1000000) / 150); // +1.50 for SSS, then +0.01 per 150 points
-	} else if (score >= 990000) {
-		return iclInt + 100 + Math.floor((score - 990000) / 200); // +1.00 for SS, then +0.01 per 200 points
-	} else if (score >= 970000) {
-		return iclInt + Math.floor((score - 970000) / 200); // ±0 at 970000, then +0.01 per 200 points
-	}
-
-	return 0; // Fallback return 0
-}
 export { OngekiRatingRoutes };

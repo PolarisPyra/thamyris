@@ -3,6 +3,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { ChunitmRating } from "@/utils/helpers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -70,7 +71,7 @@ const UserRatingFramesRoutes = new Hono()
 				const level = staticMusic?.level ?? 0;
 				const score = entry.score ?? 0;
 
-				const rating = calculateRating(level, score);
+				const rating = ChunitmRating(level, score);
 
 				return {
 					type: entry.type,
@@ -159,7 +160,7 @@ const UserRatingFramesRoutes = new Hono()
 				const level = staticMusic?.level ?? 0;
 				const score = entry.score ?? 0;
 
-				const rating = calculateRating(level, score);
+				const rating = ChunitmRating(level, score);
 
 				return {
 					type: entry.type,
@@ -250,7 +251,7 @@ const UserRatingFramesRoutes = new Hono()
 				const level = staticMusic?.level ?? 0;
 				const score = entry.score ?? 0;
 
-				const rating = calculateRating(level, score);
+				const rating = ChunitmRating(level, score);
 
 				return {
 					type: entry.type,
@@ -341,7 +342,7 @@ const UserRatingFramesRoutes = new Hono()
 				const level = staticMusic?.level ?? 0;
 				const score = entry.score ?? 0;
 
-				const rating = calculateRating(level, score);
+				const rating = ChunitmRating(level, score);
 
 				return {
 					type: entry.type,
@@ -406,27 +407,5 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ error: "Failed to fetch player rating" }, 500);
 		}
 	});
-
-function calculateRating(level: number, score: number): number {
-	if (score >= 1009000) {
-		return level * 100 + 215;
-	} else if (score >= 1007500) {
-		return level * 100 + 200 + (score - 1007500) / 100;
-	} else if (score >= 1005000) {
-		return level * 100 + 150 + (score - 1005000) / 50;
-	} else if (score >= 1000000) {
-		return level * 100 + 100 + (score - 1000000) / 100;
-	} else if (score >= 975000) {
-		return level * 100 + (score - 975000) / 250;
-	} else if (score >= 925000) {
-		return level * 100 - 300 + ((score - 925000) * 3) / 500;
-	} else if (score >= 900000) {
-		return level * 100 - 500 + ((score - 900000) * 4) / 500;
-	} else if (score >= 800000) {
-		return (level * 100 - 500) / 2 + ((score - 800000) * ((level - 500) / 2)) / 100000;
-	} else {
-		return 0;
-	}
-}
 
 export { UserRatingFramesRoutes };

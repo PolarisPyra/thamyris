@@ -19,6 +19,7 @@ import { ChunithmUnlockRoutes } from "./titles/chunithm/unlocks";
 import { OngekiLeaderboadRoutes } from "./titles/ongeki/leaderboard";
 import { OngekiRoutes } from "./titles/ongeki/ongeki";
 import { OngekiRatingRoutes } from "./titles/ongeki/rating";
+import { OngekiReiwaRoutes } from "./titles/ongeki/reiwa";
 import { OngekiRivalsRoutes } from "./titles/ongeki/rivals";
 import { OngekiSettingsRoutes } from "./titles/ongeki/settings";
 import { OngekiUnlockRoutes } from "./titles/ongeki/unlocks";
@@ -47,6 +48,7 @@ const Routes = new Hono()
 	.route("/ongeki", OngekiLeaderboadRoutes)
 	.route("/ongeki", OngekiRivalsRoutes)
 	.route("/ongeki", OngekiUnlockRoutes)
+	.route("/ongeki", OngekiReiwaRoutes)
 
 	.route("/admin", AdminRoutes);
 

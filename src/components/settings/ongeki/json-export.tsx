@@ -3,70 +3,18 @@ import React from "react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useHighestRating, usePlayerRating, useUserRatingBaseHotList } from "@/hooks/ongeki/use-rating";
-import { useUserRatingBaseBestList, useUserRatingBaseBestNewList } from "@/hooks/ongeki/use-rating";
-import { useUsername } from "@/hooks/users/use-username";
-import { getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
+import { useReiwaExport } from "@/hooks/ongeki/use-reiwa";
 
 const JsonExport = () => {
-	const { data: bestList = [] } = useUserRatingBaseBestList();
-	const { data: newList = [] } = useUserRatingBaseBestNewList();
-	const { data: usernameData } = useUsername();
-	const { data: playerRating } = usePlayerRating();
-	const { data: highestRating } = useHighestRating();
-	const { data: hotList = [] } = useUserRatingBaseHotList();
+	const { data: exportData, isLoading } = useReiwaExport();
 
 	const handleExportB45 = () => {
-		const b30 = bestList.filter((song) => song.musicId !== 0);
-		const new15 = newList.filter((song) => song.musicId !== 0);
-		const recent = hotList.filter((song) => song.musicId !== 0);
-		const username = usernameData;
+		if (!exportData) {
+			toast.error("No data available to export");
+			return;
+		}
 
-		const formattedData = {
-			honor: "",
-			name: username || "Player",
-			rating: Number(((playerRating ?? 0) / 100).toFixed(2)),
-			ratingMax: Number(((highestRating ?? 0) / 100).toFixed(2)),
-			updatedAt: new Date().toISOString(),
-			best: b30.map((song) => ({
-				title: song.title,
-				artist: song.artist,
-				score: song.score,
-				rank: getOngekiGrade(song.score),
-				diff: getDifficultyFromOngekiChart(song.chartId),
-				const: song.level,
-				rating: Number((song.rating / 100).toFixed(2)),
-				date: Date.now(),
-				is_fullbell: song.isFullBell,
-				is_allbreak: song.isAllBreake,
-				is_fullcombo: song.isFullCombo,
-			})),
-			news: new15.map((song) => ({
-				title: song.title,
-				artist: song.artist,
-				score: song.score,
-				rank: getOngekiGrade(song.score),
-				diff: getDifficultyFromOngekiChart(song.chartId),
-				const: song.level,
-				rating: Number((song.rating / 100).toFixed(2)),
-				date: Date.now(),
-				is_fullbell: song.isFullBell,
-				is_allbreak: song.isAllBreake,
-				is_fullcombo: song.isFullCombo,
-			})),
-			recent: recent.slice(0, 10).map((song) => ({
-				title: song.title,
-				artist: song.artist,
-				score: song.score,
-				rank: getOngekiGrade(song.score),
-				diff: getDifficultyFromOngekiChart(song.chartId),
-				const: song.level,
-				rating: Number((song.rating / 100).toFixed(2)),
-				date: Date.now(),
-			})),
-		};
-
-		const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: "application/json" });
+		const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
@@ -86,6 +34,7 @@ const JsonExport = () => {
 				onClick={handleExportB45}
 				defaultLabel="Export ratings as json (for reiwa.f5.si)"
 				updatingLabel="Exporting..."
+				disabled={isLoading || !exportData}
 			/>
 		</div>
 	);
