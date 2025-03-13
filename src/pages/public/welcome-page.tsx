@@ -10,12 +10,12 @@ export const WelcomeContent = () => (
 		<h1 className="text-primary mb-8 text-center text-4xl font-bold">Welcome</h1>
 		<div className="space-y-6">
 			<Link to="/login">
-				<button className="text-buttontext hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
+				<button className="text-buttontext hover:bg-buttonhover bg-button mb-4 w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
 					Login
 				</button>
 			</Link>
 			<Link to="/signup">
-				<button className="bg-button text-buttontext hover:bg-buttonhover mt-4 w-full transform rounded-md px-6 py-3 pt-2 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
+				<button className="text-buttontext hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
 					Sign up
 				</button>
 			</Link>

@@ -54,7 +54,7 @@ export const LoginContent = () => {
 						disabled={isLoading}
 					/>
 				</div>
-				<button className="text-buttontext hover:bg-buttonhover bg-button w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
+				<button className="text-button border-border mt-1 block w-full rounded-md border px-4 py-3 transition duration-300 focus:border-blue-500 focus:ring-blue-500">
 					{isLoading ? <Spinner size={24} color="#ffffff" /> : "Login"}
 				</button>
 				<Link to="/">
