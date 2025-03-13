@@ -73,7 +73,7 @@ const OngekiRivals = () => {
 
 	return (
 		<div className="relative flex-1 overflow-auto">
-			<Header title={`Rivals ${rivalCount}/4`} />
+			<Header title={`Rivals ${rivalCount}/3`} />
 			{version ? (
 				<div className="container mx-auto space-y-6">
 					<div className="mb-4 space-y-8 p-4 sm:p-0">
