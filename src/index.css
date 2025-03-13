@@ -358,7 +358,7 @@ video {
 	--sidebar-accent-foreground: hsl(240 4.8% 95.9%);
 	--sidebar-ring: hsl(217.2 91.2% 59.8%);
 	--border: hsl(0, 2%, 35%);
-	--card: hsla(0, 1%, 18%, 0.603);
+	--card: hsla(0, 6%, 14%, 0.651);
 	--sidebar-border: hsl(240 3.7% 15.9%);
 	--searchbar: hsl(0, 0%, 29%);
 	--textbox: hsla(0, 2%, 18%, 0.815);
@@ -369,8 +369,8 @@ video {
 	--buttonunlockcontenthover: hsl(135, 86%, 31%);
 	--button: hsla(120, 61%, 56%, 0.7);
 	--buttonhover: hsla(129, 71%, 47%, 0.6);
-	--dropdown: hsl(0, 0%, 29%);
-	--dropdownhover: hsl(0, 4%, 49%);
+	--dropdown: hsl(0, 3%, 18%);
+	--dropdownhover: hsl(0, 0%, 19%);
 	--buttontext: hsl(0, 4%, 85%);
 }
 
