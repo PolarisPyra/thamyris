@@ -5,6 +5,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 import { env } from "./src/env";
 
+// Generate a random hash for cache busting
+const buildHash = Math.floor(Math.random() * 90000) + 10000;
+
 const buildDateFullString = (date, revision1, revision2) => {
 	const d = new Date(date);
 	const year = d.getFullYear();
@@ -45,8 +48,9 @@ export default defineConfig({
 				client: "./src/client.tsx",
 			},
 			output: {
-				entryFileNames: "[name].js",
-				chunkFileNames: "assets/[name]-[hash].js",
+				entryFileNames: `[name]-${buildHash}.js`,
+				chunkFileNames: `assets/[name]-[hash]-${buildHash}.js`,
+				assetFileNames: `assets/[name]-[hash]-${buildHash}.[ext]`,
 				manualChunks: {
 					"react-vendor": ["react", "react-dom", "react-router-dom"],
 					"ui-components": [
@@ -95,6 +99,7 @@ export default defineConfig({
 			BUILD_TIME_12_HOUR: buildTime12HourFormat(new Date().toISOString()),
 			CDN_URL: env.CDN_URL,
 			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
+			BUILD_HASH: buildHash,
 		},
 	},
 });
