@@ -361,7 +361,7 @@ video {
 	--card: hsl(0, 0%, 15.3%);
 	--sidebar-border: hsl(240 3.7% 15.9%);
 	--searchbar: hsl(0, 0%, 29%);
-	--textbox: hsla(0, 2%, 18%, 0.815);
+	--textbox: hsl(0, 0%, 29%);
 	--seperator: hsl(240, 8%, 74%);
 	--buttonlockcontent: hsla(0, 84%, 45%, 0.7);
 	--buttonlockcontenthover: hsla(0, 87%, 37%, 0.849);
