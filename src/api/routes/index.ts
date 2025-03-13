@@ -6,6 +6,7 @@ import { UserRoutes } from "./common/users";
 import { AvatarRoutes } from "./titles/chunithm/avatar";
 import { ChunithmRoutes } from "./titles/chunithm/chunithm";
 import { FavoritesRoutes } from "./titles/chunithm/favorites";
+import { ChunithmKamaitachiRoutes } from "./titles/chunithm/kamaitachi";
 import { ChunithmLeaderboardRoutes } from "./titles/chunithm/leaderboard";
 import { MapIconRoutes } from "./titles/chunithm/mapicon";
 import { NameplateRoutes } from "./titles/chunithm/nameplate";
@@ -39,6 +40,7 @@ const Routes = new Hono()
 	.route("/chunithm", TrophyRoutes)
 	.route("/chunithm", ChunithmSettingsRoutes)
 	.route("/chunithm", UserRatingFramesRoutes)
+	.route("/chunithm", ChunithmKamaitachiRoutes)
 	.route("/ongeki", OngekiRoutes)
 	.route("/ongeki", OngekiRatingRoutes)
 	.route("/ongeki", OngekiSettingsRoutes)

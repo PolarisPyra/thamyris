@@ -35,6 +35,8 @@
 		"argon2": "^0.41.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"date-fns": "^4.1.0",
+		"date-fns-tz": "^3.2.0",
 		"dotenv": "^16.4.7",
 		"framer-motion": "^12.4.2",
 		"hono": "^4.7.0",
