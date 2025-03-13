@@ -30,8 +30,8 @@ const OngekiRivals = () => {
 	const paginatedRivals = filteredRivals.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
 	const handleAddRival = (id: number) => {
-		if (rivalCount >= 4) {
-			toast.error("You can only have up to 4 rivals.");
+		if (rivalCount >= 3) {
+			toast.error("You can only have up to 3 rivals.");
 			return;
 		}
 
