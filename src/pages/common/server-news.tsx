@@ -9,7 +9,20 @@ const newsBulletin = [
 	{
 		id: 1,
 		title: "News",
-		description: "Please check the discord for updates",
+		description: (
+			<>
+				Please check the&nbsp;
+				<a
+					href="https://discord.gg/fucFf4v2jb"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-blue-500 hover:underline"
+				>
+					Discord
+				</a>{" "}
+				for updates
+			</>
+		),
 		date: `${env.BUILD_DATE_YEAR_MONTH_DAY}`,
 		time: `${env.BUILD_TIME_12_HOUR} UTC`,
 		icon: <Newspaper className="h-6 w-6 text-blue-500" />,
