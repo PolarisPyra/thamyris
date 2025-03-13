@@ -93,7 +93,7 @@ const JsonExport = () => {
 	return (
 		<div className="bg-card rounded-md p-4 md:p-6">
 			<h2 className="text-primary mb-4 text-xl font-semibold">Export Data</h2>
-			<div className="flex flex-col gap-4">
+			<div className="flex gap-4">
 				<SubmitButton
 					onClick={handleExportReiwa}
 					defaultLabel="Export ratings as json (for reiwa.f5.si)"
