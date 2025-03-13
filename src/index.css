@@ -333,7 +333,7 @@ video {
 	--card-foreground: hsl(210 40% 98%);
 	--popover: hsl(222.2 84% 4.9%);
 	--popover-foreground: hsl(210 40% 98%);
-	--primary: hsl(212, 20%, 70%);
+	--primary: hsl(214, 26%, 77%);
 	--primary-foreground: hsl(222.2 47.4% 11.2%);
 	--secondary: hsl(217.2 32.6% 17.5%);
 	--secondary-foreground: hsl(210 40% 98%);
@@ -358,20 +358,20 @@ video {
 	--sidebar-accent-foreground: hsl(240 4.8% 95.9%);
 	--sidebar-ring: hsl(217.2 91.2% 59.8%);
 	--border: hsl(0, 2%, 35%);
-	--card: hsl(0 0% 17.6%);
+	--card: hsla(0, 1%, 18%, 0.603);
 	--sidebar-border: hsl(240 3.7% 15.9%);
 	--searchbar: hsl(0, 0%, 29%);
-	--textbox: hsl(0, 0%, 29%);
+	--textbox: hsla(0, 2%, 18%, 0.815);
 	--seperator: hsl(240, 8%, 74%);
 	--buttonlockcontent: hsl(355, 78%, 43%);
 	--buttonlockcontenthover: hsl(355, 64%, 44%);
 	--buttonunlockcontent: hsl(120, 61%, 24%);
 	--buttonunlockcontenthover: hsl(135, 86%, 31%);
-	--button: hsl(120, 62%, 49%);
-	--buttonhover: hsl(129, 73%, 53%);
+	--button: hsla(120, 61%, 56%, 0.692);
+	--buttonhover: hsla(129, 73%, 53%, 0.685);
 	--dropdown: hsl(0, 0%, 29%);
 	--dropdownhover: hsl(0, 4%, 49%);
-	--buttontext: hsl(0, 0%, 17%);
+	--buttontext: hsl(0, 4%, 85%);
 }
 
 /*
