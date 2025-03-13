@@ -45,7 +45,6 @@ const ChunithmKamaitachiRoutes = new Hono().get("/kamaitachi/export", async (c) 
 		const userId = c.payload.userId;
 		const version = await getUserVersionChunithm(userId);
 
-		// Get profile data using Ray SQL
 		const profileResults = await db.query(
 			`SELECT classEmblemBase, classEmblemMedal
        FROM chuni_profile_data
@@ -55,7 +54,6 @@ const ChunithmKamaitachiRoutes = new Hono().get("/kamaitachi/export", async (c) 
 
 		const profile = profileResults.length > 0 ? profileResults[0] : null;
 
-		// Get playlog data using Ray SQL
 		const playlogResults = await db.query(
 			`SELECT romVersion, userPlayDate, musicId, level, score, maxCombo,
               judgeGuilty, judgeAttack, judgeJustice, judgeCritical, judgeHeaven,
