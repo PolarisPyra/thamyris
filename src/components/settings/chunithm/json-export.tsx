@@ -62,7 +62,7 @@ const JsonExport = () => {
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
-		link.download = "chunithm_b30_export.json";
+		link.download = "chunithm_reiwa_export.json";
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);

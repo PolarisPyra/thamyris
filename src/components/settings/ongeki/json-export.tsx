@@ -18,7 +18,7 @@ const JsonExport = () => {
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
-		link.download = "ongeki_b45_export.json";
+		link.download = "ongeki_reiwa_export.json";
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
