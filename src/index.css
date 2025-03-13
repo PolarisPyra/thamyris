@@ -363,12 +363,12 @@ video {
 	--searchbar: hsl(0, 0%, 29%);
 	--textbox: hsla(0, 2%, 18%, 0.815);
 	--seperator: hsl(240, 8%, 74%);
-	--buttonlockcontent: hsl(355, 78%, 43%);
-	--buttonlockcontenthover: hsl(355, 64%, 44%);
+	--buttonlockcontent: hsla(0, 84%, 45%, 0.7);
+	--buttonlockcontenthover: hsla(0, 87%, 37%, 0.849);
 	--buttonunlockcontent: hsl(120, 61%, 24%);
 	--buttonunlockcontenthover: hsl(135, 86%, 31%);
-	--button: hsla(120, 61%, 56%, 0.692);
-	--buttonhover: hsla(129, 73%, 53%, 0.685);
+	--button: hsla(120, 61%, 56%, 0.7);
+	--buttonhover: hsla(129, 71%, 47%, 0.6);
 	--dropdown: hsl(0, 0%, 29%);
 	--dropdownhover: hsl(0, 4%, 49%);
 	--buttontext: hsl(0, 4%, 85%);
