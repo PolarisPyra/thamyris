@@ -42,9 +42,9 @@ export default defineConfig({
 				client: "./src/client.tsx",
 			},
 			output: {
-				entryFileNames: `[name]` + buildHash + `.js`,
-				chunkFileNames: `assets/[name]` + buildHash + `.js`,
-				assetFileNames: `assets/[name]` + buildHash + `.[ext]`,
+				entryFileNames: `[name]-${buildHash}.js`,
+				chunkFileNames: `assets/[name]-[hash]-${buildHash}.js`,
+				assetFileNames: `assets/[name]-[hash]-${buildHash}.[ext]`,
 				manualChunks: {
 					"react-vendor": ["react", "react-dom", "react-router-dom"],
 					"ui-components": [
