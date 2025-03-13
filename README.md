@@ -16,7 +16,7 @@ A modern web application built with React, Hono, and TypeScript.
 
 ## 📋 Prerequisites
 
-- [pnpm](https://bun.sh/) (Latest version)
+- [pnpm](https://pnpm.io/) (Latest version)
 - [Node.js](https://nodejs.org/) (v19 or higher)
 - MySQL Server
 - TypeScript knowledge
