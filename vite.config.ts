@@ -8,13 +8,6 @@ import { env } from "./src/env";
 // Generate a random hash for cache busting
 const buildHash = Math.floor(Math.random() * 90000) + 10000;
 
-const buildDateFullString = (date, revision1, revision2) => {
-	const d = new Date(date);
-	const year = d.getFullYear();
-	const month = String(d.getMonth() + 1).padStart(2, "0");
-	const day = String(d.getDate()).padStart(2, "0");
-	return `${year}${month}${day}${revision1}${revision2}`; // YearMonthDayRevision1Revision2
-};
 const buildDateYearMonthDay = (date) => {
 	const d = new Date(date);
 	const year = d.getFullYear();
@@ -32,6 +25,7 @@ const buildTime12HourFormat = (date) => {
 	hours = hours ? hours : 12; // The hour '0' should be '12'
 	return `${hours}:${minutes} ${ampm}`; // 12-hour format
 };
+
 export default defineConfig({
 	ssr: {
 		external: ["react", "react-dom"],
@@ -95,7 +89,6 @@ export default defineConfig({
 		// For client env variables, add the type in src/vite-env.d.ts
 		env: {
 			BUILD_DATE_YEAR_MONTH_DAY: buildDateYearMonthDay(new Date().toISOString()),
-			BUILD_DATE_FULL: buildDateFullString(new Date().toISOString(), 0, 2),
 			BUILD_TIME_12_HOUR: buildTime12HourFormat(new Date().toISOString()),
 			CDN_URL: env.CDN_URL,
 			USE_REACT_STRICT: JSON.stringify(env.NODE_ENV === "development"),
