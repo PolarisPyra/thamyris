@@ -2,7 +2,7 @@ import React from "react";
 
 interface NewsCardProps {
 	title: string;
-	description: string;
+	description: React.ReactNode;
 	date: string;
 	time: string;
 	icon: React.ReactNode;
