@@ -93,7 +93,7 @@ const KeychipGenerator = () => {
 
 	return (
 		<div className="bg-card rounded-md p-6">
-			<h2 className="mb-4 text-xl font-semibold">Keychip Generator</h2>
+			<h2 className="text-primary mb-4 text-xl font-semibold">Keychip Generator</h2>
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
 					<label className="text-primary mb-1 block text-sm font-medium">Arcade Nickname</label>
@@ -159,7 +159,9 @@ const KeychipGenerator = () => {
 				</div>
 
 				<div>
-					<label className="mb-1 block text-sm font-medium">{showNamcoPcbId ? "Namco PCBID" : "Aime Card"}</label>
+					<label className="text-primary mb-1 block text-sm font-medium">
+						{showNamcoPcbId ? "Namco PCBID" : "Aime Card"}
+					</label>
 					<input
 						type="text"
 						placeholder={showNamcoPcbId ? "Enter Namco PCBID" : "Enter Aime Card"}
