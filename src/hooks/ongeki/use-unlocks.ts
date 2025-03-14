@@ -2,7 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
-// Define the response interface to match Chunithm pattern
 export interface UnlockResponse {
 	success: boolean;
 	message: string;
