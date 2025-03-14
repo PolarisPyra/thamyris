@@ -75,16 +75,6 @@ interface AvatarCurrentResponse {
 	results: AvatarCurrentResult[];
 }
 
-interface AvatarPartsResponse {
-	results: {
-		wear?: AvatarPartItem[];
-		head?: AvatarPartItem[];
-		face?: AvatarPartItem[];
-		item?: AvatarPartItem[];
-		back?: AvatarPartItem[];
-	};
-}
-
 interface AvatarPartsGrouped {
 	wear?: AvatarPartItem[];
 	head?: AvatarPartItem[];
