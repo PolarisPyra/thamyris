@@ -2,6 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
+// Define the response interface to match Chunithm pattern
+export interface UnlockResponse {
+	success: boolean;
+	message: string;
+}
+
 export const useUnlockAllCards = () => {
 	return useMutation({
 		mutationFn: async (version: number) => {
@@ -13,7 +19,8 @@ export const useUnlockAllCards = () => {
 				throw new Error("Failed to unlock cards");
 			}
 
-			return response.json();
+			const data = (await response.json()) as UnlockResponse;
+			return data;
 		},
 	});
 };
@@ -29,7 +36,8 @@ export const useUnlockAllItems = () => {
 				throw new Error("Failed to unlock items");
 			}
 
-			return response.json();
+			const data = (await response.json()) as UnlockResponse;
+			return data;
 		},
 	});
 };
@@ -45,7 +53,8 @@ export const useUnlockSpecificItem = () => {
 				throw new Error(`Failed to unlock item kind ${itemKind}`);
 			}
 
-			return response.json();
+			const data = (await response.json()) as UnlockResponse;
+			return data;
 		},
 	});
 };
