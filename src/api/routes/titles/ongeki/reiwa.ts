@@ -26,11 +26,9 @@ const OngekiReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
 		const userId = c.payload.userId;
 		const version = await getUserVersionOngeki(userId);
 
-		// Fetch username
 		const usernameResults = await db.query(`SELECT username FROM aime_user WHERE id = ?`, [userId]);
 		const username = usernameResults.length > 0 ? usernameResults[0].username : "Player";
 
-		// Fetch player rating and highest rating
 		const ratingResults = await db.query(
 			`SELECT playerRating, highestRating FROM ongeki_profile_data WHERE user = ? AND version = ?`,
 			[userId, version]
@@ -69,7 +67,6 @@ const OngekiReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
 			[userId, version]
 		);
 
-		// Fetch new 15 songs
 		const newListResults = await db.query(
 			`SELECT 
                 r.musicId,
@@ -100,7 +97,6 @@ const OngekiReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
 			[userId, version]
 		);
 
-		// Fetch recent 10 plays
 		const hotListResults = await db.query(
 			`SELECT 
                 r.musicId,

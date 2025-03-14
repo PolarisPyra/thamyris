@@ -4,15 +4,67 @@ import { db } from "@/api/db";
 
 import { getUserVersionChunithm } from "../../../version";
 
+interface NameplateCurrentErrorResponse {
+	error: string;
+}
+
+interface NameplateCurrentResult {
+	nameplateId: number;
+	itemId: number;
+	user: number;
+	itemKind: number;
+	stock: number;
+	isNew: number;
+	name: string;
+	sortName: string;
+	imagePath: string;
+}
+
+interface NameplateUpdateRequest {
+	nameplateId: number;
+}
+
+interface NameplateUpdateResponse {
+	success: boolean;
+}
+
+interface NameplateUpdateErrorResponse {
+	error: string;
+}
+
+interface NameplateAllErrorResponse {
+	error: string;
+}
+
+interface NameplateAllResult {
+	id: number;
+	version: number;
+	name: string;
+	sortName: string;
+	imagePath: string;
+}
+
+interface NameplateUnlockedItem {
+	itemId: number;
+}
+
+interface NameplateCurrentResponse {
+	results: NameplateCurrentResult[];
+}
+
+interface NameplateAllResponse {
+	results: NameplateAllResult[];
+}
+
 const NameplateRoutes = new Hono()
 
-	.get("/nameplates/current", async (c) => {
+	.get("/nameplates/current", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
 			const version = await getUserVersionChunithm(userId);
 
-			const results = await db.query(
+			const results = (await db.query(
 				`SELECT p.nameplateId, i.*, n.name, n.sortName, n.imagePath
      FROM chuni_profile_data p
      JOIN chuni_item_item i 
@@ -24,20 +76,20 @@ const NameplateRoutes = new Hono()
      AND i.itemKind = 1
      AND i.user = ?`,
 				[userId, version, userId]
-			);
+			)) as NameplateCurrentResult[];
 
-			return c.json({ results });
+			return c.json({ results } as NameplateCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch current nameplate" }, 500);
+			return c.json({ error: "Failed to fetch current nameplate" } as NameplateCurrentErrorResponse, 500);
 		}
 	})
 
-	.post("/nameplates/update", async (c) => {
+	.post("/nameplates/update", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
-			const { nameplateId } = await c.req.json();
+			const { nameplateId } = await c.req.json<NameplateUpdateRequest>();
 			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
@@ -49,47 +101,45 @@ const NameplateRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found for this version" }, 404);
+				return c.json({ error: "Profile not found for this version" } as NameplateUpdateErrorResponse, 404);
 			}
-			return c.json({ success: true });
+			return c.json({ success: true } as NameplateUpdateResponse);
 		} catch (error) {
 			console.error("Error updating nameplate:", error);
-			return c.json({ error: "Failed to update nameplate" }, 500);
+			return c.json({ error: "Failed to update nameplate" } as NameplateUpdateErrorResponse, 500);
 		}
 	})
-	.get("nameplates/all", async (c) => {
+	.get("/nameplates/all", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
 			const version = await getUserVersionChunithm(userId);
 
 			// Get unlocked nameplates
-			const unlockedResults = await db.query(
+			const unlockedResults = (await db.query(
 				`SELECT itemId 
      FROM chuni_item_item 
      WHERE itemKind = 1 AND user = ?`,
 				[userId]
-			);
+			)) as NameplateUnlockedItem[];
 
-			const unlockedNamePlates = unlockedResults.map((item: { itemId: number }) => item.itemId);
+			const unlockedNamePlates = unlockedResults.map((item) => item.itemId);
 
 			// Get all nameplates
-			const allNameplates = await db.query(
+			const allNameplates = (await db.query(
 				`SELECT nameplateId AS id, version, name, sortName, imagePath 
      FROM daphnis_static_nameplate
      WHERE version=?`,
 				[version]
-			);
+			)) as NameplateAllResult[];
 
 			// Filter unlocked nameplates
-			const currentlyUnlockedNamePlates = allNameplates.filter((nameplate: { id: number }) =>
-				unlockedNamePlates.includes(nameplate.id)
-			);
+			const currentlyUnlockedNamePlates = allNameplates.filter((nameplate) => unlockedNamePlates.includes(nameplate.id));
 
-			return c.json({ results: currentlyUnlockedNamePlates });
+			return c.json({ results: currentlyUnlockedNamePlates } as NameplateAllResponse);
 		} catch (error) {
 			console.error("Error fetching nameplates:", error);
-			return c.json({ error: "Failed to fetch nameplates" }, 500);
+			return c.json({ error: "Failed to fetch nameplates" } as NameplateAllErrorResponse, 500);
 		}
 	});
 export { NameplateRoutes };

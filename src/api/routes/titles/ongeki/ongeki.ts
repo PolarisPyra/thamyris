@@ -4,14 +4,62 @@ import { db } from "@/api/db";
 
 import { getUserVersionOngeki } from "../../../version";
 
+interface PlaylogEntry {
+	id: number;
+	userPlayDate: string;
+	maxCombo: number;
+	isFullCombo: number;
+	playerRating: number;
+	isAllBreak: number;
+	isFullBell: number;
+	techScore: number;
+	battleScore: number;
+	judgeMiss: number;
+	judgeHit: number;
+	judgeBreak: number;
+	judgeCriticalBreak: number;
+	clearStatus: number;
+	cardId1: number;
+	chartId: number;
+	title: string;
+	level: number;
+	genre: string;
+	artist: string;
+	techscore_change: string;
+	battlescore_change: string;
+	rating_change: string;
+}
+
+interface PlaylogResponse {
+	results: PlaylogEntry[];
+}
+
+interface StaticMusicEntry {
+	id: number;
+	songId: number;
+	chartId: number;
+	title: string;
+	level: number;
+	artist: string;
+	genre: string;
+}
+
+interface StaticMusicResponse {
+	results: StaticMusicEntry[];
+}
+
+interface ErrorResponse {
+	error: string;
+}
+
 const OngekiRoutes = new Hono()
-	.get("/ongeki_score_playlog", async (c) => {
+	.get("/ongeki_score_playlog", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
 			const version = await getUserVersionOngeki(userId);
 
-			const results = await db.query(
+			const results = (await db.query(
 				`WITH RankedScores AS (
     SELECT 
         csp.id,
@@ -82,29 +130,29 @@ ORDER BY
     userPlayDate DESC;
     `,
 				[version, userId, version]
-			);
-			return c.json({ results });
+			)) as PlaylogEntry[];
+			return c.json({ results } as PlaylogResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch playlog" }, 500);
+			return c.json({ error: "Failed to fetch playlog" } as ErrorResponse, 500);
 		}
 	})
-	.get("/ongeki_static_music", async (c) => {
+	.get("/ongeki_static_music", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
 			const version = await getUserVersionOngeki(userId);
-			const results = await db.query(
+			const results = (await db.query(
 				`SELECT id, songId, chartId, title, level, artist, genre  
                 FROM ongeki_static_music 
                 WHERE version = ?`,
 				[version]
-			);
+			)) as StaticMusicEntry[];
 
-			return c.json({ results });
+			return c.json({ results } as StaticMusicResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch music data" }, 500);
+			return c.json({ error: "Failed to fetch music data" } as ErrorResponse, 500);
 		}
 	});
 export { OngekiRoutes };

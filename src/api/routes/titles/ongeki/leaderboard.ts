@@ -1,17 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// we will eventually need to type this out properly
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
 import { getUserVersionOngeki } from "@/api/version";
 
-const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c) => {
+interface LeaderboardEntry {
+	user: number;
+	playerRating: number;
+	username: string;
+}
+
+interface LeaderboardResponseEntry {
+	userId: number;
+	username: string;
+	rating: string;
+}
+
+interface LeaderboardResponse {
+	results: LeaderboardResponseEntry[];
+}
+
+interface ErrorResponse {
+	error: string;
+}
+
+const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c): Promise<Response> => {
 	try {
 		const userId = c.payload.userId;
 
 		const version = await getUserVersionOngeki(userId);
 
-		const results = await db.query(
+		const results = (await db.query(
 			`SELECT 
                 opd.user,
                 opd.playerRating,
@@ -20,18 +38,18 @@ const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c) => {
             WHERE opd.version = ?
             ORDER BY opd.playerRating DESC`,
 			[version]
-		);
+		)) as LeaderboardEntry[];
 
 		return c.json({
-			results: results.map((entry: any) => ({
+			results: results.map((entry) => ({
 				userId: entry.user,
 				username: entry.username,
 				rating: (entry.playerRating / 100).toFixed(2),
 			})),
-		});
+		} as LeaderboardResponse);
 	} catch (error) {
 		console.error("Error fetching leaderboard:", error);
-		return c.json({ error: "Failed to fetch leaderboard" }, 500);
+		return c.json({ error: "Failed to fetch leaderboard" } as ErrorResponse, 500);
 	}
 });
 export { OngekiLeaderboadRoutes };

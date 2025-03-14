@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// we will eventually need to type this out properly
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
@@ -7,8 +5,78 @@ import { ChunitmRating } from "@/utils/helpers";
 
 import { getUserVersionChunithm } from "../../../version";
 
+interface RatingBaseErrorResponse {
+	error: string;
+}
+
+interface RatingBaseEmptyResponse {
+	results: [];
+}
+
+interface StaticMusicInfo {
+	songId: number;
+	title: string;
+	artist: string;
+	chartId: number;
+	level: number;
+	genre: string;
+	jacketPath: string;
+}
+
+interface RatingBaseQueryResult {
+	musicId: number;
+	score: number;
+	difficultId: number;
+	version: number;
+	type: string;
+	isFullCombo: number;
+	isAllJustice: number;
+	title: string;
+	artist: string;
+	level: number;
+	genre: string;
+	chartId: number;
+	index?: number;
+}
+
+interface RatingBaseResultEntry {
+	type: string;
+	version: number;
+	index?: number;
+	musicId: number;
+	score: number;
+	difficultId: number;
+	chartId: string | number;
+	title: string;
+	artist: string;
+	genre: string;
+	level: string | number;
+	jacketPath: string;
+	rating: number;
+	isAllJustice?: number | null;
+	isFullCombo?: number | null;
+}
+interface PlayerRatingResponse {
+	playerRating: number;
+}
+
+interface PlayerRatingErrorResponse {
+	error: string;
+}
+
+interface HighestRatingResponse {
+	highestRating: number;
+}
+
+interface HighestRatingErrorResponse {
+	error: string;
+}
+interface RatingBaseResponse {
+	results: RatingBaseResultEntry[];
+}
+
 const UserRatingFramesRoutes = new Hono()
-	.get("/user_rating_base_hot_list", async (c) => {
+	.get("/user_rating_base_hot_list", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -41,10 +109,10 @@ const UserRatingFramesRoutes = new Hono()
         AND r.type = 'userRatingBaseHotList'
         AND r.version = ?`,
 				[userId, version]
-			)) as any[];
+			)) as RatingBaseQueryResult[];
 
 			if (!userRatingBaseList.length) {
-				return c.json({ results: [] });
+				return c.json({ results: [] } as RatingBaseEmptyResponse);
 			}
 
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
@@ -62,7 +130,7 @@ const UserRatingFramesRoutes = new Hono()
         WHERE songId IN (?)
           AND version = ?`,
 				[musicIds, version]
-			)) as any[];
+			)) as StaticMusicInfo[];
 
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
@@ -90,13 +158,13 @@ const UserRatingFramesRoutes = new Hono()
 				};
 			});
 
-			return c.json({ results });
+			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
+			return c.json({ error: "Failed to fetch user rating base hot list" } as RatingBaseErrorResponse, 500);
 		}
 	})
-	.get("/user_rating_base_list", async (c) => {
+	.get("/user_rating_base_list", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -130,10 +198,10 @@ const UserRatingFramesRoutes = new Hono()
         AND r.type = 'userRatingBaseList'
         AND r.version = ?`,
 				[userId, version]
-			)) as any[];
+			)) as RatingBaseQueryResult[];
 
 			if (!userRatingBaseList.length) {
-				return c.json({ results: [] });
+				return c.json({ results: [] } as RatingBaseEmptyResponse);
 			}
 
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
@@ -151,7 +219,7 @@ const UserRatingFramesRoutes = new Hono()
             WHERE songId IN (?)
                 AND version = ?`,
 				[musicIds, version]
-			)) as any[];
+			)) as StaticMusicInfo[];
 
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
@@ -177,18 +245,17 @@ const UserRatingFramesRoutes = new Hono()
 					jacketPath: staticMusic?.jacketPath || "",
 					isAllJustice: entry.isAllJustice ?? null,
 					isFullCombo: entry.isFullCombo ?? null,
-
 					rating,
 				};
 			});
 
-			return c.json({ results });
+			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base list" }, 500);
+			return c.json({ error: "Failed to fetch user rating base list" } as RatingBaseErrorResponse, 500);
 		}
 	})
-	.get("/user_rating_base_new_list", async (c) => {
+	.get("/user_rating_base_new_list", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -221,10 +288,10 @@ const UserRatingFramesRoutes = new Hono()
         AND r.type = 'userRatingBaseNewList'
         AND r.version = ?`,
 				[userId, version]
-			)) as any[];
+			)) as RatingBaseQueryResult[];
 
 			if (!userRatingBaseList.length) {
-				return c.json({ results: [] });
+				return c.json({ results: [] } as RatingBaseEmptyResponse);
 			}
 
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
@@ -242,7 +309,7 @@ const UserRatingFramesRoutes = new Hono()
             WHERE songId IN (?)
                 AND version = ?`,
 				[musicIds, version]
-			)) as any[];
+			)) as StaticMusicInfo[];
 
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
@@ -270,13 +337,13 @@ const UserRatingFramesRoutes = new Hono()
 				};
 			});
 
-			return c.json({ results });
+			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base new list" }, 500);
+			return c.json({ error: "Failed to fetch user rating base new list" } as RatingBaseErrorResponse, 500);
 		}
 	})
-	.get("/user_rating_base_next_list", async (c) => {
+	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -312,10 +379,10 @@ const UserRatingFramesRoutes = new Hono()
         AND r.version = ?
    `,
 				[userId, typeFilter, version]
-			)) as any[];
+			)) as RatingBaseQueryResult[];
 
 			if (!userRatingBaseList.length) {
-				return c.json({ results: [] });
+				return c.json({ results: [] } as RatingBaseEmptyResponse);
 			}
 
 			const musicIds = userRatingBaseList.map((entry) => entry.musicId);
@@ -333,7 +400,7 @@ const UserRatingFramesRoutes = new Hono()
         WHERE songId IN (?)
           AND version = ?`,
 				[musicIds, version]
-			)) as any[];
+			)) as StaticMusicInfo[];
 
 			const songIdtoChartId = new Map(staticMusicInfo.map((music) => [`${music.songId}-${music.chartId}`, music]));
 
@@ -361,13 +428,13 @@ const UserRatingFramesRoutes = new Hono()
 				};
 			});
 
-			return c.json({ results });
+			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base next list" }, 500);
+			return c.json({ error: "Failed to fetch user rating base next list" } as RatingBaseErrorResponse, 500);
 		}
 	})
-	.get("/playerRating", async (c) => {
+	.get("/playerRating", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
@@ -380,14 +447,14 @@ const UserRatingFramesRoutes = new Hono()
 				[userId, version]
 			)) as [{ playerRating: number }];
 
-			return c.json({ playerRating: ratingData.playerRating });
+			return c.json({ playerRating: ratingData.playerRating } as PlayerRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch player rating" }, 500);
+			return c.json({ error: "Failed to fetch player rating" } as PlayerRatingErrorResponse, 500);
 		}
 	})
 
-	.get("/highestRating", async (c) => {
+	.get("/highestRating", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
@@ -401,10 +468,10 @@ const UserRatingFramesRoutes = new Hono()
 				[userId, version]
 			)) as [{ highestRating: number }];
 
-			return c.json({ highestRating: ratingData.highestRating });
+			return c.json({ highestRating: ratingData.highestRating } as HighestRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch player rating" }, 500);
+			return c.json({ error: "Failed to fetch player rating" } as HighestRatingErrorResponse, 500);
 		}
 	});
 

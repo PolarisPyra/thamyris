@@ -4,15 +4,67 @@ import { db } from "@/api/db";
 
 import { getUserVersionChunithm } from "../../../version";
 
+interface MapIconCurrentErrorResponse {
+	error: string;
+}
+
+interface MapIconCurrentResult {
+	mapIconId: number;
+	itemId: number;
+	user: number;
+	itemKind: number;
+	stock: number;
+	isNew: number;
+	name: string;
+	sortName: string;
+	imagePath: string;
+}
+
+interface MapIconUpdateRequest {
+	mapIconId: number;
+}
+
+interface MapIconUpdateResponse {
+	success: boolean;
+}
+
+interface MapIconUpdateErrorResponse {
+	error: string;
+}
+
+interface MapIconAllErrorResponse {
+	error: string;
+}
+
+interface MapIconAllResult {
+	id: number;
+	version: number;
+	name: string;
+	sortName: string;
+	imagePath: string;
+}
+
+interface MapIconUnlockedItem {
+	itemId: number;
+}
+
+interface MapIconCurrentResponse {
+	results: MapIconCurrentResult[];
+}
+
+interface MapIconAllResponse {
+	results: MapIconAllResult[];
+}
+
 const MapIconRoutes = new Hono()
 
-	.get("/mapicon/current", async (c) => {
+	.get("/mapicon/current", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
 			const version = await getUserVersionChunithm(userId);
 
-			const results = await db.query(
+			const results = (await db.query(
 				`SELECT p.mapIconId, i.*, n.name, n.sortName, n.imagePath
      FROM chuni_profile_data p
      JOIN chuni_item_item i
@@ -24,20 +76,20 @@ const MapIconRoutes = new Hono()
      AND i.itemKind = 8
      AND i.user = ?`,
 				[userId, version, userId]
-			);
+			)) as MapIconCurrentResult[];
 
-			return c.json({ results });
+			return c.json({ results } as MapIconCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch current map icon" }, 500);
+			return c.json({ error: "Failed to fetch current map icon" } as MapIconCurrentErrorResponse, 500);
 		}
 	})
 
-	.post("/mapicon/update", async (c) => {
+	.post("/mapicon/update", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
-			const { mapIconId } = await c.req.json();
+			const { mapIconId } = await c.req.json<MapIconUpdateRequest>();
 			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
@@ -49,47 +101,45 @@ const MapIconRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found for this version" }, 404);
+				return c.json({ error: "Profile not found for this version" } as MapIconUpdateErrorResponse, 404);
 			}
-			return c.json({ success: true });
+			return c.json({ success: true } as MapIconUpdateResponse);
 		} catch (error) {
 			console.error("Error updating nameplate:", error);
-			return c.json({ error: "Failed to update nameplate" }, 500);
+			return c.json({ error: "Failed to update nameplate" } as MapIconUpdateErrorResponse, 500);
 		}
 	})
-	.get("/mapicon/all", async (c) => {
+	.get("/mapicon/all", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
 			const version = await getUserVersionChunithm(userId);
 
 			// Get unlocked mapicons
-			const unlockedResults = await db.query(
+			const unlockedResults = (await db.query(
 				`SELECT itemId 
      FROM chuni_item_item 
      WHERE itemKind = 8 AND user = ?`,
 				[userId]
-			);
+			)) as MapIconUnlockedItem[];
 
-			const unlockedMapicons = unlockedResults.map((item: { itemId: number }) => item.itemId);
+			const unlockedMapicons = unlockedResults.map((item) => item.itemId);
 
 			// Get all mapicons
-			const allMapicons = await db.query(
+			const allMapicons = (await db.query(
 				`SELECT mapIconId AS id, version, name, sortName, imagePath 
      FROM daphnis_static_map_icon
      WHERE version=?`,
 				[version]
-			);
+			)) as MapIconAllResult[];
 
 			// Filter unlocked mapicons
-			const currentlyUnlockedMapicons = allMapicons.filter((mapicon: { id: number }) =>
-				unlockedMapicons.includes(mapicon.id)
-			);
+			const currentlyUnlockedMapicons = allMapicons.filter((mapicon) => unlockedMapicons.includes(mapicon.id));
 
-			return c.json({ results: currentlyUnlockedMapicons });
+			return c.json({ results: currentlyUnlockedMapicons } as MapIconAllResponse);
 		} catch (error) {
 			console.error("Error fetching mapicons:", error);
-			return c.json({ error: "Failed to fetch mapicons" }, 500);
+			return c.json({ error: "Failed to fetch mapicons" } as MapIconAllErrorResponse, 500);
 		}
 	});
 export { MapIconRoutes };
