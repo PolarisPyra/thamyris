@@ -108,7 +108,7 @@ const UnprotectedRoutes = new Hono()
 	.post("/logout", async (c) => {
 		// Clear the auth_token cookie
 		clearCookie(c);
-		return c.newResponse(null, 200);
+		return c.json({ message: "Logged out" });
 	})
 	.post(
 		"/signup",
