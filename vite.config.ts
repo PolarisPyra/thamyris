@@ -45,19 +45,87 @@ export default defineConfig({
 				entryFileNames: `[name]-${buildHash}.js`,
 				chunkFileNames: `assets/[name]-[hash]-${buildHash}.js`,
 				assetFileNames: `assets/[name]-[hash]-${buildHash}.[ext]`,
-				manualChunks: {
-					"react-vendor": ["react", "react-dom", "react-router-dom"],
-					"ui-components": [
-						"@radix-ui/react-avatar",
-						"@radix-ui/react-dialog",
-						"@radix-ui/react-dropdown-menu",
-						"@radix-ui/react-separator",
-						"@radix-ui/react-slot",
-						"@radix-ui/react-tooltip",
-					],
-					"chart-vendor": ["recharts"],
-					"animation-vendor": ["framer-motion"],
-					"query-vendor": ["@tanstack/react-query"],
+				manualChunks(id) {
+					// Core React and routing
+					if (
+						id.includes("node_modules/react/") ||
+						id.includes("node_modules/react-dom/") ||
+						id.includes("node_modules/react-router-dom/")
+					) {
+						return "vendor-react";
+					}
+
+					// Radix UI components - split into smaller chunks
+					if (id.includes("node_modules/@radix-ui/react-")) {
+						if (id.includes("/react-dialog/") || id.includes("/react-dropdown-menu/") || id.includes("/react-tooltip/")) {
+							return "vendor-radix-popups";
+						}
+						if (id.includes("/react-avatar/") || id.includes("/react-separator/") || id.includes("/react-slot/")) {
+							return "vendor-radix-basics";
+						}
+						return "vendor-radix-other";
+					}
+
+					// Data and state management
+					if (id.includes("node_modules/@tanstack/react-query")) {
+						return "vendor-tanstack";
+					}
+
+					// Date handling
+					if (id.includes("node_modules/date-fns")) {
+						return "vendor-dates";
+					}
+
+					// Charting and visualization
+					if (id.includes("node_modules/recharts") || id.includes("node_modules/d3")) {
+						return "vendor-charts";
+					}
+
+					// Animation and UI enhancements
+					if (id.includes("node_modules/framer-motion")) {
+						return "vendor-animations";
+					}
+
+					// UI utilities and icons
+					if (
+						id.includes("node_modules/lucide-react") ||
+						id.includes("node_modules/clsx") ||
+						id.includes("node_modules/tailwind-merge") ||
+						id.includes("node_modules/class-variance-authority")
+					) {
+						return "vendor-ui-utils";
+					}
+
+					// Theme management
+					if (id.includes("node_modules/next-themes")) {
+						return "vendor-theming";
+					}
+
+					// Notifications and toast
+					if (id.includes("node_modules/sonner")) {
+						return "vendor-notifications";
+					}
+
+					// App-specific chunks by feature
+					if (id.includes("/src/pages/chunithm/")) {
+						return "feature-chunithm";
+					}
+
+					if (id.includes("/src/pages/ongeki/")) {
+						return "feature-ongeki";
+					}
+
+					if (id.includes("/src/pages/account/")) {
+						return "feature-account";
+					}
+
+					if (id.includes("/src/components/chunithm/")) {
+						return "components-chunithm";
+					}
+
+					if (id.includes("/src/components/ongeki/")) {
+						return "components-ongeki";
+					}
 				},
 			},
 		},
