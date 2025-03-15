@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 import { getUserVersionChunithm } from "@/api/version";
 
 interface LeaderboardEntry {
@@ -45,7 +46,7 @@ const ChunithmLeaderboardRoutes = new Hono().get("/leaderboard", async (c): Prom
 		} as LeaderboardResponse);
 	} catch (error) {
 		console.error("Error fetching leaderboard:", error);
-		return new Response("error", { status: 500 });
+		return c.json(rethrowWithMessage("Failed to fetch leaderboard", error));
 	}
 });
 

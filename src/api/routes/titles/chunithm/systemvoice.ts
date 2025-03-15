@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { notFoundWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -16,10 +17,6 @@ interface SystemVoiceItem {
 
 interface SystemVoiceUpdateRequest {
 	voiceId: number;
-}
-
-interface SystemVoiceUpdateResponse {
-	success: boolean;
 }
 
 interface SystemVoiceUnlockedItem {
@@ -66,7 +63,7 @@ const SystemvoiceRoutes = new Hono()
 			return c.json({ results } as SystemVoiceCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			return c.json(notFoundWithMessage("Failed to fetch current systemvoices", error));
 		}
 	})
 
@@ -86,12 +83,12 @@ const SystemvoiceRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return new Response("not found", { status: 404 });
+				return c.json(notFoundWithMessage("Failed to update systemvoice", result));
 			}
-			return c.json({ success: true } as SystemVoiceUpdateResponse);
+			return c.json(successWithMessage("Successfully updated systemvoice", { success: true }));
 		} catch (error) {
 			console.error("Error updating voiceId:", error);
-			return new Response("error", { status: 500 });
+			return c.json(notFoundWithMessage("Failed to update systemvoice", error));
 		}
 	})
 	.get("/systemvoice/all", async (c): Promise<Response> => {
@@ -126,7 +123,7 @@ const SystemvoiceRoutes = new Hono()
 			return c.json({ results: currentlyUnlockedSystemvoices } as SystemVoiceAllResponse);
 		} catch (error) {
 			console.error("Error fetching systemvoices:", error);
-			return new Response("error", { status: 500 });
+			return c.json(notFoundWithMessage("Failed to fetch systemvoices", error));
 		}
 	});
 export { SystemvoiceRoutes };

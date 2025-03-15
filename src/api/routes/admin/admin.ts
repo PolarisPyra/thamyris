@@ -3,6 +3,13 @@ import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
+import {
+	badRequestWithMessage,
+	forbbidenWithMessage,
+	rethrowWithMessage,
+	successWithMessage,
+	unauthorizedWithMessage,
+} from "@/api/utils/http-wrappers";
 import { env } from "@/env";
 
 const AdminRoutes = new Hono()
@@ -10,7 +17,7 @@ const AdminRoutes = new Hono()
 		try {
 			const token = getCookie(c, "auth_token");
 			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
+				return c.json(unauthorizedWithMessage("Unauthorized", token));
 			}
 
 			const payload = await verify(token, env.JWT_SECRET);
@@ -18,7 +25,7 @@ const AdminRoutes = new Hono()
 
 			// Check if user has admin privileges (permission level 2) from JWT
 			if (!permissions || permissions !== 2) {
-				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
+				return c.json(forbbidenWithMessage("Unauthorized - Insufficient permissions", permissions));
 			}
 
 			return c.json({ isAdmin: true });
@@ -43,7 +50,7 @@ const AdminRoutes = new Hono()
 
 			// Check if user has admin privileges (permission level 2) from JWT
 			if (!permissions || permissions !== 2) {
-				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
+				return c.json(forbbidenWithMessage("Unauthorized - Insufficient permissions", permissions));
 			}
 
 			const existingArcade = await db.query(
@@ -55,7 +62,7 @@ const AdminRoutes = new Hono()
 			);
 
 			if (existingArcade[0]) {
-				return c.json({ error: "Arcade already exists" }, 400);
+				return c.json(badRequestWithMessage("Arcade already exists", existingArcade[0]));
 			}
 
 			// Generate serial ID based on game type
@@ -64,7 +71,6 @@ const AdminRoutes = new Hono()
 				return c.json({ error: "Serial ID is required" }, 400);
 			}
 
-			// Check for existing machine
 			const existingMachine = await db.query(
 				`SELECT id 
 				FROM machine 
@@ -73,7 +79,7 @@ const AdminRoutes = new Hono()
 			);
 
 			if (existingMachine[0]) {
-				return c.json({ error: "Serial ID already in use" }, 400);
+				return c.json(badRequestWithMessage("Serial ID already in use", serialId));
 			}
 
 			// Create new arcade
@@ -99,10 +105,10 @@ const AdminRoutes = new Hono()
 				[arcadeId, serialId, game === "SDEW" ? game : null]
 			);
 
-			return c.json({ success: true, arcadeId });
+			return c.json(successWithMessage("Keychip generated successfully", { arcadeId }));
 		} catch (error) {
 			console.error("Error generating keychip:", error);
-			return c.json({ error: "Failed to generate keychip" }, 500);
+			return c.json(rethrowWithMessage("Failed to generate keychip", error));
 		}
 	});
 

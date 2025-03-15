@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 import { getUserVersionOngeki } from "@/api/version";
 
 interface LeaderboardEntry {
@@ -44,8 +45,7 @@ const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c): Promise
 			})),
 		} as LeaderboardResponse);
 	} catch (error) {
-		console.error("Error fetching leaderboard:", error);
-		return new Response(null, { status: 500 });
+		throw rethrowWithMessage("Failed to fetch leaderboard", error);
 	}
 });
 export { OngekiLeaderboadRoutes };

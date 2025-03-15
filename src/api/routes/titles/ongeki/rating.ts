@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 import { OngekiRating } from "@/utils/helpers";
 
 import { getUserVersionOngeki } from "../../../version";
@@ -380,7 +381,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to execute query", error);
 		}
 	})
 	.get("/player_rating", async (c): Promise<Response> => {
@@ -403,7 +404,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ rating: result[0].playerRating ?? 0 } as PlayerRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to execute query", error);
 		}
 	})
 	.get("/highest_rating", async (c): Promise<Response> => {
@@ -426,7 +427,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ highestRating: result[0].highestRating ?? 0 } as HighestRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to execute query", error);
 		}
 	});
 

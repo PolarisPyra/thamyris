@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { rethrowWithMessage } from "@/api/utils/error";
+import { rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -54,11 +54,6 @@ interface AddTeamRequest {
 	teamName: string;
 }
 
-interface AddTeamResponse {
-	success: boolean;
-	teamId: number;
-}
-
 interface TeamExistsResult {
 	count: number;
 }
@@ -85,7 +80,7 @@ const ChunithmRoutes = new Hono()
 			return c.json({ results } as StaticMusicResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			return c.json(rethrowWithMessage("Failed to fetch static music", error));
 		}
 	})
 	.get("/chuni_score_playlog", async (c) => {
@@ -174,7 +169,7 @@ const ChunithmRoutes = new Hono()
 			return c.json({ results } as TeamsResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to fetch teams", error));
 		}
 	})
 
@@ -184,7 +179,6 @@ const ChunithmRoutes = new Hono()
 			const version = await getUserVersionChunithm(userId);
 			const { teamId } = await c.req.json<UpdateTeamRequest>();
 
-			// Validate teamId exists
 			const teamExists = (await db.query(
 				`
                 SELECT COUNT(*) as count 
@@ -197,7 +191,7 @@ const ChunithmRoutes = new Hono()
 				return new Response(null, { status: 404 });
 			}
 
-			await db.query(
+			const results = await db.query(
 				`
                 UPDATE 
                 chuni_profile_data 
@@ -207,10 +201,10 @@ const ChunithmRoutes = new Hono()
 				[teamId, userId, version]
 			);
 
-			return new Response("success", { status: 200 });
+			return c.json(successWithMessage("Successfully updated team", results));
 		} catch (error) {
 			console.error("Error updating team:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to update team", error));
 		}
 	})
 
@@ -222,7 +216,6 @@ const ChunithmRoutes = new Hono()
 				return new Response("error", { status: 400 });
 			}
 
-			// Check if team name already exists
 			const existingTeam = await db.query(`SELECT id FROM chuni_profile_team WHERE teamName = ?`, [teamName]);
 
 			if (existingTeam.length > 0) {
@@ -231,13 +224,10 @@ const ChunithmRoutes = new Hono()
 
 			const result = await db.query(`INSERT INTO chuni_profile_team (teamName) VALUES (?)`, [teamName]);
 
-			return c.json({
-				success: true,
-				teamId: result.insertId,
-			} as AddTeamResponse);
+			return c.json(successWithMessage("Successfully added team", { teamId: result.insertId }));
 		} catch (error) {
 			console.error("Error adding team:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to add team", error));
 		}
 	});
 

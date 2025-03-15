@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { rethrowWithMessage } from "@/api/utils/error";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionOngeki } from "../../../version";
 
@@ -144,8 +144,7 @@ const OngekiRoutes = new Hono()
 
 			return c.json({ results } as StaticMusicResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to fetch static music", error);
 		}
 	});
 export { OngekiRoutes };

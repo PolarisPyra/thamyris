@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import db from "@/api/db";
+import { notFoundWithMessage, rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
 
 const UserRoutes = new Hono()
 	.post("/verify", async (c) => {
@@ -21,13 +22,13 @@ const UserRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "User not found" }, 404);
+				return c.json(notFoundWithMessage("Failed to update aime card", result));
 			}
 
-			return c.json({ success: true });
+			return c.json(successWithMessage("Aime card updated successfully", result));
 		} catch (error) {
 			console.error("Error updating aime card:", error);
-			return c.json({ error: "Failed to update aime card" }, 500);
+			return c.json(rethrowWithMessage("Failed to update aime card", error));
 		}
 	});
 

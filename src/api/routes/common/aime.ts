@@ -2,6 +2,7 @@ import { Hono } from "hono";
 
 import { db } from "@/api/db";
 import { DB } from "@/api/types";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 
 const AimeCardRoute = new Hono()
 	.get("/aime_card", async (c) => {
@@ -10,7 +11,7 @@ const AimeCardRoute = new Hono()
 			return c.json({ users: rows });
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch users" }, 500);
+			return c.json(rethrowWithMessage("Failed to fetch users", error));
 		}
 	})
 	.get("/aime_user", async (c) => {
@@ -19,7 +20,7 @@ const AimeCardRoute = new Hono()
 			return c.json({ users: rows });
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch users" }, 500);
+			return c.json(rethrowWithMessage("Failed to fetch users", error));
 		}
 	});
 

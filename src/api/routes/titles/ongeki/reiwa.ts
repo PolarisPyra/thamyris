@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 import { OngekiRating, getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
 
 import { getUserVersionOngeki } from "../../../version";
@@ -192,7 +193,7 @@ const OngekiReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
 		return c.json(formattedData);
 	} catch (error) {
 		console.error("Error exporting B45 data:", error);
-		return new Response("error", { status: 500 });
+		throw rethrowWithMessage("Failed to export B45 data", error);
 	}
 });
 

@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 import { ChunitmRating } from "@/utils/helpers";
 
 import { getUserVersionChunithm } from "../../../version";
@@ -241,7 +242,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			return c.json(rethrowWithMessage("Failed to execute query", error));
 		}
 	})
 	.get("/user_rating_base_new_list", async (c): Promise<Response> => {
@@ -329,7 +330,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to execute query", error));
 		}
 	})
 	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
@@ -420,7 +421,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to execute query", error));
 		}
 	})
 	.get("/playerRating", async (c): Promise<Response> => {
@@ -439,7 +440,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ playerRating: ratingData.playerRating } as PlayerRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			return c.json(rethrowWithMessage("Failed to execute query", error));
 		}
 	})
 
@@ -460,7 +461,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ highestRating: ratingData.highestRating } as HighestRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to execute query", error));
 		}
 	});
 

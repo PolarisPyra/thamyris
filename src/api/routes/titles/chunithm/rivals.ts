@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { notFoundWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
+import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -56,10 +58,10 @@ const RivalsRoutes = new Hono()
 			if (result.affectedRows === 0) {
 				return new Response("not found", { status: 404 });
 			}
-			return new Response("success", { status: 200 });
+			return c.json(successWithMessage("Successfully added favorite", result));
 		} catch (error) {
 			console.error("Error adding favorite:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to add favorite", error));
 		}
 	})
 
@@ -77,12 +79,12 @@ const RivalsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return new Response("not found", { status: 404 });
+				return c.json(notFoundWithMessage("Failed to remove favorite", result));
 			}
-			return new Response("success", { status: 200 });
+			return c.json(successWithMessage("Successfully removed favorite", result));
 		} catch (error) {
 			console.error("Error removing favorite:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to remove favorite", error));
 		}
 	})
 
@@ -102,7 +104,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ results: results.map((r: { favId: number }) => r.favId) } as RivalsAllResponse);
 		} catch (error) {
 			console.error("Error fetching rivals:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to fetch rivals", error));
 		}
 	})
 
@@ -141,7 +143,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ results } as RivalsMutualResponse);
 		} catch (error) {
 			console.error("Error fetching mutual rivals:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to fetch mutual rivals", error));
 		}
 	})
 
@@ -164,7 +166,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ results } as UserLookupResponse);
 		} catch (error) {
 			console.error("Error fetching Aime users:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to fetch Aime users", error));
 		}
 	})
 
@@ -184,7 +186,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ rivalCount: result[0].rivalCount } as RivalsCountResponse);
 		} catch (error) {
 			console.error("Error counting rivals:", error);
-			return new Response("error", { status: 500 });
+			return c.json(rethrowWithMessage("Failed to count rivals", error));
 		}
 	});
 export { RivalsRoutes };
