@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
-import { useCreateTeam, useTeams, useUpdateTeam } from "@/hooks/chunithm/use-teams";
+import { useCreateTeam, useTeams, useUpdateTeam } from "@/hooks/chunithm";
 
 import { SubmitButton } from "../../common/button";
 

@@ -6,7 +6,7 @@ import PenguinDressup from "@/components/chunithm/penguin-dressup";
 import SystemvoiceSelector from "@/components/chunithm/systemvoice-customization";
 import TrophySelector from "@/components/chunithm/trophies";
 import Header from "@/components/common/header";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { useChunithmVersion } from "@/hooks/chunithm";
 
 const ChunithmUserbox = () => {
 	const { data: version } = useChunithmVersion();

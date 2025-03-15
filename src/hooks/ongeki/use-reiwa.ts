@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useOngekiVersion } from "@/hooks/ongeki/use-version";
+import { useOngekiVersion } from "@/hooks/ongeki";
 import { api } from "@/utils";
 
 interface B45ExportData {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { api } from "@/utils";
 
-export const useAdminPermissions = () => {
+export const useAdmin = () => {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);

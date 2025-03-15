@@ -3,8 +3,8 @@ import React from "react";
 import { toast } from "sonner";
 
 import VersionManagement from "@/components/common/version-management";
-import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm/use-version";
-import { ChunithmVersions } from "@/types/games";
+import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } from "@/hooks/chunithm";
+import { ChunithmVersions } from "@/types/enums";
 
 const ChunithmVersionManager = () => {
 	const { data: chunithmVersion } = useChunithmVersion();

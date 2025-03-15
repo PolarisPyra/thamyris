@@ -10,6 +10,8 @@ import { LoginContent } from "./components/common/login";
 import { SidebarComponent } from "./components/common/sidebar";
 import SignUpContent from "./components/common/signup";
 import { SidebarProvider } from "./components/ui/sidebar";
+import { AuthProvider } from "./context/auth";
+import { ThemeProvider } from "./context/theme";
 import "./index.css";
 import Account from "./pages/account/account";
 import ChunithmAllSongs from "./pages/chunithm/allsongs";
@@ -30,8 +32,6 @@ import OngekiRivals from "./pages/ongeki/rivals";
 import OngekiScorePage from "./pages/ongeki/scores";
 import OngekiSettingsPage from "./pages/ongeki/settings";
 import WelcomePage, { WelcomeContent } from "./pages/public/welcome-page";
-import { AuthProvider } from "./providers/auth-provider";
-import { ThemeProvider } from "./providers/theme-provider";
 import { ProtectedRoute } from "./utils/protected";
 
 const queryClient = new QueryClient();
@@ -40,7 +40,7 @@ const app = (
 	<QueryClientProvider client={queryClient}>
 		<BrowserRouter>
 			<AuthProvider>
-				<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+				<ThemeProvider>
 					<Toaster />
 					<Routes>
 						<Route path="/" element={<WelcomePage />}>

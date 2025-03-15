@@ -3,7 +3,7 @@ import React from "react";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { OngekiScoreTableProps } from "@/types/types";
+import { OngekiScoreTableProps } from "@/types";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
 
 const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTableProps) => {

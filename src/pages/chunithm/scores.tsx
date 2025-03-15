@@ -5,8 +5,7 @@ import ChunithmScoreTable from "@/components/chunithm/score-table";
 import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
-import { useChunithmScores } from "@/hooks/chunithm/use-scores";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { useChunithmScores, useChunithmVersion } from "@/hooks/chunithm";
 
 const ChunithmScorePage = () => {
 	const [searchQuery, setSearchQuery] = useState("");

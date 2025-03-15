@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
-import { useAuth } from "@/hooks/auth/use-auth";
+import { useAuth } from "@/hooks/auth";
 
 const SignUpContent = () => {
 	const { signup, isLoading } = useAuth();

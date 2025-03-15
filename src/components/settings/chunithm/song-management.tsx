@@ -2,7 +2,7 @@ import React from "react";
 
 import { toast } from "sonner";
 
-import { useLockSongs, useUnlockAllSongs } from "@/hooks/chunithm/use-unlocks";
+import { useLockSongs, useUnlockAllSongs } from "@/hooks/chunithm";
 
 import { SubmitButton } from "../../common/button";
 

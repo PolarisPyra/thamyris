@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { SongResponse } from "@/types/types";
+import { SongResponse } from "@/types";
 import { api } from "@/utils";
 
 export function useChunithmSongs() {
@@ -15,7 +15,7 @@ export function useChunithmSongs() {
 			}
 
 			// Sort by id in descending order
-			return data.results.sort((a, b) => b.id - a.id);
+			return data.results.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
 		},
 	});
 }

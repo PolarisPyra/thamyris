@@ -5,8 +5,7 @@ import Header from "@/components/common/header";
 import { LeaderboardTable } from "@/components/common/leaderboard-table";
 import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
-import { useLeaderboard } from "@/hooks/chunithm/use-leaderboard";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { useChunithmVersion, useLeaderboard } from "@/hooks/chunithm";
 
 const ITEMS_PER_PAGE = 50;
 

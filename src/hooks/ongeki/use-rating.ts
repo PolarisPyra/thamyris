@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { RatingResponse, UserRatingEntry } from "@/types/types";
+import { RatingResponse, UserRatingEntry } from "@/types";
 import { api } from "@/utils";
 
 /**

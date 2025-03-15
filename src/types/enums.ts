@@ -12,3 +12,9 @@ export enum OngekiVersions {
 	Bright = 6,
 	BrightMemory = 7,
 }
+
+export enum Theme {
+	Light = "light",
+	Dark = "dark",
+	System = "system",
+}

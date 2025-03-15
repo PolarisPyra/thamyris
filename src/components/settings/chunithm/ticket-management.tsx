@@ -2,7 +2,7 @@ import React from "react";
 
 import { toast } from "sonner";
 
-import { useLimitedTickets, useUnlimitedTickets } from "@/hooks/chunithm/use-unlocks";
+import { useLimitedTickets, useUnlimitedTickets } from "@/hooks/chunithm";
 
 import { SubmitButton } from "../../common/button";
 

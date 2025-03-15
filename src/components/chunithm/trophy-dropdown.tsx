@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
-import { Trophy } from "@/types/types";
+import { Trophy } from "@/types";
 
 interface TrophyDropdownProps {
 	type: "main" | "sub1" | "sub2";

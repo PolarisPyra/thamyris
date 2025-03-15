@@ -9,18 +9,22 @@ import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import QouteCard from "@/components/common/qoutecard";
 import Spinner from "@/components/common/spinner";
-import { useAddFavorite, useFavorites, useRemoveFavorite } from "@/hooks/chunithm/use-favorites";
-import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
-import { useUsername } from "@/hooks/users/use-username";
+import {
+	useAddFavorite,
+	useChunithmSongs,
+	useChunithmVersion,
+	useFavorites,
+	useRemoveFavorite,
+} from "@/hooks/chunithm";
+import { useCurrentUser } from "@/hooks/users";
 
 const ChunithmFavorites = () => {
+	const { username } = useCurrentUser();
 	const { data: version } = useChunithmVersion();
 	const { data: songs = [], isLoading: isLoadingSongs } = useChunithmSongs();
 	const { data: favoriteSongIds = [], isLoading: isLoadingFavorites } = useFavorites();
 	const { mutate: addFavorite } = useAddFavorite();
 	const { mutate: removeFavorite } = useRemoveFavorite();
-	const { data: username = "", isLoading: isLoadingUsername } = useUsername();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 10;
@@ -69,7 +73,7 @@ const ChunithmFavorites = () => {
 	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
 	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-	if (isLoadingSongs || isLoadingFavorites || isLoadingUsername) {
+	if (isLoadingSongs || isLoadingFavorites) {
 		return (
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Favorites" />

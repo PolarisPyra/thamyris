@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 import Spinner from "@/components/common/spinner";
-import { useAuth } from "@/hooks/auth/use-auth";
+import { useAuth } from "@/hooks/auth";
 
 export const LoginContent = () => {
 	const { login, isLoading } = useAuth();

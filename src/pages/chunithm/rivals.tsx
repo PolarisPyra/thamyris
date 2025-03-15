@@ -8,8 +8,14 @@ import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
-import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/chunithm/use-rivals";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import {
+	useAddRival,
+	useChunithmVersion,
+	useRemoveRival,
+	useRivalCount,
+	useRivalUsers,
+	useRivals,
+} from "@/hooks/chunithm";
 
 const ITEMS_PER_PAGE = 10;
 

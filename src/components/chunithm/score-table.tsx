@@ -3,7 +3,7 @@ import React from "react";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ChunithmScoreTableProps } from "@/types/types";
+import { ChunithmScoreTableProps } from "@/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmScoreTableProps) => {

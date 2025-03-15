@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { toast } from "sonner";
 
-import { useCurrentTrophy, useUnlockedTrophies, useUpdateTrophy } from "@/hooks/chunithm/use-trophies";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { useChunithmVersion, useCurrentTrophy, useUnlockedTrophies, useUpdateTrophy } from "@/hooks/chunithm";
 import { honorBackgrounds } from "@/utils/consts";
 
 import { SubmitButton } from "../common/button";

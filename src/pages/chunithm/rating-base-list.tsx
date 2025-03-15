@@ -8,12 +8,12 @@ import ChunithmRatingFrameTable from "@/components/chunithm/rating-table";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import {
+	useChunithmVersion,
 	useUserRatingBaseHotList,
 	useUserRatingBaseList,
 	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
-} from "@/hooks/chunithm/use-rating";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+} from "@/hooks/chunithm";
 
 const ChunithmRatingFrames = () => {
 	const { data: version } = useChunithmVersion();

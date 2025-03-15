@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { AvatarParts } from "@/types/types";
+import { AvatarParts } from "@/types";
 import { api } from "@/utils";
 
 interface CurrentAvatarResponse {
