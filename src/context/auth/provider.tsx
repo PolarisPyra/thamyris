@@ -87,7 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	const logout = useCallback(async () => {
 		setIsLoading(true);
 		try {
-			const response = await api.users.logout.$post();
+			const response = await api.logout.$post();
 			if (response.ok) {
 				setUser(null);
 				navigate("");
