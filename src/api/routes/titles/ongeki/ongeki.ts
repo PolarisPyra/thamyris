@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionOngeki } from "../../../version";
 
@@ -126,7 +127,7 @@ const OngekiRoutes = new Hono()
 			);
 			return c.json(results);
 		} catch (error) {
-			throw error;
+			rethrowWithMessage("Failed to fetch ongeki playlog", error);
 		}
 	})
 	.get("/ongeki_static_music", async (c): Promise<Response> => {

@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -168,7 +169,7 @@ const ChunithmRoutes = new Hono()
 			);
 			return c.json(results);
 		} catch (error) {
-			throw error;
+			rethrowWithMessage("Failed to fetch chunithm scores", error);
 		}
 	})
 	.get("/teams", async (c): Promise<Response> => {
