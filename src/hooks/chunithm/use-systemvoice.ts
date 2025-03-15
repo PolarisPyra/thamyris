@@ -13,7 +13,6 @@ interface SystemVoiceResponse {
 	error?: string;
 }
 
-// Fetch all system voices
 export function useSystemVoices() {
 	return useQuery({
 		queryKey: ["systemvoices"],
@@ -33,7 +32,6 @@ export function useSystemVoices() {
 	});
 }
 
-// Fetch current system voice
 export function useCurrentSystemVoice() {
 	return useQuery({
 		queryKey: ["currentSystemVoice"],
@@ -56,7 +54,6 @@ export function useCurrentSystemVoice() {
 	});
 }
 
-// Update system voice mutation
 export function useUpdateSystemVoice() {
 	const queryClient = useQueryClient();
 
@@ -66,12 +63,11 @@ export function useUpdateSystemVoice() {
 				json: { voiceId },
 			});
 			if (!response.ok) {
-				throw new Error("Failed to update system voice");
+				throw new Error();
 			}
 			return response;
 		},
 		onSuccess: () => {
-			// Invalidate and refetch
 			queryClient.invalidateQueries({ queryKey: ["currentSystemVoice"] });
 		},
 	});

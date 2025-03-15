@@ -152,7 +152,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -244,7 +244,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base hot list" }, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/user_rating_base_best_list", async (c): Promise<Response> => {
@@ -312,7 +312,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base best list" }, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/user_rating_base_best_new_list", async (c): Promise<Response> => {
@@ -380,7 +380,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base best new list" }, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/player_rating", async (c): Promise<Response> => {
@@ -403,7 +403,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ rating: result[0].playerRating ?? 0 } as PlayerRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch player rating" }, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/highest_rating", async (c): Promise<Response> => {
@@ -426,7 +426,7 @@ const OngekiRatingRoutes = new Hono()
 			return c.json({ highestRating: result[0].highestRating ?? 0 } as HighestRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch highest rating" }, 500);
+			return new Response(null, { status: 500 });
 		}
 	});
 

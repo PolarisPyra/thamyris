@@ -14,8 +14,8 @@ export const useUserRatingBaseHotList = () => {
 			const response = await api.chunithm.user_rating_base_hot_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;
@@ -34,8 +34,8 @@ export const useUserRatingBaseList = () => {
 			const response = await api.chunithm.user_rating_base_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;
@@ -55,8 +55,8 @@ export const useUserRatingBaseNewList = () => {
 			const response = await api.chunithm.user_rating_base_new_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;

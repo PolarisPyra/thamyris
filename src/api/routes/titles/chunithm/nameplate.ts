@@ -4,10 +4,6 @@ import { db } from "@/api/db";
 
 import { getUserVersionChunithm } from "../../../version";
 
-interface NameplateCurrentErrorResponse {
-	error: string;
-}
-
 interface NameplateCurrentResult {
 	nameplateId: number;
 	itemId: number;
@@ -22,18 +18,6 @@ interface NameplateCurrentResult {
 
 interface NameplateUpdateRequest {
 	nameplateId: number;
-}
-
-interface NameplateUpdateResponse {
-	success: boolean;
-}
-
-interface NameplateUpdateErrorResponse {
-	error: string;
-}
-
-interface NameplateAllErrorResponse {
-	error: string;
 }
 
 interface NameplateAllResult {
@@ -81,7 +65,7 @@ const NameplateRoutes = new Hono()
 			return c.json({ results } as NameplateCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch current nameplate" } as NameplateCurrentErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -101,12 +85,12 @@ const NameplateRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found for this version" } as NameplateUpdateErrorResponse, 404);
+				return new Response("not found", { status: 404 });
 			}
-			return c.json({ success: true } as NameplateUpdateResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error updating nameplate:", error);
-			return c.json({ error: "Failed to update nameplate" } as NameplateUpdateErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/nameplates/all", async (c): Promise<Response> => {
@@ -139,7 +123,7 @@ const NameplateRoutes = new Hono()
 			return c.json({ results: currentlyUnlockedNamePlates } as NameplateAllResponse);
 		} catch (error) {
 			console.error("Error fetching nameplates:", error);
-			return c.json({ error: "Failed to fetch nameplates" } as NameplateAllErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 export { NameplateRoutes };

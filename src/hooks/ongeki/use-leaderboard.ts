@@ -10,7 +10,6 @@ interface LeaderboardEntry {
 
 interface LeaderboardResponse {
 	results: LeaderboardEntry[];
-	error?: string;
 }
 
 export function useLeaderboard() {
@@ -20,8 +19,8 @@ export function useLeaderboard() {
 			const response = await api.ongeki.leaderboard.$get();
 			const data = (await response.json()) as LeaderboardResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results.map((entry, index) => ({

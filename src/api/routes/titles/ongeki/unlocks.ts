@@ -12,19 +12,6 @@ interface UnlockSpecificItemRequest {
 	version: string;
 }
 
-interface UnlockResponse {
-	success: boolean;
-	message: string;
-}
-
-interface UnlockCardsResponse extends UnlockResponse {
-	result: CardCountResult;
-}
-
-interface UnlockErrorResponse {
-	error: string;
-}
-
 interface CardCountResult {
 	cards: number;
 	level: number;
@@ -80,14 +67,11 @@ GROUP BY level`,
 				[userId]
 			)) as CardCountResult[];
 
-			return c.json({
-				message: "Successfully unlocked cards",
-				success: true,
-				result,
-			} as UnlockCardsResponse);
+			// Return the card count result as JSON, but with a success status code
+			return c.json({ result });
 		} catch (error) {
 			console.error("Error unlocking cards:", error);
-			return c.json({ error: "Failed to unlock cards" } as UnlockErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -109,13 +93,10 @@ WHERE version = ? AND itemKind = ?
 				[userId, version, itemKind]
 			);
 
-			return c.json({
-				success: true,
-				message: "Successfully unlocked specific item",
-			} as UnlockResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error unlocking specific item:", error);
-			return c.json({ error: "Failed to unlock specific item" } as UnlockErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -140,13 +121,10 @@ WHERE version = ? AND itemKind = ?
 				);
 			}
 
-			return c.json({
-				success: true,
-				message: "Successfully unlocked all items",
-			} as UnlockResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error unlocking all items:", error);
-			return c.json({ error: "Failed to unlock all items" } as UnlockErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 

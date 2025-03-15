@@ -8,28 +8,8 @@ interface AddFavoriteRequest {
 	favId: number;
 }
 
-interface AddFavoriteResponse {
-	success: boolean;
-}
-
-interface AddFavoriteErrorResponse {
-	error: string;
-}
-
 interface RemoveFavoriteRequest {
 	favId: number;
-}
-
-interface RemoveFavoriteResponse {
-	success: boolean;
-}
-
-interface RemoveFavoriteErrorResponse {
-	error: string;
-}
-
-interface FavoritesErrorResponse {
-	error: string;
 }
 
 interface FavoriteResult {
@@ -56,12 +36,12 @@ const FavoritesRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Failed to add favorite" } as AddFavoriteErrorResponse, 400);
+				return new Response(null, { status: 400 });
 			}
-			return c.json({ success: true } as AddFavoriteResponse);
+			return new Response(null, { status: 200 });
 		} catch (error) {
 			console.error("Error adding favorite:", error);
-			return c.json({ error: "Failed to add favorite" } as AddFavoriteErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -79,12 +59,12 @@ const FavoritesRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Favorite not found" } as RemoveFavoriteErrorResponse, 404);
+				return new Response("not found", { status: 404 });
 			}
-			return c.json({ success: true } as RemoveFavoriteResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error removing favorite:", error);
-			return c.json({ error: "Failed to remove favorite" } as RemoveFavoriteErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -104,7 +84,7 @@ const FavoritesRoutes = new Hono()
 			return c.json({ results } as FavoritesResponse);
 		} catch (error) {
 			console.error("Error fetching favorites:", error);
-			return c.json({ error: "Failed to fetch favorites" } as FavoritesErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 export { FavoritesRoutes };

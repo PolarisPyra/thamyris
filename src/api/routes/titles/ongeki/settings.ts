@@ -6,18 +6,8 @@ interface VersionResponse {
 	version: string;
 }
 
-interface VersionErrorResponse {
-	error: string;
-}
-
 interface VersionUpdateRequest {
 	version: string;
-}
-
-interface VersionUpdateResponse {
-	success: boolean;
-	version: string;
-	message: string;
 }
 
 interface VersionsResponse {
@@ -48,7 +38,7 @@ const OngekiSettingsRoutes = new Hono()
 			return c.json({ version: versionResult?.value ?? "No version" } as VersionResponse);
 		} catch (error) {
 			console.error("Error getting current version:", error);
-			return c.json({ error: "Failed to get current version" } as VersionErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.post("/settings/update", async (c): Promise<Response> => {
@@ -65,17 +55,13 @@ const OngekiSettingsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found" } as VersionErrorResponse, 404);
+				return new Response("not found", { status: 404 });
 			}
 
-			return c.json({
-				success: true,
-				version,
-				message: "Successfully updated game version",
-			} as VersionUpdateResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error updating settings:", error);
-			return c.json({ error: "Failed to update settings" } as VersionErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/settings/versions", async (c): Promise<Response> => {
@@ -93,7 +79,7 @@ const OngekiSettingsRoutes = new Hono()
 			return c.json({ versions: versions.map((v) => v.version) } as VersionsResponse);
 		} catch (error) {
 			console.error("Error getting versions:", error);
-			return c.json({ error: "Failed to get versions" } as VersionErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 

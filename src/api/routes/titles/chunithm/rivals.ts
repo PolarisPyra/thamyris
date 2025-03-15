@@ -8,32 +8,12 @@ interface AddRivalRequest {
 	favId: number;
 }
 
-interface AddRivalResponse {
-	success: boolean;
-}
-
-interface AddRivalErrorResponse {
-	error: string;
-}
-
 interface RemoveRivalRequest {
 	favId: number;
 }
 
-interface RemoveRivalResponse {
-	success: boolean;
-}
-
-interface RemoveRivalErrorResponse {
-	error: string;
-}
-
 interface RivalsAllResponse {
 	results: number[];
-}
-
-interface RivalsAllErrorResponse {
-	error: string;
 }
 
 interface RivalMutualEntry {
@@ -41,25 +21,13 @@ interface RivalMutualEntry {
 	isMutual: number;
 }
 
-interface RivalsMutualErrorResponse {
-	error: string;
-}
-
 interface UserLookupEntry {
 	id: number;
 	username: string;
 }
 
-interface UserLookupErrorResponse {
-	error: string;
-}
-
 interface RivalsCountResponse {
 	rivalCount: number;
-}
-
-interface RivalsCountErrorResponse {
-	error: string;
 }
 
 interface RivalsMutualResponse {
@@ -86,12 +54,12 @@ const RivalsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Failed to add favorite" } as AddRivalErrorResponse, 400);
+				return new Response("not found", { status: 404 });
 			}
-			return c.json({ success: true } as AddRivalResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error adding favorite:", error);
-			return c.json({ error: "Failed to add favorite" } as AddRivalErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -109,12 +77,12 @@ const RivalsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Favorite not found" } as RemoveRivalErrorResponse, 404);
+				return new Response("not found", { status: 404 });
 			}
-			return c.json({ success: true } as RemoveRivalResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error removing favorite:", error);
-			return c.json({ error: "Failed to remove favorite" } as RemoveRivalErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -134,7 +102,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ results: results.map((r: { favId: number }) => r.favId) } as RivalsAllResponse);
 		} catch (error) {
 			console.error("Error fetching rivals:", error);
-			return c.json({ error: "Failed to fetch rivals" } as RivalsAllErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -173,7 +141,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ results } as RivalsMutualResponse);
 		} catch (error) {
 			console.error("Error fetching mutual rivals:", error);
-			return c.json({ error: "Failed to fetch mutual rivals" } as RivalsMutualErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -196,7 +164,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ results } as UserLookupResponse);
 		} catch (error) {
 			console.error("Error fetching Aime users:", error);
-			return c.json({ error: "Failed to fetch Aime users" } as UserLookupErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -216,7 +184,7 @@ const RivalsRoutes = new Hono()
 			return c.json({ rivalCount: result[0].rivalCount } as RivalsCountResponse);
 		} catch (error) {
 			console.error("Error counting rivals:", error);
-			return c.json({ error: "Failed to count rivals" } as RivalsCountErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 export { RivalsRoutes };

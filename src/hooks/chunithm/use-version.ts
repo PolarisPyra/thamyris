@@ -4,20 +4,16 @@ import { api } from "@/utils";
 
 interface VersionsResponse {
 	versions?: number[];
-	error?: string;
-	message?: string;
 }
 
 interface UpdateVersionResponse {
-	version: number;
-	error?: string;
-	message?: string;
+	success: boolean;
+	version: number | string;
+	message: string;
 }
 
 interface VersionResponse {
-	version?: number;
-	error?: string;
-	message?: string;
+	version?: number | string;
 }
 
 export const useChunithmVersion = () => {
@@ -25,14 +21,15 @@ export const useChunithmVersion = () => {
 		queryKey: ["chunithmVersion"],
 		queryFn: async () => {
 			const response = await api.chunithm.settings.get.$get();
-			const data = (await response.json()) as VersionResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
-			if (!data.version) {
-				throw new Error("Version not found");
+			const data = (await response.json()) as VersionResponse;
+
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return Number(data.version);
@@ -45,14 +42,15 @@ export const useChunithmVersions = () => {
 		queryKey: ["chunithmVersions"],
 		queryFn: async () => {
 			const response = await api.chunithm.settings.versions.$get();
-			const data = (await response.json()) as VersionsResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
-			if (!data.versions) {
-				throw new Error("Versions not found");
+			const data = (await response.json()) as VersionsResponse;
+
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.versions;
@@ -67,12 +65,11 @@ export const useUpdateChunithmVersion = () => {
 				json: { version },
 			});
 
-			const data = (await response.json()) as UpdateVersionResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
+			const data = (await response.json()) as UpdateVersionResponse;
 			return data;
 		},
 	});

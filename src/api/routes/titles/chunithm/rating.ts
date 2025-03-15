@@ -5,10 +5,6 @@ import { ChunitmRating } from "@/utils/helpers";
 
 import { getUserVersionChunithm } from "../../../version";
 
-interface RatingBaseErrorResponse {
-	error: string;
-}
-
 interface RatingBaseEmptyResponse {
 	results: [];
 }
@@ -60,17 +56,10 @@ interface PlayerRatingResponse {
 	playerRating: number;
 }
 
-interface PlayerRatingErrorResponse {
-	error: string;
-}
-
 interface HighestRatingResponse {
 	highestRating: number;
 }
 
-interface HighestRatingErrorResponse {
-	error: string;
-}
 interface RatingBaseResponse {
 	results: RatingBaseResultEntry[];
 }
@@ -161,7 +150,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base hot list" } as RatingBaseErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/user_rating_base_list", async (c): Promise<Response> => {
@@ -252,7 +241,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base list" } as RatingBaseErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/user_rating_base_new_list", async (c): Promise<Response> => {
@@ -340,7 +329,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base new list" } as RatingBaseErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
@@ -431,7 +420,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch user rating base next list" } as RatingBaseErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/playerRating", async (c): Promise<Response> => {
@@ -450,7 +439,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ playerRating: ratingData.playerRating } as PlayerRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch player rating" } as PlayerRatingErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -471,7 +460,7 @@ const UserRatingFramesRoutes = new Hono()
 			return c.json({ highestRating: ratingData.highestRating } as HighestRatingResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch player rating" } as HighestRatingErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 

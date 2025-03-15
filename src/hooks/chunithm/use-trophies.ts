@@ -11,7 +11,6 @@ interface Trophy {
 }
 
 interface CurrentTrophyResponse {
-	success: boolean;
 	data?: {
 		trophyId: number | null;
 		trophyIdSub1: number | null;
@@ -22,17 +21,10 @@ interface CurrentTrophyResponse {
 }
 
 interface UnlockedTrophyResponse {
-	success: boolean;
 	data?: Trophy[];
 	error?: string;
 }
 
-interface UpdateTrophyResponse {
-	success: boolean;
-	error?: string;
-}
-
-// Fetch unlocked trophies
 export function useUnlockedTrophies() {
 	return useQuery({
 		queryKey: ["unlockedTrophies"],
@@ -40,8 +32,8 @@ export function useUnlockedTrophies() {
 			const response = await api.chunithm.trophies.unlocked.$get();
 			const data = (await response.json()) as UnlockedTrophyResponse;
 
-			if (!data.success || data.error) {
-				throw new Error(data.error || "Failed to fetch unlocked trophies");
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.data || [];
@@ -49,7 +41,6 @@ export function useUnlockedTrophies() {
 	});
 }
 
-// Fetch current trophy
 export function useCurrentTrophy() {
 	return useQuery({
 		queryKey: ["currentTrophy"],
@@ -57,8 +48,8 @@ export function useCurrentTrophy() {
 			const response = await api.chunithm.trophies.current.$get();
 			const data = (await response.json()) as CurrentTrophyResponse;
 
-			if (!data.success || data.error) {
-				throw new Error(data.error || "Failed to fetch current trophy");
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.data || null;
@@ -66,7 +57,6 @@ export function useCurrentTrophy() {
 	});
 }
 
-// Update trophy mutation
 export function useUpdateTrophy() {
 	const queryClient = useQueryClient();
 
@@ -83,13 +73,12 @@ export function useUpdateTrophy() {
 			const response = await api.chunithm.trophies.update.$post({
 				json: { mainTrophyId, subTrophy1Id, subTrophy2Id },
 			});
-			const data = (await response.json()) as UpdateTrophyResponse;
 
-			if (!data.success || data.error) {
-				throw new Error(data.error || "Failed to update trophy");
+			if (!response.ok) {
+				throw new Error();
 			}
 
-			return data;
+			return true;
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["currentTrophy"] });

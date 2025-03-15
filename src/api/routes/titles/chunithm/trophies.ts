@@ -4,30 +4,27 @@ import { db } from "../../../db";
 import { getUserVersionChunithm } from "../../../version";
 
 interface CurrentTrophyResponse {
-	success: boolean;
 	data?: {
 		trophyId: number | null;
 		trophyIdSub1: number | null;
 		trophyIdSub2: number | null;
 		version: number;
 	};
-	error?: string;
 }
 
 interface UnlockedTrophyResponse {
-	success: boolean;
 	data?: Array<{
 		id: number;
 		name: string;
 		rareType: number;
 		trophyId: number;
 	}>;
-	error?: string;
 }
 
-interface UpdateTrophyResponse {
-	success: boolean;
-	error?: string;
+interface UpdateTrophyRequest {
+	mainTrophyId?: number | null;
+	subTrophy1Id?: number | null;
+	subTrophy2Id?: number | null;
 }
 
 const TrophyRoutes = new Hono()
@@ -55,25 +52,15 @@ const TrophyRoutes = new Hono()
 			);
 
 			if (!rows || rows.length === 0) {
-				return c.json<CurrentTrophyResponse>({
-					success: false,
-					error: "No profile found",
-				});
+				return new Response("not found", { status: 404 });
 			}
 
 			return c.json<CurrentTrophyResponse>({
-				success: true,
 				data: rows[0],
 			});
 		} catch (error) {
 			console.error("[Chunithm Trophy] Error fetching current trophies:", error);
-			return c.json<CurrentTrophyResponse>(
-				{
-					success: false,
-					error: "Failed to fetch current trophies",
-				},
-				500
-			);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -91,7 +78,6 @@ const TrophyRoutes = new Hono()
 
 			if (!unlockedResults || unlockedResults.length === 0) {
 				return c.json<UnlockedTrophyResponse>({
-					success: true,
 					data: [],
 				});
 			}
@@ -113,18 +99,11 @@ const TrophyRoutes = new Hono()
 			);
 
 			return c.json<UnlockedTrophyResponse>({
-				success: true,
 				data: trophyResults,
 			});
 		} catch (error) {
 			console.error("[Chunithm Trophy] Error fetching unlocked trophies:", error);
-			return c.json<UnlockedTrophyResponse>(
-				{
-					success: false,
-					error: "Failed to fetch unlocked trophies",
-				},
-				500
-			);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -132,7 +111,7 @@ const TrophyRoutes = new Hono()
 		try {
 			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
-			const body = await c.req.json();
+			const body = await c.req.json<UpdateTrophyRequest>();
 
 			const updateFields: string[] = [];
 			const updateValues: (number | null)[] = [];
@@ -154,13 +133,7 @@ const TrophyRoutes = new Hono()
 			}
 
 			if (updateFields.length === 0) {
-				return c.json<UpdateTrophyResponse>(
-					{
-						success: false,
-						error: "No trophy updates provided",
-					},
-					400
-				);
+				return new Response("no trophy updates provided", { status: 400 });
 			}
 
 			const result = await db.query<{ affectedRows: number }>(
@@ -171,25 +144,13 @@ const TrophyRoutes = new Hono()
 			);
 
 			if (!result || result.affectedRows === 0) {
-				return c.json<UpdateTrophyResponse>(
-					{
-						success: false,
-						error: "Profile not found",
-					},
-					404
-				);
+				return new Response("not found", { status: 404 });
 			}
 
-			return c.json<UpdateTrophyResponse>({ success: true });
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("[Chunithm Trophy] Error updating trophies:", error);
-			return c.json<UpdateTrophyResponse>(
-				{
-					success: false,
-					error: "Failed to update trophies",
-				},
-				500
-			);
+			return new Response("error", { status: 500 });
 		}
 	});
 

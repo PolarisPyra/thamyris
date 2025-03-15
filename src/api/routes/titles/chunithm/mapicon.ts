@@ -4,10 +4,6 @@ import { db } from "@/api/db";
 
 import { getUserVersionChunithm } from "../../../version";
 
-interface MapIconCurrentErrorResponse {
-	error: string;
-}
-
 interface MapIconCurrentResult {
 	mapIconId: number;
 	itemId: number;
@@ -22,18 +18,6 @@ interface MapIconCurrentResult {
 
 interface MapIconUpdateRequest {
 	mapIconId: number;
-}
-
-interface MapIconUpdateResponse {
-	success: boolean;
-}
-
-interface MapIconUpdateErrorResponse {
-	error: string;
-}
-
-interface MapIconAllErrorResponse {
-	error: string;
 }
 
 interface MapIconAllResult {
@@ -81,7 +65,7 @@ const MapIconRoutes = new Hono()
 			return c.json({ results } as MapIconCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch current map icon" } as MapIconCurrentErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -101,12 +85,12 @@ const MapIconRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found for this version" } as MapIconUpdateErrorResponse, 404);
+				return new Response("not found", { status: 404 });
 			}
-			return c.json({ success: true } as MapIconUpdateResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error updating nameplate:", error);
-			return c.json({ error: "Failed to update nameplate" } as MapIconUpdateErrorResponse, 500);
+			console.error("Error updating map icon:", error);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/mapicon/all", async (c): Promise<Response> => {
@@ -139,7 +123,7 @@ const MapIconRoutes = new Hono()
 			return c.json({ results: currentlyUnlockedMapicons } as MapIconAllResponse);
 		} catch (error) {
 			console.error("Error fetching mapicons:", error);
-			return c.json({ error: "Failed to fetch mapicons" } as MapIconAllErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 export { MapIconRoutes };

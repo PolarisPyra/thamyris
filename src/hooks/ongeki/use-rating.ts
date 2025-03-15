@@ -14,8 +14,8 @@ export const useUserRatingBaseHotList = () => {
 			const response = await api.ongeki.user_rating_base_hot_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;
@@ -34,8 +34,8 @@ export const useUserRatingBaseBestList = () => {
 			const response = await api.ongeki.user_rating_base_best_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;
@@ -54,8 +54,8 @@ export const useUserRatingBaseBestNewList = () => {
 			const response = await api.ongeki.user_rating_base_best_new_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;
@@ -74,8 +74,8 @@ export const useUserRatingBaseNextList = () => {
 			const response = await api.ongeki.user_rating_base_next_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;
@@ -92,9 +92,8 @@ export const usePlayerRating = () => {
 		queryFn: async () => {
 			const response = await api.ongeki.player_rating.$get();
 			const data = (await response.json()) as { rating: number; error?: string };
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.rating;
@@ -112,8 +111,8 @@ export const useHighestRating = () => {
 			const response = await api.ongeki.highest_rating.$get();
 			const data = (await response.json()) as { rating: number; error?: string };
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.rating;

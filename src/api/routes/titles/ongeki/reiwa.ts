@@ -189,10 +189,10 @@ const OngekiReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
 			recent: recent.slice(0, 10),
 		};
 
-		return c.json({ success: true, data: formattedData });
+		return c.json(formattedData);
 	} catch (error) {
 		console.error("Error exporting B45 data:", error);
-		return c.json({ success: false, message: "Failed to export data" }, 500);
+		return new Response("error", { status: 500 });
 	}
 });
 

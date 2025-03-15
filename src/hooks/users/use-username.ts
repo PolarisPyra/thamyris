@@ -13,9 +13,8 @@ export function useUsername() {
 		queryFn: async () => {
 			const response = await api.users.username.$get();
 			const data = (await response.json()) as UserResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.username;

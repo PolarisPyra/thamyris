@@ -7,10 +7,6 @@ interface UnlockResponse {
 	message: string;
 }
 
-interface UnlockErrorResponse {
-	error: string;
-}
-
 const ChunithmUnlockRoutes = new Hono()
 	.post("/settings/songs/unlock", async (c) => {
 		try {
@@ -26,7 +22,7 @@ const ChunithmUnlockRoutes = new Hono()
 			return c.json({ success: true, message: "Successfully unlocked all songs" } as UnlockResponse);
 		} catch (error) {
 			console.error("Error unlocking all songs:", error);
-			return c.json({ error: "Failed to unlock all songs" } as UnlockErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.post("/settings/songs/lock", async (c) => {
@@ -43,7 +39,7 @@ const ChunithmUnlockRoutes = new Hono()
 			return c.json({ success: true, message: "Successfully locked songs" } as UnlockResponse);
 		} catch (error) {
 			console.error("Error locking songs:", error);
-			return c.json({ error: "Failed to lock songs" } as UnlockErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.post("/settings/tickets/unlimited", async (c) => {
@@ -60,7 +56,7 @@ const ChunithmUnlockRoutes = new Hono()
 			return c.json({ success: true, message: "Successfully enabled unlimited tickets" } as UnlockResponse);
 		} catch (error) {
 			console.error("Error enabling unlimited tickets:", error);
-			return c.json({ error: "Failed to enable unlimited tickets" } as UnlockErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.post("/settings/tickets/limited", async (c) => {
@@ -77,7 +73,7 @@ const ChunithmUnlockRoutes = new Hono()
 			return c.json({ success: true, message: "Successfully disabled unlimited tickets" } as UnlockResponse);
 		} catch (error) {
 			console.error("Error disabling unlimited tickets:", error);
-			return c.json({ error: "Failed to disable unlimited tickets" } as UnlockErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	});
 

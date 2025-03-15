@@ -13,7 +13,6 @@ interface NameplateResponse {
 	error?: string;
 }
 
-// Nameplates
 export function useNameplates() {
 	return useQuery({
 		queryKey: ["nameplates"],
@@ -21,8 +20,8 @@ export function useNameplates() {
 			const response = await api.chunithm.nameplates.all.$get();
 			const data = (await response.json()) as NameplateResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results.map((nameplate) => ({
@@ -40,8 +39,8 @@ export function useCurrentNameplate() {
 			const response = await api.chunithm.nameplates.current.$get();
 			const data = (await response.json()) as NameplateResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			const nameplate = data.results[0];
@@ -64,7 +63,7 @@ export function useUpdateNameplate() {
 				json: { nameplateId },
 			});
 			if (!response.ok) {
-				throw new Error("Failed to update nameplate");
+				throw new Error();
 			}
 			return response;
 		},

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useOngekiVersion } from "@/hooks/ongeki/use-version";
+import { useChunithmVersion } from "@/hooks/chunithm/use-version";
 import { api } from "@/utils";
 
-interface B45ExportData {
+interface B30ExportData {
 	honor: string;
 	name: string;
 	rating: number;
@@ -18,22 +18,8 @@ interface B45ExportData {
 		const: number;
 		rating: number;
 		date: number;
-		is_fullbell: number;
-		is_allbreak: number;
 		is_fullcombo: number;
-	}>;
-	news: Array<{
-		title: string;
-		artist: string;
-		score: number;
-		rank: string;
-		diff: string;
-		const: number;
-		rating: number;
-		date: number;
-		is_fullbell: number;
-		is_allbreak: number;
-		is_fullcombo: number;
+		is_alljustice: number;
 	}>;
 	recent: Array<{
 		title: string;
@@ -48,22 +34,22 @@ interface B45ExportData {
 }
 
 /**
- * Hook to fetch Ongeki Reiwa export data
+ * Hook to fetch Chunithm Reiwa export data
  * @returns Query result with Reiwa export data
  */
 export const useReiwaExport = () => {
-	const { data: version } = useOngekiVersion();
+	const { data: version } = useChunithmVersion();
 
-	return useQuery<B45ExportData>({
-		queryKey: ["ongeki", "reiwa", "export", version],
+	return useQuery<B30ExportData>({
+		queryKey: ["chunithm", "reiwa", "export", version],
 		queryFn: async () => {
-			const response = await api.ongeki.reiwa.export.$get();
-			
+			const response = await api.chunithm.reiwa.export.$get();
+
 			if (!response.ok) {
 				throw new Error();
 			}
-			
-			return response.json() as Promise<B45ExportData>;
+
+			return response.json() as Promise<B30ExportData>;
 		},
 		enabled: !!version,
 	});

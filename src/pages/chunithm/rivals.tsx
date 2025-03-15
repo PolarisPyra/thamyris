@@ -39,8 +39,8 @@ const ChunithmRivals = () => {
 			onSuccess: () => {
 				toast.success("Rival added successfully!");
 			},
-			onError: (error) => {
-				toast.error(error instanceof Error ? error.message : "Failed to add rival");
+			onError: () => {
+				toast.error("Failed to add rival");
 			},
 		});
 	};
@@ -50,8 +50,8 @@ const ChunithmRivals = () => {
 			onSuccess: () => {
 				toast.success("Rival removed successfully!");
 			},
-			onError: (error) => {
-				toast.error(error instanceof Error ? error.message : "Failed to remove rival");
+			onError: () => {
+				toast.error("Failed to remove rival");
 			},
 		});
 	};

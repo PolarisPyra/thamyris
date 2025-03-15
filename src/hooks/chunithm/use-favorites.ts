@@ -7,7 +7,6 @@ interface FavoriteResponse {
 	error?: string;
 }
 
-// Fetch favorite songs
 export function useFavorites() {
 	return useQuery({
 		queryKey: ["favorites"],
@@ -15,8 +14,8 @@ export function useFavorites() {
 			const response = await api.chunithm.favorites.all.$get();
 			const data = (await response.json()) as FavoriteResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results.map((fav) => fav.favId);
@@ -24,7 +23,6 @@ export function useFavorites() {
 	});
 }
 
-// Add favorite mutation
 export function useAddFavorite() {
 	const queryClient = useQueryClient();
 
@@ -34,7 +32,7 @@ export function useAddFavorite() {
 				json: { favId: songId },
 			});
 			if (!response.ok) {
-				throw new Error("Failed to add favorite");
+				throw new Error();
 			}
 			return response;
 		},
@@ -44,7 +42,6 @@ export function useAddFavorite() {
 	});
 }
 
-// Remove favorite mutation
 export function useRemoveFavorite() {
 	const queryClient = useQueryClient();
 
@@ -54,7 +51,7 @@ export function useRemoveFavorite() {
 				json: { favId: songId },
 			});
 			if (!response.ok) {
-				throw new Error("Failed to remove favorite");
+				throw new Error();
 			}
 			return response;
 		},

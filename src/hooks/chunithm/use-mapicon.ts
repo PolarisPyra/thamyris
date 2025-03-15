@@ -13,7 +13,6 @@ interface MapIconResponse {
 	error?: string;
 }
 
-// Fetch all map icons
 export function useMapIcons() {
 	return useQuery({
 		queryKey: ["mapicons"],
@@ -21,8 +20,8 @@ export function useMapIcons() {
 			const response = await api.chunithm.mapicon.all.$get();
 			const data = (await response.json()) as MapIconResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results.map((icon) => ({
@@ -33,7 +32,6 @@ export function useMapIcons() {
 	});
 }
 
-// Fetch current map icon
 export function useCurrentMapIcon() {
 	return useQuery({
 		queryKey: ["currentMapIcon"],
@@ -41,8 +39,8 @@ export function useCurrentMapIcon() {
 			const response = await api.chunithm.mapicon.current.$get();
 			const data = (await response.json()) as MapIconResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			const icon = data.results[0];
@@ -55,7 +53,6 @@ export function useCurrentMapIcon() {
 		},
 	});
 }
-// Update map icon mutation
 export function useUpdateMapIcon() {
 	const queryClient = useQueryClient();
 
@@ -65,7 +62,7 @@ export function useUpdateMapIcon() {
 				json: { mapIconId },
 			});
 			if (!response.ok) {
-				throw new Error("Failed to update map icon");
+				throw new Error();
 			}
 			return response;
 		},

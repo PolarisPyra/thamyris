@@ -13,7 +13,6 @@ interface TeamResponse {
 }
 
 interface CreateTeamSuccess {
-	success: boolean;
 	message: string;
 	teamId: number;
 }
@@ -24,7 +23,6 @@ interface CreateTeamError {
 
 type CreateTeamResponse = CreateTeamSuccess | CreateTeamError;
 
-// Fetch all teams
 export function useTeams() {
 	return useQuery({
 		queryKey: ["teams"],
@@ -32,8 +30,8 @@ export function useTeams() {
 			const response = await api.chunithm.teams.$get();
 			const data = (await response.json()) as TeamResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results;
@@ -41,7 +39,6 @@ export function useTeams() {
 	});
 }
 
-// Update team mutation
 export function useUpdateTeam() {
 	const queryClient = useQueryClient();
 
@@ -51,18 +48,16 @@ export function useUpdateTeam() {
 				json: { teamId },
 			});
 			if (!response.ok) {
-				throw new Error("Failed to update team");
+				throw new Error();
 			}
-			return response.json();
+			return true;
 		},
 		onSuccess: () => {
-			// Invalidate and refetch teams query
 			queryClient.invalidateQueries({ queryKey: ["teams"] });
 		},
 	});
 }
 
-// Create team mutation
 export function useCreateTeam() {
 	const queryClient = useQueryClient();
 
@@ -74,8 +69,7 @@ export function useCreateTeam() {
 			const data = (await response.json()) as CreateTeamResponse;
 
 			if (!response.ok) {
-				const errorMessage = "error" in data ? data.error : "Failed to create team";
-				throw new Error(errorMessage);
+				throw new Error();
 			}
 
 			return data as CreateTeamSuccess;

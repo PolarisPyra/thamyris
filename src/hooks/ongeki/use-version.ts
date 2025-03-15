@@ -4,18 +4,10 @@ import { api } from "@/utils";
 
 interface VersionsResponse {
 	versions?: number[];
-	error?: string;
-}
-
-interface UpdateVersionResponse {
-	version: number;
-	error?: string;
-	message?: string;
 }
 
 interface VersionResponse {
-	version?: number;
-	error?: string;
+	version?: number | string;
 }
 
 export const useOngekiVersion = () => {
@@ -23,14 +15,15 @@ export const useOngekiVersion = () => {
 		queryKey: ["ongekiVersion"],
 		queryFn: async () => {
 			const response = await api.ongeki.settings.get.$get();
-			const data = (await response.json()) as VersionResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
-			if (!data.version) {
-				throw new Error("Version not found");
+			const data = (await response.json()) as VersionResponse;
+
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return Number(data.version);
@@ -43,14 +36,15 @@ export const useOngekiVersions = () => {
 		queryKey: ["ongekiVersions"],
 		queryFn: async () => {
 			const response = await api.ongeki.settings.versions.$get();
-			const data = (await response.json()) as VersionsResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
+			const data = (await response.json()) as VersionsResponse;
+
 			if (!data.versions) {
-				throw new Error("Versions not found");
+				throw new Error();
 			}
 
 			return data.versions;
@@ -59,19 +53,17 @@ export const useOngekiVersions = () => {
 };
 
 export const useUpdateOngekiVersion = () => {
-	return useMutation({
+	return useMutation<boolean, Error, string>({
 		mutationFn: async (version: string) => {
 			const response = await api.ongeki.settings.update.$post({
 				json: { version },
 			});
 
-			const data = (await response.json()) as UpdateVersionResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
-			return data;
+			return true;
 		},
 	});
 };

@@ -17,14 +17,13 @@ export function useUpdateAimecard() {
 			});
 			const data = (await response.json()) as UpdateAimecardResponse;
 
-			if (!response.ok || !data.success) {
-				throw new Error(data.error || "Failed to update aime card");
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data;
 		},
 		onSuccess: () => {
-			// Invalidate user data queries if needed
 			queryClient.invalidateQueries({ queryKey: ["user"] });
 		},
 	});

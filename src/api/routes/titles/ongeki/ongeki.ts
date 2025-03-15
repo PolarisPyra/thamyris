@@ -48,10 +48,6 @@ interface StaticMusicResponse {
 	results: StaticMusicEntry[];
 }
 
-interface ErrorResponse {
-	error: string;
-}
-
 const OngekiRoutes = new Hono()
 	.get("/ongeki_score_playlog", async (c): Promise<Response> => {
 		try {
@@ -134,7 +130,7 @@ ORDER BY
 			return c.json({ results } as PlaylogResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch playlog" } as ErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/ongeki_static_music", async (c): Promise<Response> => {
@@ -152,7 +148,7 @@ ORDER BY
 			return c.json({ results } as StaticMusicResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch music data" } as ErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	});
 export { OngekiRoutes };

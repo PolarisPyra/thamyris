@@ -11,6 +11,7 @@ import { ChunithmLeaderboardRoutes } from "./titles/chunithm/leaderboard";
 import { MapIconRoutes } from "./titles/chunithm/mapicon";
 import { NameplateRoutes } from "./titles/chunithm/nameplate";
 import { UserRatingFramesRoutes } from "./titles/chunithm/rating";
+import { ChunithmReiwaRoutes } from "./titles/chunithm/reiwa";
 import { RivalsRoutes } from "./titles/chunithm/rivals";
 import { ChunithmSettingsRoutes } from "./titles/chunithm/settings";
 import { SystemvoiceRoutes } from "./titles/chunithm/systemvoice";
@@ -42,6 +43,7 @@ const Routes = new Hono()
 	.route("/chunithm", ChunithmSettingsRoutes)
 	.route("/chunithm", UserRatingFramesRoutes)
 	.route("/chunithm", ChunithmKamaitachiRoutes)
+	.route("/chunithm", ChunithmReiwaRoutes)
 	.route("/ongeki", OngekiRoutes)
 	.route("/ongeki", OngekiRatingRoutes)
 	.route("/ongeki", OngekiSettingsRoutes)

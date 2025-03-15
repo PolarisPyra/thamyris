@@ -31,8 +31,8 @@ const TeamManagement = () => {
 		}
 
 		updateTeamMutation(selectedTeamId, {
-			onSuccess: (success) => toast.success(success.message),
-			onError: (error) => toast.error(error.message),
+			onSuccess: () => toast.success("Team updated successfully!"),
+			onError: () => toast.error("Failed to update team"),
 		});
 	};
 
@@ -43,8 +43,8 @@ const TeamManagement = () => {
 		}
 
 		createTeamMutation(newTeamName.trim(), {
-			onSuccess: (success) => toast.success(success.message),
-			onError: (error) => toast.error(error.message),
+			onSuccess: () => toast.success("Team created successfully!"),
+			onError: () => toast.error("Failed to create team"),
 		});
 	};
 

@@ -20,9 +20,8 @@ export function useCurrentAvatar() {
 		queryFn: async () => {
 			const response = await api.chunithm.avatar.current.$get();
 			const data = (await response.json()) as CurrentAvatarResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			const avatar = data.results[0];
@@ -49,7 +48,7 @@ export function useUpdateAvatar() {
 			});
 
 			if (!response.ok) {
-				throw new Error("Failed to update avatar");
+				throw new Error();
 			}
 
 			return response;
@@ -68,8 +67,8 @@ export function useAllAvatarParts() {
 			const response = await api.chunithm.avatar.parts.all.$get();
 			const data = (await response.json()) as AllAvatarPartsResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results || {};

@@ -10,8 +10,8 @@ export function useOngekiSongs() {
 			const response = await api.ongeki.ongeki_static_music.$get();
 			const data = (await response.json()) as SongResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 			// moved to client side for faster queries
 			// Sort by id in descending order

@@ -4,10 +4,6 @@ import { db } from "@/api/db";
 
 import { getUserVersionChunithm } from "../../../version";
 
-interface StaticMusicErrorResponse {
-	error: string;
-}
-
 interface StaticMusicResult {
 	id: number;
 	songId: number;
@@ -16,10 +12,6 @@ interface StaticMusicResult {
 	level: string;
 	artist: string;
 	genre: string;
-}
-
-interface PlaylogErrorResponse {
-	error: string;
 }
 
 interface PlaylogResult {
@@ -48,10 +40,6 @@ interface PlaylogResult {
 	rating_change: string;
 }
 
-interface TeamsErrorResponse {
-	error: string;
-}
-
 interface TeamResult {
 	id: number;
 	teamName: string;
@@ -61,27 +49,13 @@ interface UpdateTeamRequest {
 	teamId: number;
 }
 
-interface UpdateTeamResponse {
-	success: boolean;
-	message: string;
-}
-
-interface UpdateTeamErrorResponse {
-	error: string;
-}
-
 interface AddTeamRequest {
 	teamName: string;
 }
 
 interface AddTeamResponse {
 	success: boolean;
-	message: string;
 	teamId: number;
-}
-
-interface AddTeamErrorResponse {
-	error: string;
 }
 
 interface TeamExistsResult {
@@ -114,7 +88,7 @@ const ChunithmRoutes = new Hono()
 			return c.json({ results } as StaticMusicResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch music data" } as StaticMusicErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/chuni_score_playlog", async (c): Promise<Response> => {
@@ -195,7 +169,7 @@ const ChunithmRoutes = new Hono()
 			return c.json({ results } as PlaylogResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch playlog" } as PlaylogErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/teams", async (c): Promise<Response> => {
@@ -204,7 +178,7 @@ const ChunithmRoutes = new Hono()
 			return c.json({ results } as TeamsResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch player team data" } as TeamsErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -224,10 +198,9 @@ const ChunithmRoutes = new Hono()
 			)) as TeamExistsResult[];
 
 			if (teamExists[0].count === 0) {
-				return c.json({ error: "Team not found" } as UpdateTeamErrorResponse, 404);
+				return new Response(null, { status: 404 });
 			}
 
-			// Update user's team
 			await db.query(
 				`
                 UPDATE 
@@ -238,10 +211,10 @@ const ChunithmRoutes = new Hono()
 				[teamId, userId, version]
 			);
 
-			return c.json({ success: true, message: "Team updated successfully" } as UpdateTeamResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error updating team:", error);
-			return c.json({ error: "Failed to update team" } as UpdateTeamErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -250,25 +223,25 @@ const ChunithmRoutes = new Hono()
 			const { teamName } = await c.req.json<AddTeamRequest>();
 
 			if (!teamName) {
-				return c.json({ error: "Team name is required" } as AddTeamErrorResponse, 400);
+				return new Response("error", { status: 400 });
 			}
 
 			// Check if team name already exists
 			const existingTeam = await db.query(`SELECT id FROM chuni_profile_team WHERE teamName = ?`, [teamName]);
 
 			if (existingTeam.length > 0) {
-				return c.json({ error: "Team name already exists" } as AddTeamErrorResponse, 400);
+				return new Response("team already added", { status: 409 });
 			}
 
 			const result = await db.query(`INSERT INTO chuni_profile_team (teamName) VALUES (?)`, [teamName]);
 
 			return c.json({
 				success: true,
-				message: "Team created successfully",
 				teamId: result.insertId,
 			} as AddTeamResponse);
-		} catch {
-			return c.json({ error: "Failed to create team" } as AddTeamErrorResponse, 500);
+		} catch (error) {
+			console.error("Error adding team:", error);
+			return new Response("error", { status: 500 });
 		}
 	});
 

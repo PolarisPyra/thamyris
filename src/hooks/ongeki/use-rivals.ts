@@ -10,27 +10,18 @@ interface Rivals {
 
 interface OngekiApiResponse {
 	results: Rivals[];
-	error?: string;
 }
 
 interface RivalCountResponse {
 	rivalCount: number;
-	error?: string;
 }
 
 interface RivalResponse {
 	results: number[];
-	error?: string;
 }
 
 interface MutualResponse {
 	results: { rivalId: number; isMutual: number }[];
-	error?: string;
-}
-
-interface MutationResponse {
-	success: boolean;
-	error?: string;
 }
 
 // Fetch all rivals
@@ -39,12 +30,12 @@ export function useRivals() {
 		queryKey: ["ongeki", "rivals", "all"],
 		queryFn: async () => {
 			const response = await api.ongeki.rivals.all.$get();
-			const data = (await response.json()) as RivalResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			
+			if (!response.ok) {
+				throw new Error();
 			}
-
+			
+			const data = (await response.json()) as RivalResponse;
 			return data.results;
 		},
 	});
@@ -56,12 +47,12 @@ export function useRivalCount() {
 		queryKey: ["ongeki", "rivals", "count"],
 		queryFn: async () => {
 			const response = await api.ongeki.rivals.count.$get();
-			const data = (await response.json()) as RivalCountResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			
+			if (!response.ok) {
+				throw new Error();
 			}
-
+			
+			const data = (await response.json()) as RivalCountResponse;
 			return data.rivalCount;
 		},
 	});
@@ -77,16 +68,12 @@ export function useRivalUsers() {
 				api.ongeki.rivals.mutual.$get(),
 			]);
 
+			if (!usersResp.ok || !mutualResp.ok) {
+				throw new Error();
+			}
+
 			const usersData = (await usersResp.json()) as OngekiApiResponse;
 			const mutualData = (await mutualResp.json()) as MutualResponse;
-
-			if (usersData.error) {
-				throw new Error(usersData.error);
-			}
-
-			if (mutualData.error) {
-				throw new Error(mutualData.error);
-			}
 
 			const mutualRivals = new Set(mutualData.results.filter((r) => r.isMutual === 1).map((r) => r.rivalId));
 
@@ -108,13 +95,13 @@ export function useAddRival() {
 			const response = await api.ongeki.rivals.add.$post({
 				json: { rivalUserId },
 			});
-			const data = (await response.json()) as MutationResponse;
 
-			if (!response.ok || !data.success) {
-				throw new Error(data.error || "Failed to add rival");
+			if (!response.ok) {
+				throw new Error();
 			}
-
-			return data;
+			
+			// Return an empty success object since the API returns no content
+			return {};
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["ongeki", "rivals"] });
@@ -131,13 +118,13 @@ export function useRemoveRival() {
 			const response = await api.ongeki.rivals.remove.$post({
 				json: { rivalUserId },
 			});
-			const data = (await response.json()) as MutationResponse;
 
-			if (!response.ok || !data.success) {
-				throw new Error(data.error || "Failed to remove rival");
+			if (!response.ok) {
+				throw new Error();
 			}
-
-			return data;
+			
+			// Return an empty success object since the API returns no content
+			return {};
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["ongeki", "rivals"] });

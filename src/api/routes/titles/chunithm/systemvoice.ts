@@ -14,20 +14,12 @@ interface SystemVoiceItem {
 	[key: string]: unknown;
 }
 
-interface SystemVoiceCurrentErrorResponse {
-	error: string;
-}
-
 interface SystemVoiceUpdateRequest {
 	voiceId: number;
 }
 
 interface SystemVoiceUpdateResponse {
 	success: boolean;
-}
-
-interface SystemVoiceUpdateErrorResponse {
-	error: string;
 }
 
 interface SystemVoiceUnlockedItem {
@@ -39,10 +31,6 @@ interface SystemVoiceAllItem {
 	version: number;
 	name: string;
 	imagePath: string;
-}
-
-interface SystemVoiceAllErrorResponse {
-	error: string;
 }
 
 interface SystemVoiceAllResponse {
@@ -78,7 +66,7 @@ const SystemvoiceRoutes = new Hono()
 			return c.json({ results } as SystemVoiceCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch current system voice" } as SystemVoiceCurrentErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -98,12 +86,12 @@ const SystemvoiceRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found for this version" } as SystemVoiceUpdateErrorResponse, 404);
+				return new Response("not found", { status: 404 });
 			}
 			return c.json({ success: true } as SystemVoiceUpdateResponse);
 		} catch (error) {
 			console.error("Error updating voiceId:", error);
-			return c.json({ error: "Failed to update voiceId" } as SystemVoiceUpdateErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 	.get("/systemvoice/all", async (c): Promise<Response> => {
@@ -138,7 +126,7 @@ const SystemvoiceRoutes = new Hono()
 			return c.json({ results: currentlyUnlockedSystemvoices } as SystemVoiceAllResponse);
 		} catch (error) {
 			console.error("Error fetching systemvoices:", error);
-			return c.json({ error: "Failed to fetch systemvoices" } as SystemVoiceAllErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 export { SystemvoiceRoutes };

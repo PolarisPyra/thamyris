@@ -13,8 +13,12 @@ const OngekiVersionManager = () => {
 
 	const handleUpdateVersion = (version: string) => {
 		updateVersion(version, {
-			onSuccess: (success) => toast.success(success.message),
-			onError: (error) => toast.error(error.message),
+			onSuccess: () => {
+				toast.success("Ongeki version updated successfully!");
+			},
+			onError: () => {
+				toast.error("Failed to update Ongeki version");
+			},
 		});
 	};
 

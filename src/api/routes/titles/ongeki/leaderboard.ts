@@ -19,10 +19,6 @@ interface LeaderboardResponse {
 	results: LeaderboardResponseEntry[];
 }
 
-interface ErrorResponse {
-	error: string;
-}
-
 const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c): Promise<Response> => {
 	try {
 		const userId = c.payload.userId;
@@ -49,7 +45,7 @@ const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c): Promise
 		} as LeaderboardResponse);
 	} catch (error) {
 		console.error("Error fetching leaderboard:", error);
-		return c.json({ error: "Failed to fetch leaderboard" } as ErrorResponse, 500);
+		return new Response(null, { status: 500 });
 	}
 });
 export { OngekiLeaderboadRoutes };

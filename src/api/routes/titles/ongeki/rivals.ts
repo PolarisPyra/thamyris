@@ -12,14 +12,6 @@ interface RivalRemoveRequest {
 	rivalUserId: number;
 }
 
-interface RivalResponse {
-	success: boolean;
-}
-
-interface RivalErrorResponse {
-	error: string;
-}
-
 interface RivalsListResponse {
 	results: number[];
 }
@@ -60,12 +52,12 @@ const OngekiRivalsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Failed to add rival" } as RivalErrorResponse, 400);
+				return new Response(null, { status: 400 });
 			}
-			return c.json({ success: true } as RivalResponse);
+			return new Response(null, { status: 200 });
 		} catch (error) {
 			console.error("Error adding rival:", error);
-			return c.json({ error: "Failed to add rival" } as RivalErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -81,12 +73,12 @@ const OngekiRivalsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Rival not found" } as RivalErrorResponse, 404);
+				return new Response(null, { status: 404 });
 			}
-			return c.json({ success: true } as RivalResponse);
+			return new Response(null, { status: 200 });
 		} catch (error) {
 			console.error("Error removing rival:", error);
-			return c.json({ error: "Failed to remove rival" } as RivalErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -106,7 +98,7 @@ const OngekiRivalsRoutes = new Hono()
 			} as RivalsListResponse);
 		} catch (error) {
 			console.error("Error fetching rivals:", error);
-			return c.json({ error: "Failed to fetch rivals" } as RivalErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -139,7 +131,7 @@ const OngekiRivalsRoutes = new Hono()
 			return c.json({ results } as MutualRivalsResponse);
 		} catch (error) {
 			console.error("Error fetching mutual rivals:", error);
-			return c.json({ error: "Failed to fetch mutual rivals" } as RivalErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -161,7 +153,7 @@ const OngekiRivalsRoutes = new Hono()
 			return c.json({ results } as UserLookupResponse);
 		} catch (error) {
 			console.error("Error fetching Aime users:", error);
-			return c.json({ error: "Failed to fetch Aime users" } as RivalErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -179,7 +171,7 @@ const OngekiRivalsRoutes = new Hono()
 			return c.json({ rivalCount: result[0].rivalCount } as RivalCountResponse);
 		} catch (error) {
 			console.error("Error counting rivals:", error);
-			return c.json({ error: "Failed to count rivals" } as RivalErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	});
 

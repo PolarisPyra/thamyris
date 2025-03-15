@@ -6,10 +6,6 @@ interface SettingsGetResponse {
 	version: string;
 }
 
-interface SettingsGetErrorResponse {
-	error: string;
-}
-
 interface SettingsUpdateRequest {
 	version: string | number;
 }
@@ -20,20 +16,12 @@ interface SettingsUpdateResponse {
 	message: string;
 }
 
-interface SettingsUpdateErrorResponse {
-	error: string;
-}
-
 interface VersionEntry {
 	version: number;
 }
 
 interface SettingsVersionsResponse {
 	versions: number[];
-}
-
-interface SettingsVersionsErrorResponse {
-	error: string;
 }
 
 const ChunithmSettingsRoutes = new Hono()
@@ -52,7 +40,7 @@ const ChunithmSettingsRoutes = new Hono()
 			return c.json({ version: versionResult?.value || "No Version" } as SettingsGetResponse);
 		} catch (error) {
 			console.error("Error getting current version:", error);
-			return c.json({ error: "Failed to get current version" } as SettingsGetErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.post("/settings/update", async (c): Promise<Response> => {
@@ -69,7 +57,7 @@ const ChunithmSettingsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found" } as SettingsUpdateErrorResponse, 404);
+				return new Response(null, { status: 404 });
 			}
 
 			return c.json({
@@ -79,7 +67,7 @@ const ChunithmSettingsRoutes = new Hono()
 			} as SettingsUpdateResponse);
 		} catch (error) {
 			console.error("Error updating settings:", error);
-			return c.json({ error: "Failed to update settings" } as SettingsUpdateErrorResponse, 500);
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/settings/versions", async (c): Promise<Response> => {
@@ -97,7 +85,7 @@ const ChunithmSettingsRoutes = new Hono()
 			return c.json({ versions: versions.map((v) => v.version) } as SettingsVersionsResponse);
 		} catch (error) {
 			console.error("Error getting versions:", error);
-			return c.json({ error: "Failed to get versions" } as SettingsVersionsErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 

@@ -4,10 +4,6 @@ import { db } from "@/api/db";
 
 import { getUserVersionChunithm } from "../../../version";
 
-interface AvatarCurrentErrorResponse {
-	error: string;
-}
-
 interface AvatarCurrentResult {
 	avatarSkinId: number;
 	avatarSkinTexture: string;
@@ -37,18 +33,6 @@ interface AvatarUpdateRequest {
 		wear: number;
 		item: number;
 	};
-}
-
-interface AvatarUpdateResponse {
-	success: boolean;
-}
-
-interface AvatarUpdateErrorResponse {
-	error: string;
-}
-
-interface AvatarPartsErrorResponse {
-	error: string;
 }
 
 interface AvatarPartItem {
@@ -138,7 +122,7 @@ AND cp.version = ?;
 			return c.json({ results } as AvatarCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json({ error: "Failed to fetch avatar parts" } as AvatarCurrentErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -164,12 +148,12 @@ AND cp.version = ?;
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json({ error: "Profile not found for this version" } as AvatarUpdateErrorResponse, 404);
+				return new Response("not found", { status: 404 });
 			}
-			return c.json({ success: true } as AvatarUpdateResponse);
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error updating avatar:", error);
-			return c.json({ error: "Failed to update avatar" } as AvatarUpdateErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -230,7 +214,7 @@ AND cp.version = ?;
 			return c.json({ results: groupedResults } as AvatarPartsResponse);
 		} catch (error) {
 			console.error("Error fetching all avatar parts:", error);
-			return c.json({ error: "Failed to fetch all avatar parts" } as AvatarPartsErrorResponse, 500);
+			return new Response("error", { status: 500 });
 		}
 	});
 

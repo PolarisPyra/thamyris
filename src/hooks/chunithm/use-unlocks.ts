@@ -8,7 +8,7 @@ export const useUnlockAllSongs = () => {
 			const response = await api.chunithm.settings.songs.unlock.$post();
 
 			if (!response.ok) {
-				throw new Error("Failed to unlock all songs");
+				throw new Error();
 			}
 
 			return response.json();
@@ -22,7 +22,7 @@ export const useLockSongs = () => {
 			const response = await api.chunithm.settings.songs.lock.$post();
 
 			if (!response.ok) {
-				throw new Error("Failed to lock songs");
+				throw new Error();
 			}
 
 			return response.json();
@@ -36,7 +36,7 @@ export const useUnlimitedTickets = () => {
 			const response = await api.chunithm.settings.tickets.unlimited.$post();
 
 			if (!response.ok) {
-				throw new Error("Failed to enable unlimited tickets");
+				throw new Error();
 			}
 
 			return response.json();
@@ -50,7 +50,7 @@ export const useLimitedTickets = () => {
 			const response = await api.chunithm.settings.tickets.limited.$post();
 
 			if (!response.ok) {
-				throw new Error("Failed to disable unlimited tickets");
+				throw new Error();
 			}
 
 			return response.json();

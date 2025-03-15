@@ -3,62 +3,21 @@ import React from "react";
 import { toast } from "sonner";
 
 import { useKamaitachiExport } from "@/hooks/chunithm/use-kamatachi";
-import {
-	useHighestRating,
-	usePlayerRating,
-	useUserRatingBaseHotList,
-	useUserRatingBaseList,
-} from "@/hooks/chunithm/use-rating";
-import { useUsername } from "@/hooks/users/use-username";
-import { getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
+import { useReiwaExport } from "@/hooks/chunithm/use-reiwa";
 
 import { SubmitButton } from "../../common/button";
 
 const JsonExport = () => {
-	const { data: baseList = [] } = useUserRatingBaseList();
-	const { data: usernameData } = useUsername();
-	const { data: playerRating } = usePlayerRating();
-	const { data: hotList = [] } = useUserRatingBaseHotList();
-	const { data: highestRating } = useHighestRating();
+	const { data: exportData, isLoading } = useReiwaExport();
 	const { data: kamaitachiData } = useKamaitachiExport();
 
 	const handleExportReiwa = () => {
-		const username = usernameData;
+		if (!exportData) {
+			toast.error("No export data available");
+			return;
+		}
 
-		const b30 = baseList.sort((a, b) => b.rating - a.rating);
-
-		const formattedData = {
-			honor: "",
-			name: username || "Player",
-			rating: Number(((playerRating ?? 0) / 100).toFixed(2)),
-			ratingMax: Number(((highestRating ?? 0) / 100).toFixed(2)),
-			updatedAt: new Date().toISOString(),
-			best: b30.map((song) => ({
-				title: song.title,
-				artist: song.artist,
-				score: song.score,
-				rank: getGrade(song.score),
-				diff: getDifficultyFromChunithmChart(song.chartId),
-				const: song.level,
-				rating: Number((song.rating / 100).toFixed(2)),
-				date: Date.now(),
-				is_fullbell: song.isFullBell,
-				is_allbreak: song.isAllBreake,
-				is_fullcombo: song.isFullCombo,
-			})),
-			recent: hotList.slice(0, 10).map((song) => ({
-				title: song.title,
-				artist: song.artist,
-				score: song.score,
-				rank: getGrade(song.score),
-				diff: getDifficultyFromChunithmChart(song.chartId),
-				const: song.level,
-				rating: Number((song.rating / 100).toFixed(2)),
-				date: Date.now(),
-			})),
-		};
-
-		const blob = new Blob([JSON.stringify(formattedData, null, 2)], { type: "application/json" });
+		const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
@@ -98,6 +57,7 @@ const JsonExport = () => {
 					onClick={handleExportReiwa}
 					defaultLabel="Export ratings as json (for reiwa.f5.si)"
 					updatingLabel="Exporting..."
+					disabled={isLoading}
 				/>
 				<SubmitButton
 					onClick={handleExportKamaitachi}

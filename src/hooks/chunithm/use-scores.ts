@@ -57,7 +57,6 @@ interface OngekiScoreResponse {
 	error?: string;
 }
 
-// Fetch Chunithm scores
 export function useChunithmScores() {
 	return useQuery({
 		queryKey: ["chunithm", "scores"],
@@ -65,8 +64,8 @@ export function useChunithmScores() {
 			const response = await api.chunithm.chuni_score_playlog.$get();
 			const data = (await response.json()) as ChunithmScoreResponse;
 
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results.map((score) => ({
@@ -81,15 +80,14 @@ export function useChunithmScores() {
 	});
 }
 
-// Fetch Ongeki scores
 export function useOngekiScores() {
 	return useQuery({
 		queryKey: ["ongeki", "scores"],
 		queryFn: async () => {
 			const response = await api.ongeki.ongeki_score_playlog.$get();
 			const data = (await response.json()) as OngekiScoreResponse;
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.results.map((score) => ({

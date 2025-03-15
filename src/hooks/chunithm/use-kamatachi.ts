@@ -20,8 +20,8 @@ export const useKamaitachiExport = () => {
 			const response = await api.chunithm.kamaitachi.export.$get();
 			const data = (await response.json()) as KamaitachiExportResponse;
 
-			if (!data.success) {
-				throw new Error(data.message || "Failed to export Kamaitachi data");
+			if (!response.ok) {
+				throw new Error();
 			}
 
 			return data.data;
