@@ -20,7 +20,7 @@ interface LeaderboardResponse {
 	results: LeaderboardResponseEntry[];
 }
 
-const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c): Promise<Response> => {
+const OngekiLeaderboadRoutes = new Hono().get("", async (c): Promise<Response> => {
 	try {
 		const userId = c.payload.userId;
 

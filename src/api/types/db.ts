@@ -1503,3 +1503,11 @@ export namespace DB {
 		tradeCount: number | null;
 	};
 }
+
+export enum DaphnisUserOptionKey {
+	ChunithmVersion = "chunithm_version",
+	MaxTickets = "max_tickets",
+	OngekiStaticEventOwner = "ongeki_static_event_owner",
+	OngekiVersion = "ongeki_version",
+	UnlockAllSongs = "unlock_all_songs",
+}

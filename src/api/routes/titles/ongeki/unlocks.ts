@@ -20,7 +20,7 @@ interface CardCountResult {
 
 const OngekiUnlockRoutes = new Hono()
 
-	.post("/unlockcards", async (c): Promise<Response> => {
+	.post("/cards", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -75,7 +75,7 @@ GROUP BY level`,
 		}
 	})
 
-	.post("/unlockspecificitem", async (c): Promise<Response> => {
+	.post("/specificitem", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -99,7 +99,7 @@ WHERE version = ? AND itemKind = ?
 		}
 	})
 
-	.post("/unlockallitems", async (c): Promise<Response> => {
+	.post("/allitems", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 

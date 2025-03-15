@@ -25,7 +25,7 @@ interface VersionEntry {
 
 const OngekiSettingsRoutes = new Hono()
 
-	.get("/settings/get", async (c): Promise<Response> => {
+	.get("", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -41,7 +41,7 @@ const OngekiSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get Ongeki version", error);
 		}
 	})
-	.post("/settings/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -63,7 +63,7 @@ const OngekiSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update Ongeki settings", error);
 		}
 	})
-	.get("/settings/versions", async (c): Promise<Response> => {
+	.get("/versions", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 

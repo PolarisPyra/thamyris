@@ -22,7 +22,7 @@ interface OngekiSongResult {
 	chartId: number;
 }
 
-const OngekiReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
+const OngekiReiwaRoutes = new Hono().get("/export", async (c) => {
 	try {
 		const userId = c.payload.userId;
 		const version = await getUserVersionOngeki(userId);

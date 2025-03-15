@@ -41,7 +41,7 @@ interface UserLookupResponse {
 
 const OngekiRivalsRoutes = new Hono()
 
-	.post("/rivals/add", async (c): Promise<Response> => {
+	.post("/add", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 			const { rivalUserId } = await c.req.json<RivalAddRequest>();
@@ -81,7 +81,7 @@ const OngekiRivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -100,7 +100,7 @@ const OngekiRivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/mutual", async (c): Promise<Response> => {
+	.get("/mutual", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -132,7 +132,7 @@ const OngekiRivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/userlookup", async (c): Promise<Response> => {
+	.get("/userlookup", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 			const version = await getUserVersionOngeki(userId);
@@ -153,7 +153,7 @@ const OngekiRivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/count", async (c): Promise<Response> => {
+	.get("/count", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
