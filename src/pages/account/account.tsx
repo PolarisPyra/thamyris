@@ -3,10 +3,10 @@ import React from "react";
 import KeychipGenerator from "@/components/admin/keychip-generator";
 import Header from "@/components/common/header";
 import AimeCardSwap from "@/components/settings/common/aime-card";
-import { useAdminPermissions } from "@/hooks/admin/use-admin";
+import { useAdmin } from "@/hooks/admin";
 
 const Account = () => {
-	const { isAdmin, isLoading: isCheckingAdmin } = useAdminPermissions();
+	const { isAdmin, isLoading: isCheckingAdmin } = useAdmin();
 
 	return (
 		<div className="relative flex-1 overflow-auto">

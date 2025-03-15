@@ -3,8 +3,8 @@ import React from "react";
 import { toast } from "sonner";
 
 import VersionManagement from "@/components/common/version-management";
-import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki/use-version";
-import { OngekiVersions } from "@/types/games";
+import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/hooks/ongeki";
+import { OngekiVersions } from "@/types/enums";
 
 const OngekiVersionManager = () => {
 	const { data: ongekiVersion } = useOngekiVersion();

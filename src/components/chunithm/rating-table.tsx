@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { RatingFrameTableProps } from "@/types/types";
+import { RatingFrameTableProps } from "@/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {

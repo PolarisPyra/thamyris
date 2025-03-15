@@ -3,10 +3,10 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 import Spinner from "@/components/common/spinner";
-import { useAuth } from "@/hooks/auth/use-auth";
+import { useAuth } from "@/hooks/auth";
 
 export const ProtectedRoute = () => {
-	const { isAuthenticated, isLoading } = useAuth();
+	const { user, isLoading } = useAuth();
 
 	if (isLoading) {
 		return (
@@ -16,5 +16,5 @@ export const ProtectedRoute = () => {
 		);
 	}
 
-	return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+	return user ? <Outlet /> : <Navigate to="/" replace />;
 };

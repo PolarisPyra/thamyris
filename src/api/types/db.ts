@@ -3,7 +3,7 @@
  * Database type definitions for the application tables
  */
 export namespace DB {
-	export interface AimeUser {
+	export type AimeUser = {
 		id: number;
 		username: string;
 		email: string;
@@ -12,9 +12,9 @@ export namespace DB {
 		created_date: string;
 		last_login_date: string;
 		suspend_expire_time: string;
-	}
+	};
 
-	export interface AimeCard {
+	export type AimeCard = {
 		id: number;
 		user: number;
 		access_code: string;
@@ -25,15 +25,15 @@ export namespace DB {
 		is_locked: boolean;
 		is_banned: boolean;
 		memo: string;
-	}
-	export interface AimeUserGameLocks {
+	};
+	export type AimeUserGameLocks = {
 		id: number;
 		user: number;
 		game: string;
 		expires_at: string | null;
 		extra: string | null;
-	}
-	export interface Arcade {
+	};
+	export type Arcade = {
 		id: number;
 		name: string | null;
 		nickname: string | null;
@@ -44,13 +44,13 @@ export namespace DB {
 		region_id: number | null;
 		timezone: string | null;
 		ip: string | null;
-	}
-	export interface ArcadeOwner {
+	};
+	export type ArcadeOwner = {
 		user: number;
 		arcade: number;
 		permissions: number;
-	}
-	export interface ChuniClientBookkeeping {
+	};
+	export type ChuniClientBookkeeping = {
 		id: number;
 		placeId: number;
 		clientId: string;
@@ -71,8 +71,8 @@ export namespace DB {
 		masterTutorialNum: number;
 		playRatio: number;
 		continueNum: number;
-	}
-	export interface ChuniClientDevelop {
+	};
+	export type ChuniClientDevelop = {
 		id: number;
 		placeId: number;
 		clientId: string;
@@ -81,8 +81,8 @@ export namespace DB {
 		updateDate: string;
 		devId: number;
 		devValue: number;
-	}
-	export interface ChuniClientError {
+	};
+	export type ChuniClientError = {
 		id: number;
 		placeId: number;
 		clientId: string;
@@ -91,9 +91,9 @@ export namespace DB {
 		updateDate: string;
 		errorNo: number;
 		totalCount: number;
-	}
+	};
 
-	export interface ChuniClientSetting {
+	export type ChuniClientSetting = {
 		id: number;
 		placeId: number;
 		clientId: string;
@@ -105,8 +105,8 @@ export namespace DB {
 		romVersion: string;
 		dataVersion: string;
 		dumpFileNum: number;
-	}
-	export interface ChuniClientTestmode {
+	};
+	export type ChuniClientTestmode = {
 		id: number;
 		placeId: number;
 		clientId: string;
@@ -121,8 +121,8 @@ export namespace DB {
 		eventMusicNum: number;
 		machineType: number;
 		monitorFps: number;
-	}
-	export interface ChuniItemCharacter {
+	};
+	export type ChuniItemCharacter = {
 		id: number;
 		user: number;
 		characterId: number | null;
@@ -136,22 +136,22 @@ export namespace DB {
 		friendshipExp: number | null;
 		assignIllust: number | null;
 		exMaxLv: number | null;
-	}
-	export interface ChuniItemCmission {
+	};
+	export type ChuniItemCmission = {
 		id: number;
 		user: number;
 		missionId: number;
 		point: number | null;
-	}
-	export interface ChuniItemCmissionProgress {
+	};
+	export type ChuniItemCmissionProgress = {
 		id: number;
 		user: number;
 		missionId: number;
 		order: number | null;
 		stage: number | null;
 		progress: number | null;
-	}
-	export interface ChuniItemDuel {
+	};
+	export type ChuniItemDuel = {
 		id: number;
 		user: number;
 		duelId: number | null;
@@ -163,15 +163,15 @@ export namespace DB {
 		param2: number | null;
 		param3: number | null;
 		param4: number | null;
-	}
-	export interface ChuniItemFavorite {
+	};
+	export type ChuniItemFavorite = {
 		id: number;
 		user: number;
 		version: number;
 		favId: number;
 		favKind: number;
-	}
-	export interface ChuniItemGacha {
+	};
+	export type ChuniItemGacha = {
 		id: number;
 		user: number;
 		gachaId: number;
@@ -181,16 +181,16 @@ export namespace DB {
 		fiveGachaCnt: number;
 		elevenGachaCnt: number;
 		dailyGachaDate: string;
-	}
-	export interface ChuniItemItem {
+	};
+	export type ChuniItemItem = {
 		id: number;
 		user: number;
 		itemId: number | null;
 		itemKind: number | null;
 		stock: number | null;
 		isValid: boolean | null;
-	}
-	export interface ChuniItemLoginBonus {
+	};
+	export type ChuniItemLoginBonus = {
 		id: number;
 		user: number;
 		version: number;
@@ -199,8 +199,8 @@ export namespace DB {
 		lastUpdateDate: string | null;
 		isWatched: boolean | null;
 		isFinished: boolean | null;
-	}
-	export interface ChuniItemMap {
+	};
+	export type ChuniItemMap = {
 		id: number;
 		user: number;
 		mapId: number | null;
@@ -212,8 +212,8 @@ export namespace DB {
 		rate: number | null;
 		statusCount: number | null;
 		isValid: boolean | null;
-	}
-	export interface ChuniItemMapArea {
+	};
+	export type ChuniItemMapArea = {
 		id: number;
 		user: number;
 		mapAreaId: number | null;
@@ -223,16 +223,16 @@ export namespace DB {
 		position: number | null;
 		statusCount: number | null;
 		remainGridCount: number | null;
-	}
-	export interface ChuniItemMatching {
+	};
+	export type ChuniItemMatching = {
 		roomId: number;
 		user: number;
 		version: number;
 		restMSec: number;
 		isFull: boolean;
 		matchingMemberInfoList: string;
-	}
-	export interface ChuniItemPrintDetail {
+	};
+	export type ChuniItemPrintDetail = {
 		id: number;
 		user: number;
 		cardId: number;
@@ -252,8 +252,8 @@ export namespace DB {
 		printOption9: boolean;
 		printOption10: boolean;
 		created: string;
-	}
-	export interface ChuniItemPrintState {
+	};
+	export type ChuniItemPrintState = {
 		id: number;
 		user: number;
 		hasCompleted: boolean;
@@ -261,8 +261,8 @@ export namespace DB {
 		placeId: number | null;
 		cardId: number | null;
 		gachaId: number | null;
-	}
-	export interface ChuniProfileActivity {
+	};
+	export type ChuniProfileActivity = {
 		id: number;
 		user: number;
 		kind: number | null;
@@ -272,8 +272,8 @@ export namespace DB {
 		param2: number | null;
 		param3: number | null;
 		param4: number | null;
-	}
-	export interface ChuniProfileCharge {
+	};
+	export type ChuniProfileCharge = {
 		id: number;
 		user: number;
 		chargeId: number | null;
@@ -283,8 +283,8 @@ export namespace DB {
 		param1: number | null;
 		param2: number | null;
 		paramDate: string | null;
-	}
-	export interface ChuniProfileData {
+	};
+	export type ChuniProfileData = {
 		id: number;
 		user: number;
 		version: number;
@@ -396,8 +396,8 @@ export namespace DB {
 		avatarHead: number;
 		trophyIdSub1: number | null;
 		trophyIdSub2: number | null;
-	}
-	export interface ChuniProfileDataEx {
+	};
+	export type ChuniProfileDataEx = {
 		id: number;
 		user: number;
 		version: number;
@@ -435,8 +435,8 @@ export namespace DB {
 		extLong5: number | null;
 		mapIconId: number | null;
 		compatibleCmVersion: string | null;
-	}
-	export interface ChuniProfileEmoney {
+	};
+	export type ChuniProfileEmoney = {
 		id: number;
 		user: number;
 		ext1: number | null;
@@ -445,8 +445,8 @@ export namespace DB {
 		type: number | null;
 		emoneyBrand: number | null;
 		emoneyCredit: number | null;
-	}
-	export interface ChuniProfileNetBattle {
+	};
+	export type ChuniProfileNetBattle = {
 		id: number;
 		user: number;
 		isRankUpChallengeFailed: boolean | null;
@@ -454,8 +454,8 @@ export namespace DB {
 		battleIconId: number | null;
 		battleIconNum: number | null;
 		avatarEffectPoint: number | null;
-	}
-	export interface ChuniProfileOption {
+	};
+	export type ChuniProfileOption = {
 		id: number;
 		user: number;
 		speed: number | null;
@@ -508,8 +508,8 @@ export namespace DB {
 		fieldWallPosition: number;
 		playTimingOffset: number;
 		fieldWallPosition_120: number;
-	}
-	export interface ChuniProfileOptionEx {
+	};
+	export type ChuniProfileOptionEx = {
 		id: number;
 		user: number;
 		ext1: number | null;
@@ -532,16 +532,16 @@ export namespace DB {
 		ext18: number | null;
 		ext19: number | null;
 		ext20: number | null;
-	}
-	export interface ChuniProfileOverpower {
+	};
+	export type ChuniProfileOverpower = {
 		id: number;
 		user: number;
 		genreId: number | null;
 		difficulty: number | null;
 		rate: number | null;
 		point: number | null;
-	}
-	export interface ChuniProfileRating {
+	};
+	export type ChuniProfileRating = {
 		id: number;
 		user: number;
 		version: number;
@@ -551,25 +551,25 @@ export namespace DB {
 		difficultId: number | null;
 		romVersionCode: number | null;
 		score: number | null;
-	}
-	export interface ChuniProfileRecentRating {
+	};
+	export type ChuniProfileRecentRating = {
 		id: number;
 		user: number;
 		recentRating: string | null;
-	}
-	export interface ChuniProfileRegion {
+	};
+	export type ChuniProfileRegion = {
 		id: number;
 		user: number;
 		regionId: number | null;
 		playCount: number | null;
-	}
-	export interface ChuniProfileTeam {
+	};
+	export type ChuniProfileTeam = {
 		id: number;
 		teamName: string | null;
 		teamPoint: number | null;
 		userTeamPoint: string | null;
-	}
-	export interface ChuniProfileUnlockChallenge {
+	};
+	export type ChuniProfileUnlockChallenge = {
 		id: number;
 		user: number;
 		unlockChallengeId: number | null;
@@ -579,8 +579,8 @@ export namespace DB {
 		score: number | null;
 		life: number | null;
 		clearDate: string | null;
-	}
-	export interface ChuniScoreBest {
+	};
+	export type ChuniScoreBest = {
 		id: number;
 		user: number;
 		musicId: number | null;
@@ -601,8 +601,8 @@ export namespace DB {
 		isLock: boolean | null;
 		ext1: number | null;
 		theoryCount: number | null;
-	}
-	export interface ChuniScoreCourse {
+	};
+	export type ChuniScoreCourse = {
 		id: number;
 		user: number;
 		courseId: number | null;
@@ -623,8 +623,8 @@ export namespace DB {
 		theoryCount: number | null;
 		orderId: number | null;
 		playerRating: number | null;
-	}
-	export interface ChuniScorePlaylog {
+	};
+	export type ChuniScorePlaylog = {
 		id: number;
 		user: number;
 		orderId: number | null;
@@ -686,8 +686,8 @@ export namespace DB {
 		ticketId: number | null;
 		monthPoint: number | null;
 		eventPoint: number | null;
-	}
-	export interface ChuniStaticAvatar {
+	};
+	export type ChuniStaticAvatar = {
 		id: number;
 		version: number;
 		avatarAccessoryId: number | null;
@@ -695,8 +695,8 @@ export namespace DB {
 		category: number | null;
 		iconPath: string | null;
 		texturePath: string | null;
-	}
-	export interface ChuniStaticCards {
+	};
+	export type ChuniStaticCards = {
 		id: number;
 		version: number;
 		cardId: number;
@@ -710,8 +710,8 @@ export namespace DB {
 		combo: number;
 		chain: number;
 		skillName: string;
-	}
-	export interface ChuniStaticCharge {
+	};
+	export type ChuniStaticCharge = {
 		id: number;
 		version: number;
 		chargeId: number | null;
@@ -720,8 +720,8 @@ export namespace DB {
 		consumeType: number | null;
 		sellingAppeal: boolean | null;
 		enabled: boolean;
-	}
-	export interface ChuniStaticEvents {
+	};
+	export type ChuniStaticEvents = {
 		id: number;
 		version: number;
 		eventId: number | null;
@@ -729,16 +729,16 @@ export namespace DB {
 		name: string | null;
 		startDate: string | null;
 		enabled: boolean;
-	}
-	export interface ChuniStaticGachaCards {
+	};
+	export type ChuniStaticGachaCards = {
 		id: number;
 		gachaId: number;
 		cardId: number;
 		rarity: number;
 		weight: number;
 		isPickup: boolean;
-	}
-	export interface ChuniStaticGachas {
+	};
+	export type ChuniStaticGachas = {
 		id: number;
 		version: number;
 		gachaId: number;
@@ -753,8 +753,8 @@ export namespace DB {
 		endDate: string | null;
 		noticeStartDate: string | null;
 		noticeEndDate: string | null;
-	}
-	export interface ChuniStaticLoginBonus {
+	};
+	export type ChuniStaticLoginBonus = {
 		id: number;
 		version: number;
 		presetId: number;
@@ -765,14 +765,14 @@ export namespace DB {
 		itemNum: number;
 		needLoginDayCount: number;
 		loginBonusCategoryType: number;
-	}
-	export interface ChuniStaticLoginBonusPreset {
+	};
+	export type ChuniStaticLoginBonusPreset = {
 		presetId: number;
 		version: number;
 		presetName: string;
 		isEnabled: boolean;
-	}
-	export interface ChuniStaticMusic {
+	};
+	export type ChuniStaticMusic = {
 		id: number;
 		version: number;
 		songId: number | null;
@@ -783,9 +783,9 @@ export namespace DB {
 		genre: string | null;
 		jacketPath: string | null;
 		worldsEndTag: string | null;
-	}
+	};
 
-	export interface DaphnisStaticCharacter {
+	export type DaphnisStaticCharacter = {
 		id: number;
 		version: number;
 		characterId: number;
@@ -795,9 +795,9 @@ export namespace DB {
 		works: string | null;
 		illustratorName: string | null;
 		imagePath: string;
-	}
+	};
 
-	export interface DaphnisStaticMapIcon {
+	export type DaphnisStaticMapIcon = {
 		id: number;
 		version: number;
 		mapIconId: number;
@@ -805,9 +805,9 @@ export namespace DB {
 		sortName: string;
 		explainText: string;
 		imagePath: string;
-	}
+	};
 
-	export interface DaphnisStaticNameplate {
+	export type DaphnisStaticNameplate = {
 		id: number;
 		version: number;
 		nameplateId: number;
@@ -815,8 +815,8 @@ export namespace DB {
 		sortName: string;
 		explainText: string;
 		imagePath: string;
-	}
-	export interface DaphnisStaticSkill {
+	};
+	export type DaphnisStaticSkill = {
 		id: number;
 		version: number;
 		skillId: number;
@@ -824,17 +824,17 @@ export namespace DB {
 		skillVersion: number | null;
 		categoryId: number;
 		categoryName: string;
-	}
-	export interface DaphnisStaticSystemVoice {
+	};
+	export type DaphnisStaticSystemVoice = {
 		id: number;
 		version: number;
 		systemVoiceId: number;
 		name: string;
 		explainText: string;
 		imagePath: string;
-	}
+	};
 
-	export interface DaphnisStaticTicket {
+	export type DaphnisStaticTicket = {
 		id: number;
 		version: number;
 		ticketId: number;
@@ -844,8 +844,8 @@ export namespace DB {
 		stockMaxNum: number;
 		explainText: string;
 		imagePath: string;
-	}
-	export interface DaphnisStaticTrophy {
+	};
+	export type DaphnisStaticTrophy = {
 		id: number;
 		version: number;
 		trophyId: number;
@@ -853,15 +853,15 @@ export namespace DB {
 		explainText: string;
 		rareType: number;
 		imagePath: string | null;
-	}
-	export interface DaphnisUserOption {
+	};
+	export type DaphnisUserOption = {
 		id: number;
 		user: number;
 		key: string;
 		value: string | null;
-	}
+	};
 
-	export interface Machine {
+	export type Machine = {
 		id: number;
 		arcade: number;
 		serial: string;
@@ -873,9 +873,9 @@ export namespace DB {
 		memo: string | null;
 		is_cab: boolean | null;
 		data: string | null;
-	}
+	};
 
-	export interface OngekiGpLog {
+	export type OngekiGpLog = {
 		id: number;
 		user: number | null;
 		usedCredit: number | null;
@@ -885,8 +885,8 @@ export namespace DB {
 		kind: number | null;
 		pattern: number | null;
 		currentGP: number | null;
-	}
-	export interface OngekiProfileActivity {
+	};
+	export type OngekiProfileActivity = {
 		id: number;
 		user: number;
 		kind: number | null;
@@ -896,8 +896,8 @@ export namespace DB {
 		param2: number | null;
 		param3: number | null;
 		param4: number | null;
-	}
-	export interface OngekiProfileData {
+	};
+	export type OngekiProfileData = {
 		id: number;
 		user: number;
 		version: number;
@@ -963,8 +963,8 @@ export namespace DB {
 		lastEmoneyBrand: number;
 		lastEmoneyCredit: number;
 		isDialogWatchedSuggestMemory: boolean;
-	}
-	export interface OngekiProfileKop {
+	};
+	export type OngekiProfileKop = {
 		id: number;
 		user: number | null;
 		authKey: number | null;
@@ -974,8 +974,8 @@ export namespace DB {
 		totalPlatinumScore: number | null;
 		techRecordDate: string | null;
 		isTotalTechNewRecord: boolean | null;
-	}
-	export interface OngekiProfileOption {
+	};
+	export type OngekiProfileOption = {
 		id: number;
 		user: number;
 		optionSet: number | null;
@@ -1015,8 +1015,8 @@ export namespace DB {
 		headphone: number | null;
 		stealthField: number | null;
 		colorWallBright: number | null;
-	}
-	export interface OngekiProfileRating {
+	};
+	export type OngekiProfileRating = {
 		id: number;
 		user: number;
 		version: number;
@@ -1026,40 +1026,40 @@ export namespace DB {
 		difficultId: number | null;
 		romVersionCode: number | null;
 		score: number | null;
-	}
-	export interface OngekiProfileRatingLog {
+	};
+	export type OngekiProfileRatingLog = {
 		id: number;
 		user: number;
 		highestRating: number | null;
 		dataVersion: string | null;
-	}
+	};
 
-	export interface OngekiProfileRecentRating {
+	export type OngekiProfileRecentRating = {
 		id: number;
 		user: number;
 		recentRating: string | null;
-	}
-	export interface OngekiProfileRegion {
+	};
+	export type OngekiProfileRegion = {
 		id: number;
 		user: number;
 		regionId: number | null;
 		playCount: number | null;
 		created: string | null;
-	}
-	export interface OngekiProfileRival {
+	};
+	export type OngekiProfileRival = {
 		id: number;
 		user: number | null;
 		rivalUserId: number | null;
-	}
-	export interface OngekiProfileTrainingRoom {
+	};
+	export type OngekiProfileTrainingRoom = {
 		id: number;
 		user: number | null;
 		roomId: number | null;
 		authKey: number | null;
 		cardId: number | null;
 		valueDate: string | null;
-	}
-	export interface OngekiScoreBest {
+	};
+	export type OngekiScoreBest = {
 		id: number;
 		user: number;
 		musicId: number;
@@ -1079,8 +1079,8 @@ export namespace DB {
 		clearStatus: number;
 		isStoryWatched: boolean;
 		platinumScoreMax: number | null;
-	}
-	export interface OngekiScorePlaylog {
+	};
+	export type OngekiScorePlaylog = {
 		id: number;
 		user: number;
 		sortNumber: number | null;
@@ -1144,15 +1144,15 @@ export namespace DB {
 		battlePoint: number | null;
 		platinumScore: number | null;
 		platinumScoreMax: number | null;
-	}
-	export interface OngekiScoreTechCount {
+	};
+	export type OngekiScoreTechCount = {
 		id: number;
 		user: number;
 		levelId: number;
 		allBreakCount: number | null;
 		allBreakPlusCount: number | null;
-	}
-	export interface OngekiSessionLog {
+	};
+	export type OngekiSessionLog = {
 		id: number;
 		user: number | null;
 		sortNumber: number | null;
@@ -1160,8 +1160,8 @@ export namespace DB {
 		playDate: string | null;
 		userPlayDate: string | null;
 		isPaid: boolean | null;
-	}
-	export interface OngekiStaticCards {
+	};
+	export type OngekiStaticCards = {
 		id: number;
 		version: number;
 		cardId: number;
@@ -1176,8 +1176,8 @@ export namespace DB {
 		skillId: number;
 		choKaikaSkillId: number;
 		cardNumber: string | null;
-	}
-	export interface OngekiStaticClientTestmode {
+	};
+	export type OngekiStaticClientTestmode = {
 		id: number;
 		regionId: number;
 		placeId: number;
@@ -1195,8 +1195,8 @@ export namespace DB {
 		limitGp: number;
 		maxLeverMovable: number;
 		minLeverMovable: number;
-	}
-	export interface OngekiStaticEvents {
+	};
+	export type OngekiStaticEvents = {
 		id: number;
 		version: number | null;
 		eventId: number | null;
@@ -1205,8 +1205,8 @@ export namespace DB {
 		startDate: string | null;
 		enabled: boolean;
 		endDate: string;
-	}
-	export interface OngekiStaticGachaCards {
+	};
+	export type OngekiStaticGachaCards = {
 		id: number;
 		gachaId: number;
 		cardId: number;
@@ -1214,8 +1214,8 @@ export namespace DB {
 		weight: number;
 		isPickup: boolean;
 		isSelect: boolean;
-	}
-	export interface OngekiStaticGachas {
+	};
+	export type OngekiStaticGachas = {
 		id: number;
 		version: number;
 		gachaId: number;
@@ -1232,17 +1232,17 @@ export namespace DB {
 		noticeStartDate: string | null;
 		noticeEndDate: string | null;
 		convertEndDate: string | null;
-	}
+	};
 
-	export interface OngekiStaticGamePoint {
+	export type OngekiStaticGamePoint = {
 		id: number;
 		type: number;
 		cost: number;
 		startDate: string;
 		endDate: string;
-	}
+	};
 
-	export interface OngekiStaticMusic {
+	export type OngekiStaticMusic = {
 		id: number;
 		version: number | null;
 		songId: number | null;
@@ -1251,17 +1251,17 @@ export namespace DB {
 		artist: string | null;
 		genre: string | null;
 		level: number | null;
-	}
+	};
 
-	export interface OngekiStaticMusicRankingList {
+	export type OngekiStaticMusicRankingList = {
 		id: number;
 		version: number;
 		musicId: number;
 		point: number;
 		userName: string | null;
-	}
+	};
 
-	export interface OngekiStaticPresentList {
+	export type OngekiStaticPresentList = {
 		id: number;
 		version: number;
 		presentId: number;
@@ -1271,23 +1271,23 @@ export namespace DB {
 		message: string | null;
 		startDate: string;
 		endDate: string;
-	}
-	export interface OngekiStaticRewards {
+	};
+	export type OngekiStaticRewards = {
 		id: number;
 		version: number;
 		rewardId: number;
 		rewardName: string;
 		itemKind: number;
 		itemId: number;
-	}
-	export interface OngekiStaticTechMusic {
+	};
+	export type OngekiStaticTechMusic = {
 		id: number;
 		version: number;
 		eventId: number;
 		musicId: number;
 		level: number;
-	}
-	export interface OngekiTechEventRanking {
+	};
+	export type OngekiTechEventRanking = {
 		id: number;
 		user: number;
 		version: number;
@@ -1296,17 +1296,17 @@ export namespace DB {
 		rank: number | null;
 		totalPlatinumScore: number;
 		totalTechScore: number;
-	}
+	};
 
-	export interface OngekiUserBoss {
+	export type OngekiUserBoss = {
 		id: number;
 		user: number | null;
 		musicId: number | null;
 		damage: number | null;
 		isClear: boolean | null;
 		eventId: number | null;
-	}
-	export interface OngekiUserCard {
+	};
+	export type OngekiUserCard = {
 		id: number;
 		user: number | null;
 		cardId: number | null;
@@ -1323,8 +1323,8 @@ export namespace DB {
 		skillId: number | null;
 		isAcquired: boolean | null;
 		created: string | null;
-	}
-	export interface OngekiUserChapter {
+	};
+	export type OngekiUserChapter = {
 		id: number;
 		user: number | null;
 		chapterId: number | null;
@@ -1336,8 +1336,8 @@ export namespace DB {
 		lastPlayMusicLevel: number | null;
 		skipTiming1: number | null;
 		skipTiming2: number | null;
-	}
-	export interface OngekiUserCharacter {
+	};
+	export type OngekiUserCharacter = {
 		id: number;
 		user: number | null;
 		characterId: number | null;
@@ -1349,17 +1349,17 @@ export namespace DB {
 		intimateCountRewarded: number | null;
 		intimateCountDate: string | null;
 		isNew: boolean | null;
-	}
+	};
 
-	export interface OngekiUserDeck {
+	export type OngekiUserDeck = {
 		id: number;
 		user: number | null;
 		deckId: number | null;
 		cardId1: number | null;
 		cardId2: number | null;
 		cardId3: number | null;
-	}
-	export interface OngekiUserEventMusic {
+	};
+	export type OngekiUserEventMusic = {
 		id: number;
 		user: number | null;
 		eventId: number | null;
@@ -1370,8 +1370,8 @@ export namespace DB {
 		platinumScoreMax: number | null;
 		techRecordDate: string | null;
 		isTechNewRecord: boolean | null;
-	}
-	export interface OngekiUserEventPoint {
+	};
+	export type OngekiUserEventPoint = {
 		id: number;
 		user: number | null;
 		eventId: number | null;
@@ -1381,8 +1381,8 @@ export namespace DB {
 		rank: number | null;
 		type: number;
 		date: string | null;
-	}
-	export interface OngekiUserGacha {
+	};
+	export type OngekiUserGacha = {
 		id: number;
 		user: number;
 		gachaId: number;
@@ -1394,29 +1394,29 @@ export namespace DB {
 		fiveGachaCnt: number;
 		elevenGachaCnt: number;
 		dailyGachaDate: string;
-	}
+	};
 
-	export interface OngekiUserGachaSupply {
+	export type OngekiUserGachaSupply = {
 		id: number;
 		user: number;
 		cardId: number;
-	}
-	export interface OngekiUserItem {
+	};
+	export type OngekiUserItem = {
 		id: number;
 		user: number | null;
 		itemKind: number | null;
 		itemId: number | null;
 		stock: number | null;
 		isValid: boolean | null;
-	}
-	export interface OngekiUserLoginBonus {
+	};
+	export type OngekiUserLoginBonus = {
 		id: number;
 		user: number | null;
 		bonusId: number | null;
 		bonusCount: number | null;
 		lastUpdateDate: string | null;
-	}
-	export interface OngekiUserMemoryChapter {
+	};
+	export type OngekiUserMemoryChapter = {
 		id: number;
 		user: number | null;
 		chapterId: number | null;
@@ -1431,21 +1431,21 @@ export namespace DB {
 		lastPlayMusicId: number | null;
 		lastPlayMusicLevel: number | null;
 		lastPlayMusicCategory: number | null;
-	}
-	export interface OngekiUserMissionPoint {
+	};
+	export type OngekiUserMissionPoint = {
 		id: number;
 		user: number | null;
 		eventId: number | null;
 		point: number | null;
 		version: number;
-	}
-	export interface OngekiUserMusicItem {
+	};
+	export type OngekiUserMusicItem = {
 		id: number;
 		user: number | null;
 		musicId: number | null;
 		status: number | null;
-	}
-	export interface OngekiUserPrintDetail {
+	};
+	export type OngekiUserPrintDetail = {
 		id: number;
 		user: number;
 		cardId: number;
@@ -1467,14 +1467,14 @@ export namespace DB {
 		printOption8: boolean;
 		printOption9: boolean;
 		printOption10: boolean;
-	}
-	export interface OngekiUserScenario {
+	};
+	export type OngekiUserScenario = {
 		id: number;
 		user: number | null;
 		scenarioId: number | null;
 		playCount: number | null;
-	}
-	export interface OngekiUserStory {
+	};
+	export type OngekiUserStory = {
 		id: number;
 		user: number | null;
 		storyId: number | null;
@@ -1483,8 +1483,8 @@ export namespace DB {
 		lastPlayMusicId: number | null;
 		lastPlayMusicCategory: number | null;
 		lastPlayMusicLevel: number | null;
-	}
-	export interface OngekiUserTechEvent {
+	};
+	export type OngekiUserTechEvent = {
 		id: number;
 		user: number | null;
 		eventId: number | null;
@@ -1494,12 +1494,12 @@ export namespace DB {
 		isRankingRewarded: boolean | null;
 		isTotalTechNewRecord: boolean | null;
 		version: number;
-	}
-	export interface OngekiUserTradeItem {
+	};
+	export type OngekiUserTradeItem = {
 		id: number;
 		user: number | null;
 		chapterId: number | null;
 		tradeItemId: number | null;
 		tradeCount: number | null;
-	}
+	};
 }

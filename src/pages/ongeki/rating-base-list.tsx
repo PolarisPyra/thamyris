@@ -6,12 +6,12 @@ import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import OngekiRatingFrameTable from "@/components/ongeki/rating-table";
 import {
+	useOngekiVersion,
 	useUserRatingBaseBestList,
 	useUserRatingBaseBestNewList,
 	useUserRatingBaseHotList,
 	useUserRatingBaseNextList,
-} from "@/hooks/ongeki/use-rating";
-import { useOngekiVersion } from "@/hooks/ongeki/use-version";
+} from "@/hooks/ongeki";
 
 const OngekiRatingFrames = () => {
 	const { data: version } = useOngekiVersion();

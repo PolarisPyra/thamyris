@@ -3,7 +3,7 @@ import React from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ChunithmFavoritesTableProps } from "@/types/types";
+import { ChunithmFavoritesTableProps } from "@/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const ChunithmFavoritesTable = ({ favorites, searchQuery, onSearchChange }: ChunithmFavoritesTableProps) => {

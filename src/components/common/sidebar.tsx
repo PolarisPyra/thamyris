@@ -26,7 +26,7 @@ import {
 	SidebarMenuItem,
 	SidebarMenuSub,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/hooks/auth/use-auth";
+import { useAuth } from "@/hooks/auth";
 
 import { NavUser } from "./nav-user";
 

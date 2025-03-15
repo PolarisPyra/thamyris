@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import { toast } from "sonner";
 
-import { useAuth } from "@/hooks/auth/use-auth";
-import { useUpdateAimecard } from "@/hooks/users/use-update-aimecard";
+import { useAuth } from "@/hooks/auth";
+import { useUpdateAimecard } from "@/hooks/users";
 
 const AimeCardSwap = () => {
 	const [accessCode, setAccessCode] = useState("");

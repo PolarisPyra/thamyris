@@ -9,7 +9,8 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/providers/theme-provider";
+import { useTheme } from "@/hooks/theme";
+import { Theme } from "@/types/enums";
 
 export function ModeToggle() {
 	const { setTheme } = useTheme();
@@ -24,15 +25,11 @@ export function ModeToggle() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="bg-background border-primary">
-				<DropdownMenuItem className="focus:bg-hover" onClick={() => setTheme("light")}>
-					Light
-				</DropdownMenuItem>
-				<DropdownMenuItem className="focus:bg-hover" onClick={() => setTheme("dark")}>
-					Dark
-				</DropdownMenuItem>
-				<DropdownMenuItem className="focus:bg-hover" onClick={() => setTheme("system")}>
-					System
-				</DropdownMenuItem>
+				{Object.keys(Theme).map((theme) => (
+					<DropdownMenuItem key={theme} className="focus:bg-hover" onClick={() => setTheme(theme as Theme)}>
+						{theme}
+					</DropdownMenuItem>
+				))}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

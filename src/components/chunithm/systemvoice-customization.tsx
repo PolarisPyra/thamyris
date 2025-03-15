@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useCurrentSystemVoice, useSystemVoices, useUpdateSystemVoice } from "@/hooks/chunithm/use-systemvoice";
+import { useCurrentSystemVoice, useSystemVoices, useUpdateSystemVoice } from "@/hooks/chunithm";
 import { cdnUrl } from "@/lib/cdn";
 
 import Spinner from "../common/spinner";

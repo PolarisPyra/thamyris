@@ -3,7 +3,7 @@ import React from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 
 import BgGame from "@/components/bgGame/bgGame";
-import { useAuth } from "@/hooks/auth/use-auth";
+import { useAuth } from "@/hooks/auth";
 
 export const WelcomeContent = () => (
 	<div className="bg-card mx-4 w-full max-w-md rounded-md p-8">

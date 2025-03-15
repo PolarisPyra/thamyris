@@ -5,8 +5,7 @@ import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
 import OngekiScoreTable from "@/components/ongeki/score-table";
-import { useOngekiScores } from "@/hooks/chunithm/use-scores";
-import { useOngekiVersion } from "@/hooks/ongeki/use-version";
+import { useOngekiScores, useOngekiVersion } from "@/hooks/ongeki";
 
 const OngekiScorePage = () => {
 	const [searchQuery, setSearchQuery] = useState("");

@@ -2,8 +2,7 @@ import React from "react";
 
 import { toast } from "sonner";
 
-import { useKamaitachiExport } from "@/hooks/chunithm/use-kamatachi";
-import { useReiwaExport } from "@/hooks/chunithm/use-reiwa";
+import { useKamaitachiExport, useReiwaExport } from "@/hooks/chunithm";
 
 import { SubmitButton } from "../../common/button";
 

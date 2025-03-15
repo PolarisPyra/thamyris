@@ -5,8 +5,7 @@ import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
 import OngekiAllSongsTable from "@/components/ongeki/allsongs-table";
-import { useOngekiSongs } from "@/hooks/ongeki/use-songs";
-import { useOngekiVersion } from "@/hooks/ongeki/use-version";
+import { useOngekiSongs, useOngekiVersion } from "@/hooks/ongeki";
 
 const OngekiAllSongs = () => {
 	const { data: songs = [], isLoading: isLoadingSongs } = useOngekiSongs();

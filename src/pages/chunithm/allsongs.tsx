@@ -5,8 +5,7 @@ import ChunithmAllSongsTable from "@/components/chunithm/allsongs-table";
 import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
-import { useChunithmSongs } from "@/hooks/chunithm/use-songs";
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { useChunithmSongs, useChunithmVersion } from "@/hooks/chunithm";
 
 const ChunithmAllSongs = () => {
 	const { data: songs = [], isLoading: isLoadingSongs } = useChunithmSongs();

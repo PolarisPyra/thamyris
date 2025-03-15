@@ -3,7 +3,7 @@ import React from "react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useReiwaExport } from "@/hooks/ongeki/use-reiwa";
+import { useReiwaExport } from "@/hooks/ongeki";
 
 const JsonExport = () => {
 	const { data: exportData, isLoading } = useReiwaExport();

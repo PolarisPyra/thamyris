@@ -121,22 +121,7 @@ class Connection {
 }
 
 export class Database {
-	private static pool: mysql.Pool = ((): mysql.Pool => {
-		// console.log("Creating DB Pool...");
-		const pool = mysql.createPool(getDbConnectionConfig());
-		// console.log("DB Pool created with parameters:", {
-		// 	connectConfig: {
-		// 		...pool.config.connectionConfig,
-		// 		password: "********",
-		// 		pool: undefined,
-		// 	},
-		// 	poolConfig: {
-		// 		...pool.config,
-		// 		connectionConfig: undefined,
-		// 	},
-		// });
-		return pool;
-	})();
+	private static pool: mysql.Pool = mysql.createPool(getDbConnectionConfig()).setMaxListeners(20);
 
 	// I don't trust the connections to be released properly
 	// so not exposing this method
@@ -172,7 +157,7 @@ export class Database {
 			await connection.beginTransaction();
 			const result = await callback(connection);
 			await connection.commit();
-			return result;
+			return result as T;
 		} catch (error) {
 			await connection.rollback();
 			throw error;

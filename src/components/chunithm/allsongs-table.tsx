@@ -3,7 +3,7 @@ import React from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AllSongsTableProps } from "@/types/types";
+import { AllSongsTableProps } from "@/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 const ChunithmAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {

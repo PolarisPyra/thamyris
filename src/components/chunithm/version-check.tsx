@@ -2,7 +2,7 @@ import React from "react";
 
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useChunithmVersion } from "@/hooks/chunithm/use-version";
+import { useChunithmVersion } from "@/hooks/chunithm";
 
 export const VersionCheck = () => {
 	const { data: version } = useChunithmVersion();

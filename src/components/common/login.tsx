@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 import Spinner from "@/components/common/spinner";
-import { useAuth } from "@/hooks/auth/use-auth";
+import { useAuth } from "@/hooks/auth";
 
 export const LoginContent = () => {
 	const { login, isLoading } = useAuth();
@@ -54,7 +54,7 @@ export const LoginContent = () => {
 						disabled={isLoading}
 					/>
 				</div>
-				<button className="text-buttontext hover:bg-buttonhover bg-button mb-4 w-full transform rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
+				<button className="text-buttontext hover:bg-buttonhover bg-button mb-4 flex w-full transform justify-center rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer">
 					{isLoading ? <Spinner size={24} color="#ffffff" /> : "Login"}
 				</button>
 				<Link to="/">

@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useUnlockAllItems, useUnlockSpecificItem } from "@/hooks/ongeki/use-unlocks";
-import { useOngekiVersion } from "@/hooks/ongeki/use-version";
+import { useOngekiVersion, useUnlockAllItems, useUnlockSpecificItem } from "@/hooks/ongeki";
 
 const ItemManagement = () => {
 	const { data: ongekiVersion } = useOngekiVersion();

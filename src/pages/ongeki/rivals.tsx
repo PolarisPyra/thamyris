@@ -8,8 +8,7 @@ import Header from "@/components/common/header";
 import Pagination from "@/components/common/pagination";
 import RivalsTable from "@/components/common/rivals-table";
 import Spinner from "@/components/common/spinner";
-import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/ongeki/use-rivals";
-import { useOngekiVersion } from "@/hooks/ongeki/use-version";
+import { useAddRival, useOngekiVersion, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "@/hooks/ongeki";
 
 const ITEMS_PER_PAGE = 10;
 

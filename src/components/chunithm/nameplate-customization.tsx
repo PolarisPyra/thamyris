@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useCurrentNameplate, useNameplates, useUpdateNameplate } from "@/hooks/chunithm/use-nameplates";
+import { useCurrentNameplate, useNameplates, useUpdateNameplate } from "@/hooks/chunithm";
 import { cdnUrl } from "@/lib/cdn";
 
 import Spinner from "../common/spinner";

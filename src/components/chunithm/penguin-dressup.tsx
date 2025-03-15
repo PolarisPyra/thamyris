@@ -5,9 +5,9 @@ import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useAllAvatarParts, useCurrentAvatar, useUpdateAvatar } from "@/hooks/chunithm/use-avatar";
+import { useAllAvatarParts, useCurrentAvatar, useUpdateAvatar } from "@/hooks/chunithm";
 import { cdnUrl } from "@/lib/cdn";
-import { AvatarParts } from "@/types/types";
+import { AvatarParts } from "@/types";
 
 import Spinner from "../common/spinner";
 
