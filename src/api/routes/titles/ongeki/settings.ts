@@ -31,7 +31,7 @@ interface VersionEntry {
 
 const OngekiSettingsRoutes = new Hono()
 
-	.get("/settings/get", async (c): Promise<Response> => {
+	.get("", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
