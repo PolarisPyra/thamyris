@@ -10,12 +10,7 @@ import { db } from "../db";
 import { validateJson } from "../middleware/validator";
 import { DB } from "../types/db";
 import { clearCookie, signAndSetCookie } from "../utils/cookie";
-import {
-	badRequestWithMessage,
-	conflictRequestWithMessage,
-	rethrowWithMessage,
-	unauthorizedWithMessage,
-} from "../utils/error";
+import { rethrowWithMessage } from "../utils/error";
 
 /**
  * Unprotected routes which should not require authentication.
@@ -50,13 +45,13 @@ const UnprotectedRoutes = new Hono()
 					// Find user by username
 					const [user] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE username = ?", [username]);
 					if (!user) {
-						return c.json(unauthorizedWithMessage("Unauthorized", username));
+						throw new HTTPException(401, { message: "Invalid username or password" });
 					}
 
 					// Verify password
 					const passwordMatch = await argon2.verify(user.password, password);
 					if (!passwordMatch) {
-						return c.json(unauthorizedWithMessage("Unauthorized", username));
+						throw new HTTPException(401, { message: "Invalid username or password" });
 					}
 					const [aimeCard] = await conn.select<DB.AimeCard>("SELECT access_code FROM aime_card WHERE user = ?", [user.id]);
 
@@ -146,13 +141,13 @@ const UnprotectedRoutes = new Hono()
 
 					// check contents of json payload against existing users
 					if (existingUser && (existingUser.username || existingUser.password)) {
-						return c.json(conflictRequestWithMessage("Account already exists for this user", existingUser));
+						throw new HTTPException(409, { message: "Account already exists for this user" });
 					}
 
 					// Check if username is already taken
 					const [usernameCheck] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE username = ?", [username]);
 					if (usernameCheck) {
-						return c.json(conflictRequestWithMessage("Username already exists", usernameCheck));
+						throw new HTTPException(409, { message: "Username already exists" });
 					}
 
 					// Hash password
@@ -166,7 +161,7 @@ const UnprotectedRoutes = new Hono()
 					]);
 					// Check if the update was successful
 					if (result.affectedRows === 0) {
-						return c.json(badRequestWithMessage("Failed to update aime_user", result));
+						throw new HTTPException(500, { message: "Failed to update aime_user" });
 					}
 
 					// NOTE: aimedb makes default users have a placeholder NULL name so we need to get the new username after we insert it
