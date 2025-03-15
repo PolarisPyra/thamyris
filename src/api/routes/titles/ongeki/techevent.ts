@@ -10,6 +10,7 @@ import { rethrowWithMessage } from "@/api/utils/error";
 type TechEvent = DB.OngekiStaticEvents & {
 	ownerUserId: string | null;
 	ownerUsername: string | null;
+	music?: DB.OngekiStaticMusic;
 };
 
 export const OngekiTechEventRoutes = new Hono()
@@ -38,6 +39,41 @@ export const OngekiTechEventRoutes = new Hono()
 			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get tech events", error);
+		}
+	})
+	.get("/:eventId", async (c) => {
+		try {
+			const { eventId } = c.req.param();
+			const [event] = await db.select<TechEvent>(
+				`
+					SELECT 
+						ose.*,
+						au.id AS ownerUserId,
+						au.username AS ownerUsername
+					FROM ongeki_static_events ose
+					LEFT JOIN daphnis_user_option duo ON
+						duo.key = ${DaphnisUserOptionKey.OngekiStaticEventOwner} AND
+						duo.value = ose.eventId
+					LEFT JOIN aime_user au ON
+						au.id = duo.user
+					WHERE ose.eventId = ?
+					  AND ose.type = 17
+					  AND ose.version = 7
+				`,
+				[eventId]
+			);
+			const [music] = await db.select<DB.OngekiStaticTechMusic>(
+				`
+					SELECT 
+						*
+					FROM ongeki_static_tech_music
+					WHERE eventId = ?
+				`,
+				[eventId]
+			);
+			return c.json({ ...event, music });
+		} catch (error) {
+			throw rethrowWithMessage("Failed to get tech event", error);
 		}
 	})
 
