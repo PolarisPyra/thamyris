@@ -98,7 +98,7 @@ const UnprotectedRoutes = new Hono()
 					// Successful login
 					return await signAndSetCookie(c, user, aimeCard);
 				} catch (error) {
-					rethrowWithMessage("Failed to login", error);
+					throw rethrowWithMessage("Failed to login", error);
 				}
 			});
 
@@ -214,7 +214,7 @@ const UnprotectedRoutes = new Hono()
 
 					return await signAndSetCookie(c, updatedUser, aimeCard);
 				} catch (error) {
-					rethrowWithMessage("Failed to create account", error);
+					throw rethrowWithMessage("Failed to create account", error);
 				}
 			});
 

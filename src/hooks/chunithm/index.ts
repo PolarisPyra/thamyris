@@ -13,6 +13,7 @@ import {
 	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
 } from "./use-rating";
+import { useReiwaExport } from "./use-reiwa";
 import { useAddRival, useRemoveRival, useRivalCount, useRivalUsers, useRivals } from "./use-rivals";
 import { useChunithmScores } from "./use-scores";
 import { useChunithmSongs } from "./use-songs";
@@ -44,6 +45,7 @@ export {
 	useUserRatingBaseList,
 	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
+	useReiwaExport,
 	useAddRival,
 	useRemoveRival,
 	useRivalCount,

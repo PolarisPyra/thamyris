@@ -127,7 +127,7 @@ const OngekiRoutes = new Hono()
 			);
 			return c.json(results);
 		} catch (error) {
-			rethrowWithMessage("Failed to fetch ongeki playlog", error);
+			throw rethrowWithMessage("Failed to fetch ongeki playlog", error);
 		}
 	})
 	.get("/ongeki_static_music", async (c): Promise<Response> => {

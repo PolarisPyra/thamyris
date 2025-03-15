@@ -63,10 +63,6 @@ interface TeamExistsResult {
 	count: number;
 }
 
-interface PlaylogResponse {
-	results: PlaylogResult[];
-}
-
 interface StaticMusicResponse {
 	results: StaticMusicResult[];
 }
@@ -169,7 +165,7 @@ const ChunithmRoutes = new Hono()
 			);
 			return c.json(results);
 		} catch (error) {
-			rethrowWithMessage("Failed to fetch chunithm scores", error);
+			throw rethrowWithMessage("Failed to fetch chunithm scores", error);
 		}
 	})
 	.get("/teams", async (c): Promise<Response> => {
