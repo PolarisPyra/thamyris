@@ -144,8 +144,7 @@ const OngekiRoutes = new Hono()
 
 			return c.json({ results } as StaticMusicResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get ongeki static music", error);
 		}
 	});
 export { OngekiRoutes };

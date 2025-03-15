@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -83,8 +84,7 @@ const FavoritesRoutes = new Hono()
 
 			return c.json({ results } as FavoritesResponse);
 		} catch (error) {
-			console.error("Error fetching favorites:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get favorites", error);
 		}
 	});
 export { FavoritesRoutes };

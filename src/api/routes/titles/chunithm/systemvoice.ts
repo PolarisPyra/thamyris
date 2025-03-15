@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -65,8 +66,7 @@ const SystemvoiceRoutes = new Hono()
 
 			return c.json({ results } as SystemVoiceCurrentResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get current systemvoices", error);
 		}
 	})
 
@@ -90,8 +90,7 @@ const SystemvoiceRoutes = new Hono()
 			}
 			return c.json({ success: true } as SystemVoiceUpdateResponse);
 		} catch (error) {
-			console.error("Error updating voiceId:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to update voiceId", error);
 		}
 	})
 	.get("/systemvoice/all", async (c): Promise<Response> => {
@@ -125,8 +124,7 @@ const SystemvoiceRoutes = new Hono()
 
 			return c.json({ results: currentlyUnlockedSystemvoices } as SystemVoiceAllResponse);
 		} catch (error) {
-			console.error("Error fetching systemvoices:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get systemvoices", error);
 		}
 	});
 export { SystemvoiceRoutes };

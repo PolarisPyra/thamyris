@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 import { OngekiRating } from "@/utils/helpers";
 
 import { getUserVersionOngeki } from "../../../version";
@@ -151,8 +152,7 @@ const OngekiRatingRoutes = new Hono()
 
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get user rating base hot list", error);
 		}
 	})
 
@@ -243,8 +243,7 @@ const OngekiRatingRoutes = new Hono()
 
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get user rating base next list", error);
 		}
 	})
 	.get("/user_rating_base_best_list", async (c): Promise<Response> => {
@@ -379,8 +378,7 @@ const OngekiRatingRoutes = new Hono()
 
 			return c.json({ results } as RatingResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get user rating base new list", error);
 		}
 	})
 	.get("/player_rating", async (c): Promise<Response> => {
@@ -402,8 +400,7 @@ const OngekiRatingRoutes = new Hono()
 
 			return c.json({ rating: result[0].playerRating ?? 0 } as PlayerRatingResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get player rating", error);
 		}
 	})
 	.get("/highest_rating", async (c): Promise<Response> => {
@@ -425,8 +422,7 @@ const OngekiRatingRoutes = new Hono()
 
 			return c.json({ highestRating: result[0].highestRating ?? 0 } as HighestRatingResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get highest rating", error);
 		}
 	});
 

@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -64,8 +65,7 @@ const MapIconRoutes = new Hono()
 
 			return c.json({ results } as MapIconCurrentResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get current map icon", error);
 		}
 	})
 
@@ -89,8 +89,7 @@ const MapIconRoutes = new Hono()
 			}
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error updating map icon:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to update map icon", error);
 		}
 	})
 	.get("/mapicon/all", async (c): Promise<Response> => {
@@ -122,8 +121,7 @@ const MapIconRoutes = new Hono()
 
 			return c.json({ results: currentlyUnlockedMapicons } as MapIconAllResponse);
 		} catch (error) {
-			console.error("Error fetching mapicons:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get mapicons", error);
 		}
 	});
 export { MapIconRoutes };

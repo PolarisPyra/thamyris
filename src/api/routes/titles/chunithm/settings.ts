@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 interface SettingsGetResponse {
 	version: string;
@@ -39,8 +40,7 @@ const ChunithmSettingsRoutes = new Hono()
 
 			return c.json({ version: versionResult?.value || "No Version" } as SettingsGetResponse);
 		} catch (error) {
-			console.error("Error getting current version:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get current version", error);
 		}
 	})
 	.post("/settings/update", async (c): Promise<Response> => {
@@ -66,8 +66,7 @@ const ChunithmSettingsRoutes = new Hono()
 				message: "Successfully updated game version",
 			} as SettingsUpdateResponse);
 		} catch (error) {
-			console.error("Error updating settings:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to update settings", error);
 		}
 	})
 	.get("/settings/versions", async (c): Promise<Response> => {
@@ -84,8 +83,7 @@ const ChunithmSettingsRoutes = new Hono()
 
 			return c.json({ versions: versions.map((v) => v.version) } as SettingsVersionsResponse);
 		} catch (error) {
-			console.error("Error getting versions:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get versions", error);
 		}
 	});
 

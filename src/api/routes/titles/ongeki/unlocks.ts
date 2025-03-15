@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 import { getUserVersionOngeki } from "@/api/version";
 
 interface UnlockCardsRequest {
@@ -70,8 +71,7 @@ GROUP BY level`,
 			// Return the card count result as JSON, but with a success status code
 			return c.json({ result });
 		} catch (error) {
-			console.error("Error unlocking cards:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to unlock Ongeki cards", error);
 		}
 	})
 
@@ -95,8 +95,7 @@ WHERE version = ? AND itemKind = ?
 
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error unlocking specific item:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to unlock specific Ongeki item", error);
 		}
 	})
 
@@ -123,8 +122,7 @@ WHERE version = ? AND itemKind = ?
 
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error unlocking all items:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to unlock all Ongeki items", error);
 		}
 	});
 

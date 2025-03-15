@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -121,8 +122,7 @@ AND cp.version = ?;
 			)) as AvatarCurrentResult[];
 			return c.json({ results } as AvatarCurrentResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get current avatar", error);
 		}
 	})
 
@@ -152,8 +152,7 @@ AND cp.version = ?;
 			}
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error updating avatar:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to update avatar", error);
 		}
 	})
 
@@ -213,8 +212,7 @@ AND cp.version = ?;
 
 			return c.json({ results: groupedResults } as AvatarPartsResponse);
 		} catch (error) {
-			console.error("Error fetching all avatar parts:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get all avatar parts", error);
 		}
 	});
 

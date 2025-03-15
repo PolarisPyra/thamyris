@@ -173,8 +173,7 @@ const ChunithmRoutes = new Hono()
 			const results = (await db.query(`SELECT * FROM chuni_profile_team`)) as TeamResult[];
 			return c.json({ results } as TeamsResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get teams", error);
 		}
 	})
 
@@ -209,8 +208,7 @@ const ChunithmRoutes = new Hono()
 
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error updating team:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to update team", error);
 		}
 	})
 
@@ -236,8 +234,7 @@ const ChunithmRoutes = new Hono()
 				teamId: result.insertId,
 			} as AddTeamResponse);
 		} catch (error) {
-			console.error("Error adding team:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to add team", error);
 		}
 	});
 

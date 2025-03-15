@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import db from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 const UserRoutes = new Hono()
 	.post("/verify", async (c) => {
@@ -26,8 +27,7 @@ const UserRoutes = new Hono()
 
 			return c.json({ success: true });
 		} catch (error) {
-			console.error("Error updating aime card:", error);
-			return c.json({ error: "Failed to update aime card" }, 500);
+			throw rethrowWithMessage("Failed to update aime card", error);
 		}
 	});
 

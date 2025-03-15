@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionOngeki } from "../../../version";
 
@@ -56,8 +57,7 @@ const OngekiRivalsRoutes = new Hono()
 			}
 			return new Response(null, { status: 200 });
 		} catch (error) {
-			console.error("Error adding rival:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to add rival", error);
 		}
 	})
 
@@ -77,8 +77,7 @@ const OngekiRivalsRoutes = new Hono()
 			}
 			return new Response(null, { status: 200 });
 		} catch (error) {
-			console.error("Error removing rival:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to remove rival", error);
 		}
 	})
 
@@ -97,8 +96,7 @@ const OngekiRivalsRoutes = new Hono()
 				results: results.map((r) => r.rivalUserId),
 			} as RivalsListResponse);
 		} catch (error) {
-			console.error("Error fetching rivals:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get rivals", error);
 		}
 	})
 
@@ -130,8 +128,7 @@ const OngekiRivalsRoutes = new Hono()
 
 			return c.json({ results } as MutualRivalsResponse);
 		} catch (error) {
-			console.error("Error fetching mutual rivals:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get mutual rivals", error);
 		}
 	})
 
@@ -152,8 +149,7 @@ const OngekiRivalsRoutes = new Hono()
 
 			return c.json({ results } as UserLookupResponse);
 		} catch (error) {
-			console.error("Error fetching Aime users:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get Aime users", error);
 		}
 	})
 
@@ -170,8 +166,7 @@ const OngekiRivalsRoutes = new Hono()
 
 			return c.json({ rivalCount: result[0].rivalCount } as RivalCountResponse);
 		} catch (error) {
-			console.error("Error counting rivals:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get rival count", error);
 		}
 	});
 

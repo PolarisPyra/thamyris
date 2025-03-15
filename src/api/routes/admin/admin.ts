@@ -3,6 +3,7 @@ import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 import { env } from "@/env";
 
 const AdminRoutes = new Hono()
@@ -16,7 +17,6 @@ const AdminRoutes = new Hono()
 			const payload = await verify(token, env.JWT_SECRET);
 			const permissions = payload.permissions;
 
-			// Check if user has admin privileges (permission level 2) from JWT
 			if (!permissions || permissions !== 2) {
 				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
 			}
@@ -41,7 +41,6 @@ const AdminRoutes = new Hono()
 			const body = await c.req.json();
 			const { arcade_nickname, name, game, namcopcbid, aimecard } = body;
 
-			// Check if user has admin privileges (permission level 2) from JWT
 			if (!permissions || permissions !== 2) {
 				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
 			}
@@ -64,7 +63,6 @@ const AdminRoutes = new Hono()
 				return c.json({ error: "Serial ID is required" }, 400);
 			}
 
-			// Check for existing machine
 			const existingMachine = await db.query(
 				`SELECT id 
 				FROM machine 
@@ -85,14 +83,12 @@ const AdminRoutes = new Hono()
 
 			const arcadeId = result.insertId;
 
-			// Create arcade owner relationship
 			await db.query(
 				`INSERT INTO arcade_owner (user, arcade, permissions) 
 				VALUES (?, ?, ?)`,
 				[userId, arcadeId, 1]
 			);
 
-			// Create machine
 			await db.query(
 				`INSERT INTO machine (arcade, serial, game) 
 				VALUES (?, ?, ?)`,
@@ -101,8 +97,7 @@ const AdminRoutes = new Hono()
 
 			return c.json({ success: true, arcadeId });
 		} catch (error) {
-			console.error("Error generating keychip:", error);
-			return c.json({ error: "Failed to generate keychip" }, 500);
+			throw rethrowWithMessage("Failed to generate keychip", error);
 		}
 	});
 

@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 import { ChunitmRating, getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
 
 import { getUserVersionChunithm } from "../../../version";
@@ -139,8 +140,7 @@ const ChunithmReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
 
 		return c.json(formattedData);
 	} catch (error) {
-		console.error("Error exporting B30 data:", error);
-		return new Response("error", { status: 500 });
+		throw rethrowWithMessage("Failed to export B30 data", error);
 	}
 });
 

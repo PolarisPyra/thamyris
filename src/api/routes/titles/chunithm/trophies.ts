@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 
+import { rethrowWithMessage } from "@/api/utils/error";
+
 import { db } from "../../../db";
 import { getUserVersionChunithm } from "../../../version";
 
@@ -59,8 +61,7 @@ const TrophyRoutes = new Hono()
 				data: rows[0],
 			});
 		} catch (error) {
-			console.error("[Chunithm Trophy] Error fetching current trophies:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get current trophies", error);
 		}
 	})
 
@@ -102,8 +103,7 @@ const TrophyRoutes = new Hono()
 				data: trophyResults,
 			});
 		} catch (error) {
-			console.error("[Chunithm Trophy] Error fetching unlocked trophies:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get unlocked trophies", error);
 		}
 	})
 
@@ -149,8 +149,7 @@ const TrophyRoutes = new Hono()
 
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("[Chunithm Trophy] Error updating trophies:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to update trophies", error);
 		}
 	});
 

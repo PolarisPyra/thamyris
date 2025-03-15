@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 import { ChunitmRating } from "@/utils/helpers";
 
 import { getUserVersionChunithm } from "../../../version";
@@ -149,8 +150,7 @@ const UserRatingFramesRoutes = new Hono()
 
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get rating base", error);
 		}
 	})
 	.get("/user_rating_base_list", async (c): Promise<Response> => {
@@ -240,8 +240,7 @@ const UserRatingFramesRoutes = new Hono()
 
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get rating base", error);
 		}
 	})
 	.get("/user_rating_base_new_list", async (c): Promise<Response> => {
@@ -328,8 +327,7 @@ const UserRatingFramesRoutes = new Hono()
 
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get rating base", error);
 		}
 	})
 	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
@@ -419,8 +417,7 @@ const UserRatingFramesRoutes = new Hono()
 
 			return c.json({ results } as RatingBaseResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get rating base", error);
 		}
 	})
 	.get("/playerRating", async (c): Promise<Response> => {
@@ -438,8 +435,7 @@ const UserRatingFramesRoutes = new Hono()
 
 			return c.json({ playerRating: ratingData.playerRating } as PlayerRatingResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get player rating", error);
 		}
 	})
 
@@ -459,8 +455,7 @@ const UserRatingFramesRoutes = new Hono()
 
 			return c.json({ highestRating: ratingData.highestRating } as HighestRatingResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get highest rating", error);
 		}
 	});
 

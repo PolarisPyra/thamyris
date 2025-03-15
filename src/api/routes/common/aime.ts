@@ -19,8 +19,7 @@ const AimeCardRoute = new Hono()
 			const rows = await db.select<DB.AimeUser>("SELECT * FROM aime_user");
 			return c.json({ users: rows });
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return c.json(rethrowWithMessage("Failed to fetch users", error));
+			throw rethrowWithMessage("Failed to fetch users", error);
 		}
 	});
 

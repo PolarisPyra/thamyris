@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 interface UnlockResponse {
 	success: boolean;
@@ -21,8 +22,7 @@ const ChunithmUnlockRoutes = new Hono()
 
 			return c.json({ success: true, message: "Successfully unlocked all songs" } as UnlockResponse);
 		} catch (error) {
-			console.error("Error unlocking all songs:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to unlock all songs", error);
 		}
 	})
 	.post("/settings/songs/lock", async (c) => {
@@ -38,8 +38,7 @@ const ChunithmUnlockRoutes = new Hono()
 
 			return c.json({ success: true, message: "Successfully locked songs" } as UnlockResponse);
 		} catch (error) {
-			console.error("Error locking songs:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to lock songs", error);
 		}
 	})
 	.post("/settings/tickets/unlimited", async (c) => {
@@ -55,8 +54,7 @@ const ChunithmUnlockRoutes = new Hono()
 
 			return c.json({ success: true, message: "Successfully enabled unlimited tickets" } as UnlockResponse);
 		} catch (error) {
-			console.error("Error enabling unlimited tickets:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to enable unlimited tickets", error);
 		}
 	})
 	.post("/settings/tickets/limited", async (c) => {
@@ -72,8 +70,7 @@ const ChunithmUnlockRoutes = new Hono()
 
 			return c.json({ success: true, message: "Successfully disabled unlimited tickets" } as UnlockResponse);
 		} catch (error) {
-			console.error("Error disabling unlimited tickets:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to disable unlimited tickets", error);
 		}
 	});
 

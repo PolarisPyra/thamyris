@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -64,8 +65,7 @@ const NameplateRoutes = new Hono()
 
 			return c.json({ results } as NameplateCurrentResponse);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get current nameplate", error);
 		}
 	})
 
@@ -89,8 +89,7 @@ const NameplateRoutes = new Hono()
 			}
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error updating nameplate:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to update nameplate", error);
 		}
 	})
 	.get("/nameplates/all", async (c): Promise<Response> => {
@@ -122,8 +121,7 @@ const NameplateRoutes = new Hono()
 
 			return c.json({ results: currentlyUnlockedNamePlates } as NameplateAllResponse);
 		} catch (error) {
-			console.error("Error fetching nameplates:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get nameplates", error);
 		}
 	});
 export { NameplateRoutes };

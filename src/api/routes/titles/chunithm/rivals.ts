@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -58,8 +59,7 @@ const RivalsRoutes = new Hono()
 			}
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error adding favorite:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to add favorite", error);
 		}
 	})
 
@@ -81,8 +81,7 @@ const RivalsRoutes = new Hono()
 			}
 			return new Response("success", { status: 200 });
 		} catch (error) {
-			console.error("Error removing favorite:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to remove favorite", error);
 		}
 	})
 
@@ -101,8 +100,7 @@ const RivalsRoutes = new Hono()
 
 			return c.json({ results: results.map((r: { favId: number }) => r.favId) } as RivalsAllResponse);
 		} catch (error) {
-			console.error("Error fetching rivals:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get rivals", error);
 		}
 	})
 
@@ -140,8 +138,7 @@ const RivalsRoutes = new Hono()
 
 			return c.json({ results } as RivalsMutualResponse);
 		} catch (error) {
-			console.error("Error fetching mutual rivals:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get mutual rivals", error);
 		}
 	})
 
@@ -163,8 +160,7 @@ const RivalsRoutes = new Hono()
 
 			return c.json({ results } as UserLookupResponse);
 		} catch (error) {
-			console.error("Error fetching Aime users:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to get user lookup", error);
 		}
 	})
 
@@ -183,8 +179,7 @@ const RivalsRoutes = new Hono()
 
 			return c.json({ rivalCount: result[0].rivalCount } as RivalsCountResponse);
 		} catch (error) {
-			console.error("Error counting rivals:", error);
-			return new Response("error", { status: 500 });
+			throw rethrowWithMessage("Failed to count rivals", error);
 		}
 	});
 export { RivalsRoutes };
