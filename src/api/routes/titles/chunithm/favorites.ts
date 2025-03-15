@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { notFoundWithMessage, rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -37,12 +36,12 @@ const FavoritesRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json(notFoundWithMessage("Favorite not found", result));
+				return new Response(null, { status: 400 });
 			}
-			return c.json(successWithMessage("Favorite added successfully", result));
+			return new Response(null, { status: 200 });
 		} catch (error) {
 			console.error("Error adding favorite:", error);
-			return c.json(rethrowWithMessage("Failed to add favorite", error));
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -60,12 +59,12 @@ const FavoritesRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json(notFoundWithMessage("Favorite not found", result));
+				return new Response("not found", { status: 404 });
 			}
-			return c.json(successWithMessage("Favorite removed successfully", result));
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error removing favorite:", error);
-			return c.json(rethrowWithMessage("Failed to remove favorite", error));
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -85,7 +84,7 @@ const FavoritesRoutes = new Hono()
 			return c.json({ results } as FavoritesResponse);
 		} catch (error) {
 			console.error("Error fetching favorites:", error);
-			return c.json(rethrowWithMessage("Failed to fetch favorites", error));
+			return new Response("error", { status: 500 });
 		}
 	});
 export { FavoritesRoutes };

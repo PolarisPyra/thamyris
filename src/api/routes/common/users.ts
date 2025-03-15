@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import db from "@/api/db";
-import { notFoundWithMessage, rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
+import { notFoundWithMessage, rethrowWithMessage, successWithMessage } from "@/api/utils/error";
 
 const UserRoutes = new Hono()
 	.post("/verify", async (c) => {

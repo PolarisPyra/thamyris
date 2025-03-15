@@ -9,7 +9,7 @@ import {
 	rethrowWithMessage,
 	successWithMessage,
 	unauthorizedWithMessage,
-} from "@/api/utils/http-wrappers";
+} from "@/api/utils/error";
 import { env } from "@/env";
 
 const AdminRoutes = new Hono()

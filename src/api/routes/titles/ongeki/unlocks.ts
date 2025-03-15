@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
 import { getUserVersionOngeki } from "@/api/version";
 
 interface UnlockCardsRequest {
@@ -68,10 +67,11 @@ GROUP BY level`,
 				[userId]
 			)) as CardCountResult[];
 
-			return c.json(successWithMessage("Successfully unlocked cards", { result }));
+			// Return the card count result as JSON, but with a success status code
+			return c.json({ result });
 		} catch (error) {
 			console.error("Error unlocking cards:", error);
-			throw rethrowWithMessage("Failed to unlock cards", error);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -93,10 +93,10 @@ WHERE version = ? AND itemKind = ?
 				[userId, version, itemKind]
 			);
 
-			return c.json(successWithMessage("Successfully unlocked specific item", { itemKind }));
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error unlocking specific item:", error);
-			throw rethrowWithMessage("Failed to unlock specific item", error);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -121,10 +121,10 @@ WHERE version = ? AND itemKind = ?
 				);
 			}
 
-			return c.json(successWithMessage("Successfully unlocked all items", { itemKinds }));
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error unlocking all items:", error);
-			throw rethrowWithMessage("Failed to unlock all items", error);
+			return new Response("error", { status: 500 });
 		}
 	});
 

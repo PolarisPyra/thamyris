@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -124,7 +123,7 @@ const MapIconRoutes = new Hono()
 			return c.json({ results: currentlyUnlockedMapicons } as MapIconAllResponse);
 		} catch (error) {
 			console.error("Error fetching mapicons:", error);
-			return c.json(rethrowWithMessage("Failed to fetch mapicons", error));
+			return new Response("error", { status: 500 });
 		}
 	});
 export { MapIconRoutes };

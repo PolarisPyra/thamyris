@@ -15,7 +15,7 @@ import {
 	conflictRequestWithMessage,
 	rethrowWithMessage,
 	unauthorizedWithMessage,
-} from "../utils/http-wrappers";
+} from "../utils/error";
 
 /**
  * Unprotected routes which should not require authentication.

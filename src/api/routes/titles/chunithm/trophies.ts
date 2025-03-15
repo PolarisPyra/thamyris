@@ -1,7 +1,5 @@
 import { Hono } from "hono";
 
-import { notFoundWithMessage, rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
-
 import { db } from "../../../db";
 import { getUserVersionChunithm } from "../../../version";
 
@@ -35,7 +33,7 @@ const TrophyRoutes = new Hono()
 			const userId = c.payload.userId;
 			const version = await getUserVersionChunithm(userId);
 
-			const results = await db.query<
+			const rows = await db.query<
 				{
 					trophyId: number | null;
 					trophyIdSub1: number | null;
@@ -53,16 +51,16 @@ const TrophyRoutes = new Hono()
 				[userId, version]
 			);
 
-			if (!results || results.length === 0) {
+			if (!rows || rows.length === 0) {
 				return new Response("not found", { status: 404 });
 			}
 
 			return c.json<CurrentTrophyResponse>({
-				data: results[0],
+				data: rows[0],
 			});
 		} catch (error) {
 			console.error("[Chunithm Trophy] Error fetching current trophies:", error);
-			throw rethrowWithMessage("Failed to fetch current trophies", error);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -86,7 +84,7 @@ const TrophyRoutes = new Hono()
 
 			const unlockedTrophyIds = unlockedResults.map((item) => item.itemId);
 
-			const results = await db.query<
+			const trophyResults = await db.query<
 				Array<{
 					id: number;
 					name: string;
@@ -101,11 +99,11 @@ const TrophyRoutes = new Hono()
 			);
 
 			return c.json<UnlockedTrophyResponse>({
-				data: results,
+				data: trophyResults,
 			});
 		} catch (error) {
 			console.error("[Chunithm Trophy] Error fetching unlocked trophies:", error);
-			throw rethrowWithMessage("Failed to fetch unlocked trophies", error);
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -146,13 +144,13 @@ const TrophyRoutes = new Hono()
 			);
 
 			if (!result || result.affectedRows === 0) {
-				return c.json(notFoundWithMessage("Failed to update trophies", result));
+				return new Response("not found", { status: 404 });
 			}
 
-			return c.json(successWithMessage("Successfully updated trophies", result));
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("[Chunithm Trophy] Error updating trophies:", error);
-			throw rethrowWithMessage("Failed to update trophies", error);
+			return new Response("error", { status: 500 });
 		}
 	});
 

@@ -2,7 +2,7 @@ import { Hono } from "hono";
 
 import { db } from "@/api/db";
 import { DB } from "@/api/types";
-import { rethrowWithMessage } from "@/api/utils/http-wrappers";
+import { rethrowWithMessage } from "@/api/utils/error";
 
 const AimeCardRoute = new Hono()
 	.get("/aime_card", async (c) => {

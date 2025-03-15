@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { notFoundWithMessage, rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -123,7 +122,7 @@ AND cp.version = ?;
 			return c.json({ results } as AvatarCurrentResponse);
 		} catch (error) {
 			console.error("Error executing query:", error);
-			return c.json(rethrowWithMessage("Failed to fetch avatar", error));
+			return new Response("error", { status: 500 });
 		}
 	})
 
@@ -149,12 +148,12 @@ AND cp.version = ?;
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json(notFoundWithMessage("Failed to update avatar", result));
+				return new Response("not found", { status: 404 });
 			}
-			return c.json(successWithMessage("Avatar updated successfully", result));
+			return new Response("success", { status: 200 });
 		} catch (error) {
 			console.error("Error updating avatar:", error);
-			return c.json(rethrowWithMessage("Failed to update avatar", error));
+			return new Response("error", { status: 500 });
 		}
 	})
 

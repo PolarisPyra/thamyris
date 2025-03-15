@@ -3,7 +3,6 @@ import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { rethrowWithMessage, successWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionChunithm } from "../../../version";
 
@@ -162,10 +161,10 @@ const ChunithmKamaitachiRoutes = new Hono().get("/kamaitachi/export", async (c) 
 			tachiExport.scores.push(tachiScore);
 		}
 
-		return c.json(successWithMessage("Successfully exported data", tachiExport));
+		return c.json({ success: true, data: tachiExport });
 	} catch (error) {
 		console.error("Error exporting Kamaitachi data:", error);
-		return c.json(rethrowWithMessage("Failed to export data", error), 500);
+		return c.json({ success: false, message: "Failed to export data" }, 500);
 	}
 });
 

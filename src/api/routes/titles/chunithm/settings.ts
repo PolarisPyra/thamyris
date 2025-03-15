@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { notFoundWithMessage } from "@/api/utils/http-wrappers";
 
 interface SettingsGetResponse {
 	version: string;
@@ -41,7 +40,7 @@ const ChunithmSettingsRoutes = new Hono()
 			return c.json({ version: versionResult?.value || "No Version" } as SettingsGetResponse);
 		} catch (error) {
 			console.error("Error getting current version:", error);
-			return c.json(notFoundWithMessage("Failed to get current version", error));
+			return new Response(null, { status: 500 });
 		}
 	})
 	.post("/settings/update", async (c): Promise<Response> => {
@@ -58,7 +57,7 @@ const ChunithmSettingsRoutes = new Hono()
 			);
 
 			if (result.affectedRows === 0) {
-				return c.json(notFoundWithMessage("Failed to update settings", result));
+				return new Response(null, { status: 404 });
 			}
 
 			return c.json({
@@ -68,7 +67,7 @@ const ChunithmSettingsRoutes = new Hono()
 			} as SettingsUpdateResponse);
 		} catch (error) {
 			console.error("Error updating settings:", error);
-			return c.json(notFoundWithMessage("Failed to update settings", error));
+			return new Response(null, { status: 500 });
 		}
 	})
 	.get("/settings/versions", async (c): Promise<Response> => {
@@ -86,7 +85,7 @@ const ChunithmSettingsRoutes = new Hono()
 			return c.json({ versions: versions.map((v) => v.version) } as SettingsVersionsResponse);
 		} catch (error) {
 			console.error("Error getting versions:", error);
-			return c.json(notFoundWithMessage("Failed to get versions", error));
+			return new Response("error", { status: 500 });
 		}
 	});
 

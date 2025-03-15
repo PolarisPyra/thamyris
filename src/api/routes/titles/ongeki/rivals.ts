@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
-import { rethrowWithMessage } from "@/api/utils/http-wrappers";
 
 import { getUserVersionOngeki } from "../../../version";
 
@@ -58,7 +57,7 @@ const OngekiRivalsRoutes = new Hono()
 			return new Response(null, { status: 200 });
 		} catch (error) {
 			console.error("Error adding rival:", error);
-			throw rethrowWithMessage("Failed to add rival", error);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -79,7 +78,7 @@ const OngekiRivalsRoutes = new Hono()
 			return new Response(null, { status: 200 });
 		} catch (error) {
 			console.error("Error removing rival:", error);
-			throw rethrowWithMessage("Failed to remove rival", error);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -99,7 +98,7 @@ const OngekiRivalsRoutes = new Hono()
 			} as RivalsListResponse);
 		} catch (error) {
 			console.error("Error fetching rivals:", error);
-			throw rethrowWithMessage("Failed to fetch rivals", error);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -132,7 +131,7 @@ const OngekiRivalsRoutes = new Hono()
 			return c.json({ results } as MutualRivalsResponse);
 		} catch (error) {
 			console.error("Error fetching mutual rivals:", error);
-			throw rethrowWithMessage("Failed to fetch mutual rivals", error);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -154,7 +153,7 @@ const OngekiRivalsRoutes = new Hono()
 			return c.json({ results } as UserLookupResponse);
 		} catch (error) {
 			console.error("Error fetching Aime users:", error);
-			throw rethrowWithMessage("Failed to fetch Aime users", error);
+			return new Response(null, { status: 500 });
 		}
 	})
 
@@ -172,7 +171,7 @@ const OngekiRivalsRoutes = new Hono()
 			return c.json({ rivalCount: result[0].rivalCount } as RivalCountResponse);
 		} catch (error) {
 			console.error("Error counting rivals:", error);
-			throw rethrowWithMessage("Failed to count rivals", error);
+			return new Response(null, { status: 500 });
 		}
 	});
 
