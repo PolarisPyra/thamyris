@@ -1,86 +1,93 @@
 import { Hono } from "hono";
+import { z } from "zod";
 
 import { db } from "@/api/db";
+import { validateJson } from "@/api/middleware/validator";
+import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-interface AddFavoriteRequest {
+interface favId {
 	favId: number;
-}
-
-interface RemoveFavoriteRequest {
-	favId: number;
-}
-
-interface FavoriteResult {
-	favId: number;
-}
-
-interface FavoritesResponse {
-	results: FavoriteResult[];
 }
 
 const FavoritesRoutes = new Hono()
-	.post("/favorites/add", async (c): Promise<Response> => {
-		try {
-			const { userId, versions } = c.payload;
-			const version = versions.chunithm_version;
 
-			const { favId } = await c.req.json<AddFavoriteRequest>();
+	.post(
+		"/favorites/add",
+		validateJson(
+			z.object({
+				user: z.number(),
+				version: z.number(),
+				favId: z.number(),
+				favKind: z.number(),
+			})
+		),
+		async (c) => {
+			try {
+				const { userId, versions } = c.payload;
+				const { favId } = await c.req.json<favId>();
 
-			const result = await db.query(
-				`INSERT INTO chuni_item_favorite (user, version, favId, favKind)
+				const version = versions.chunithm_version;
+
+				const result = await db.query(
+					`INSERT INTO chuni_item_favorite (user, version, favId, favKind)
        VALUES (?, ?, ?, 1)`,
-				[userId, version, favId]
-			);
+					[userId, version, favId]
+				);
 
-			if (result.affectedRows === 0) {
-				return new Response(null, { status: 400 });
+				return c.json(result);
+			} catch (error) {
+				throw rethrowWithMessage("Failed to add favorite", error);
 			}
-			return new Response(null, { status: 200 });
-		} catch (error) {
-			console.error("Error adding favorite:", error);
-			return new Response(null, { status: 500 });
 		}
-	})
+	)
 
-	.post("/favorites/remove", async (c): Promise<Response> => {
+	.post(
+		"/favorites/remove",
+		validateJson(
+			z.object({
+				user: z.number(),
+				version: z.number(),
+				favId: z.number(),
+				favKind: z.number(),
+			})
+		),
+		async (c) => {
+			try {
+				const { userId, versions } = c.payload;
+				const { favId } = await c.req.json<favId>();
+
+				const version = versions.chunithm_version;
+
+				const result = await db.query(
+					`DELETE FROM chuni_item_favorite
+       		 WHERE user = ? AND version = ? AND favId = ? AND favKind = 1`,
+					[userId, version, favId]
+				);
+
+				return c.json(result);
+			} catch (error) {
+				throw rethrowWithMessage("Failed to remove favorite", error);
+			}
+		}
+	)
+
+	.get("/favorites/all", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
 
-			const { favId } = await c.req.json<RemoveFavoriteRequest>();
-
-			const result = await db.query(
-				`DELETE FROM chuni_item_favorite
-       WHERE user = ? AND version = ? AND favId = ? AND favKind = 1`,
-				[userId, version, favId]
-			);
-
-			if (result.affectedRows === 0) {
-				return new Response("not found", { status: 404 });
-			}
-			return new Response("success", { status: 200 });
-		} catch (error) {
-			console.error("Error removing favorite:", error);
-			return new Response("error", { status: 500 });
-		}
-	})
-
-	.get("/favorites/all", async (c): Promise<Response> => {
-		try {
-			const { userId, versions } = c.payload;
-			const version = versions.chunithm_version;
-
-			const results = (await db.query(
+			const results = await db.select<DB.ChuniItemFavorite>(
 				`SELECT favId 
        FROM chuni_item_favorite
        WHERE user = ? AND version = ? AND favKind = 1`,
 				[userId, version]
-			)) as FavoriteResult[];
+			);
 
-			return c.json({ results } as FavoritesResponse);
+			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get favorites", error);
 		}
 	});
+
 export { FavoritesRoutes };

@@ -2,23 +2,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
-interface FavoriteResponse {
-	results: { favId: number }[];
-	error?: string;
-}
-
 export function useFavorites() {
 	return useQuery({
 		queryKey: ["favorites"],
 		queryFn: async () => {
 			const response = await api.chunithm.favorites.all.$get();
-			const data = (await response.json()) as FavoriteResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch favorites");
 			}
 
-			return data.results.map((fav) => fav.favId);
+			const data = await response.json();
+			return data.map((fav: { favId: number }) => fav.favId);
 		},
 	});
 }
@@ -27,14 +21,21 @@ export function useAddFavorite() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: async (songId: number) => {
+		mutationFn: async (favId: number) => {
 			const response = await api.chunithm.favorites.add.$post({
-				json: { favId: songId },
+				json: {
+					favId,
+					user: 0,
+					version: 0,
+					favKind: 0,
+				},
 			});
+
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to add favorite");
 			}
-			return response;
+
+			return await response.json();
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["favorites"] });
@@ -46,14 +47,21 @@ export function useRemoveFavorite() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: async (songId: number) => {
+		mutationFn: async (favId: number) => {
 			const response = await api.chunithm.favorites.remove.$post({
-				json: { favId: songId },
+				json: {
+					favId,
+					user: 0,
+					version: 0,
+					favKind: 0,
+				},
 			});
+
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to remove favorite");
 			}
-			return response;
+
+			return await response.json();
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["favorites"] });
