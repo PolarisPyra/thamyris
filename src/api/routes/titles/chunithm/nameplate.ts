@@ -41,7 +41,7 @@ interface NameplateAllResponse {
 
 const NameplateRoutes = new Hono()
 
-	.get("/nameplates/current", async (c): Promise<Response> => {
+	.get("/current", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -66,7 +66,7 @@ const NameplateRoutes = new Hono()
 		}
 	})
 
-	.post("/nameplates/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -89,7 +89,7 @@ const NameplateRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update nameplate", error);
 		}
 	})
-	.get("/nameplates/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

@@ -19,7 +19,7 @@ interface ChunithmSongResult {
 	chartId: number;
 }
 
-const ChunithmReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
+const ChunithmReiwaRoutes = new Hono().get("/export", async (c) => {
 	try {
 		const { userId, versions } = c.payload;
 		const version = versions.chunithm_version;

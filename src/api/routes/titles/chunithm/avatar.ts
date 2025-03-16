@@ -71,8 +71,7 @@ interface AvatarPartsResponse {
 }
 
 const AvatarRoutes = new Hono()
-
-	.get("/avatar/current", async (c): Promise<Response> => {
+	.get("/current", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -125,7 +124,7 @@ AND cp.version = ?;
 		}
 	})
 
-	.post("/avatar/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -155,7 +154,7 @@ AND cp.version = ?;
 		}
 	})
 
-	.get("/avatar/parts/all", async (c): Promise<Response> => {
+	.get("/parts/all", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

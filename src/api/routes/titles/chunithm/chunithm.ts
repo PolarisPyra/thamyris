@@ -72,7 +72,7 @@ interface TeamsResponse {
 const ChunithmRoutes = new Hono()
 	.get("/chuni_static_music", async (c): Promise<Response> => {
 		try {
-			const { userId, versions } = c.payload;
+			const { versions } = c.payload;
 			const version = versions.chunithm_version;
 
 			const results = (await db.query(

@@ -42,7 +42,7 @@ interface SystemVoiceCurrentResponse {
 
 const SystemvoiceRoutes = new Hono()
 
-	.get("/systemvoice/current", async (c): Promise<Response> => {
+	.get("/current", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -67,7 +67,7 @@ const SystemvoiceRoutes = new Hono()
 		}
 	})
 
-	.post("/systemvoice/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -90,7 +90,7 @@ const SystemvoiceRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update voiceId", error);
 		}
 	})
-	.get("/systemvoice/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

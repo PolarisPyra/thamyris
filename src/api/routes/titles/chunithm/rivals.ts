@@ -39,7 +39,7 @@ interface UserLookupResponse {
 
 const RivalsRoutes = new Hono()
 
-	.post("/rivals/add", async (c): Promise<Response> => {
+	.post("/add", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -61,7 +61,7 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.post("/rivals/remove", async (c): Promise<Response> => {
+	.post("/remove", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -83,7 +83,7 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -101,7 +101,7 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/mutual", async (c): Promise<Response> => {
+	.get("/mutual", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -138,7 +138,7 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/userlookup", async (c): Promise<Response> => {
+	.get("/userlookup", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -159,7 +159,7 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/count", async (c): Promise<Response> => {
+	.get("/count", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

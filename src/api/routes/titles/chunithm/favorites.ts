@@ -20,8 +20,7 @@ interface FavoritesResponse {
 }
 
 const FavoritesRoutes = new Hono()
-
-	.post("/favorites/add", async (c): Promise<Response> => {
+	.post("/add", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -44,7 +43,7 @@ const FavoritesRoutes = new Hono()
 		}
 	})
 
-	.post("/favorites/remove", async (c): Promise<Response> => {
+	.post("/remove", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -67,7 +66,7 @@ const FavoritesRoutes = new Hono()
 		}
 	})
 
-	.get("/favorites/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

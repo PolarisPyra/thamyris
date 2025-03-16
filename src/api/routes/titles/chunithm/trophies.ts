@@ -28,8 +28,8 @@ interface UpdateTrophyRequest {
 	subTrophy2Id?: number | null;
 }
 
-const TrophyRoutes = new Hono()
-	.get("/trophies/current", async (c) => {
+export const TrophyRoutes = new Hono()
+	.get("/current", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -64,7 +64,7 @@ const TrophyRoutes = new Hono()
 		}
 	})
 
-	.get("/trophies/unlocked", async (c) => {
+	.get("/unlocked", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -106,7 +106,7 @@ const TrophyRoutes = new Hono()
 		}
 	})
 
-	.post("/trophies/update", async (c) => {
+	.post("/update", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -152,5 +152,3 @@ const TrophyRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update trophies", error);
 		}
 	});
-
-export default TrophyRoutes;

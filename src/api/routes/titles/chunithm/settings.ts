@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { DaphnisUserOptionKey } from "@/api/types/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
 interface SettingsGetResponse {
@@ -27,7 +28,7 @@ interface SettingsVersionsResponse {
 
 const ChunithmSettingsRoutes = new Hono()
 
-	.get("/settings/get", async (c): Promise<Response> => {
+	.get("/get", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -43,7 +44,7 @@ const ChunithmSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get current version", error);
 		}
 	})
-	.post("/settings/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -69,7 +70,7 @@ const ChunithmSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update settings", error);
 		}
 	})
-	.get("/settings/versions", async (c): Promise<Response> => {
+	.get("/versions", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -84,6 +85,83 @@ const ChunithmSettingsRoutes = new Hono()
 			return c.json({ versions: versions.map((v) => v.version) } as SettingsVersionsResponse);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get versions", error);
+		}
+	})
+
+	/**
+	 * Unlock endpoints
+	 */
+
+	.post("/songs/unlock", async (c) => {
+		try {
+			const userId = c.payload.userId;
+
+			await db.query(
+				`
+					UPDATE daphnis_user_option 
+             		SET value = '1' 
+             		WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.UnlockAllSongs}'
+				`,
+				[userId]
+			);
+
+			return new Response();
+		} catch (error) {
+			throw rethrowWithMessage("Failed to unlock all songs", error);
+		}
+	})
+	.post("/songs/lock", async (c) => {
+		try {
+			const userId = c.payload.userId;
+
+			await db.query(
+				`
+					UPDATE daphnis_user_option 
+					SET value = '0' 
+					WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.UnlockAllSongs}'
+				`,
+				[userId]
+			);
+
+			return new Response();
+		} catch (error) {
+			throw rethrowWithMessage("Failed to lock songs", error);
+		}
+	})
+	.post("/tickets/unlimited", async (c) => {
+		try {
+			const userId = c.payload.userId;
+
+			await db.query(
+				`
+					UPDATE daphnis_user_option 
+					SET value = '1' 
+					WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.MaxTickets}'
+			 	`,
+				[userId]
+			);
+
+			return new Response();
+		} catch (error) {
+			throw rethrowWithMessage("Failed to enable unlimited tickets", error);
+		}
+	})
+	.post("/tickets/limited", async (c) => {
+		try {
+			const userId = c.payload.userId;
+
+			await db.query(
+				`
+					UPDATE daphnis_user_option 
+					SET value = '0' 
+					WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.MaxTickets}'
+			 	`,
+				[userId]
+			);
+
+			return new Response();
+		} catch (error) {
+			throw rethrowWithMessage("Failed to disable unlimited tickets", error);
 		}
 	});
 
