@@ -70,7 +70,7 @@ interface TeamsResponse {
 }
 
 const ChunithmRoutes = new Hono()
-	.get("/chuni_static_music", async (c): Promise<Response> => {
+	.get("chuni_static_music", async (c): Promise<Response> => {
 		try {
 			const { versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -87,7 +87,7 @@ const ChunithmRoutes = new Hono()
 			return new Response(null, { status: 500 });
 		}
 	})
-	.get("/chuni_score_playlog", async (c) => {
+	.get("chuni_score_playlog", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -168,7 +168,7 @@ const ChunithmRoutes = new Hono()
 			throw rethrowWithMessage("Failed to fetch chunithm scores", error);
 		}
 	})
-	.get("/teams", async (c): Promise<Response> => {
+	.get("teams", async (c): Promise<Response> => {
 		try {
 			const results = (await db.query(`SELECT * FROM chuni_profile_team`)) as TeamResult[];
 			return c.json({ results } as TeamsResponse);
@@ -213,7 +213,7 @@ const ChunithmRoutes = new Hono()
 		}
 	})
 
-	.post("/addteam", async (c): Promise<Response> => {
+	.post("addteam", async (c): Promise<Response> => {
 		try {
 			const { teamName } = await c.req.json<AddTeamRequest>();
 

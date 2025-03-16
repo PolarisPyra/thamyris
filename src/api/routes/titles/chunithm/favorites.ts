@@ -13,7 +13,7 @@ interface favId {
 const FavoritesRoutes = new Hono()
 
 	.post(
-		"/favorites/add",
+		"add",
 		validateJson(
 			z.object({
 				user: z.number(),
@@ -43,7 +43,7 @@ const FavoritesRoutes = new Hono()
 	)
 
 	.post(
-		"/favorites/remove",
+		"remove",
 		validateJson(
 			z.object({
 				user: z.number(),
@@ -72,7 +72,7 @@ const FavoritesRoutes = new Hono()
 		}
 	)
 
-	.get("/favorites/all", async (c) => {
+	.get("all", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

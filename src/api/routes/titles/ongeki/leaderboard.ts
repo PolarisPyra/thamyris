@@ -9,7 +9,7 @@ interface LeaderboardEntry {
 	username: string;
 }
 
-const OngekiLeaderboadRoutes = new Hono().get("/leaderboard", async (c) => {
+const OngekiLeaderboadRoutes = new Hono().get("", async (c) => {
 	try {
 		const { versions } = c.payload;
 		const version = versions.ongeki_version;

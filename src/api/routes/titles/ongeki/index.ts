@@ -10,9 +10,9 @@ import { OngekiUnlockRoutes } from "./unlocks";
 
 export const AllOngekiRoutes = new Hono()
 	.route("", OngekiRoutes)
-	.route("", OngekiRatingRoutes)
-	.route("", OngekiSettingsRoutes)
-	.route("", OngekiLeaderboadRoutes)
-	.route("", OngekiRivalsRoutes)
-	.route("", OngekiUnlockRoutes)
-	.route("", OngekiReiwaRoutes);
+	.route("rating", OngekiRatingRoutes)
+	.route("settings", OngekiSettingsRoutes)
+	.route("leaderboard", OngekiLeaderboadRoutes)
+	.route("rivals", OngekiRivalsRoutes)
+	.route("unlocks", OngekiUnlockRoutes)
+	.route("reiwa", OngekiReiwaRoutes);

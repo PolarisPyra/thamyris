@@ -13,7 +13,7 @@ interface CardCountResult {
 
 const OngekiUnlockRoutes = new Hono()
 	.post(
-		"/unlockcards",
+		"unlockcards",
 		validateJson(
 			z.object({
 				version: z.number().min(1),
@@ -95,7 +95,7 @@ const OngekiUnlockRoutes = new Hono()
 	)
 
 	.post(
-		"/unlockspecificitem",
+		"unlockspecificitem",
 		validateJson(
 			z.object({
 				itemKind: z.number(),
@@ -126,7 +126,7 @@ const OngekiUnlockRoutes = new Hono()
 		}
 	)
 
-	.post("/unlockallitems", async (c) => {
+	.post("unlockallitems", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;

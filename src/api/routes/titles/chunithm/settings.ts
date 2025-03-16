@@ -11,7 +11,7 @@ import { getUserGameVersions } from "@/api/utils/versions";
 
 const ChunithmSettingsRoutes = new Hono()
 	.post(
-		"/settings/update",
+		"update",
 		validateJson(
 			z.object({
 				version: z.number().min(1),
@@ -51,7 +51,7 @@ const ChunithmSettingsRoutes = new Hono()
 			}
 		}
 	)
-	.get("/settings/versions", async (c) => {
+	.get("versions", async (c) => {
 		try {
 			const userId = c.payload.userId;
 			const versions = await db.select<{ version: number }>(
@@ -73,7 +73,7 @@ const ChunithmSettingsRoutes = new Hono()
 	/**
 	 * Unlock endpoints
 	 */
-	.post("/settings/songs/unlock", async (c) => {
+	.post("songs/unlock", async (c) => {
 		try {
 			const userId = c.payload.userId;
 
@@ -91,7 +91,7 @@ const ChunithmSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to unlock all songs", error);
 		}
 	})
-	.post("/settings/songs/lock", async (c) => {
+	.post("songs/lock", async (c) => {
 		try {
 			const userId = c.payload.userId;
 
@@ -109,7 +109,7 @@ const ChunithmSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to lock songs", error);
 		}
 	})
-	.post("/settings/tickets/unlimited", async (c) => {
+	.post("tickets/unlimited", async (c) => {
 		try {
 			const userId = c.payload.userId;
 
@@ -127,7 +127,7 @@ const ChunithmSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to enable unlimited tickets", error);
 		}
 	})
-	.post("/settings/tickets/limited", async (c) => {
+	.post("tickets/limited", async (c) => {
 		try {
 			const userId = c.payload.userId;
 

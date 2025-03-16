@@ -11,7 +11,7 @@ export const useUserRatingBaseHotList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseHotList"],
 		queryFn: async () => {
-			const response = await api.ongeki.user_rating_base_hot_list.$get();
+			const response = await api.ongeki.rating.user_rating_base_hot_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (!response.ok) {
@@ -31,7 +31,7 @@ export const useUserRatingBaseBestList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseBestList"],
 		queryFn: async () => {
-			const response = await api.ongeki.user_rating_base_best_list.$get();
+			const response = await api.ongeki.rating.user_rating_base_best_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (!response.ok) {
@@ -51,7 +51,7 @@ export const useUserRatingBaseBestNewList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseBestNewList"],
 		queryFn: async () => {
-			const response = await api.ongeki.user_rating_base_best_new_list.$get();
+			const response = await api.ongeki.rating.user_rating_base_best_new_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (!response.ok) {
@@ -71,7 +71,7 @@ export const useUserRatingBaseNextList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseNextList"],
 		queryFn: async () => {
-			const response = await api.ongeki.user_rating_base_next_list.$get();
+			const response = await api.ongeki.rating.user_rating_base_next_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (!response.ok) {
@@ -90,7 +90,7 @@ export const usePlayerRating = () => {
 	return useQuery<number>({
 		queryKey: ["playerRating"],
 		queryFn: async () => {
-			const response = await api.ongeki.player_rating.$get();
+			const response = await api.ongeki.rating.player_rating.$get();
 			const data = (await response.json()) as { rating: number; error?: string };
 			if (!response.ok) {
 				throw new Error();
@@ -108,7 +108,7 @@ export const useHighestRating = () => {
 	return useQuery<number>({
 		queryKey: ["highestRating"],
 		queryFn: async () => {
-			const response = await api.ongeki.highest_rating.$get();
+			const response = await api.ongeki.rating.highest_rating.$get();
 			const data = (await response.json()) as { rating: number; error?: string };
 
 			if (!response.ok) {

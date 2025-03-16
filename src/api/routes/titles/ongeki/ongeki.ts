@@ -44,7 +44,7 @@ interface StaticMusicResponse {
 }
 
 const OngekiRoutes = new Hono()
-	.get("/ongeki_score_playlog", async (c) => {
+	.get("ongeki_score_playlog", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;

@@ -11,7 +11,7 @@ export const useUserRatingBaseHotList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseHotList"],
 		queryFn: async () => {
-			const response = await api.chunithm.user_rating_base_hot_list.$get();
+			const response = await api.chunithm.rating.user_rating_base_hot_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (!response.ok) {
@@ -31,7 +31,7 @@ export const useUserRatingBaseList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseList"],
 		queryFn: async () => {
-			const response = await api.chunithm.user_rating_base_list.$get();
+			const response = await api.chunithm.rating.user_rating_base_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (!response.ok) {
@@ -52,7 +52,7 @@ export const useUserRatingBaseNewList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseNewList"],
 		queryFn: async () => {
-			const response = await api.chunithm.user_rating_base_new_list.$get();
+			const response = await api.chunithm.rating.user_rating_base_new_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (!response.ok) {
@@ -73,7 +73,7 @@ export const useUserRatingBaseNextList = () => {
 	return useQuery<UserRatingEntry[]>({
 		queryKey: ["userRatingBaseNextList"],
 		queryFn: async () => {
-			const response = await api.chunithm.user_rating_base_next_list.$get();
+			const response = await api.chunithm.rating.user_rating_base_next_list.$get();
 			const data = (await response.json()) as RatingResponse;
 
 			if (data.error) {
@@ -92,7 +92,7 @@ export const usePlayerRating = () => {
 	return useQuery<number>({
 		queryKey: ["playerRating"],
 		queryFn: async () => {
-			const response = await api.chunithm.playerRating.$get();
+			const response = await api.chunithm.rating.playerRating.$get();
 			const data = (await response.json()) as { playerRating: number; error?: string };
 
 			if (data.error) {
@@ -111,7 +111,7 @@ export const useHighestRating = () => {
 	return useQuery<number>({
 		queryKey: ["highestRating"],
 		queryFn: async () => {
-			const response = await api.chunithm.highestRating.$get();
+			const response = await api.chunithm.rating.highestRating.$get();
 			const data = (await response.json()) as { highestRating: number; error?: string };
 
 			if (data.error) {

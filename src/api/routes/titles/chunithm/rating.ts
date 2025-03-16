@@ -64,7 +64,7 @@ interface RatingBaseResponse {
 }
 
 const UserRatingFramesRoutes = new Hono()
-	.get("/user_rating_base_hot_list", async (c): Promise<Response> => {
+	.get("user_rating_base_hot_list", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -150,7 +150,7 @@ const UserRatingFramesRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get rating base", error);
 		}
 	})
-	.get("/user_rating_base_list", async (c): Promise<Response> => {
+	.get("user_rating_base_list", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -325,7 +325,7 @@ const UserRatingFramesRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get rating base", error);
 		}
 	})
-	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
+	.get("user_rating_base_next_list", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -414,7 +414,7 @@ const UserRatingFramesRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get rating base", error);
 		}
 	})
-	.get("/playerRating", async (c): Promise<Response> => {
+	.get("playerRating", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -433,7 +433,7 @@ const UserRatingFramesRoutes = new Hono()
 		}
 	})
 
-	.get("/highestRating", async (c): Promise<Response> => {
+	.get("highestRating", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

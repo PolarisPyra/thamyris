@@ -32,7 +32,7 @@ interface AvatarPartsGrouped {
 }
 
 const AvatarRoutes = new Hono()
-	.get("/avatar/current", async (c) => {
+	.get("current", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -120,7 +120,7 @@ const AvatarRoutes = new Hono()
 	})
 
 	.post(
-		"/avatar/update",
+		"update",
 		validateJson(
 			z.object({
 				head: z.number(),
@@ -162,7 +162,7 @@ const AvatarRoutes = new Hono()
 		}
 	)
 
-	.get("/avatar/parts/all", async (c) => {
+	.get("parts/all", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

@@ -27,7 +27,7 @@ interface VersionEntry {
 
 const OngekiSettingsRoutes = new Hono()
 
-	.get("/settings/get", async (c): Promise<Response> => {
+	.get("get", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 
@@ -44,7 +44,7 @@ const OngekiSettingsRoutes = new Hono()
 		}
 	})
 	.post(
-		"/settings/update",
+		"update",
 		validateJson(
 			z.object({
 				version: z.number().min(1),
@@ -83,7 +83,7 @@ const OngekiSettingsRoutes = new Hono()
 			}
 		}
 	)
-	.get("/settings/versions", async (c): Promise<Response> => {
+	.get("versions", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;
 

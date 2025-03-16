@@ -63,7 +63,7 @@ interface PlayerRatingResponse {
 }
 
 const OngekiRatingRoutes = new Hono()
-	.get("/user_rating_base_hot_list", async (c): Promise<Response> => {
+	.get("user_rating_base_hot_list", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
@@ -153,7 +153,7 @@ const OngekiRatingRoutes = new Hono()
 		}
 	})
 
-	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
+	.get("user_rating_base_next_list", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
@@ -242,7 +242,7 @@ const OngekiRatingRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get user rating base next list", error);
 		}
 	})
-	.get("/user_rating_base_best_list", async (c): Promise<Response> => {
+	.get("user_rating_base_best_list", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
@@ -310,7 +310,7 @@ const OngekiRatingRoutes = new Hono()
 			return new Response(null, { status: 500 });
 		}
 	})
-	.get("/user_rating_base_best_new_list", async (c): Promise<Response> => {
+	.get("user_rating_base_best_new_list", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
@@ -377,7 +377,7 @@ const OngekiRatingRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get user rating base new list", error);
 		}
 	})
-	.get("/player_rating", async (c): Promise<Response> => {
+	.get("player_rating", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
@@ -399,7 +399,7 @@ const OngekiRatingRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get player rating", error);
 		}
 	})
-	.get("/highest_rating", async (c): Promise<Response> => {
+	.get("highest_rating", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
