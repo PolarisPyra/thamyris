@@ -31,13 +31,13 @@ export const getUserGameVersions = async (userId: number, conn: Connection): Pro
 
 		const versions = await conn.select<DB.DaphnisUserOption>(
 			`
-            SELECT \`key\`, value
-            FROM daphnis_user_option
-            WHERE user = ?
-                AND \`key\` IN (
-                    ${versionKeys.map((key) => `'${key}'`).join(",")}
-                )
-        `,
+                SELECT \`key\`, value
+                FROM daphnis_user_option
+                WHERE user = ?
+                    AND \`key\` IN (
+                        ${versionKeys.map((key) => `'${key}'`).join(",")}
+                    )
+            `,
 			[userId]
 		);
 
@@ -48,8 +48,10 @@ export const getUserGameVersions = async (userId: number, conn: Connection): Pro
 		for (const key of missingVersionKeys) {
 			const version = await getInitVersion(userId, key, conn);
 			await conn.query(
-				`INSERT INTO daphnis_user_option (user, \`key\`, value)
-                    VALUES (?, ?, ?)`,
+				`
+                    INSERT INTO daphnis_user_option (user, \`key\`, value)
+                        VALUES (?, ?, ?)
+                `,
 				[userId, key, version]
 			);
 		}

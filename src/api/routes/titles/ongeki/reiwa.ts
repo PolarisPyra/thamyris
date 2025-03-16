@@ -4,8 +4,6 @@ import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 import { OngekiRating, getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
 
-import { getUserVersionOngeki } from "../../../version";
-
 interface OngekiSongResult {
 	musicId: number;
 	score: number;
@@ -24,8 +22,8 @@ interface OngekiSongResult {
 
 const OngekiReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
 	try {
-		const userId = c.payload.userId;
-		const version = await getUserVersionOngeki(userId);
+		const { userId, versions } = c.payload;
+		const version = versions.ongeki_version;
 
 		const usernameResults = await db.query(`SELECT username FROM aime_user WHERE id = ?`, [userId]);
 		const username = usernameResults.length > 0 ? usernameResults[0].username : "Player";

@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface AvatarCurrentResult {
 	avatarSkinId: number;
 	avatarSkinTexture: string;
@@ -76,8 +74,9 @@ const AvatarRoutes = new Hono()
 
 	.get("/avatar/current", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
+
 			const results = (await db.query(
 				`
 SELECT 
@@ -128,10 +127,10 @@ AND cp.version = ?;
 
 	.post("/avatar/update", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { avatarParts } = await c.req.json<AvatarUpdateRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`
@@ -158,9 +157,8 @@ AND cp.version = ?;
 
 	.get("/avatar/parts/all", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const unlockedResults = (await db.query(
 				`SELECT itemId 

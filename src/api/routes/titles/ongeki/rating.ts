@@ -4,8 +4,6 @@ import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 import { OngekiRating } from "@/utils/helpers";
 
-import { getUserVersionOngeki } from "../../../version";
-
 interface UserRatingBaseEntry {
 	musicId: number;
 	score: number;
@@ -67,9 +65,8 @@ interface PlayerRatingResponse {
 const OngekiRatingRoutes = new Hono()
 	.get("/user_rating_base_hot_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const userRatingBaseList = (await db.query(
 				`SELECT 
@@ -158,9 +155,8 @@ const OngekiRatingRoutes = new Hono()
 
 	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const userRatingBaseList = (await db.query(
 				`SELECT 
@@ -248,8 +244,8 @@ const OngekiRatingRoutes = new Hono()
 	})
 	.get("/user_rating_base_best_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const userRatingBaseList = (await db.query(
 				`SELECT 
@@ -316,8 +312,8 @@ const OngekiRatingRoutes = new Hono()
 	})
 	.get("/user_rating_base_best_new_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const userRatingBaseList = (await db.query(
 				`SELECT 
@@ -383,8 +379,8 @@ const OngekiRatingRoutes = new Hono()
 	})
 	.get("/player_rating", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const result = (await db.query(
 				`SELECT playerRating 
@@ -405,8 +401,8 @@ const OngekiRatingRoutes = new Hono()
 	})
 	.get("/highest_rating", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const result = (await db.query(
 				`SELECT highestRating 

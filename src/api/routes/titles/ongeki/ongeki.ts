@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionOngeki } from "../../../version";
-
 interface PlaylogEntry {
 	id: number;
 	userPlayDate: string;
@@ -48,9 +46,8 @@ interface StaticMusicResponse {
 const OngekiRoutes = new Hono()
 	.get("/ongeki_score_playlog", async (c) => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const results = await db.select<PlaylogEntry>(
 				`
@@ -132,9 +129,9 @@ const OngekiRoutes = new Hono()
 	})
 	.get("/ongeki_static_music", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { versions } = c.payload;
+			const version = versions.ongeki_version;
 
-			const version = await getUserVersionOngeki(userId);
 			const results = (await db.query(
 				`SELECT id, songId, chartId, title, level, artist, genre  
                 FROM ongeki_static_music 

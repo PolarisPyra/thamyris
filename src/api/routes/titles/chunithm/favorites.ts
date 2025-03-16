@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface AddFavoriteRequest {
 	favId: number;
 }
@@ -25,10 +23,10 @@ const FavoritesRoutes = new Hono()
 
 	.post("/favorites/add", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { favId } = await c.req.json<AddFavoriteRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`INSERT INTO chuni_item_favorite (user, version, favId, favKind)
@@ -48,10 +46,10 @@ const FavoritesRoutes = new Hono()
 
 	.post("/favorites/remove", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { favId } = await c.req.json<RemoveFavoriteRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`DELETE FROM chuni_item_favorite
@@ -71,9 +69,8 @@ const FavoritesRoutes = new Hono()
 
 	.get("/favorites/all", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const results = (await db.query(
 				`SELECT favId 

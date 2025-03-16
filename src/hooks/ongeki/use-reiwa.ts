@@ -58,11 +58,11 @@ export const useReiwaExport = () => {
 		queryKey: ["ongeki", "reiwa", "export", version],
 		queryFn: async () => {
 			const response = await api.ongeki.reiwa.export.$get();
-			
+
 			if (!response.ok) {
 				throw new Error();
 			}
-			
+
 			return response.json() as Promise<B45ExportData>;
 		},
 		enabled: !!version,

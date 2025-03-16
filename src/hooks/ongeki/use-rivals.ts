@@ -30,11 +30,11 @@ export function useRivals() {
 		queryKey: ["ongeki", "rivals", "all"],
 		queryFn: async () => {
 			const response = await api.ongeki.rivals.all.$get();
-			
+
 			if (!response.ok) {
 				throw new Error();
 			}
-			
+
 			const data = (await response.json()) as RivalResponse;
 			return data.results;
 		},
@@ -47,11 +47,11 @@ export function useRivalCount() {
 		queryKey: ["ongeki", "rivals", "count"],
 		queryFn: async () => {
 			const response = await api.ongeki.rivals.count.$get();
-			
+
 			if (!response.ok) {
 				throw new Error();
 			}
-			
+
 			const data = (await response.json()) as RivalCountResponse;
 			return data.rivalCount;
 		},
@@ -99,7 +99,7 @@ export function useAddRival() {
 			if (!response.ok) {
 				throw new Error();
 			}
-			
+
 			// Return an empty success object since the API returns no content
 			return {};
 		},
@@ -122,7 +122,7 @@ export function useRemoveRival() {
 			if (!response.ok) {
 				throw new Error();
 			}
-			
+
 			// Return an empty success object since the API returns no content
 			return {};
 		},

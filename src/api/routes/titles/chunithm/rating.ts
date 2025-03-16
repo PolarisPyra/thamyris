@@ -4,8 +4,6 @@ import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 import { ChunitmRating } from "@/utils/helpers";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface RatingBaseEmptyResponse {
 	results: [];
 }
@@ -68,9 +66,8 @@ interface RatingBaseResponse {
 const UserRatingFramesRoutes = new Hono()
 	.get("/user_rating_base_hot_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const userRatingBaseList = (await db.query(
 				`SELECT 
@@ -155,9 +152,8 @@ const UserRatingFramesRoutes = new Hono()
 	})
 	.get("/user_rating_base_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			// Get base list entries
 			const userRatingBaseList = (await db.query(
@@ -245,9 +241,8 @@ const UserRatingFramesRoutes = new Hono()
 	})
 	.get("/user_rating_base_new_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const userRatingBaseList = (await db.query(
 				`SELECT 
@@ -332,9 +327,8 @@ const UserRatingFramesRoutes = new Hono()
 	})
 	.get("/user_rating_base_next_list", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const typeFilter = Number(version) >= 17 ? "userRatingBaseNewNextList" : "userRatingBaseNextList";
 
@@ -422,8 +416,8 @@ const UserRatingFramesRoutes = new Hono()
 	})
 	.get("/playerRating", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const [ratingData] = (await db.query(
 				`SELECT playerRating
@@ -441,8 +435,8 @@ const UserRatingFramesRoutes = new Hono()
 
 	.get("/highestRating", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const [ratingData] = (await db.query(
 				`SELECT 

@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface StaticMusicResult {
 	id: number;
 	songId: number;
@@ -74,8 +72,9 @@ interface TeamsResponse {
 const ChunithmRoutes = new Hono()
 	.get("/chuni_static_music", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
+
 			const results = (await db.query(
 				`SELECT id, songId, chartId, title, level, artist, genre  
          FROM chuni_static_music
@@ -90,8 +89,9 @@ const ChunithmRoutes = new Hono()
 	})
 	.get("/chuni_score_playlog", async (c) => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
+
 			const results = await db.select<PlaylogResult>(
 				`
 				WITH RankedScores AS (
@@ -179,8 +179,9 @@ const ChunithmRoutes = new Hono()
 
 	.post("/updateteam", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
+
 			const { teamId } = await c.req.json<UpdateTeamRequest>();
 
 			// Validate teamId exists

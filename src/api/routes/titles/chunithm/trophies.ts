@@ -3,7 +3,6 @@ import { Hono } from "hono";
 import { rethrowWithMessage } from "@/api/utils/error";
 
 import { db } from "../../../db";
-import { getUserVersionChunithm } from "../../../version";
 
 interface CurrentTrophyResponse {
 	data?: {
@@ -32,8 +31,8 @@ interface UpdateTrophyRequest {
 const TrophyRoutes = new Hono()
 	.get("/trophies/current", async (c) => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const rows = await db.query<
 				{
@@ -67,8 +66,8 @@ const TrophyRoutes = new Hono()
 
 	.get("/trophies/unlocked", async (c) => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const unlockedResults = await db.query<Array<{ itemId: number }>>(
 				`SELECT itemId 
@@ -109,8 +108,9 @@ const TrophyRoutes = new Hono()
 
 	.post("/trophies/update", async (c) => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
+
 			const body = await c.req.json<UpdateTrophyRequest>();
 
 			const updateFields: string[] = [];
@@ -121,7 +121,7 @@ const TrophyRoutes = new Hono()
 				updateValues.push(body.mainTrophyId ?? null);
 			}
 
-			if (parseInt(version) >= 17) {
+			if (version >= 17) {
 				if ("subTrophy1Id" in body) {
 					updateFields.push("trophyIdSub1 = ?");
 					updateValues.push(body.subTrophy1Id ?? null);
