@@ -39,7 +39,7 @@ interface BatchManualImport {
 	};
 }
 
-const ChunithmKamaitachiRoutes = new Hono().get("kamitachi/export", async (c) => {
+const ChunithmKamaitachiRoutes = new Hono().get("kamaitachi/export", async (c) => {
 	try {
 		const { userId, versions } = c.payload;
 		const version = versions.chunithm_version;
