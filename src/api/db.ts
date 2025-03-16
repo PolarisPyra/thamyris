@@ -41,7 +41,7 @@ const getDbConnectionConfig = (): mysql.PoolConfig => {
 };
 
 // Bunch of bs to promisify the mysql connection and type the results.
-class Connection {
+export class Connection {
 	private connection: mysql.PoolConnection;
 	private originalQuery: mysql.Connection["query"];
 

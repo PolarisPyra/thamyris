@@ -1,10 +1,11 @@
 import { MiddlewareHandler } from "hono";
 
 import { JWTPayload } from "../types";
+import { UserMeta } from "../types/jwt";
 
 declare module "hono" {
 	interface Context {
-		payload: JWTPayload;
+		payload: UserMeta;
 	}
 }
 
@@ -14,7 +15,7 @@ declare module "hono" {
  */
 export const jwtPayloadMiddleware = (): MiddlewareHandler => {
 	return async (c, next) => {
-		c.payload = c.get("jwtPayload");
+		c.payload = JSON.parse((c.get("jwtPayload") as JWTPayload).user);
 		await next();
 	};
 };

@@ -5,15 +5,24 @@ import { sign } from "hono/jwt";
 import { env } from "@/env";
 
 import { DB, JWTPayload } from "../types";
+import { GameVersions } from "../types/jwt";
 
-export const signAndSetCookie = async (c: Context, user: DB.AimeUser, card: DB.AimeCard): Promise<JWTPayload> => {
+export const signAndSetCookie = async (
+	c: Context,
+	user: DB.AimeUser,
+	card: DB.AimeCard,
+	versions: GameVersions
+): Promise<JWTPayload> => {
 	// Create JWT token
 	const payload: JWTPayload = {
-		userId: user.id,
-		username: user.username,
-		permissions: user.permissions || 0,
+		user: JSON.stringify({
+			userId: user.id,
+			username: user.username,
+			permissions: user.permissions || 0,
+			aimeCardId: card?.access_code,
+			versions,
+		}),
 		exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
-		aimeCardId: card?.access_code,
 	};
 
 	// Using 'any' here because Hono is sitting on their hands:
