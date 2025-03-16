@@ -122,21 +122,29 @@ const sidebarItems = [
 		href: "/news",
 	},
 	{
-		name: "Chunithm",
+		name: "SEGA",
 		icon: ChevronDown,
-		color: "#59ba22",
-		subnav: chunithmSubnav,
-	},
-	{
-		name: "Ongeki",
-		icon: ChevronDown,
-		color: "#59ba22",
-		subnav: ongekiSubnav,
+		color: "#17569b",
+		subnav: [
+			{
+				name: "Chunithm",
+				icon: ChevronDown,
+				color: "#e0d531",
+				subnav: chunithmSubnav,
+			},
+			{
+				name: "Ongeki",
+				icon: ChevronDown,
+				color: "#f067e9",
+				subnav: ongekiSubnav,
+			},
+		],
 	},
 ];
 
 export function SidebarComponent() {
 	const [openCategories, setOpenCategories] = React.useState<Record<string, boolean>>({});
+	const [openSubCategories, setOpenSubCategories] = React.useState<Record<string, boolean>>({});
 	const { user } = useAuth();
 
 	const toggleCategory = (categoryName: string) => {
@@ -146,11 +154,19 @@ export function SidebarComponent() {
 		}));
 	};
 
+	const toggleSubCategory = (categoryName: string, event: React.MouseEvent) => {
+		event.stopPropagation();
+		setOpenSubCategories((prev) => ({
+			...prev,
+			[categoryName]: !prev[categoryName],
+		}));
+	};
+
 	if (!user) return null;
 
 	const userData = {
 		username: user.username,
-		aimeCardId: user.aimeCardId,
+		aimeCardId: user.aimeCardId || "",
 		avatar: "",
 	};
 
@@ -178,15 +194,42 @@ export function SidebarComponent() {
 												<SidebarMenuSub className="border-none">
 													{item.subnav.map((subItem, subIndex) => (
 														<SidebarMenuItem key={`${index}-${subIndex}`}>
-															<SidebarMenuButton
-																className="text-primary hover:bg-hover cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
-																asChild
-															>
-																<Link to={subItem.href}>
+															{subItem.subnav ? (
+																<>
+																	<SidebarMenuButton
+																		className="text-primary hover:bg-hover cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+																		onClick={(e) => toggleSubCategory(subItem.name, e)}
+																	>
+																		<subItem.icon style={{ color: subItem.color }} />
+																		<span>{subItem.name}</span>
+																	</SidebarMenuButton>
+																	{openSubCategories[subItem.name] && (
+																		<SidebarMenuSub className="border-none pl-4">
+																			{subItem.subnav.map((nestedItem, nestedIndex) => (
+																				<SidebarMenuItem key={`${index}-${subIndex}-${nestedIndex}`}>
+																					<SidebarMenuButton
+																						className="text-primary hover:bg-hover cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+																						asChild
+																					>
+																						<Link to={nestedItem.href}>
+																							<nestedItem.icon style={{ color: nestedItem.color }} />
+																							<span>{nestedItem.name}</span>
+																						</Link>
+																					</SidebarMenuButton>
+																				</SidebarMenuItem>
+																			))}
+																		</SidebarMenuSub>
+																	)}
+																</>
+															) : (
+																<SidebarMenuButton
+																	className="text-primary hover:bg-hover cursor-pointer ring-0 data-[state=open]:bg-gray-700 data-[state=open]:text-gray-100"
+																	asChild
+																>
 																	<subItem.icon style={{ color: subItem.color }} />
 																	<span>{subItem.name}</span>
-																</Link>
-															</SidebarMenuButton>
+																</SidebarMenuButton>
+															)}
 														</SidebarMenuItem>
 													))}
 												</SidebarMenuSub>
