@@ -10,10 +10,11 @@ import { useLeaderboard, useOngekiVersion } from "@/hooks/ongeki";
 const ITEMS_PER_PAGE = 50;
 
 const OngekiLeaderboard = () => {
+	const version = useOngekiVersion();
+
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
 	const { data: leaderboard = [], isLoading } = useLeaderboard();
-	const { data: version } = useOngekiVersion();
 
 	const filteredData = leaderboard.filter((player) => player.username.toLowerCase().includes(search.toLowerCase()));
 

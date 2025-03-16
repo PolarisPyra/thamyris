@@ -23,7 +23,7 @@ const ChunithmRivals = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 	const { data: rivalIds = [], isLoading: isLoadingRivals } = useRivals();
 	const { data: rivalCount = 0, isLoading: isLoadingCount } = useRivalCount();
 	const { data: users = [], isLoading: isLoadingUsers } = useRivalUsers();

@@ -4,8 +4,6 @@ import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 import { ChunitmRating, getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface ChunithmSongResult {
 	musicId: number;
 	score: number;
@@ -21,10 +19,10 @@ interface ChunithmSongResult {
 	chartId: number;
 }
 
-const ChunithmReiwaRoutes = new Hono().get("/reiwa/export", async (c) => {
+const ChunithmReiwaRoutes = new Hono().get("/export", async (c) => {
 	try {
-		const userId = c.payload.userId;
-		const version = await getUserVersionChunithm(userId);
+		const { userId, versions } = c.payload;
+		const version = versions.chunithm_version;
 
 		const usernameResults = await db.query(`SELECT username FROM aime_user WHERE id = ?`, [userId]);
 		const username = usernameResults.length > 0 ? usernameResults[0].username : "Player";

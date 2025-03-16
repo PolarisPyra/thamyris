@@ -14,7 +14,8 @@ import {
 } from "@/hooks/ongeki";
 
 const OngekiRatingFrames = () => {
-	const { data: version } = useOngekiVersion();
+	const version = useOngekiVersion();
+
 	const { data: baseSongs = [] } = useUserRatingBaseBestList();
 	const { data: hotSongs = [] } = useUserRatingBaseHotList();
 	const { data: newSongs = [] } = useUserRatingBaseBestNewList();

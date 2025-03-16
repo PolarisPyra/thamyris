@@ -6,7 +6,7 @@ import { SubmitButton } from "@/components/common/button";
 import { useOngekiVersion, useUnlockAllItems, useUnlockSpecificItem } from "@/hooks/ongeki";
 
 const ItemManagement = () => {
-	const { data: ongekiVersion } = useOngekiVersion();
+	const version = useOngekiVersion();
 
 	const { mutate: unlockAllItems } = useUnlockAllItems();
 	const { mutate: unlockSpecificItem } = useUnlockSpecificItem();
@@ -18,11 +18,11 @@ const ItemManagement = () => {
 	});
 
 	const handleUnlockAllItems = async () => {
-		if (!ongekiVersion) return;
+		if (!version) return;
 
 		setIsUnlocking((prev) => ({ ...prev, items: true }));
 		try {
-			unlockAllItems(ongekiVersion, {
+			unlockAllItems(version, {
 				onSuccess: () => {
 					toast.success("Items unlocked successfully!");
 				},
@@ -36,12 +36,12 @@ const ItemManagement = () => {
 	};
 
 	const handleUnlockSpecificItem = async (itemKind: number) => {
-		if (!ongekiVersion) return;
+		if (!version) return;
 
 		setIsUnlocking((prev) => ({ ...prev, specific: true }));
 		try {
 			unlockSpecificItem(
-				{ itemKind, version: ongekiVersion },
+				{ itemKind, version },
 				{
 					onSuccess: () => {
 						toast.success("Items unlocked successfully!");

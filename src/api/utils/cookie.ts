@@ -5,15 +5,25 @@ import { sign } from "hono/jwt";
 import { env } from "@/env";
 
 import { DB, JWTPayload } from "../types";
+import { GameVersions, UserMeta } from "../types/jwt";
 
-export const signAndSetCookie = async (c: Context, user: DB.AimeUser, card: DB.AimeCard): Promise<JWTPayload> => {
-	// Create JWT token
-	const payload: JWTPayload = {
+export const signAndSetCookie = async (
+	c: Context,
+	user: DB.AimeUser,
+	card: DB.AimeCard,
+	versions: GameVersions
+): Promise<UserMeta> => {
+	const userMeta = {
 		userId: user.id,
 		username: user.username,
 		permissions: user.permissions || 0,
-		exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
 		aimeCardId: card?.access_code,
+		versions,
+	};
+	// Create JWT token
+	const payload: JWTPayload = {
+		user: JSON.stringify(userMeta),
+		exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
 	};
 
 	// Using 'any' here because Hono is sitting on their hands:
@@ -31,7 +41,7 @@ export const signAndSetCookie = async (c: Context, user: DB.AimeUser, card: DB.A
 		domain: env.NODE_ENV === "production" ? env.DOMAIN : "localhost",
 	});
 
-	return payload;
+	return userMeta;
 };
 
 export const clearCookie = (c: Context) => {

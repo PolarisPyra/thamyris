@@ -1,22 +1,26 @@
 import { JWTPayload as HonoJWTPayload } from "hono/utils/jwt/types";
 
+import { DaphnisUserOptionVersionKey } from "./db";
+
 type TrimmedJWT = Pick<HonoJWTPayload, "exp" | "nbf" | "iat">;
+type Stringified<_> = string;
+
+export type GameVersions = Record<DaphnisUserOptionVersionKey, number>;
 
 /**
  * JWT Payload interface extending Hono's base JWT type
- * @property {number} exp - Expiration timestamp
- * @property {number} userId - User ID
- * @property {string} username - Username
- * @property {number} permissions - User permissions
- * @property {string} aimeCardId - Aime card ID
  */
+export type UserMeta = {
+	userId: number;
+	username: string;
+	permissions: number;
+	versions: GameVersions;
+	aimeCardId?: string;
+};
 
 export interface JWTPayload extends TrimmedJWT {
 	// We're explictly setting exp so should be defined, unlike Hono's type
 	exp: number;
 
-	userId: number;
-	username: string;
-	permissions: number;
-	aimeCardId: string;
+	user: Stringified<UserMeta>;
 }

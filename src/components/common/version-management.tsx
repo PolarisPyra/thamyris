@@ -11,7 +11,7 @@ interface VersionManagementProps {
 	currentVersion: number | undefined;
 	availableVersions: number[] | undefined;
 	isUpdating: boolean;
-	onUpdateVersion: (version: string) => void;
+	onUpdateVersion: (version: number) => void;
 	versions: Record<number, string>;
 	buttonLabel?: string;
 	updatingLabel?: string;
@@ -50,7 +50,7 @@ const VersionManagement: React.FC<VersionManagementProps> = ({
 			return;
 		}
 
-		onUpdateVersion(selectedVersion.toString());
+		onUpdateVersion(selectedVersion);
 	};
 
 	return (

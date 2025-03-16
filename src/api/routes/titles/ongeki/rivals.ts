@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionOngeki } from "../../../version";
-
 interface RivalAddRequest {
 	rivalUserId: number;
 }
@@ -134,8 +132,8 @@ const OngekiRivalsRoutes = new Hono()
 
 	.get("/rivals/userlookup", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-			const version = await getUserVersionOngeki(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.ongeki_version;
 
 			const results = (await db.query(
 				`SELECT 

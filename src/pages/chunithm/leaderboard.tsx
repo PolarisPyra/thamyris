@@ -13,7 +13,7 @@ const ChunithmLeaderboard = () => {
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
 	const { data: leaderboard = [], isLoading } = useLeaderboard();
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 
 	const filteredData = leaderboard.filter((player) => player.username.toLowerCase().includes(search.toLowerCase()));
 

@@ -12,7 +12,7 @@ const ChunithmScorePage = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const { data: scores = [], isLoading: isLoadingScores } = useChunithmScores();
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 
 	const itemsPerPage = 15;
 	const totalPages = Math.ceil(scores.length / itemsPerPage);

@@ -16,7 +16,7 @@ import {
 } from "@/hooks/chunithm";
 
 const ChunithmRatingFrames = () => {
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 	const { data: baseSongs = [] } = useUserRatingBaseList();
 	const { data: hotSongs = [] } = useUserRatingBaseHotList();
 	const { data: newSongs = [] } = useUserRatingBaseNewList();

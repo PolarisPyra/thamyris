@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface AddRivalRequest {
 	favId: number;
 }
@@ -41,12 +39,12 @@ interface UserLookupResponse {
 
 const RivalsRoutes = new Hono()
 
-	.post("/rivals/add", async (c): Promise<Response> => {
+	.post("/add", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { favId } = await c.req.json<AddRivalRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`INSERT INTO chuni_item_favorite (user, version, favId, favKind)
@@ -63,12 +61,12 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.post("/rivals/remove", async (c): Promise<Response> => {
+	.post("/remove", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { favId } = await c.req.json<RemoveRivalRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`DELETE FROM chuni_item_favorite
@@ -85,11 +83,10 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const results = await db.query(
 				`SELECT favId 
@@ -104,11 +101,10 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/mutual", async (c): Promise<Response> => {
+	.get("/mutual", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const results = (await db.query(
 				`SELECT 
@@ -142,11 +138,10 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/userlookup", async (c): Promise<Response> => {
+	.get("/userlookup", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const results = (await db.query(
 				` SELECT 
@@ -164,11 +159,10 @@ const RivalsRoutes = new Hono()
 		}
 	})
 
-	.get("/rivals/count", async (c): Promise<Response> => {
+	.get("/count", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const result = await db.query(
 				`SELECT COUNT(*) AS rivalCount 

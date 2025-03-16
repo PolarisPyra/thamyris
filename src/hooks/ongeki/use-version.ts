@@ -2,33 +2,16 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
+import { useAuth } from "../auth";
+import { useCurrentUser } from "../users";
+
 interface VersionsResponse {
 	versions?: number[];
 }
 
-interface VersionResponse {
-	version?: number | string;
-}
-
 export const useOngekiVersion = () => {
-	return useQuery({
-		queryKey: ["ongekiVersion"],
-		queryFn: async () => {
-			const response = await api.ongeki.settings.get.$get();
-
-			if (!response.ok) {
-				throw new Error();
-			}
-
-			const data = (await response.json()) as VersionResponse;
-
-			if (!response.ok) {
-				throw new Error();
-			}
-
-			return Number(data.version);
-		},
-	});
+	const { versions } = useCurrentUser();
+	return versions.ongeki_version;
 };
 
 export const useOngekiVersions = () => {
@@ -53,17 +36,18 @@ export const useOngekiVersions = () => {
 };
 
 export const useUpdateOngekiVersion = () => {
-	return useMutation<boolean, Error, string>({
-		mutationFn: async (version: string) => {
+	const { setUser } = useAuth();
+	return useMutation({
+		mutationFn: async (version: number) => {
 			const response = await api.ongeki.settings.update.$post({
 				json: { version },
 			});
-
 			if (!response.ok) {
 				throw new Error();
 			}
 
-			return true;
+			const user = await response.json();
+			setUser(user);
 		},
 	});
 };

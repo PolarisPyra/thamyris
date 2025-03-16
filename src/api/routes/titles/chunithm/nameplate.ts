@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface NameplateCurrentResult {
 	nameplateId: number;
 	itemId: number;
@@ -43,11 +41,10 @@ interface NameplateAllResponse {
 
 const NameplateRoutes = new Hono()
 
-	.get("/nameplates/current", async (c): Promise<Response> => {
+	.get("/current", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const results = (await db.query(
 				`SELECT p.nameplateId, i.*, n.name, n.sortName, n.imagePath
@@ -69,12 +66,12 @@ const NameplateRoutes = new Hono()
 		}
 	})
 
-	.post("/nameplates/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { nameplateId } = await c.req.json<NameplateUpdateRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`UPDATE chuni_profile_data 
@@ -92,11 +89,10 @@ const NameplateRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update nameplate", error);
 		}
 	})
-	.get("/nameplates/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			// Get unlocked nameplates
 			const unlockedResults = (await db.query(

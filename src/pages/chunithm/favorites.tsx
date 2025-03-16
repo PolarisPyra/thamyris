@@ -20,7 +20,7 @@ import { useCurrentUser } from "@/hooks/users";
 
 const ChunithmFavorites = () => {
 	const { username } = useCurrentUser();
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 	const { data: songs = [], isLoading: isLoadingSongs } = useChunithmSongs();
 	const { data: favoriteSongIds = [], isLoading: isLoadingFavorites } = useFavorites();
 	const { mutate: addFavorite } = useAddFavorite();

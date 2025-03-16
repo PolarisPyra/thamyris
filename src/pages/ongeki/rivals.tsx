@@ -13,10 +13,11 @@ import { useAddRival, useOngekiVersion, useRemoveRival, useRivalCount, useRivalU
 const ITEMS_PER_PAGE = 10;
 
 const OngekiRivals = () => {
+	const version = useOngekiVersion();
+
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const { data: version } = useOngekiVersion();
 	const { data: rivalIds = [], isLoading: isLoadingRivals } = useRivals();
 	const { data: rivalCount = 0, isLoading: isLoadingCount } = useRivalCount();
 	const { data: users = [], isLoading: isLoadingUsers } = useRivalUsers();

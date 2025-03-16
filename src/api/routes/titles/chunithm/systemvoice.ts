@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface SystemVoiceItem {
 	voiceId: number;
 	itemId: number;
@@ -44,11 +42,10 @@ interface SystemVoiceCurrentResponse {
 
 const SystemvoiceRoutes = new Hono()
 
-	.get("/systemvoice/current", async (c): Promise<Response> => {
+	.get("/current", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const results = (await db.query(
 				`SELECT p.voiceId, i.*, n.name,  n.imagePath
@@ -70,12 +67,12 @@ const SystemvoiceRoutes = new Hono()
 		}
 	})
 
-	.post("/systemvoice/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { voiceId } = await c.req.json<SystemVoiceUpdateRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`UPDATE chuni_profile_data 
@@ -93,11 +90,10 @@ const SystemvoiceRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update voiceId", error);
 		}
 	})
-	.get("/systemvoice/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			// Get unlocked systemvoices
 			const unlockedResults = (await db.query(

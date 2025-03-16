@@ -8,8 +8,9 @@ import OngekiAllSongsTable from "@/components/ongeki/allsongs-table";
 import { useOngekiSongs, useOngekiVersion } from "@/hooks/ongeki";
 
 const OngekiAllSongs = () => {
+	const version = useOngekiVersion();
+
 	const { data: songs = [], isLoading: isLoadingSongs } = useOngekiSongs();
-	const { data: version } = useOngekiVersion();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 15;

@@ -2,13 +2,6 @@ import { Hono } from "hono";
 
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
-import { getUserVersionChunithm } from "@/api/version";
-
-interface LeaderboardEntry {
-	userId: number;
-	username: string;
-	rating: string;
-}
 
 interface LeaderboardQueryResult {
 	user: number;
@@ -16,26 +9,23 @@ interface LeaderboardQueryResult {
 	username: string;
 }
 
-interface LeaderboardResponse {
-	results: LeaderboardEntry[];
-}
-
-const ChunithmLeaderboardRoutes = new Hono().get("/leaderboard", async (c): Promise<Response> => {
+const ChunithmLeaderboardRoutes = new Hono().get("", async (c) => {
 	try {
-		const userId = c.payload.userId;
+		const { versions } = c.payload;
+		const version = versions.chunithm_version;
 
-		const version = await getUserVersionChunithm(userId);
-
-		const results = (await db.query(
-			`SELECT 
-                cpd.user,
-                cpd.playerRating,
-                cpd.userName as username
-            FROM chuni_profile_data cpd
-            WHERE cpd.version = ?
-            ORDER BY cpd.playerRating DESC`,
+		const results = await db.select<LeaderboardQueryResult>(
+			`
+				SELECT 
+					cpd.user,
+					cpd.playerRating,
+					cpd.userName as username
+				FROM chuni_profile_data cpd
+				WHERE cpd.version = ?
+				ORDER BY cpd.playerRating DESC
+			`,
 			[version]
-		)) as LeaderboardQueryResult[];
+		);
 
 		return c.json({
 			results: results.map((entry) => ({
@@ -43,7 +33,7 @@ const ChunithmLeaderboardRoutes = new Hono().get("/leaderboard", async (c): Prom
 				username: entry.username,
 				rating: (entry.playerRating / 100).toFixed(2),
 			})),
-		} as LeaderboardResponse);
+		});
 	} catch (error) {
 		throw rethrowWithMessage("Failed to get leaderboard", error);
 	}

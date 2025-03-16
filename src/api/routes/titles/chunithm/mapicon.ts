@@ -3,8 +3,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 interface MapIconCurrentResult {
 	mapIconId: number;
 	itemId: number;
@@ -42,12 +40,10 @@ interface MapIconAllResponse {
 }
 
 const MapIconRoutes = new Hono()
-
-	.get("/mapicon/current", async (c): Promise<Response> => {
+	.get("/current", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const results = (await db.query(
 				`SELECT p.mapIconId, i.*, n.name, n.sortName, n.imagePath
@@ -69,12 +65,12 @@ const MapIconRoutes = new Hono()
 		}
 	})
 
-	.post("/mapicon/update", async (c): Promise<Response> => {
+	.post("/update", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			const { mapIconId } = await c.req.json<MapIconUpdateRequest>();
-			const version = await getUserVersionChunithm(userId);
 
 			const result = await db.query(
 				`UPDATE chuni_profile_data 
@@ -92,11 +88,10 @@ const MapIconRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update map icon", error);
 		}
 	})
-	.get("/mapicon/all", async (c): Promise<Response> => {
+	.get("/all", async (c): Promise<Response> => {
 		try {
-			const userId = c.payload.userId;
-
-			const version = await getUserVersionChunithm(userId);
+			const { userId, versions } = c.payload;
+			const version = versions.chunithm_version;
 
 			// Get unlocked mapicons
 			const unlockedResults = (await db.query(

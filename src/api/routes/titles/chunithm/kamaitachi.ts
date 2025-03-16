@@ -5,8 +5,6 @@ import { Hono } from "hono";
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-import { getUserVersionChunithm } from "../../../version";
-
 const TACHI_CLASSES = [undefined, "DAN_I", "DAN_II", "DAN_III", "DAN_IV", "DAN_V", "DAN_INFINITE"] as const;
 const TACHI_DIFFICULTIES = ["BASIC", "ADVANCED", "EXPERT", "MASTER", "ULTIMA"] as const;
 
@@ -41,10 +39,10 @@ interface BatchManualImport {
 	};
 }
 
-const ChunithmKamaitachiRoutes = new Hono().get("/kamaitachi/export", async (c) => {
+const ChunithmKamaitachiRoutes = new Hono().get("/export", async (c) => {
 	try {
-		const userId = c.payload.userId;
-		const version = await getUserVersionChunithm(userId);
+		const { userId, versions } = c.payload;
+		const version = versions.chunithm_version;
 
 		const profileResults = await db.query(
 			`SELECT classEmblemBase, classEmblemMedal

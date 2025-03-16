@@ -9,7 +9,7 @@ import { SubmitButton } from "../common/button";
 import TrophyDropdown from "./trophy-dropdown";
 
 export const TrophySelector = () => {
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 	const { data: currentTrophy } = useCurrentTrophy();
 	const { data: unlockedTrophies } = useUnlockedTrophies();
 	const { mutate: updateTrophy, isPending } = useUpdateTrophy();

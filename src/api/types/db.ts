@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { ChunithmAvatarCategory } from "./enums";
+
 /**
  * Database type definitions for the application tables
  */
@@ -692,7 +694,7 @@ export namespace DB {
 		version: number;
 		avatarAccessoryId: number | null;
 		name: string | null;
-		category: number | null;
+		category: ChunithmAvatarCategory | null;
 		iconPath: string | null;
 		texturePath: string | null;
 	};
@@ -1502,4 +1504,22 @@ export namespace DB {
 		tradeItemId: number | null;
 		tradeCount: number | null;
 	};
+}
+
+// Probably a better way of doing this...
+// Going to map over these keys for getting user versions without needing
+// to know each game version key
+export enum DaphnisUserOptionVersionKey {
+	Chunithm = "chunithm_version",
+	Ongeki = "ongeki_version",
+}
+
+/**
+ * The set of keys for daphnis_user_option table
+ */
+export enum DaphnisUserOptionKey {
+	OngekiVersion = DaphnisUserOptionVersionKey.Ongeki,
+	ChunithmVersion = DaphnisUserOptionVersionKey.Chunithm,
+	MaxTickets = "max_tickets",
+	UnlockAllSongs = "unlock_all_songs",
 }
