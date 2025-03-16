@@ -25,8 +25,8 @@ export function ModeToggle() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="bg-background border-primary">
-				{Object.keys(Theme).map((theme) => (
-					<DropdownMenuItem key={theme} className="focus:bg-hover" onClick={() => setTheme(theme as Theme)}>
+				{Object.values(Theme).map((theme) => (
+					<DropdownMenuItem key={theme} className="focus:bg-hover capitalize" onClick={() => setTheme(theme as Theme)}>
 						{theme}
 					</DropdownMenuItem>
 				))}

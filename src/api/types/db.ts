@@ -1518,8 +1518,10 @@ export enum DaphnisUserOptionVersionKey {
  * The set of keys for daphnis_user_option table
  */
 export enum DaphnisUserOptionKey {
-	OngekiVersion = DaphnisUserOptionVersionKey.Ongeki,
 	ChunithmVersion = DaphnisUserOptionVersionKey.Chunithm,
+	OngekiVersion = DaphnisUserOptionVersionKey.Ongeki,
+
+	OngekiTechEventOwner = "ongeki_tech_event_owner",
 	MaxTickets = "max_tickets",
 	UnlockAllSongs = "unlock_all_songs",
 }

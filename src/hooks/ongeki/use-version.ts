@@ -5,10 +5,6 @@ import { api } from "@/utils";
 import { useAuth } from "../auth";
 import { useCurrentUser } from "../users";
 
-interface VersionsResponse {
-	versions?: number[];
-}
-
 export const useOngekiVersion = () => {
 	const { versions } = useCurrentUser();
 	return versions.ongeki_version;
@@ -24,7 +20,7 @@ export const useOngekiVersions = () => {
 				throw new Error();
 			}
 
-			const data = (await response.json()) as VersionsResponse;
+			const data = await response.json();
 
 			if (!data.versions) {
 				throw new Error();

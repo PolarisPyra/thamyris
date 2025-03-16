@@ -9,46 +9,16 @@ import { signAndSetCookie } from "@/api/utils/cookie";
 import { rethrowWithMessage } from "@/api/utils/error";
 import { getUserGameVersions } from "@/api/utils/versions";
 
-interface VersionResponse {
-	version: string;
-}
-
-interface VersionUpdateRequest {
-	version: string;
-}
-
 interface VersionsResponse {
 	versions: number[];
 }
-
-interface VersionResult {
-	value: string;
-}
-
 interface VersionEntry {
 	version: number;
 }
 
 const OngekiSettingsRoutes = new Hono()
-
-	.get("", async (c): Promise<Response> => {
-		try {
-			const userId = c.payload.userId;
-
-			const [versionResult] = (await db.query(
-				`SELECT value 
-       FROM daphnis_user_option 
-       WHERE user = ? AND \`key\` = 'ongeki_version'`,
-				[userId]
-			)) as VersionResult[];
-
-			return c.json({ version: versionResult?.value ?? "No version" } as VersionResponse);
-		} catch (error) {
-			throw rethrowWithMessage("Failed to get Ongeki version", error);
-		}
-	})
 	.post(
-		"/settings/update",
+		"/update",
 		validateJson(
 			z.object({
 				version: z.number().min(1),
@@ -87,7 +57,7 @@ const OngekiSettingsRoutes = new Hono()
 			}
 		}
 	)
-	.get("/settings/versions", async (c): Promise<Response> => {
+	.get("/versions", async (c) => {
 		try {
 			const userId = c.payload.userId;
 

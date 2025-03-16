@@ -26,7 +26,7 @@ import {
 	SidebarMenuItem,
 	SidebarMenuSub,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/hooks/auth";
+import { useCurrentUser } from "@/hooks/users";
 
 import { NavUser } from "./nav-user";
 
@@ -106,6 +106,12 @@ const ongekiSubnav = [
 		icon: List,
 		color: "#f067e9",
 	},
+	{
+		name: "Tech Events",
+		href: "/ongeki/techevent",
+		icon: Newspaper,
+		color: "#f067e9",
+	},
 ];
 
 const sidebarItems = [
@@ -136,8 +142,8 @@ const sidebarItems = [
 ];
 
 export function SidebarComponent() {
+	const user = useCurrentUser();
 	const [openCategories, setOpenCategories] = React.useState<Record<string, boolean>>({});
-	const { user } = useAuth();
 
 	const toggleCategory = (categoryName: string) => {
 		setOpenCategories((prev) => ({
@@ -146,11 +152,9 @@ export function SidebarComponent() {
 		}));
 	};
 
-	if (!user) return null;
-
 	const userData = {
 		username: user.username,
-		aimeCardId: user.aimeCardId,
+		aimeCardId: user.aimeCardId || "",
 		avatar: "",
 	};
 

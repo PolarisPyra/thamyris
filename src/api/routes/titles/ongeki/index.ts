@@ -10,10 +10,9 @@ import { OngekiTechEventRoutes } from "./techevent";
 import { OngekiUnlockRoutes } from "./unlocks";
 
 export const AllOngekiRoutes = new Hono()
-	.basePath("/ongeki")
 	.route("", OngekiRoutes)
 	.route("/leaderboard", OngekiLeaderboadRoutes)
-	.route("/rating", OngekiRatingRoutes)
+	.route("", OngekiRatingRoutes)
 	.route("/reiwa", OngekiReiwaRoutes)
 	.route("/rivals", OngekiRivalsRoutes)
 	.route("/settings", OngekiSettingsRoutes)
