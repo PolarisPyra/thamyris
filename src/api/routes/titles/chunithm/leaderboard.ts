@@ -9,7 +9,7 @@ interface LeaderboardQueryResult {
 	username: string;
 }
 
-const ChunithmLeaderboardRoutes = new Hono().get("", async (c) => {
+const ChunithmLeaderboardRoutes = new Hono().get("/leaderboard", async (c) => {
 	try {
 		const { versions } = c.payload;
 		const version = versions.chunithm_version;

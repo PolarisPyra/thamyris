@@ -17,7 +17,7 @@ export function useNameplates() {
 	return useQuery({
 		queryKey: ["nameplates"],
 		queryFn: async () => {
-			const response = await api.chunithm.nameplates.all.$get();
+			const response = await api.chunithm.nameplate.all.$get();
 			const data = (await response.json()) as NameplateResponse;
 
 			if (!response.ok) {
@@ -36,7 +36,7 @@ export function useCurrentNameplate() {
 	return useQuery({
 		queryKey: ["currentNameplate"],
 		queryFn: async () => {
-			const response = await api.chunithm.nameplates.current.$get();
+			const response = await api.chunithm.nameplate.current.$get();
 			const data = (await response.json()) as NameplateResponse;
 
 			if (!response.ok) {
@@ -59,7 +59,7 @@ export function useUpdateNameplate() {
 
 	return useMutation({
 		mutationFn: async (nameplateId: number) => {
-			const response = await api.chunithm.nameplates.update.$post({
+			const response = await api.chunithm.nameplate.update.$post({
 				json: { nameplateId },
 			});
 			if (!response.ok) {

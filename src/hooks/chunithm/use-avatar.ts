@@ -3,11 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AvatarParts } from "@/types";
 import { api } from "@/utils";
 
-interface AllAvatarPartsResponse {
-	results?: Record<string, AvatarParts[]>;
-	error?: string;
-}
-
 // Fetch current avatar
 export function useCurrentAvatar() {
 	return useQuery({

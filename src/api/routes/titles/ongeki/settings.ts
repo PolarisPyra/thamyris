@@ -13,10 +13,6 @@ interface VersionResponse {
 	version: string;
 }
 
-interface VersionUpdateRequest {
-	version: string;
-}
-
 interface VersionsResponse {
 	versions: number[];
 }

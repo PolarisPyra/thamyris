@@ -8,32 +8,6 @@ import { DB } from "@/api/types";
 import { ChunithmAvatarCategory } from "@/api/types/enums";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-/**
- * Is there a difference between avatarSkinId and avatarSkin?
- * Additionally... it looks like the client is only using texturePath...
- * Going to comment this out to just return the texture.
- */
-// interface AvatarCurrent {
-// 	avatarSkinId: number;
-// 	avatarSkinTexture: string;
-// 	avatarBackId: number;
-// 	avatarBackTexture: string;
-// 	avatarFaceId: number;
-// 	avatarFaceTexture: string;
-// 	avatarHeadId: number;
-// 	avatarHeadTexture: string;
-// 	avatarItemId: number;
-// 	avatarItemTexture: string;
-// 	avatarWearId: number;
-// 	avatarWearTexture: string;
-// 	avatarSkin: number;
-// 	avatarBack: number;
-// 	avatarFace: number;
-// 	avatarHead: number;
-// 	avatarItem: number;
-// 	avatarWear: number;
-// }
-
 interface AvatarCurrent {
 	skin: string;
 	back: string;
@@ -58,7 +32,7 @@ interface AvatarPartsGrouped {
 }
 
 const AvatarRoutes = new Hono()
-	.get("/current", async (c) => {
+	.get("/avatar/current", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -146,7 +120,7 @@ const AvatarRoutes = new Hono()
 	})
 
 	.post(
-		"/update",
+		"/avatar/update",
 		validateJson(
 			z.object({
 				head: z.number(),
@@ -188,7 +162,7 @@ const AvatarRoutes = new Hono()
 		}
 	)
 
-	.get("/parts/all", async (c) => {
+	.get("/avatar/parts/all", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

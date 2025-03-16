@@ -29,7 +29,7 @@ interface UpdateTrophyRequest {
 }
 
 export const TrophyRoutes = new Hono()
-	.get("/current", async (c) => {
+	.get("/trophy/current", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -64,7 +64,7 @@ export const TrophyRoutes = new Hono()
 		}
 	})
 
-	.get("/unlocked", async (c) => {
+	.get("/trophy/unlocked", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -106,7 +106,7 @@ export const TrophyRoutes = new Hono()
 		}
 	})
 
-	.post("/update", async (c) => {
+	.post("/trophy/update", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

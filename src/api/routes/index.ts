@@ -4,13 +4,7 @@ import { AdminRoutes } from "./admin/admin";
 import { AimeCardRoute } from "./common/aime";
 import { UserRoutes } from "./common/users";
 import { AllChunithmRoutes } from "./titles/chunithm";
-import { OngekiLeaderboadRoutes } from "./titles/ongeki/leaderboard";
-import { OngekiRoutes } from "./titles/ongeki/ongeki";
-import { OngekiRatingRoutes } from "./titles/ongeki/rating";
-import { OngekiReiwaRoutes } from "./titles/ongeki/reiwa";
-import { OngekiRivalsRoutes } from "./titles/ongeki/rivals";
-import { OngekiSettingsRoutes } from "./titles/ongeki/settings";
-import { OngekiUnlockRoutes } from "./titles/ongeki/unlocks";
+import { AllOngekiRoutes } from "./titles/ongeki";
 import { UnprotectedRoutes } from "./unprotected";
 
 const Routes = new Hono()
@@ -20,14 +14,7 @@ const Routes = new Hono()
 
 	// Titles
 	.route("/chunithm", AllChunithmRoutes)
-
-	.route("/ongeki", OngekiRoutes)
-	.route("/ongeki", OngekiRatingRoutes)
-	.route("/ongeki", OngekiSettingsRoutes)
-	.route("/ongeki", OngekiLeaderboadRoutes)
-	.route("/ongeki", OngekiRivalsRoutes)
-	.route("/ongeki", OngekiUnlockRoutes)
-	.route("/ongeki", OngekiReiwaRoutes);
+	.route("/ongeki", AllOngekiRoutes);
 
 export { Routes, UnprotectedRoutes };
 

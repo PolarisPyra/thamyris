@@ -40,7 +40,7 @@ interface MapIconAllResponse {
 }
 
 const MapIconRoutes = new Hono()
-	.get("/current", async (c): Promise<Response> => {
+	.get("/mapicon/current", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -65,7 +65,7 @@ const MapIconRoutes = new Hono()
 		}
 	})
 
-	.post("/update", async (c): Promise<Response> => {
+	.post("/mapicon/update", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
@@ -88,7 +88,7 @@ const MapIconRoutes = new Hono()
 			throw rethrowWithMessage("Failed to update map icon", error);
 		}
 	})
-	.get("/all", async (c): Promise<Response> => {
+	.get("/mapicon/all", async (c): Promise<Response> => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;

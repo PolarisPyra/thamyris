@@ -29,7 +29,7 @@ export function useUnlockedTrophies() {
 	return useQuery({
 		queryKey: ["unlockedTrophies"],
 		queryFn: async () => {
-			const response = await api.chunithm.trophies.unlocked.$get();
+			const response = await api.chunithm.trophy.unlocked.$get();
 			const data = (await response.json()) as UnlockedTrophyResponse;
 
 			if (!response.ok) {
@@ -45,7 +45,7 @@ export function useCurrentTrophy() {
 	return useQuery({
 		queryKey: ["currentTrophy"],
 		queryFn: async () => {
-			const response = await api.chunithm.trophies.current.$get();
+			const response = await api.chunithm.trophy.current.$get();
 			const data = (await response.json()) as CurrentTrophyResponse;
 
 			if (!response.ok) {
@@ -70,7 +70,7 @@ export function useUpdateTrophy() {
 			subTrophy1Id?: number;
 			subTrophy2Id?: number;
 		}) => {
-			const response = await api.chunithm.trophies.update.$post({
+			const response = await api.chunithm.trophy.update.$post({
 				json: { mainTrophyId, subTrophy1Id, subTrophy2Id },
 			});
 
