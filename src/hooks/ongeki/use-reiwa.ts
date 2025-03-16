@@ -52,7 +52,7 @@ interface B45ExportData {
  * @returns Query result with Reiwa export data
  */
 export const useReiwaExport = () => {
-	const { data: version } = useOngekiVersion();
+	const version = useOngekiVersion();
 
 	return useQuery<B45ExportData>({
 		queryKey: ["ongeki", "reiwa", "export", version],

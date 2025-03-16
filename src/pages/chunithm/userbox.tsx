@@ -9,7 +9,7 @@ import Header from "@/components/common/header";
 import { useChunithmVersion } from "@/hooks/chunithm";
 
 const ChunithmUserbox = () => {
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 
 	return (
 		<div className="relative flex-1 overflow-auto">

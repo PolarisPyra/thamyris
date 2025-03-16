@@ -38,7 +38,7 @@ interface B30ExportData {
  * @returns Query result with Reiwa export data
  */
 export const useReiwaExport = () => {
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 
 	return useQuery<B30ExportData>({
 		queryKey: ["chunithm", "reiwa", "export", version],

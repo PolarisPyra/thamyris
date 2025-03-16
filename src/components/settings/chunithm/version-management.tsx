@@ -7,11 +7,11 @@ import { useChunithmVersion, useChunithmVersions, useUpdateChunithmVersion } fro
 import { ChunithmVersions } from "@/types/enums";
 
 const ChunithmVersionManager = () => {
-	const { data: chunithmVersion } = useChunithmVersion();
+	const version = useChunithmVersion();
 	const { data: availableVersions } = useChunithmVersions();
 	const { mutate: updateVersion, isPending } = useUpdateChunithmVersion();
 
-	const handleUpdateVersion = (version: string) => {
+	const handleUpdateVersion = (version: number) => {
 		updateVersion(version, {
 			onSuccess: () => toast.success("Chunithm version updated successfully!"),
 			onError: () => toast.error("Failed to update Chunithm version"),
@@ -21,7 +21,7 @@ const ChunithmVersionManager = () => {
 	return (
 		<VersionManagement
 			title="Set Chunithm version"
-			currentVersion={chunithmVersion}
+			currentVersion={version}
 			availableVersions={availableVersions}
 			isUpdating={isPending}
 			onUpdateVersion={handleUpdateVersion}

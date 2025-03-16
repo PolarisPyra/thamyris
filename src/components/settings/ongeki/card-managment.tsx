@@ -6,9 +6,9 @@ import { SubmitButton } from "@/components/common/button";
 import { useOngekiVersion, useUnlockAllCards } from "@/hooks/ongeki";
 
 const CardManagement = () => {
-	const { mutate: unlockAllCards } = useUnlockAllCards();
-	const { data: ongekiVersion } = useOngekiVersion();
+	const version = useOngekiVersion();
 
+	const { mutate: unlockAllCards } = useUnlockAllCards();
 	const [isUnlocking, setIsUnlocking] = useState<{ [key: string]: boolean }>({
 		cards: false,
 		items: false,
@@ -16,11 +16,11 @@ const CardManagement = () => {
 	});
 
 	const handleUnlockAllCards = async () => {
-		if (!ongekiVersion) return;
+		if (!version) return;
 
 		setIsUnlocking((prev) => ({ ...prev, cards: true }));
 		try {
-			unlockAllCards(ongekiVersion, {
+			unlockAllCards(version, {
 				onSuccess: () => {
 					toast.success("Cards unlocked successfully!");
 				},

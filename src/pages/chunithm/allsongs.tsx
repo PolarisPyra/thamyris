@@ -9,7 +9,7 @@ import { useChunithmSongs, useChunithmVersion } from "@/hooks/chunithm";
 
 const ChunithmAllSongs = () => {
 	const { data: songs = [], isLoading: isLoadingSongs } = useChunithmSongs();
-	const { data: version } = useChunithmVersion();
+	const version = useChunithmVersion();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 

@@ -8,10 +8,10 @@ import OngekiScoreTable from "@/components/ongeki/score-table";
 import { useOngekiScores, useOngekiVersion } from "@/hooks/ongeki";
 
 const OngekiScorePage = () => {
+	const version = useOngekiVersion();
+
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
-
-	const { data: version } = useOngekiVersion();
 
 	const { data: scores = [], isLoading: isLoadingScores } = useOngekiScores();
 

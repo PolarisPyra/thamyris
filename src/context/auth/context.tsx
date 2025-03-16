@@ -8,6 +8,7 @@ export interface AuthContextValue {
 	error: string;
 	login: (username: string, password: string) => Promise<void>;
 	logout: () => Promise<void>;
+	setUser: (user: User | null) => void;
 	signup: (username: string, password: string, accessCode: string) => Promise<void>;
 }
 

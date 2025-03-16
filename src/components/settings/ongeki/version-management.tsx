@@ -7,11 +7,12 @@ import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "@/h
 import { OngekiVersions } from "@/types/enums";
 
 const OngekiVersionManager = () => {
-	const { data: ongekiVersion } = useOngekiVersion();
+	const version = useOngekiVersion();
+
 	const { data: availableVersions } = useOngekiVersions();
 	const { mutate: updateVersion, isPending } = useUpdateOngekiVersion();
 
-	const handleUpdateVersion = (version: string) => {
+	const handleUpdateVersion = (version: number) => {
 		updateVersion(version, {
 			onSuccess: () => {
 				toast.success("Ongeki version updated successfully!");
@@ -25,7 +26,7 @@ const OngekiVersionManager = () => {
 	return (
 		<VersionManagement
 			title="Set Ongeki version"
-			currentVersion={ongekiVersion}
+			currentVersion={version}
 			availableVersions={availableVersions}
 			isUpdating={isPending}
 			onUpdateVersion={handleUpdateVersion}

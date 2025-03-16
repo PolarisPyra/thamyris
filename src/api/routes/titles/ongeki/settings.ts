@@ -1,7 +1,13 @@
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
+import { z } from "zod";
 
 import { db } from "@/api/db";
+import { validateJson } from "@/api/middleware/validator";
+import { DB, DaphnisUserOptionKey } from "@/api/types/db";
+import { signAndSetCookie } from "@/api/utils/cookie";
 import { rethrowWithMessage } from "@/api/utils/error";
+import { getUserGameVersions } from "@/api/utils/versions";
 
 interface VersionResponse {
 	version: string;
@@ -41,28 +47,46 @@ const OngekiSettingsRoutes = new Hono()
 			throw rethrowWithMessage("Failed to get Ongeki version", error);
 		}
 	})
-	.post("/settings/update", async (c): Promise<Response> => {
-		try {
-			const userId = c.payload.userId;
+	.post(
+		"/settings/update",
+		validateJson(
+			z.object({
+				version: z.number().min(1),
+			})
+		),
+		async (c) => {
+			try {
+				const result = await db.inTransaction(async (conn) => {
+					const { userId, aimeCardId } = c.payload;
+					const { version } = await c.req.json();
 
-			const { version } = await c.req.json<VersionUpdateRequest>();
+					const result = await db.update(
+						`
+							UPDATE daphnis_user_option 
+							SET value = ?
+							WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.OngekiVersion}'
+						`,
+						[version, userId]
+					);
+					if (result.affectedRows === 0) {
+						throw new HTTPException(404);
+					}
 
-			const result = await db.query(
-				`UPDATE daphnis_user_option 
-       SET value = ?
-       WHERE user = ? AND \`key\` = 'ongeki_version'`,
-				[version, userId]
-			);
-
-			if (result.affectedRows === 0) {
-				return new Response("not found", { status: 404 });
+					// Gotta update the cookie now that the version has changed
+					const [user] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
+					const [card] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE id = ?", [aimeCardId]);
+					if (!user || !card) {
+						throw new HTTPException(404);
+					}
+					const versions = await getUserGameVersions(userId, conn);
+					return await signAndSetCookie(c, user, card, versions);
+				});
+				return c.json(result);
+			} catch (error) {
+				throw rethrowWithMessage("Failed to update settings", error);
 			}
-
-			return new Response("success", { status: 200 });
-		} catch (error) {
-			throw rethrowWithMessage("Failed to update Ongeki settings", error);
 		}
-	})
+	)
 	.get("/settings/versions", async (c): Promise<Response> => {
 		try {
 			const userId = c.payload.userId;

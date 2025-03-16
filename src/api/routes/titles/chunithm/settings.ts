@@ -1,88 +1,70 @@
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
+import { z } from "zod";
 
 import { db } from "@/api/db";
-import { DaphnisUserOptionKey } from "@/api/types/db";
+import { validateJson } from "@/api/middleware/validator";
+import { DB, DaphnisUserOptionKey } from "@/api/types/db";
+import { signAndSetCookie } from "@/api/utils/cookie";
 import { rethrowWithMessage } from "@/api/utils/error";
-
-interface SettingsGetResponse {
-	version: string;
-}
-
-interface SettingsUpdateRequest {
-	version: string | number;
-}
-
-interface SettingsUpdateResponse {
-	success: boolean;
-	version: string | number;
-	message: string;
-}
-
-interface VersionEntry {
-	version: number;
-}
-
-interface SettingsVersionsResponse {
-	versions: number[];
-}
+import { getUserGameVersions } from "@/api/utils/versions";
 
 const ChunithmSettingsRoutes = new Hono()
+	.post(
+		"/update",
+		validateJson(
+			z.object({
+				version: z.number().min(1),
+			})
+		),
+		async (c) => {
+			try {
+				const result = await db.inTransaction(async (conn) => {
+					const { userId, aimeCardId } = c.payload;
+					const { version } = await c.req.json();
 
-	.get("/get", async (c): Promise<Response> => {
-		try {
-			const userId = c.payload.userId;
+					const result = await db.update(
+						`
+							UPDATE daphnis_user_option 
+							SET value = ?
+							WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.ChunithmVersion}'
+						`,
+						[version, userId]
+					);
 
-			const [versionResult] = (await db.query(
-				`SELECT value 
-       FROM daphnis_user_option 
-       WHERE user = ? AND \`key\` = 'chunithm_version'`,
-				[userId]
-			)) as [{ value: string } | undefined];
+					if (result.affectedRows === 0) {
+						throw new HTTPException(404);
+					}
 
-			return c.json({ version: versionResult?.value || "No Version" } as SettingsGetResponse);
-		} catch (error) {
-			throw rethrowWithMessage("Failed to get current version", error);
+					// Gotta update the cookie now that the version has changed
+					const [user] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
+					const [card] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE id = ?", [aimeCardId]);
+					if (!user || !card) {
+						throw new HTTPException(404);
+					}
+					const versions = await getUserGameVersions(userId, conn);
+					return await signAndSetCookie(c, user, card, versions);
+				});
+				return c.json(result);
+			} catch (error) {
+				throw rethrowWithMessage("Failed to update settings", error);
+			}
 		}
-	})
-	.post("/update", async (c): Promise<Response> => {
+	)
+	.get("/versions", async (c) => {
 		try {
 			const userId = c.payload.userId;
-
-			const { version } = await c.req.json<SettingsUpdateRequest>();
-
-			const result = await db.query(
-				`UPDATE daphnis_user_option 
-       SET value = ?
-       WHERE user = ? AND \`key\` = 'chunithm_version'`,
-				[version, userId]
+			const versions = await db.select<{ version: number }>(
+				`
+					SELECT DISTINCT version 
+					FROM chuni_profile_data 
+					WHERE user = ? 
+					ORDER BY version DESC
+				`,
+				[userId]
 			);
 
-			if (result.affectedRows === 0) {
-				return new Response(null, { status: 404 });
-			}
-
-			return c.json({
-				success: true,
-				version,
-				message: "Successfully updated game version",
-			} as SettingsUpdateResponse);
-		} catch (error) {
-			throw rethrowWithMessage("Failed to update settings", error);
-		}
-	})
-	.get("/versions", async (c): Promise<Response> => {
-		try {
-			const userId = c.payload.userId;
-
-			const versions = (await db.query(
-				`SELECT DISTINCT version 
-       FROM chuni_profile_data 
-       WHERE user = ? 
-       ORDER BY version DESC`,
-				[userId]
-			)) as VersionEntry[];
-
-			return c.json({ versions: versions.map((v) => v.version) } as SettingsVersionsResponse);
+			return c.json(versions.map((v) => v.version));
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get versions", error);
 		}
@@ -91,7 +73,6 @@ const ChunithmSettingsRoutes = new Hono()
 	/**
 	 * Unlock endpoints
 	 */
-
 	.post("/songs/unlock", async (c) => {
 		try {
 			const userId = c.payload.userId;
