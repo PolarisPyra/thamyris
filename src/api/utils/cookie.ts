@@ -5,23 +5,24 @@ import { sign } from "hono/jwt";
 import { env } from "@/env";
 
 import { DB, JWTPayload } from "../types";
-import { GameVersions } from "../types/jwt";
+import { GameVersions, UserMeta } from "../types/jwt";
 
 export const signAndSetCookie = async (
 	c: Context,
 	user: DB.AimeUser,
 	card: DB.AimeCard,
 	versions: GameVersions
-): Promise<JWTPayload> => {
+): Promise<UserMeta> => {
+	const userMeta = {
+		userId: user.id,
+		username: user.username,
+		permissions: user.permissions || 0,
+		aimeCardId: card?.access_code,
+		versions,
+	};
 	// Create JWT token
 	const payload: JWTPayload = {
-		user: JSON.stringify({
-			userId: user.id,
-			username: user.username,
-			permissions: user.permissions || 0,
-			aimeCardId: card?.access_code,
-			versions,
-		}),
+		user: JSON.stringify(userMeta),
 		exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day expiration
 	};
 
@@ -40,7 +41,7 @@ export const signAndSetCookie = async (
 		domain: env.NODE_ENV === "production" ? env.DOMAIN : "localhost",
 	});
 
-	return payload;
+	return userMeta;
 };
 
 export const clearCookie = (c: Context) => {

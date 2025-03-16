@@ -3,11 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AvatarParts } from "@/types";
 import { api } from "@/utils";
 
-interface CurrentAvatarResponse {
-	results: AvatarParts[];
-	error?: string;
-}
-
 interface AllAvatarPartsResponse {
 	results?: Record<string, AvatarParts[]>;
 	error?: string;
@@ -19,19 +14,11 @@ export function useCurrentAvatar() {
 		queryKey: ["avatar", "current"],
 		queryFn: async () => {
 			const response = await api.chunithm.avatar.current.$get();
-			const data = (await response.json()) as CurrentAvatarResponse;
 			if (!response.ok) {
 				throw new Error();
 			}
 
-			const avatar = data.results[0];
-			return {
-				head: avatar.avatarHeadTexture?.replace(".dds", "") || "",
-				back: avatar.avatarBackTexture?.replace(".dds", "") || "",
-				wear: avatar.avatarWearTexture?.replace(".dds", "") || "",
-				face: avatar.avatarFaceTexture?.replace(".dds", "") || "",
-				item: avatar.avatarItemTexture?.replace(".dds", "") || "",
-			};
+			return await response.json();
 		},
 	});
 }
@@ -43,7 +30,7 @@ export function useUpdateAvatar() {
 		mutationFn: async (avatarParts: AvatarParts) => {
 			const response = await api.chunithm.avatar.update.$post({
 				json: {
-					avatarParts,
+					...avatarParts,
 				},
 			});
 
@@ -65,13 +52,13 @@ export function useAllAvatarParts() {
 		queryKey: ["avatar", "parts", "all"],
 		queryFn: async () => {
 			const response = await api.chunithm.avatar.parts.all.$get();
-			const data = (await response.json()) as AllAvatarPartsResponse;
-
 			if (!response.ok) {
 				throw new Error();
 			}
 
-			return data.results || {};
+			const data = await response.json();
+
+			return data || {};
 		},
 	});
 }
