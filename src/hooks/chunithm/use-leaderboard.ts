@@ -4,14 +4,14 @@ import { api } from "@/utils";
 
 export function useLeaderboard() {
 	return useQuery({
-		queryKey: ["ongeki", "leaderboard"],
+		queryKey: ["chunithm", "leaderboard"],
 		queryFn: async () => {
 			const response = await api.chunithm.leaderboard.$get();
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch leaderboard data");
 			}
 
-			const { results } = await response.json();
+			const results = await response.json();
 			return results.map((entry, index) => ({
 				...entry,
 				rank: index + 1,

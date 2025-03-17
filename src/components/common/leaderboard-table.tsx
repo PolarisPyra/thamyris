@@ -8,7 +8,7 @@ interface LeaderboardTableProps {
 	players: {
 		userId: number;
 		username: string;
-		rating: string;
+		playerRating: string;
 	}[];
 	searchQuery: string;
 	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -64,7 +64,7 @@ export const LeaderboardTable = ({
 								<TableRow key={player.userId} className={rowClass}>
 									<TableCell className="text-primary text-sm">#{rank}</TableCell>
 									<TableCell className="text-primary text-sm">{player.username}</TableCell>
-									<TableCell className="text-primary text-sm">{player.rating}</TableCell>
+									<TableCell className="text-primary text-sm">{(Number(player.playerRating) / 100).toFixed(2)}</TableCell>
 								</TableRow>
 							);
 						})}

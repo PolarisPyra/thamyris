@@ -1,20 +1,15 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-interface LeaderboardEntry {
-	user: number;
-	playerRating: number;
-	username: string;
-}
-
-const OngekiLeaderboadRoutes = new Hono().get("", async (c) => {
+const OngekiLeaderboardRoutes = new Hono().get("", async (c) => {
 	try {
 		const { versions } = c.payload;
 		const version = versions.ongeki_version;
 
-		const results = await db.select<LeaderboardEntry>(
+		const results = await db.select<DB.OngekiProfileData>(
 			`
 				SELECT 
 					opd.user,
@@ -27,15 +22,9 @@ const OngekiLeaderboadRoutes = new Hono().get("", async (c) => {
 			[version]
 		);
 
-		return c.json({
-			results: results.map((entry) => ({
-				userId: entry.user,
-				username: entry.username,
-				rating: (entry.playerRating / 100).toFixed(2),
-			})),
-		});
+		return c.json(results);
 	} catch (error) {
 		throw rethrowWithMessage("Failed to get leaderboard", error);
 	}
 });
-export { OngekiLeaderboadRoutes };
+export { OngekiLeaderboardRoutes };

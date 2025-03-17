@@ -7,13 +7,12 @@ export function useLeaderboard() {
 		queryKey: ["ongeki", "leaderboard"],
 		queryFn: async () => {
 			const response = await api.ongeki.leaderboard.$get();
-			const data = await response.json();
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch leaderboard data");
 			}
 
-			return data.results.map((entry, index) => ({
+			const results = await response.json();
+			return results.map((entry, index) => ({
 				...entry,
 				rank: index + 1,
 			}));

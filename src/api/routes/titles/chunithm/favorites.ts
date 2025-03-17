@@ -29,13 +29,13 @@ const FavoritesRoutes = new Hono()
 
 				const version = versions.chunithm_version;
 
-				const result = await db.query(
+				const insert = await db.query(
 					`INSERT INTO chuni_item_favorite (user, version, favId, favKind)
        		 VALUES (?, ?, ?, 1)`,
 					[userId, version, favId]
 				);
 
-				return c.json(result);
+				return c.json(insert);
 			} catch (error) {
 				throw rethrowWithMessage("Failed to add favorite", error);
 			}

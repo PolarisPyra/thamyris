@@ -1,20 +1,15 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
-
-interface LeaderboardQueryResult {
-	user: number;
-	playerRating: number;
-	username: string;
-}
 
 const ChunithmLeaderboardRoutes = new Hono().get("", async (c) => {
 	try {
 		const { versions } = c.payload;
 		const version = versions.chunithm_version;
 
-		const results = await db.select<LeaderboardQueryResult>(
+		const results = await db.select<DB.ChuniProfileData>(
 			`
 				SELECT 
 					cpd.user,
@@ -27,13 +22,7 @@ const ChunithmLeaderboardRoutes = new Hono().get("", async (c) => {
 			[version]
 		);
 
-		return c.json({
-			results: results.map((entry) => ({
-				userId: entry.user,
-				username: entry.username,
-				rating: (entry.playerRating / 100).toFixed(2),
-			})),
-		});
+		return c.json(results);
 	} catch (error) {
 		throw rethrowWithMessage("Failed to get leaderboard", error);
 	}
