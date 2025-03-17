@@ -14,7 +14,8 @@ const MapIconRoutes = new Hono()
 			const version = versions.chunithm_version;
 
 			const results = await db.select<DB.DaphnisStaticMapIcon>(
-				`SELECT p.mapIconId, i.*, n.name, n.sortName, n.imagePath
+				`
+		 SELECT p.mapIconId, i.*, n.name, n.sortName, n.imagePath
      FROM chuni_profile_data p
      JOIN chuni_item_item i
      ON p.mapIconId = i.itemId
@@ -76,7 +77,7 @@ const MapIconRoutes = new Hono()
        INNER JOIN chuni_item_item cii ON dsm.mapIconId = cii.itemId
        WHERE cii.itemKind = 8 
        AND cii.user = ?
-      AND dsm.version = ?`,
+       AND dsm.version = ?`,
 				[userId, version]
 			);
 
