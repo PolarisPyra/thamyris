@@ -82,7 +82,7 @@ interface OngekiScoreTableProps {
 
 const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTableProps) => {
 	// Filter scores based on search query
-	const filteredScores = scores.filter((score) => score.title.toLowerCase().includes(searchQuery.toLowerCase()));
+	const filteredScores = scores.filter((score) => score.title?.toLowerCase().includes(searchQuery.toLowerCase()));
 
 	return (
 		<div className="bg-card rounded-md p-4 sm:p-6">
