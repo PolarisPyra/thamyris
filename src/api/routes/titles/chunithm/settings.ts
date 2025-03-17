@@ -38,8 +38,8 @@ const ChunithmSettingsRoutes = new Hono()
 
 					// Gotta update the cookie now that the version has changed
 					const [user] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
-					const [card] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE id = ?", [aimeCardId]);
-					if (!user) {
+					const [card] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE access_code = ?", [aimeCardId]);
+					if (!user  || !card) {
 						throw new HTTPException(404);
 					}
 					const versions = await getUserGameVersions(userId, conn);
