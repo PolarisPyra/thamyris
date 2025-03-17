@@ -37,7 +37,7 @@ const SystemvoiceSelector = () => {
 	const handleSubmit = () => {
 		const selected = systemVoices?.find((voice) => voice.imagePath === selectedVoice);
 		if (selected && hasChanges()) {
-			console.log(selected);
+			// console.log(selected);
 
 			updateVoice(selected.systemVoiceId, {
 				onSuccess: () => {
