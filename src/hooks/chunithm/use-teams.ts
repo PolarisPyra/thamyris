@@ -2,55 +2,50 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
+import { useCurrentUser } from "../users";
+import { useChunithmVersion } from "./use-version";
+
 interface Team {
 	id: number;
 	teamName: string;
 }
-
-interface TeamResponse {
-	results: Team[];
-	error?: string;
-}
-
-interface CreateTeamSuccess {
-	message: string;
-	teamId: number;
-}
-
-interface CreateTeamError {
-	error: string;
-}
-
-type CreateTeamResponse = CreateTeamSuccess | CreateTeamError;
 
 export function useTeams() {
 	return useQuery({
 		queryKey: ["teams"],
 		queryFn: async () => {
 			const response = await api.chunithm.teams.$get();
-			const data = (await response.json()) as TeamResponse;
 
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch teams");
 			}
 
-			return data.results;
+			const data = await response.json();
+			return data as Team[];
 		},
 	});
 }
 
 export function useUpdateTeam() {
 	const queryClient = useQueryClient();
+	const version = useChunithmVersion();
+	const { userId } = useCurrentUser();
 
 	return useMutation({
 		mutationFn: async (teamId: number) => {
 			const response = await api.chunithm.updateteam.$post({
-				json: { teamId },
+				json: {
+					teamId,
+					user: userId,
+					version,
+				},
 			});
+
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to update team");
 			}
-			return true;
+
+			return await response.json();
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["teams"] });
@@ -66,14 +61,13 @@ export function useCreateTeam() {
 			const response = await api.chunithm.addteam.$post({
 				json: { teamName },
 			});
-			const data = (await response.json()) as CreateTeamResponse;
 
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to add team");
 			}
-
-			return data as CreateTeamSuccess;
+			return await response.json();
 		},
+
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["teams"] });
 		},

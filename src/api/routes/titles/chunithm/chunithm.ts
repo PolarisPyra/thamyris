@@ -1,98 +1,37 @@
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
+import { z } from "zod";
 
 import { db } from "@/api/db";
+import { validateJson } from "@/api/middleware/validator";
+import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-interface StaticMusicResult {
-	id: number;
-	songId: number;
-	chartId: number;
-	title: string;
-	level: string;
-	artist: string;
-	genre: string;
-}
-
-interface PlaylogResult {
-	id: number;
-	maxCombo: number;
-	isFullCombo: number;
-	userPlayDate: string;
-	playerRating: number;
-	isAllJustice: number;
-	score: number;
-	judgeHeaven: number;
-	judgeGuilty: number;
-	judgeJustice: number;
-	judgeAttack: number;
-	judgeCritical: number;
-	isClear: number;
-	skillId: number;
-	isNewRecord: number;
-	chartId: number;
-	title: string;
-	level: string;
-	genre: string;
-	jacketPath: string;
-	artist: string;
-	score_change: string;
-	rating_change: string;
-}
-
-interface TeamResult {
-	id: number;
-	teamName: string;
-}
-
-interface UpdateTeamRequest {
-	teamId: number;
-}
-
-interface AddTeamRequest {
-	teamName: string;
-}
-
-interface AddTeamResponse {
-	success: boolean;
-	teamId: number;
-}
-
-interface TeamExistsResult {
-	count: number;
-}
-
-interface StaticMusicResponse {
-	results: StaticMusicResult[];
-}
-
-interface TeamsResponse {
-	results: TeamResult[];
-}
-
 const ChunithmRoutes = new Hono()
-	.get("chuni_static_music", async (c): Promise<Response> => {
+
+	.get("chuni_static_music", async (c) => {
 		try {
 			const { versions } = c.payload;
 			const version = versions.chunithm_version;
 
-			const results = (await db.query(
+			const results = await db.select<DB.ChuniStaticMusic>(
 				`SELECT id, songId, chartId, title, level, artist, genre  
-         FROM chuni_static_music
-         WHERE version = ?`,
+       FROM chuni_static_music
+       WHERE version = ?`,
 				[version]
-			)) as StaticMusicResult[];
-			return c.json({ results } as StaticMusicResponse);
+			);
+			return c.json(results);
 		} catch (error) {
-			console.error("Error executing query:", error);
-			return new Response(null, { status: 500 });
+			throw rethrowWithMessage("Failed to get static music", error);
 		}
 	})
+
 	.get("chuni_score_playlog", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
 
-			const results = await db.select<PlaylogResult>(
+			const results = await db.select<DB.ChuniScorePlaylog>(
 				`
 				WITH RankedScores AS (
 				SELECT
@@ -165,78 +104,76 @@ const ChunithmRoutes = new Hono()
 			);
 			return c.json(results);
 		} catch (error) {
-			throw rethrowWithMessage("Failed to fetch chunithm scores", error);
+			throw rethrowWithMessage("Failed to get static music", error);
 		}
 	})
-	.get("teams", async (c): Promise<Response> => {
+
+	.get("teams", async (c) => {
 		try {
-			const results = (await db.query(`SELECT * FROM chuni_profile_team`)) as TeamResult[];
-			return c.json({ results } as TeamsResponse);
+			const results = await db.select<DB.ChuniProfileTeam>(`SELECT * FROM chuni_profile_team`);
+			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get teams", error);
 		}
 	})
 
-	.post("/updateteam", async (c): Promise<Response> => {
-		try {
-			const { userId, versions } = c.payload;
-			const version = versions.chunithm_version;
+	.post(
+		"updateteam",
+		validateJson(
+			z.object({
+				teamId: z.number(),
+				user: z.number(),
+				version: z.number(),
+			})
+		),
+		async (c) => {
+			try {
+				const { userId, versions } = c.payload;
+				const { teamId } = await c.req.json();
 
-			const { teamId } = await c.req.json<UpdateTeamRequest>();
+				const version = versions.chunithm_version;
 
-			// Validate teamId exists
-			const teamExists = (await db.query(
-				`
-                SELECT COUNT(*) as count 
-                FROM chuni_profile_team 
-                WHERE id = ?`,
-				[teamId]
-			)) as TeamExistsResult[];
-
-			if (teamExists[0].count === 0) {
-				return new Response(null, { status: 404 });
-			}
-
-			await db.query(
-				`
+				const result = await db.query(
+					`
                 UPDATE 
                 chuni_profile_data 
                 SET teamId = ? 
                 WHERE user = ? 
                 AND version = ?`,
-				[teamId, userId, version]
-			);
+					[teamId, userId, version]
+				);
 
-			return new Response("success", { status: 200 });
-		} catch (error) {
-			throw rethrowWithMessage("Failed to update team", error);
-		}
-	})
-
-	.post("addteam", async (c): Promise<Response> => {
-		try {
-			const { teamName } = await c.req.json<AddTeamRequest>();
-
-			if (!teamName) {
-				return new Response("error", { status: 400 });
+				return c.json(result);
+			} catch (error) {
+				throw rethrowWithMessage("Failed to remove favorite", error);
 			}
-
-			// Check if team name already exists
-			const existingTeam = await db.query(`SELECT id FROM chuni_profile_team WHERE teamName = ?`, [teamName]);
-
-			if (existingTeam.length > 0) {
-				return new Response("team already added", { status: 409 });
-			}
-
-			const result = await db.query(`INSERT INTO chuni_profile_team (teamName) VALUES (?)`, [teamName]);
-
-			return c.json({
-				success: true,
-				teamId: result.insertId,
-			} as AddTeamResponse);
-		} catch (error) {
-			throw rethrowWithMessage("Failed to add team", error);
 		}
-	});
+	)
+
+	.post(
+		"addteam",
+		validateJson(
+			z.object({
+				teamName: z.string().min(1),
+			})
+		),
+		async (c) => {
+			try {
+				const { teamName } = await c.req.json();
+
+				const existingTeam = await db.query(`SELECT id FROM chuni_profile_team WHERE teamName = ?`, [teamName]);
+
+				if (existingTeam.length > 0) {
+					throw new HTTPException(409, { message: "Team already exists" });
+				}
+
+				const insert = await db.query(`INSERT INTO chuni_profile_team (teamName) VALUES (?)`, [teamName]);
+
+				return c.json(insert);
+			} catch (error) {
+				throw rethrowWithMessage("Failed to add team", error);
+			}
+		}
+	);
 
 export { ChunithmRoutes };

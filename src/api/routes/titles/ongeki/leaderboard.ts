@@ -14,7 +14,7 @@ const OngekiLeaderboardRoutes = new Hono().get("", async (c) => {
 				SELECT 
 					opd.user,
 					opd.playerRating,
-					opd.userName as username
+					opd.userName
 				FROM ongeki_profile_data opd
 				WHERE opd.version = ?
 				ORDER BY opd.playerRating DESC

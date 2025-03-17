@@ -14,7 +14,7 @@ const ChunithmLeaderboardRoutes = new Hono().get("", async (c) => {
 				SELECT 
 					cpd.user,
 					cpd.playerRating,
-					cpd.userName as username
+					cpd.userName 
 				FROM chuni_profile_data cpd
 				WHERE cpd.version = ?
 				ORDER BY cpd.playerRating DESC

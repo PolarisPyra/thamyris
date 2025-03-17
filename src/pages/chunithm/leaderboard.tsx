@@ -15,10 +15,11 @@ const ChunithmLeaderboard = () => {
 	const { data: leaderboard = [], isLoading } = useLeaderboard();
 	const version = useChunithmVersion();
 
-	const filteredData = leaderboard.filter((player) => player.username.toLowerCase().includes(search.toLowerCase()));
+	const filteredData = leaderboard.filter((player) => player.userName?.toLowerCase().includes(search.toLowerCase()));
 
 	const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
 	const currentData = filteredData.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+	console.log(leaderboard);
 
 	if (isLoading) {
 		return (
@@ -45,11 +46,7 @@ const ChunithmLeaderboard = () => {
 							itemsPerPage={ITEMS_PER_PAGE}
 						/>
 
-						{totalPages > 1 && (
-							<div className="mt-4 flex justify-center">
-								<Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
-							</div>
-						)}
+						{totalPages > 1 && <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />}
 					</div>
 				</div>
 			) : (

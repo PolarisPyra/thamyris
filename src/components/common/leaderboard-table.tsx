@@ -6,9 +6,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 interface LeaderboardTableProps {
 	players: {
-		userId: number;
-		username: string;
-		playerRating: string;
+		user: number;
+		userName: string | null;
+		playerRating: number | null;
 	}[];
 	searchQuery: string;
 	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -61,9 +61,9 @@ export const LeaderboardTable = ({
 							}
 
 							return (
-								<TableRow key={player.userId} className={rowClass}>
+								<TableRow key={player.user} className={rowClass}>
 									<TableCell className="text-primary text-sm">#{rank}</TableCell>
-									<TableCell className="text-primary text-sm">{player.username}</TableCell>
+									<TableCell className="text-primary text-sm">{player.userName}</TableCell>
 									<TableCell className="text-primary text-sm">{(Number(player.playerRating) / 100).toFixed(2)}</TableCell>
 								</TableRow>
 							);

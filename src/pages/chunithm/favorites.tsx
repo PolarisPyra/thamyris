@@ -63,9 +63,9 @@ const ChunithmFavorites = () => {
 			icon: (
 				<Heart
 					className={`h-5 w-5 cursor-pointer ${
-						favoriteSongIds.includes(song.songId) ? "fill-current text-red-500" : "text-gray-500"
+						favoriteSongIds.includes(song.songId ?? 0) ? "fill-current text-red-500" : "text-gray-500"
 					}`}
-					onClick={() => handleToggleFavorite(song.songId)}
+					onClick={() => handleToggleFavorite(song.songId ?? 0)}
 				/>
 			),
 		}));
@@ -105,11 +105,7 @@ const ChunithmFavorites = () => {
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
-						{totalPages > 1 && (
-							<div className="mt-4 flex justify-center">
-								<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-							</div>
-						)}
+						{totalPages > 1 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />}
 					</div>
 				</div>
 			) : (

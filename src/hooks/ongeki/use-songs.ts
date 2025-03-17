@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { SongResponse } from "@/types";
 import { api } from "@/utils";
 
 export function useOngekiSongs() {
@@ -8,14 +7,12 @@ export function useOngekiSongs() {
 		queryKey: ["ongeki", "songs"],
 		queryFn: async () => {
 			const response = await api.ongeki.ongeki_static_music.$get();
-			const data = (await response.json()) as SongResponse;
 
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch songs");
 			}
-			// moved to client side for faster queries
-			// Sort by id in descending order
-			return data.results.sort((a, b) => b.id - a.id);
+
+			return await response.json();
 		},
 	});
 }

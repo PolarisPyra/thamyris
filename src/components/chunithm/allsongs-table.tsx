@@ -3,9 +3,23 @@ import React from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AllSongsTableProps } from "@/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
+interface AllSongs {
+	id?: number;
+	title: React.ReactNode;
+	chartId: number | null;
+	level: number | React.ReactNode;
+	genre: string | null;
+	artist: React.ReactNode;
+	icon?: React.ReactNode;
+}
+
+interface AllSongsTableProps {
+	allSongs: AllSongs[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 const ChunithmAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
 	const filteredSongs = allSongs.filter((song) => String(song.title).toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -37,13 +51,13 @@ const ChunithmAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSon
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{filteredSongs.map((favorite) => (
-							<TableRow key={favorite.id} className="border-seperator hover:bg-hover border-b">
-								<TableCell className="text-primary max-w-[140px] truncate text-sm">{favorite.title}</TableCell>
-								<TableCell className="text-primary text-sm">{getDifficultyFromChunithmChart(favorite.chartId)}</TableCell>
-								<TableCell className="text-primary text-sm">{favorite.level}</TableCell>
-								<TableCell className="text-primary text-sm">{favorite.genre}</TableCell>
-								<TableCell className="text-primary max-w-[140px] truncate text-sm">{favorite.artist}</TableCell>
+						{filteredSongs.map((song) => (
+							<TableRow key={song.id} className="border-seperator hover:bg-hover border-b">
+								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
+								<TableCell className="text-primary text-sm">{getDifficultyFromChunithmChart(song.chartId ?? 0)}</TableCell>
+								<TableCell className="text-primary text-sm">{song.level}</TableCell>
+								<TableCell className="text-primary text-sm">{song.genre}</TableCell>
+								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.artist}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

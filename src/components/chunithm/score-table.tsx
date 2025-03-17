@@ -3,11 +3,83 @@ import React from "react";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ChunithmScoreTableProps } from "@/types";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
+interface ChunithmScore {
+	id: number;
+	user: number;
+	orderId: number | null;
+	sortNumber: number | null;
+	placeId: number | null;
+	playDate: string | null;
+	userPlayDate: string | null;
+	musicId: number | null;
+	level: number | null;
+	customId: number | null;
+	playedUserId1: number | null;
+	playedUserId2: number | null;
+	playedUserId3: number | null;
+	playedUserName1: string | null;
+	playedUserName2: string | null;
+	playedUserName3: string | null;
+	playedMusicLevel1: number | null;
+	playedMusicLevel2: number | null;
+	playedMusicLevel3: number | null;
+	playedCustom1: number | null;
+	playedCustom2: number | null;
+	playedCustom3: number | null;
+	track: number | null;
+	score: number | null;
+	rank: number | null;
+	maxCombo: number | null;
+	maxChain: number | null;
+	rateTap: number | null;
+	rateHold: number | null;
+	rateSlide: number | null;
+	rateAir: number | null;
+	rateFlick: number | null;
+	judgeGuilty: number | null;
+	judgeAttack: number | null;
+	judgeJustice: number | null;
+	judgeCritical: number | null;
+	eventId: number | null;
+	playerRating: number | null;
+	isNewRecord: boolean | null;
+	isFullCombo: boolean | null;
+	fullChainKind: number | null;
+	isAllJustice: boolean | null;
+	isContinue: boolean | null;
+	isFreeToPlay: boolean | null;
+	characterId: number | null;
+	skillId: number | null;
+	playKind: number | null;
+	isClear: boolean | null;
+	skillLevel: number | null;
+	skillEffect: number | null;
+	placeName: string | null;
+	isMaimai: boolean | null;
+	commonId: number | null;
+	charaIllustId: number | null;
+	romVersion: string | null;
+	judgeHeaven: number | null;
+	regionId: number | null;
+	machineType: number | null;
+	ticketId: number | null;
+	monthPoint: number | null;
+	eventPoint: number | null;
+	title?: string;
+	chartId?: number;
+	rating_change?: "Increase" | "Decrease" | "Same";
+}
+
+interface ChunithmScoreTableProps {
+	scores: ChunithmScore[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmScoreTableProps) => {
-	const filteredScores = scores.filter((score) => score.title.toLowerCase().includes(searchQuery.toLowerCase()));
+	const filteredScores = scores.filter((score) => score.title?.toLowerCase().includes(searchQuery.toLowerCase()));
 
 	return (
 		<div className="bg-card rounded-md p-4 sm:p-6">
@@ -42,23 +114,25 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 						{filteredScores.map((score) => (
 							<TableRow key={score.id} className="border-seperator hover:bg-hover border-b">
 								<TableCell className="text-primary max-w-[140px] truncate text-sm font-medium">{score.title}</TableCell>
-								<TableCell className="text-primary text-sm font-medium">{score.score.toLocaleString()}</TableCell>
+								<TableCell className="text-primary text-sm font-medium">{score.score?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm">
 									<div className="flex items-center">
-										<span className="mr-4">{(score.playerRating / 100).toFixed(2)}</span>
+										<span className="mr-4">{((score.playerRating ?? 0) / 100).toFixed(2)}</span>{" "}
 										{score.rating_change === "Increase" && <CircleArrowUp className="h-6 w-6 text-green-500" />}
 										{score.rating_change === "Decrease" && <CircleArrowDown className="h-6 w-6 text-red-500" />}
 										{score.rating_change === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
 									</div>
 								</TableCell>
-								<TableCell className="text-primary text-sm">{getDifficultyFromChunithmChart(score.chartId)}</TableCell>
-								<TableCell className="text-primary text-sm">{new Date(score.userPlayDate).toLocaleString()}</TableCell>
+								<TableCell className="text-primary text-sm">{getDifficultyFromChunithmChart(score.chartId ?? 0)}</TableCell>
+								<TableCell className="text-primary text-sm">
+									{score.userPlayDate ? new Date(score.userPlayDate).toLocaleString() : "Unknown"}
+								</TableCell>
 								<TableCell className="text-primary text-sm">{score.level}</TableCell>
 								<TableCell className="text-primary text-sm">
 									{score.isFullCombo ? "Full Combo" : ""} {score.isAllJustice ? "All Justice" : ""}
 								</TableCell>
 								<TableCell className="text-primary text-sm">
-									{score.isClear === 1 ? "Clear" : score.isClear === 0 ? "Failed" : "Unknown"}
+									{score.isClear === true ? "Clear" : score.isClear === false ? "Failed" : "Unknown"}
 								</TableCell>
 							</TableRow>
 						))}

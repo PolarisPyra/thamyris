@@ -107,11 +107,7 @@ const ChunithmRivals = () => {
 							rivalCount={rivalCount}
 						/>
 
-						{totalPages > 1 && (
-							<div className="mt-4 flex justify-center">
-								<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-							</div>
-						)}
+						{totalPages > 1 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />}
 					</div>
 				</div>
 			) : (

@@ -1,47 +1,8 @@
 import { Hono } from "hono";
 
 import { db } from "@/api/db";
+import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
-
-interface PlaylogEntry {
-	id: number;
-	userPlayDate: string;
-	maxCombo: number;
-	isFullCombo: number;
-	playerRating: number;
-	isAllBreak: number;
-	isFullBell: number;
-	techScore: number;
-	battleScore: number;
-	judgeMiss: number;
-	judgeHit: number;
-	judgeBreak: number;
-	judgeCriticalBreak: number;
-	clearStatus: number;
-	cardId1: number;
-	chartId: number;
-	title: string;
-	level: number;
-	genre: string;
-	artist: string;
-	techscore_change: string;
-	battlescore_change: string;
-	rating_change: string;
-}
-
-interface StaticMusicEntry {
-	id: number;
-	songId: number;
-	chartId: number;
-	title: string;
-	level: number;
-	artist: string;
-	genre: string;
-}
-
-interface StaticMusicResponse {
-	results: StaticMusicEntry[];
-}
 
 const OngekiRoutes = new Hono()
 	.get("ongeki_score_playlog", async (c) => {
@@ -49,7 +10,7 @@ const OngekiRoutes = new Hono()
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
 
-			const results = await db.select<PlaylogEntry>(
+			const results = await db.select<DB.OngekiScorePlaylog>(
 				`
                 WITH RankedScores AS (
                     SELECT 
@@ -127,21 +88,20 @@ const OngekiRoutes = new Hono()
 			throw rethrowWithMessage("Failed to fetch ongeki playlog", error);
 		}
 	})
-	.get("/ongeki_static_music", async (c): Promise<Response> => {
+	.get("ongeki_static_music", async (c) => {
 		try {
 			const { versions } = c.payload;
 			const version = versions.ongeki_version;
 
-			const results = (await db.query(
+			const results = await db.select<DB.OngekiStaticMusic>(
 				`SELECT id, songId, chartId, title, level, artist, genre  
-                FROM ongeki_static_music 
-                WHERE version = ?`,
+       FROM ongeki_static_music
+       WHERE version = ?`,
 				[version]
-			)) as StaticMusicEntry[];
-
-			return c.json({ results } as StaticMusicResponse);
+			);
+			return c.json(results);
 		} catch (error) {
-			throw rethrowWithMessage("Failed to get ongeki static music", error);
+			throw rethrowWithMessage("Failed to get static music", error);
 		}
 	});
 export { OngekiRoutes };

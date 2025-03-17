@@ -13,8 +13,8 @@ const ChunithmAllSongs = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const filteredSongs = songs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
-	const ITEMS_PER_PAGE = 10;
+	const filteredSongs = songs.filter((song) => song.title?.toLowerCase().includes(searchQuery.toLowerCase()));
+	const ITEMS_PER_PAGE = 15;
 	const totalPages = Math.ceil(filteredSongs.length / ITEMS_PER_PAGE);
 	const paginatedSongs = filteredSongs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
@@ -40,11 +40,7 @@ const ChunithmAllSongs = () => {
 							searchQuery={searchQuery}
 							onSearchChange={(e) => setSearchQuery(e.target.value)}
 						/>
-						{totalPages > 1 && (
-							<div className="mt-4 flex justify-center">
-								<Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-							</div>
-						)}
+						{totalPages > 1 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />}
 					</div>
 				</div>
 			) : (
