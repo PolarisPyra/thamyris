@@ -18,10 +18,13 @@ const SystemvoiceSelector = () => {
 
 	const [selectedVoice, setSelectedVoice] = useState<string>("");
 
-	// Set initial selected voice when data loads
+	const hasChanges = () => {
+		const currentPath = Array.isArray(currentVoice) && currentVoice.length > 0 ? currentVoice[0].imagePath : "";
+		return selectedVoice !== currentPath;
+	};
 	React.useEffect(() => {
 		if (currentVoice) {
-			setSelectedVoice(currentVoice.imagePath);
+			setSelectedVoice(currentVoice[0].imagePath);
 		} else if (systemVoices && systemVoices.length > 0) {
 			setSelectedVoice(systemVoices[0].imagePath);
 		}
@@ -31,15 +34,12 @@ const SystemvoiceSelector = () => {
 		setOpenDropdown(!openDropdown);
 	};
 
-	const hasChanges = () => {
-		return selectedVoice !== currentVoice?.imagePath;
-	};
-
 	const handleSubmit = () => {
 		const selected = systemVoices?.find((voice) => voice.imagePath === selectedVoice);
-
 		if (selected && hasChanges()) {
-			updateVoice(selected.id, {
+			console.log(selected);
+
+			updateVoice(selected.systemVoiceId, {
 				onSuccess: () => {
 					toast.success("System voice updated successfully!");
 					setOpenDropdown(false);
@@ -68,7 +68,11 @@ const SystemvoiceSelector = () => {
 	return (
 		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 md:flex-row md:gap-8 md:pt-15">
 			<div className="flex items-center justify-center self-center md:h-full md:w-[300px]">
-				<img src={`${cdnUrl}assets/system_voice/${selectedVoice}.png`} className="w-[200px] object-contain" />
+				<img
+					src={`${cdnUrl}assets/system_voice/${selectedVoice.replace(".dds", ".png")}`}
+					className="w-[200px] object-contain"
+					alt="System Voice"
+				/>
 			</div>
 			<div className="bg-card w-full rounded-md p-4 md:w-[400px] md:p-6">
 				<div className="mb-4">
@@ -91,7 +95,7 @@ const SystemvoiceSelector = () => {
 								<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
 									{systemVoices?.map((voice) => (
 										<div
-											key={voice.id}
+											key={voice.systemVoiceId}
 											onClick={() => {
 												setSelectedVoice(voice.imagePath);
 											}}

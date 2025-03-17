@@ -2,54 +2,32 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
-interface SystemVoice {
-	id: number;
-	name: string;
-	imagePath: string;
-}
-
-interface SystemVoiceResponse {
-	results: SystemVoice[];
-	error?: string;
-}
-
 export function useSystemVoices() {
 	return useQuery({
 		queryKey: ["systemvoices"],
 		queryFn: async () => {
 			const response = await api.chunithm.systemvoice.all.$get();
-			const data = (await response.json()) as SystemVoiceResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error("Failed to fetch systemvoices");
 			}
 
-			return data.results.map((voice) => ({
-				...voice,
-				imagePath: voice.imagePath.replace(".dds", ""),
-			}));
+			const data = await response.json();
+
+			return data || {};
 		},
 	});
 }
 
 export function useCurrentSystemVoice() {
 	return useQuery({
-		queryKey: ["currentSystemVoice"],
+		queryKey: ["currentSystemvoice"],
 		queryFn: async () => {
 			const response = await api.chunithm.systemvoice.current.$get();
-			const data = (await response.json()) as SystemVoiceResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error("Failed to fetch systemvoices");
 			}
 
-			const voice = data.results[0];
-			return voice
-				? {
-						...voice,
-						imagePath: voice.imagePath.replace(".dds", ""),
-					}
-				: null;
+			return await response.json();
 		},
 	});
 }
@@ -60,15 +38,16 @@ export function useUpdateSystemVoice() {
 	return useMutation({
 		mutationFn: async (voiceId: number) => {
 			const response = await api.chunithm.systemvoice.update.$post({
-				json: { voiceId },
+				json: { voiceId, version: 0, userId: 0 },
 			});
+
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to update systemvoice");
 			}
-			return response;
+			return await response.json();
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["currentSystemVoice"] });
+			queryClient.invalidateQueries({ queryKey: ["currentSystemvoice"] });
 		},
 	});
 }

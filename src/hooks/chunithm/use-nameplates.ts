@@ -18,9 +18,9 @@ export function useNameplates() {
 	});
 }
 
-export function useCurrentNameplate() {
+export function useCurrentNameplates() {
 	return useQuery({
-		queryKey: ["currentNameplate"],
+		queryKey: ["currentNameplates"],
 		queryFn: async () => {
 			const response = await api.chunithm.nameplate.current.$get();
 			if (!response.ok) {

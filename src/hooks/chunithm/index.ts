@@ -4,7 +4,7 @@ import { useKamaitachiExport } from "./use-kamatachi";
 import { useLeaderboard } from "./use-leaderboard";
 import { useCurrentMapIcon, useMapIcons, useUpdateMapIcon } from "./use-mapicon";
 import { useIsMobile } from "./use-mobile";
-import { useCurrentNameplate, useNameplates, useUpdateNameplate } from "./use-nameplates";
+import { useCurrentNameplates, useNameplates, useUpdateNameplate } from "./use-nameplates";
 import {
 	useHighestRating,
 	usePlayerRating,
@@ -36,7 +36,7 @@ export {
 	useMapIcons,
 	useUpdateMapIcon,
 	useIsMobile,
-	useCurrentNameplate,
+	useCurrentNameplates,
 	useNameplates,
 	useUpdateNameplate,
 	useHighestRating,

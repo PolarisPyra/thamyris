@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
-import { useCurrentNameplate, useNameplates, useUpdateNameplate } from "@/hooks/chunithm";
+import { useCurrentNameplates, useNameplates, useUpdateNameplate } from "@/hooks/chunithm";
 import { cdnUrl } from "@/lib/cdn";
 
 import Spinner from "../common/spinner";
@@ -13,7 +13,7 @@ import Spinner from "../common/spinner";
 const NameplateSelector = () => {
 	const [openDropdown, setOpenDropdown] = useState(false);
 	const { data: nameplates, isLoading: isLoadingNameplates } = useNameplates();
-	const { data: currentNameplate, isLoading: isLoadingCurrent } = useCurrentNameplate();
+	const { data: currentNameplate, isLoading: isLoadingCurrent } = useCurrentNameplates();
 	const { mutate: updateNameplate, isPending } = useUpdateNameplate();
 
 	const [selectedNameplate, setSelectedNameplate] = useState<string>("");

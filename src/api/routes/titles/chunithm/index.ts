@@ -11,7 +11,7 @@ import { UserRatingFramesRoutes } from "./rating";
 import { ChunithmReiwaRoutes } from "./reiwa";
 import { RivalsRoutes } from "./rivals";
 import { ChunithmSettingsRoutes } from "./settings";
-import { SystemvoiceRoutes } from "./systemvoice";
+import { SystemVoiceRoutes } from "./systemvoice";
 import { TrophyRoutes } from "./trophies";
 
 export const AllChunithmRoutes = new Hono()
@@ -26,5 +26,5 @@ export const AllChunithmRoutes = new Hono()
 	.route("reiwa", ChunithmReiwaRoutes)
 	.route("rivals", RivalsRoutes)
 	.route("settings", ChunithmSettingsRoutes)
-	.route("systemvoice", SystemvoiceRoutes)
+	.route("systemvoice", SystemVoiceRoutes)
 	.route("trophy", TrophyRoutes);
