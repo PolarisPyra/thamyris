@@ -4,8 +4,23 @@ import { Search } from "lucide-react";
 
 import Pagination from "@/components/common/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AllSongsTableProps } from "@/types";
 import { getDifficultyFromOngekiChart } from "@/utils/helpers";
+
+interface AllSongs {
+	id?: number;
+	title: React.ReactNode;
+	chartId: number | null;
+	level: number | React.ReactNode;
+	genre: string | null;
+	artist: React.ReactNode;
+	icon?: React.ReactNode;
+}
+
+interface AllSongsTableProps {
+	allSongs: AllSongs[];
+	searchQuery: string;
+	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 const OngekiAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongsTableProps) => {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -47,7 +62,7 @@ const OngekiAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSongs
 						{paginatedSongs.map((favorite) => (
 							<TableRow key={favorite.id} className="border-seperator hover:bg-hover border-b">
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{favorite.title}</TableCell>
-								<TableCell className="text-primary text-sm">{getDifficultyFromOngekiChart(favorite.chartId)}</TableCell>
+								<TableCell className="text-primary text-sm">{getDifficultyFromOngekiChart(favorite.chartId ?? 0)}</TableCell>
 								<TableCell className="text-primary text-sm">{favorite.level}</TableCell>
 								<TableCell className="text-primary text-sm">{favorite.genre}</TableCell>
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{favorite.artist}</TableCell>
