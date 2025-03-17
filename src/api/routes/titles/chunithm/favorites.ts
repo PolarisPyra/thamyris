@@ -6,10 +6,6 @@ import { validateJson } from "@/api/middleware/validator";
 import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-interface favId {
-	favId: number;
-}
-
 const FavoritesRoutes = new Hono()
 
 	.post(
@@ -25,7 +21,7 @@ const FavoritesRoutes = new Hono()
 		async (c) => {
 			try {
 				const { userId, versions } = c.payload;
-				const { favId } = await c.req.json<favId>();
+				const { favId } = await c.req.json();
 
 				const version = versions.chunithm_version;
 
@@ -55,7 +51,7 @@ const FavoritesRoutes = new Hono()
 		async (c) => {
 			try {
 				const { userId, versions } = c.payload;
-				const { favId } = await c.req.json<favId>();
+				const { favId } = await c.req.json();
 
 				const version = versions.chunithm_version;
 

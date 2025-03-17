@@ -19,13 +19,14 @@ const MapiconSelector = () => {
 	const [selectedIcon, setSelectedIcon] = useState<string>("");
 
 	const hasChanges = () => {
-		return selectedIcon !== currentIcon?.imagePath;
+		const currentPath = Array.isArray(currentIcon) && currentIcon.length > 0 ? currentIcon[0].imagePath : "";
+
+		return selectedIcon !== currentPath;
 	};
 
-	// Set initial selected icon when data loads
 	React.useEffect(() => {
-		if (currentIcon) {
-			setSelectedIcon(currentIcon.imagePath);
+		if (currentIcon && Array.isArray(currentIcon) && currentIcon.length > 0) {
+			setSelectedIcon(currentIcon[0].imagePath);
 		} else if (mapIcons && mapIcons.length > 0) {
 			setSelectedIcon(mapIcons[0].imagePath);
 		}
@@ -37,9 +38,9 @@ const MapiconSelector = () => {
 
 	const handleSubmit = () => {
 		const selected = mapIcons?.find((icon) => icon.imagePath === selectedIcon);
-
+		// console.log(selected);
 		if (selected && hasChanges()) {
-			updateIcon(selected.id, {
+			updateIcon(selected.mapIconId, {
 				onSuccess: () => {
 					toast.success("Map icon updated successfully!");
 					setOpenDropdown(false);
@@ -68,7 +69,13 @@ const MapiconSelector = () => {
 	return (
 		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
 			<div className="flex h-full items-center justify-center md:w-[300px]">
-				<img src={`${cdnUrl}assets/map_icon/${selectedIcon}.png`} className="w-[130px] object-contain" />
+				{selectedIcon && (
+					<img
+						src={`${cdnUrl}assets/map_icon/${selectedIcon.replace(".dds", ".png")}`}
+						className="w-[130px] object-contain"
+						alt="Map Icon"
+					/>
+				)}
 			</div>
 			<div className="bg-card w-full rounded-md p-4 md:w-[400px] md:p-6">
 				<div className="mb-4">
@@ -91,7 +98,7 @@ const MapiconSelector = () => {
 								<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
 									{mapIcons?.map((icon) => (
 										<div
-											key={icon.id}
+											key={icon.mapIconId}
 											onClick={() => {
 												setSelectedIcon(icon.imagePath);
 											}}
