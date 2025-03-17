@@ -19,13 +19,15 @@ const NameplateSelector = () => {
 	const [selectedNameplate, setSelectedNameplate] = useState<string>("");
 
 	const hasChanges = () => {
-		return selectedNameplate !== currentNameplate?.imagePath;
+		const currentPath =
+			Array.isArray(currentNameplate) && currentNameplate.length > 0 ? currentNameplate[0].imagePath : "";
+		return selectedNameplate !== currentPath;
 	};
 
 	// Set initial selected nameplate when data loads
 	React.useEffect(() => {
 		if (currentNameplate) {
-			setSelectedNameplate(currentNameplate.imagePath);
+			setSelectedNameplate(currentNameplate[0].imagePath);
 		} else if (nameplates && nameplates.length > 0) {
 			setSelectedNameplate(nameplates[0].imagePath);
 		}
@@ -39,7 +41,7 @@ const NameplateSelector = () => {
 		const selected = nameplates?.find((nameplate) => nameplate.imagePath === selectedNameplate);
 
 		if (selected && hasChanges()) {
-			updateNameplate(selected.id, {
+			updateNameplate(selected.nameplateId, {
 				onSuccess: () => {
 					toast.success("Nameplate updated successfully!");
 					setOpenDropdown(false);
@@ -68,7 +70,11 @@ const NameplateSelector = () => {
 	return (
 		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 md:flex-row md:gap-8 md:pt-15">
 			<div className="flex items-center justify-center self-center md:h-full md:w-[300px]">
-				<img src={`${cdnUrl}assets/nameplate/${selectedNameplate}.png`} className="w-[250px] object-contain" />
+				<img
+					src={`${cdnUrl}assets/nameplate/${selectedNameplate.replace(".dds", ".png")}`}
+					className="w-[250px] object-contain"
+					alt="Nameplate"
+				/>{" "}
 			</div>
 
 			<div className="bg-card w-full rounded-md p-4 md:w-[400px] md:p-6">
@@ -92,7 +98,7 @@ const NameplateSelector = () => {
 								<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
 									{nameplates?.map((nameplate) => (
 										<div
-											key={nameplate.id}
+											key={nameplate.nameplateId}
 											onClick={() => {
 												setSelectedNameplate(nameplate.imagePath);
 											}}

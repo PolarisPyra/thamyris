@@ -2,32 +2,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
-interface Nameplate {
-	id: number;
-	name: string;
-	imagePath: string;
-}
-
-interface NameplateResponse {
-	results: Nameplate[];
-	error?: string;
-}
-
 export function useNameplates() {
 	return useQuery({
 		queryKey: ["nameplates"],
 		queryFn: async () => {
 			const response = await api.chunithm.nameplate.all.$get();
-			const data = (await response.json()) as NameplateResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch nameplates");
 			}
 
-			return data.results.map((nameplate) => ({
-				...nameplate,
-				imagePath: nameplate.imagePath.replace(".dds", ""),
-			}));
+			const data = await response.json();
+
+			return data || {};
 		},
 	});
 }
@@ -37,19 +23,11 @@ export function useCurrentNameplate() {
 		queryKey: ["currentNameplate"],
 		queryFn: async () => {
 			const response = await api.chunithm.nameplate.current.$get();
-			const data = (await response.json()) as NameplateResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch nameplates");
 			}
 
-			const nameplate = data.results[0];
-			return nameplate
-				? {
-						...nameplate,
-						imagePath: nameplate.imagePath.replace(".dds", ""),
-					}
-				: null;
+			return await response.json();
 		},
 	});
 }
@@ -60,15 +38,19 @@ export function useUpdateNameplate() {
 	return useMutation({
 		mutationFn: async (nameplateId: number) => {
 			const response = await api.chunithm.nameplate.update.$post({
-				json: { nameplateId },
+				json: {
+					nameplateId,
+					userId: 0,
+					version: 0,
+				},
 			});
+
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to update nameplate");
 			}
-			return response;
+			return await response.json();
 		},
 		onSuccess: () => {
-			// Invalidate and refetch
 			queryClient.invalidateQueries({ queryKey: ["currentNameplate"] });
 		},
 	});
