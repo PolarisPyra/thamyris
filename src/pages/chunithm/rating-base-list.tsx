@@ -22,14 +22,14 @@ const ChunithmRatingFrames = () => {
 	const { data: newSongs = [] } = useUserRatingBaseNewList();
 	const { data: nextSongs = [] } = useUserRatingBaseNextList();
 
-	const totalAverageRating = useMemo(() => {
-		const totalSongs = [...baseSongs, ...newSongs, ...hotSongs];
-		const totalRating = totalSongs.reduce((sum, song) => sum + song.rating, 0);
-		return totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
-	}, [baseSongs, newSongs, hotSongs]);
+	// const totalAverageRating = useMemo(() => {
+	// 	const totalSongs = [baseSongs, newSongs, hotSongs];
+	// 	const totalRating = totalSongs.reduce((sum, song) => sum + song.rating, 0);
+	// 	return totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
+	// }, [baseSongs, newSongs, hotSongs]);
 
 	const isVerseOrAbove = Number(version) >= 17;
-
+	console.log(baseSongs);
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title="Rating Frame" />
@@ -39,7 +39,7 @@ const ChunithmRatingFrames = () => {
 						<QouteCard
 							icon={ChartNoAxesCombined}
 							tagline=""
-							value={`Average Rating: ${totalAverageRating}`}
+							// value={`Average Rating: ${totalAverageRating}`}
 							color="#ffaa00"
 							welcomeMessage={`Based on ${baseSongs.length} best plays`}
 						/>

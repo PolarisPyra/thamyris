@@ -119,7 +119,7 @@ export function OngekiRating(level: number, score: number): number {
 	return 0; // Fallback return 0
 }
 
-export function ChunitmRating(level: number, score: number): number {
+export function ChunithmRating(level: number, score: number): number {
 	if (score >= 1009000) {
 		return level * 100 + 215;
 	} else if (score >= 1007500) {

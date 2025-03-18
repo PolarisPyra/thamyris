@@ -33,7 +33,7 @@ export function useUpdateAvatar() {
 				throw new Error();
 			}
 
-			return response;
+			return await response.json();
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["avatar", "current"] });
@@ -51,9 +51,7 @@ export function useAllAvatarParts() {
 				throw new Error();
 			}
 
-			const data = await response.json();
-
-			return data || {};
+			return await response.json();
 		},
 	});
 }

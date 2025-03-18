@@ -66,23 +66,6 @@ export interface SongResponse {
 	error?: string;
 }
 
-export interface RatingTable {
-	id?: number;
-	musicId: number;
-	title: string;
-	score: number;
-	level: number;
-	chartId: number;
-	genre: string;
-	artist: string;
-	rating: number;
-}
-
-export interface RatingFrameTableProps {
-	data: RatingTable[];
-	title: string;
-}
-
 /// avatar use-avatar.ts
 export interface AllAvatarApiResponse {
 	results?: UnlockedOutfit[];

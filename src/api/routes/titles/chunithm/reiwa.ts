@@ -2,7 +2,7 @@ import { Hono } from "hono";
 
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
-import { ChunitmRating, getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
+import { ChunithmRating, getDifficultyFromChunithmChart, getGrade } from "@/utils/helpers";
 
 interface ChunithmSongResult {
 	musicId: number;
@@ -95,7 +95,7 @@ const ChunithmReiwaRoutes = new Hono().get("export", async (c) => {
 		const b30 = bestListResults
 			.filter((song: ChunithmSongResult) => song.musicId !== 0)
 			.map((song: ChunithmSongResult) => {
-				const rating = ChunitmRating(song.level, song.score);
+				const rating = ChunithmRating(song.level, song.score);
 				return {
 					title: song.title,
 					artist: song.artist,
@@ -113,7 +113,7 @@ const ChunithmReiwaRoutes = new Hono().get("export", async (c) => {
 		const recent = hotListResults
 			.filter((song: ChunithmSongResult) => song.musicId !== 0)
 			.map((song: ChunithmSongResult) => {
-				const rating = ChunitmRating(song.level, song.score);
+				const rating = ChunithmRating(song.level, song.score);
 				return {
 					title: song.title,
 					artist: song.artist,
