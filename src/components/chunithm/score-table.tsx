@@ -53,7 +53,7 @@ interface ChunithmScore {
 	characterId: number | null;
 	skillId: number | null;
 	playKind: number | null;
-	isClear: boolean | null;
+	isClear: number;
 	skillLevel: number | null;
 	skillEffect: number | null;
 	placeName: string | null;
@@ -132,7 +132,7 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 									{score.isFullCombo ? "Full Combo" : ""} {score.isAllJustice ? "All Justice" : ""}
 								</TableCell>
 								<TableCell className="text-primary text-sm">
-									{score.isClear === true ? "Clear" : score.isClear === false ? "Failed" : "Unknown"}
+									{score.isClear === 1 ? "Clear" : score.isClear === 0 ? "Failed" : "Unknown"}
 								</TableCell>
 							</TableRow>
 						))}

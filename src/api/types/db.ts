@@ -674,7 +674,7 @@ export namespace DB {
 		characterId: number | null;
 		skillId: number | null;
 		playKind: number | null;
-		isClear: boolean | null;
+		isClear: number;
 		skillLevel: number | null;
 		skillEffect: number | null;
 		placeName: string | null;
