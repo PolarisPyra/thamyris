@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChunitmRating, getDifficultyFromChunithmChart } from "@/utils/helpers";
+import { getChunithmGrade } from "@/utils/helpers";
 
 interface RatingTable {
 	id: number;
@@ -65,7 +66,9 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 						{filteredSongs.map((song, index) => (
 							<TableRow key={song.id ?? index} className="border-seperator hover:bg-hover border-b">
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
-								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
+								<TableCell className="text-primary text-sm">
+									{song.score?.toLocaleString()} {getChunithmGrade(song.score!)}{" "}
+								</TableCell>
 								<TableCell className="text-primary text-sm">{song.level}</TableCell>
 								<TableCell className="text-primary text-sm">
 									<span>{getDifficultyFromChunithmChart(song.chartId!)}</span>

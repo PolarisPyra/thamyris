@@ -2,7 +2,6 @@ import React from "react";
 
 import { ChartNoAxesCombined } from "lucide-react";
 
-import RatingFrameTable from "@/components/chunithm/rating-table";
 import ChunithmRatingFrameTable from "@/components/chunithm/rating-table";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
@@ -43,7 +42,7 @@ const ChunithmRatingFrames = () => {
 
 						{isVerseOrAbove && (
 							<>
-								<RatingFrameTable data={newSongs} title="Current Version" />
+								<ChunithmRatingFrameTable data={newSongs} title="Current Version" />
 							</>
 						)}
 

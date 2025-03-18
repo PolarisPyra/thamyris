@@ -1,4 +1,4 @@
-export const getGrade = (score: number) => {
+export const getChunithmGrade = (score: number) => {
 	if (score >= 1009000) return "SSS+";
 	if (score >= 1007500 && score <= 1008999) return "SSS";
 	if (score >= 1005000 && score <= 1007499) return "SS+";

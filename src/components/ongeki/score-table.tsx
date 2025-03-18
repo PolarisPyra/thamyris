@@ -3,7 +3,7 @@ import React from "react";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getDifficultyFromOngekiChart } from "@/utils/helpers";
+import { getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
 
 interface OngekiScore {
 	id: number;
@@ -105,6 +105,8 @@ const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTa
 						<TableRow className="border-seperator border-b hover:bg-transparent">
 							<TableHead className="text-primary whitespace-nowrap">Song</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Score</TableHead>
+							<TableHead className="text-primary whitespace-nowrap">Grade</TableHead>
+
 							<TableHead className="text-primary whitespace-nowrap">Rating</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Difficulty</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Playdate</TableHead>
@@ -118,6 +120,8 @@ const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTa
 							<TableRow key={score.id} className="border-seperator hover:bg-hover border-b">
 								<TableCell className="text-primary max-w-[140px] truncate text-sm font-medium">{score.title}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{score.techScore?.toLocaleString()}</TableCell>
+								<TableCell className="text-primary text-sm font-medium">{getOngekiGrade(score.techScore ?? 0)}</TableCell>
+
 								<TableCell className="text-primary text-sm">
 									<div className="flex items-center">
 										<span className="mr-4">{((score.playerRating ?? 0) / 100).toFixed(2)}</span>{" "}
