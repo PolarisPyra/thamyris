@@ -1,23 +1,15 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { verify } from "hono/jwt";
 
 import { db } from "@/api/db";
 import { rethrowWithMessage } from "@/api/utils/error";
-import { env } from "@/env";
 
 const AdminRoutes = new Hono()
 	.get("/check", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
+			const { userId } = c.payload;
+			const permissions = c.payload.permissions;
 
-			const payload = await verify(token, env.JWT_SECRET);
-			const permissions = payload.permissions;
-
-			if (!permissions || permissions !== 2) {
+			if (!userId || permissions !== 2) {
 				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
 			}
 
@@ -29,19 +21,13 @@ const AdminRoutes = new Hono()
 	})
 	.post("/keychip/generate", async (c) => {
 		try {
-			const token = getCookie(c, "auth_token");
-			if (!token) {
-				return c.json({ error: "Unauthorized" }, 401);
-			}
-
-			const payload = await verify(token, env.JWT_SECRET);
-			const userId = payload.userId;
-			const permissions = payload.permissions;
+			const { userId } = c.payload;
+			const permissions = c.payload.permissions;
 
 			const body = await c.req.json();
 			const { arcade_nickname, name, game, namcopcbid, aimecard } = body;
 
-			if (!permissions || permissions !== 2) {
+			if (!userId || permissions !== 2) {
 				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
 			}
 
