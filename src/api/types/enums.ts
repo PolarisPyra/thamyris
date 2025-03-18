@@ -7,3 +7,8 @@ export const enum ChunithmAvatarCategory {
 	FRONT = 6,
 	BACK = 7,
 }
+
+export enum UserRole {
+	User = 1,
+	Admin = 2,
+}

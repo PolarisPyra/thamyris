@@ -1,34 +1,33 @@
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 
 import { db } from "@/api/db";
+import { UserRole } from "@/api/types/enums";
 import { rethrowWithMessage } from "@/api/utils/error";
 
 const AdminRoutes = new Hono()
 	.get("/check", async (c) => {
 		try {
-			const { userId } = c.payload;
-			const permissions = c.payload.permissions;
+			const { userId, permissions } = c.payload;
 
-			if (!userId || permissions !== 2) {
-				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
+			if (!userId || permissions !== UserRole.Admin) {
+				throw new HTTPException(403);
 			}
 
 			return c.json({ isAdmin: true });
 		} catch (error) {
-			console.error("Error checking admin status:", error);
-			return c.json({ error: "Failed to check admin status" }, 500);
+			throw rethrowWithMessage("Failed to check admin status", error);
 		}
 	})
 	.post("/keychip/generate", async (c) => {
 		try {
-			const { userId } = c.payload;
-			const permissions = c.payload.permissions;
+			const { userId, permissions } = c.payload;
 
 			const body = await c.req.json();
 			const { arcade_nickname, name, game, namcopcbid, aimecard } = body;
 
-			if (!userId || permissions !== 2) {
-				return c.json({ error: "Unauthorized - Insufficient permissions" }, 403);
+			if (!userId || permissions !== UserRole.Admin) {
+				throw new HTTPException(403);
 			}
 
 			const existingArcade = await db.query(
@@ -40,13 +39,13 @@ const AdminRoutes = new Hono()
 			);
 
 			if (existingArcade[0]) {
-				return c.json({ error: "Arcade already exists" }, 400);
+				throw new HTTPException(400);
 			}
 
 			// Generate serial ID based on game type
 			const serialId = game === "SDEW" ? namcopcbid : aimecard;
 			if (!serialId) {
-				return c.json({ error: "Serial ID is required" }, 400);
+				throw new HTTPException(400);
 			}
 
 			const existingMachine = await db.query(
@@ -57,7 +56,7 @@ const AdminRoutes = new Hono()
 			);
 
 			if (existingMachine[0]) {
-				return c.json({ error: "Serial ID already in use" }, 400);
+				throw new HTTPException(400);
 			}
 
 			// Create new arcade
