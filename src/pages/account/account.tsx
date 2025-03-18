@@ -8,7 +8,7 @@ import { useAdmin } from "@/hooks/admin";
 const Account = () => {
 	const { isAdmin, isLoading: isCheckingAdmin } = useAdmin();
 	return (
-		<div className="overflow-autop relative flex-1">
+		<div className="relative flex-1 overflow-auto">
 			<Header title={isAdmin ? "Admin Dashboard" : "Account Dashboard"} />
 			<div className="mx-auto max-w-2xl space-y-6">
 				{isCheckingAdmin ? (
