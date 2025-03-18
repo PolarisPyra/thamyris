@@ -3,8 +3,23 @@ import React, { useState } from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { RatingFrameTableProps } from "@/types";
-import { getDifficultyFromChunithmChart } from "@/utils/helpers";
+import { ChunitmRating, getDifficultyFromChunithmChart } from "@/utils/helpers";
+
+interface RatingTable {
+	id?: number;
+	musicId: number;
+	title: string;
+	score: number;
+	level: number;
+	chartId: number;
+	genre: string;
+	artist: string;
+}
+
+interface RatingFrameTableProps {
+	data: RatingTable[];
+	title: string;
+}
 
 const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -51,7 +66,9 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 								</TableCell>
 								<TableCell className="text-primary text-sm">{song.genre}</TableCell>
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.artist}</TableCell>
-								<TableCell className="text-primary text-sm">{(song.rating / 100).toFixed(2)}</TableCell>
+								<TableCell className="text-primary text-sm">
+									{(ChunitmRating(song.level, song.score) / 100).toFixed(2)}
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
