@@ -196,10 +196,6 @@ const UserRatingFramesRoutes = new Hono()
 				[userId, version]
 			);
 
-			if (!results.length) {
-				return c.json({ playerRating: 0 });
-			}
-
 			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get player rating", error);
