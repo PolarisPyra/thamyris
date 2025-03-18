@@ -132,7 +132,7 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 								</TableCell>
 								<TableCell className="text-primary text-sm">{score.level}</TableCell>
 								<TableCell className="text-primary text-sm">
-									{score.isFullCombo ? "Full Combo" : ""} {score.isAllJustice ? "All Justice" : ""}
+									{score.isFullCombo ? "FC" : ""} {score.isAllJustice ? "AJ" : ""}
 								</TableCell>
 								<TableCell className="text-primary text-sm">
 									{score.isClear === 1 ? "Clear" : score.isClear === 0 ? "Failed" : "Unknown"}
