@@ -44,7 +44,7 @@ const ChunithmRatingFrames = () => {
 											<span>• Based on best 30 plays</span>
 										</>
 									)}
-									<div className="mt-2 flex flex-col">
+									<div className="flex flex-col">
 										<span className="text-primary font-bold">
 											Player Rating: {((playerRating[0]?.playerRating ?? 0) / 100).toFixed(2) || "Loading..."}
 										</span>
