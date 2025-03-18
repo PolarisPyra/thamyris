@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import React from "react";
 
 import { ChartNoAxesCombined } from "lucide-react";
@@ -14,7 +13,6 @@ import {
 	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
 } from "@/hooks/chunithm";
-import { ChunitmRating } from "@/utils/helpers";
 
 const ChunithmRatingFrames = () => {
 	const version = useChunithmVersion();
@@ -22,17 +20,6 @@ const ChunithmRatingFrames = () => {
 	const { data: hotSongs = [] } = useUserRatingBaseHotList();
 	const { data: newSongs = [] } = useUserRatingBaseNewList();
 	const { data: nextSongs = [] } = useUserRatingBaseNextList();
-
-	const totalAverageRating = useMemo(() => {
-		const totalSongs = [...baseSongs, ...newSongs, ...hotSongs];
-		const totalRating = totalSongs.reduce((sum, song) => {
-			if (song.level && song.score) {
-				return sum + ChunitmRating(song.level, song.score);
-			}
-			return sum;
-		}, 0);
-		return totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
-	}, [baseSongs, newSongs, hotSongs]);
 
 	const isVerseOrAbove = Number(version) >= 17;
 
@@ -45,7 +32,7 @@ const ChunithmRatingFrames = () => {
 						<QouteCard
 							icon={ChartNoAxesCombined}
 							tagline=""
-							value={`Average Rating: ${totalAverageRating}`}
+							// value={`Average Rating: ${totalAverageRating}`}
 							color="#ffaa00"
 							welcomeMessage={`Based on ${baseSongs.length} best plays`}
 						/>

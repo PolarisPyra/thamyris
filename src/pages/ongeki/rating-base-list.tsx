@@ -7,23 +7,19 @@ import QouteCard from "@/components/common/qoutecard";
 import OngekiRatingFrameTable from "@/components/ongeki/rating-table";
 import {
 	useOngekiVersion,
-	useUserRatingBaseBestList,
-	useUserRatingBaseBestNewList,
 	useUserRatingBaseHotList,
+	useUserRatingBaseList,
+	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
 } from "@/hooks/ongeki";
 
 const OngekiRatingFrames = () => {
 	const version = useOngekiVersion();
 
-	const { data: baseSongs = [] } = useUserRatingBaseBestList();
+	const { data: baseSongs = [] } = useUserRatingBaseList();
 	const { data: hotSongs = [] } = useUserRatingBaseHotList();
-	const { data: newSongs = [] } = useUserRatingBaseBestNewList();
+	const { data: newSongs = [] } = useUserRatingBaseNewList();
 	const { data: nextSongs = [] } = useUserRatingBaseNextList();
-
-	const totalSongs = [...baseSongs, ...newSongs, ...hotSongs];
-	const totalRating = totalSongs.reduce((sum, song) => sum + song.rating, 0);
-	const totalAverageRating = totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
 
 	return (
 		<div className="relative flex-1 overflow-auto">
@@ -34,7 +30,7 @@ const OngekiRatingFrames = () => {
 						<QouteCard
 							icon={ChartNoAxesCombined}
 							tagline=""
-							value={`Average Rating: ${totalAverageRating}`}
+							// value={`Average Rating: ${totalAverageRating}`}
 							color="#f067e9"
 							welcomeMessage={`Based on ${baseSongs.length} best plays, and ${newSongs.length} current version plays`}
 						/>

@@ -1,24 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { RatingResponse, UserRatingEntry } from "@/types";
 import { api } from "@/utils";
 
 /**
- * Fetches and returns the 10 most recent plays that could increase the user's rating.
+ * Fetches and returns the 10 most recent plays that contribute to their rating.
  */
-
 export const useUserRatingBaseHotList = () => {
-	return useQuery<UserRatingEntry[]>({
+	return useQuery({
 		queryKey: ["userRatingBaseHotList"],
 		queryFn: async () => {
 			const response = await api.ongeki.rating.user_rating_base_hot_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch rating data");
 			}
 
-			return data.results;
+			return await response.json();
 		},
 	});
 };
@@ -26,59 +22,49 @@ export const useUserRatingBaseHotList = () => {
 /**
  * Fetches and returns the user's top 30 best plays that contribute to their rating.
  */
-
-export const useUserRatingBaseBestList = () => {
-	return useQuery<UserRatingEntry[]>({
-		queryKey: ["userRatingBaseBestList"],
+export const useUserRatingBaseList = () => {
+	return useQuery({
+		queryKey: ["userRatingBaseList"],
 		queryFn: async () => {
-			const response = await api.ongeki.rating.user_rating_base_best_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
+			const response = await api.ongeki.rating.user_rating_base_list.$get();
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch rating data");
 			}
 
-			return data.results;
+			return await response.json();
 		},
 	});
 };
 
 /**
- * Fetches and returns the 15 most recent plays from the current version that contribute to the user's rating.
+ * Fetches and returns the most recent plays for the current game version that contribute to the user's rating.
  */
-
-export const useUserRatingBaseBestNewList = () => {
-	return useQuery<UserRatingEntry[]>({
-		queryKey: ["userRatingBaseBestNewList"],
+export const useUserRatingBaseNewList = () => {
+	return useQuery({
+		queryKey: ["userRatingBaseNewList"],
 		queryFn: async () => {
-			const response = await api.ongeki.rating.user_rating_base_best_new_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
+			const response = await api.ongeki.rating.user_rating_base_new_list.$get();
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch rating data");
 			}
-
-			return data.results;
+			return await response.json();
 		},
 	});
 };
 
 /**
- * Fetches and returns 10 potential plays that could improve the user's rating.
+ * Fetches and returns potential plays that could improve the user's rating.
  */
-
 export const useUserRatingBaseNextList = () => {
-	return useQuery<UserRatingEntry[]>({
+	return useQuery({
 		queryKey: ["userRatingBaseNextList"],
 		queryFn: async () => {
 			const response = await api.ongeki.rating.user_rating_base_next_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch rating data");
 			}
 
-			return data.results;
+			return await response.json();
 		},
 	});
 };
@@ -87,16 +73,15 @@ export const useUserRatingBaseNextList = () => {
  * Fetches and returns the player's current rating.
  */
 export const usePlayerRating = () => {
-	return useQuery<number>({
+	return useQuery({
 		queryKey: ["playerRating"],
 		queryFn: async () => {
-			const response = await api.ongeki.rating.player_rating.$get();
-			const data = (await response.json()) as { rating: number; error?: string };
+			const response = await api.ongeki.rating.playerRating.$get();
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch player rating");
 			}
 
-			return data.rating;
+			return await response.json();
 		},
 	});
 };
@@ -105,17 +90,15 @@ export const usePlayerRating = () => {
  * Fetches and returns the player's highest achieved rating.
  */
 export const useHighestRating = () => {
-	return useQuery<number>({
+	return useQuery({
 		queryKey: ["highestRating"],
 		queryFn: async () => {
-			const response = await api.ongeki.rating.highest_rating.$get();
-			const data = (await response.json()) as { rating: number; error?: string };
-
+			const response = await api.ongeki.rating.highestRating.$get();
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch highest rating");
 			}
 
-			return data.rating;
+			return await response.json();
 		},
 	});
 };

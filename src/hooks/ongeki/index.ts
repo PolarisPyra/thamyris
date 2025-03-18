@@ -2,9 +2,9 @@ import { useLeaderboard } from "./use-leaderboard";
 import {
 	useHighestRating,
 	usePlayerRating,
-	useUserRatingBaseBestList,
-	useUserRatingBaseBestNewList,
 	useUserRatingBaseHotList,
+	useUserRatingBaseList,
+	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
 } from "./use-rating";
 import { useReiwaExport } from "./use-reiwa";
@@ -16,12 +16,6 @@ import { useOngekiVersion, useOngekiVersions, useUpdateOngekiVersion } from "./u
 
 export {
 	useLeaderboard,
-	useHighestRating,
-	usePlayerRating,
-	useUserRatingBaseBestList,
-	useUserRatingBaseBestNewList,
-	useUserRatingBaseHotList,
-	useUserRatingBaseNextList,
 	useReiwaExport,
 	useAddRival,
 	useRemoveRival,
@@ -36,4 +30,10 @@ export {
 	useOngekiVersion,
 	useOngekiVersions,
 	useUpdateOngekiVersion,
+	usePlayerRating,
+	useHighestRating,
+	useUserRatingBaseList,
+	useUserRatingBaseHotList,
+	useUserRatingBaseNewList,
+	useUserRatingBaseNextList,
 };
