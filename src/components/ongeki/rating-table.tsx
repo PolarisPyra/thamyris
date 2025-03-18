@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { OngekiRating, getDifficultyFromOngekiChart } from "@/utils/helpers";
+import { OngekiRating, getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
 
 interface RatingTable {
 	id: number;
@@ -54,6 +54,7 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 						<TableRow className="border-seperator border-b hover:bg-transparent">
 							<TableHead className="text-primary">Song</TableHead>
 							<TableHead className="text-primary">Score</TableHead>
+							<TableHead className="text-primary">Grade</TableHead>
 							<TableHead className="text-primary">Level</TableHead>
 							<TableHead className="text-primary">Difficulty</TableHead>
 							<TableHead className="text-primary">Genre</TableHead>
@@ -66,6 +67,8 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 							<TableRow key={song.id ?? index} className="border-seperator hover:bg-hover border-b">
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
 								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
+								<TableCell className="text-primary text-sm">{getOngekiGrade(song.score!)}</TableCell>
+
 								<TableCell className="text-primary text-sm">{song.level}</TableCell>
 								<TableCell className="text-primary text-sm">
 									<span>{getDifficultyFromOngekiChart(song.chartId!)}</span>
