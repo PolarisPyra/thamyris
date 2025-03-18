@@ -19,7 +19,6 @@ const ChunithmLeaderboard = () => {
 
 	const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
 	const currentData = filteredData.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-	console.log(leaderboard);
 
 	if (isLoading) {
 		return (
