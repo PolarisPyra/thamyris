@@ -14,6 +14,7 @@ import {
 	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
 } from "@/hooks/chunithm";
+import { ChunitmRating } from "@/utils/helpers";
 
 const ChunithmRatingFrames = () => {
 	const version = useChunithmVersion();
@@ -24,7 +25,12 @@ const ChunithmRatingFrames = () => {
 
 	const totalAverageRating = useMemo(() => {
 		const totalSongs = [...baseSongs, ...newSongs, ...hotSongs];
-		const totalRating = totalSongs.reduce((sum, song) => sum + song.rating, 0);
+		const totalRating = totalSongs.reduce((sum, song) => {
+			if (song.level && song.score) {
+				return sum + ChunitmRating(song.level, song.score);
+			}
+			return sum;
+		}, 0);
 		return totalSongs.length > 0 ? (totalRating / totalSongs.length / 100).toFixed(2) : "0.00";
 	}, [baseSongs, newSongs, hotSongs]);
 

@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { RatingResponse, UserRatingEntry } from "@/types";
 import { api } from "@/utils";
 
 /**
@@ -8,17 +7,15 @@ import { api } from "@/utils";
  */
 
 export const useUserRatingBaseHotList = () => {
-	return useQuery<UserRatingEntry[]>({
+	return useQuery({
 		queryKey: ["userRatingBaseHotList"],
 		queryFn: async () => {
 			const response = await api.chunithm.rating.user_rating_base_hot_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch nameplates");
 			}
 
-			return data.results;
+			return await response.json();
 		},
 	});
 };
@@ -28,17 +25,15 @@ export const useUserRatingBaseHotList = () => {
  */
 
 export const useUserRatingBaseList = () => {
-	return useQuery<UserRatingEntry[]>({
+	return useQuery({
 		queryKey: ["userRatingBaseList"],
 		queryFn: async () => {
 			const response = await api.chunithm.rating.user_rating_base_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch nameplates");
 			}
 
-			return data.results;
+			return await response.json();
 		},
 	});
 };
@@ -49,17 +44,14 @@ export const useUserRatingBaseList = () => {
  */
 
 export const useUserRatingBaseNewList = () => {
-	return useQuery<UserRatingEntry[]>({
+	return useQuery({
 		queryKey: ["userRatingBaseNewList"],
 		queryFn: async () => {
 			const response = await api.chunithm.rating.user_rating_base_new_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch nameplates");
 			}
-
-			return data.results;
+			return await response.json();
 		},
 	});
 };
@@ -70,17 +62,15 @@ export const useUserRatingBaseNewList = () => {
  */
 
 export const useUserRatingBaseNextList = () => {
-	return useQuery<UserRatingEntry[]>({
+	return useQuery({
 		queryKey: ["userRatingBaseNextList"],
 		queryFn: async () => {
 			const response = await api.chunithm.rating.user_rating_base_next_list.$get();
-			const data = (await response.json()) as RatingResponse;
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error("Failed to fetch nameplates");
 			}
 
-			return data.results;
+			return await response.json();
 		},
 	});
 };
@@ -89,17 +79,15 @@ export const useUserRatingBaseNextList = () => {
  * Fetches and returns the player's current rating.
  */
 export const usePlayerRating = () => {
-	return useQuery<number>({
+	return useQuery({
 		queryKey: ["playerRating"],
 		queryFn: async () => {
 			const response = await api.chunithm.rating.playerRating.$get();
-			const data = (await response.json()) as { playerRating: number; error?: string };
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error("Failed to fetch nameplates");
 			}
 
-			return data.playerRating;
+			return await response.json();
 		},
 	});
 };
@@ -108,17 +96,15 @@ export const usePlayerRating = () => {
  * Fetches and returns the player's highest achieved rating.
  */
 export const useHighestRating = () => {
-	return useQuery<number>({
+	return useQuery({
 		queryKey: ["highestRating"],
 		queryFn: async () => {
 			const response = await api.chunithm.rating.highestRating.$get();
-			const data = (await response.json()) as { highestRating: number; error?: string };
-
-			if (data.error) {
-				throw new Error(data.error);
+			if (!response.ok) {
+				throw new Error("Failed to fetch nameplates");
 			}
 
-			return data.highestRating;
+			return await response.json();
 		},
 	});
 };
