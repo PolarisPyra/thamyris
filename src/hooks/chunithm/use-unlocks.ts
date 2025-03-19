@@ -5,13 +5,14 @@ import { api } from "@/utils";
 export const useUnlockAllSongs = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.settings.songs.unlock.$post();
-
+			const response = await api.chunithm.modifications.songs.unlock.$post({
+				json: { value: 1 },
+			});
 			if (!response.ok) {
 				throw new Error();
 			}
 
-			return response.json();
+			return await response.json();
 		},
 	});
 };
@@ -19,13 +20,14 @@ export const useUnlockAllSongs = () => {
 export const useLockSongs = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.settings.songs.lock.$post();
-
+			const response = await api.chunithm.modifications.songs.lock.$post({
+				json: { value: 0 },
+			});
 			if (!response.ok) {
 				throw new Error();
 			}
 
-			return response.json();
+			return await response.json();
 		},
 	});
 };
@@ -33,7 +35,9 @@ export const useLockSongs = () => {
 export const useUnlimitedTickets = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.settings.tickets.unlimited.$post();
+			const response = await api.chunithm.modifications.tickets.unlimited.$post({
+				json: { value: 1 },
+			});
 
 			if (!response.ok) {
 				throw new Error();
@@ -47,7 +51,9 @@ export const useUnlimitedTickets = () => {
 export const useLimitedTickets = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.settings.tickets.limited.$post();
+			const response = await api.chunithm.modifications.tickets.limited.$post({
+				json: { value: 0 },
+			});
 
 			if (!response.ok) {
 				throw new Error();

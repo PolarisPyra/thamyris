@@ -39,7 +39,7 @@ const ChunithmSettingsRoutes = new Hono()
 					// Gotta update the cookie now that the version has changed
 					const [user] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
 					const [card] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE access_code = ?", [aimeCardId]);
-					if (!user  || !card) {
+					if (!user || !card) {
 						throw new HTTPException(404);
 					}
 					const versions = await getUserGameVersions(userId, conn);
@@ -68,82 +68,10 @@ const ChunithmSettingsRoutes = new Hono()
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get versions", error);
 		}
-	})
-
-	/**
-	 * Unlock endpoints
-	 */
-	.post("songs/unlock", async (c) => {
-		try {
-			const userId = c.payload.userId;
-
-			await db.query(
-				`
-					UPDATE daphnis_user_option 
-             		SET value = '1' 
-             		WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.UnlockAllSongs}'
-				`,
-				[userId]
-			);
-
-			return new Response();
-		} catch (error) {
-			throw rethrowWithMessage("Failed to unlock all songs", error);
-		}
-	})
-	.post("songs/lock", async (c) => {
-		try {
-			const userId = c.payload.userId;
-
-			await db.query(
-				`
-					UPDATE daphnis_user_option 
-					SET value = '0' 
-					WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.UnlockAllSongs}'
-				`,
-				[userId]
-			);
-
-			return new Response();
-		} catch (error) {
-			throw rethrowWithMessage("Failed to lock songs", error);
-		}
-	})
-	.post("tickets/unlimited", async (c) => {
-		try {
-			const userId = c.payload.userId;
-
-			await db.query(
-				`
-					UPDATE daphnis_user_option 
-					SET value = '1' 
-					WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.MaxTickets}'
-			 	`,
-				[userId]
-			);
-
-			return new Response();
-		} catch (error) {
-			throw rethrowWithMessage("Failed to enable unlimited tickets", error);
-		}
-	})
-	.post("tickets/limited", async (c) => {
-		try {
-			const userId = c.payload.userId;
-
-			await db.query(
-				`
-					UPDATE daphnis_user_option 
-					SET value = '0' 
-					WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.MaxTickets}'
-			 	`,
-				[userId]
-			);
-
-			return new Response();
-		} catch (error) {
-			throw rethrowWithMessage("Failed to disable unlimited tickets", error);
-		}
 	});
+
+/**
+ * Unlock endpoints
+ */
 
 export { ChunithmSettingsRoutes };
