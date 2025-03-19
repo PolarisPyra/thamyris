@@ -1,4 +1,4 @@
-import { cdnUrl } from "@/lib/cdn";
+import { cdnUrl } from "@/lib/constants";
 
 export const honorBackgrounds = {
 	0: `${cdnUrl}assets/honorBackgrounds/honor_bg_normal.png`,

@@ -46,7 +46,7 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 				key={trophy.id}
 				onClick={() => handleTrophySelect(type, trophy.trophyId)}
 				className={`relative cursor-pointer rounded-md p-2 transition-colors ${
-					isCurrentSelection ? "text-primary cursor-not-allowed bg-gray-500" : "bg-dropdown hover:bg-dropdownhover"
+					isCurrentSelection ? "text-primary bg-dropdownhover cursor-not-allowed" : "bg-dropdown hover:bg-dropdownhover"
 				}`}
 			>
 				<span className="relative truncate text-gray-200">

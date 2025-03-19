@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import { useCurrentNameplates, useNameplates, useUpdateNameplate } from "@/hooks/chunithm";
-import { cdnUrl } from "@/lib/cdn";
+import { cdnUrl } from "@/lib/constants";
 
 import Spinner from "../common/spinner";
 

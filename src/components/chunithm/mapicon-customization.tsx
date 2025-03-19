@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import { useCurrentMapIcon, useMapIcons, useUpdateMapIcon } from "@/hooks/chunithm/use-mapicon";
-import { cdnUrl } from "@/lib/cdn";
+import { cdnUrl } from "@/lib/constants";
 
 import Spinner from "../common/spinner";
 

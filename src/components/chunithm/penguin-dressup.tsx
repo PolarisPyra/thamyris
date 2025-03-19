@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import { useAllAvatarParts, useCurrentAvatar, useUpdateAvatar } from "@/hooks/chunithm";
-import { cdnUrl } from "@/lib/cdn";
+import { cdnUrl } from "@/lib/constants";
 import { AvatarParts } from "@/types";
 
 import Spinner from "../common/spinner";
