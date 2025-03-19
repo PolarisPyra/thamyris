@@ -99,7 +99,7 @@ const OngekiModsRoutes = new Hono()
 		validateJson(
 			z.object({
 				itemKind: z.number(),
-				version: z.string(),
+				version: z.number(),
 			})
 		),
 		async (c) => {
