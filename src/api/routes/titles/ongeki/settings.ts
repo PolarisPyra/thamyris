@@ -72,12 +72,10 @@ const OngekiSettingsRoutes = new Hono()
 					}
 
 					// Gotta update the cookie now that the version has changed
-					const [user] = await conn.select<DB.AimeUser>("SELECT id FROM aime_user WHERE id = ?", [userId]);
+					const [user] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
 					// console.log("User:", user);
 					// console.log("AimeCardId:", aimeCardId);
-					const [card] = await conn.select<DB.AimeCard>("SELECT access_code FROM aime_card WHERE accesss_code = ?", [
-						aimeCardId,
-					]);
+					const [card] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE access_code = ?", [aimeCardId]);
 					// console.log("Card:", card);
 					if (!user || !card) {
 						throw new HTTPException(404);
