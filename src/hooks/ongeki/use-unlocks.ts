@@ -14,7 +14,7 @@ interface CardUnlockResponse {
 export const useUnlockAllCards = () => {
 	return useMutation<CardCountResult, Error, number>({
 		mutationFn: async (version: number) => {
-			const response = await api.ongeki.unlockcards.$post({
+			const response = await api.ongeki.mods.unlockcards.$post({
 				json: { version },
 			});
 
@@ -31,7 +31,7 @@ export const useUnlockAllCards = () => {
 export const useUnlockAllItems = () => {
 	return useMutation<boolean, Error, number>({
 		mutationFn: async (version: number) => {
-			const response = await api.ongeki.unlockallitems.$post({
+			const response = await api.ongeki.mods.unlockallitems.$post({
 				json: { version },
 			});
 
@@ -47,7 +47,7 @@ export const useUnlockAllItems = () => {
 export const useUnlockSpecificItem = () => {
 	return useMutation<boolean, Error, { itemKind: number; version: number }>({
 		mutationFn: async ({ itemKind, version }: { itemKind: number; version: number }) => {
-			const response = await api.ongeki.unlockspecificitem.$post({
+			const response = await api.ongeki.mods.unlockspecificitem.$post({
 				json: { itemKind, version },
 			});
 

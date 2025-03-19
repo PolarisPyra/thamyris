@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { OngekiLeaderboardRoutes } from "./leaderboard";
-import { OngekiUnlockRoutes } from "./modifications";
+import { OngekiModsRoutes } from "./modifications";
 import { OngekiRoutes } from "./ongeki";
 import { OngekiRatingRoutes } from "./rating";
 import { OngekiReiwaRoutes } from "./reiwa";
@@ -14,5 +14,5 @@ export const AllOngekiRoutes = new Hono()
 	.route("settings", OngekiSettingsRoutes)
 	.route("leaderboard", OngekiLeaderboardRoutes)
 	.route("rivals", OngekiRivalsRoutes)
-	.route("unlocks", OngekiUnlockRoutes)
+	.route("mods", OngekiModsRoutes)
 	.route("reiwa", OngekiReiwaRoutes);

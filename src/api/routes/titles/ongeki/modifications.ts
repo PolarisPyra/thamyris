@@ -11,7 +11,7 @@ interface CardCountResult {
 	level: number;
 }
 
-const OngekiUnlockRoutes = new Hono()
+const OngekiModsRoutes = new Hono()
 	.post(
 		"unlockcards",
 		validateJson(
@@ -151,4 +151,4 @@ const OngekiUnlockRoutes = new Hono()
 		}
 	});
 
-export { OngekiUnlockRoutes };
+export { OngekiModsRoutes };

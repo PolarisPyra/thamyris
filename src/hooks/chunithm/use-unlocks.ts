@@ -20,7 +20,7 @@ export const useUnlockAllSongs = () => {
 export const useLockSongs = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.modifications.songs.lock.$post({
+			const response = await api.chunithm.mods.songs.lock.$post({
 				json: { value: 0 },
 			});
 			if (!response.ok) {
@@ -35,7 +35,7 @@ export const useLockSongs = () => {
 export const useUnlimitedTickets = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.modifications.tickets.unlimited.$post({
+			const response = await api.chunithm.mods.tickets.unlimited.$post({
 				json: { value: 1 },
 			});
 
@@ -51,7 +51,7 @@ export const useUnlimitedTickets = () => {
 export const useLimitedTickets = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.modifications.tickets.limited.$post({
+			const response = await api.chunithm.mods.tickets.limited.$post({
 				json: { value: 0 },
 			});
 

@@ -1,7 +1,5 @@
 import { Hono } from "hono";
 
-
-
 import { AvatarRoutes } from "./avatar";
 import { ChunithmRoutes } from "./chunithm";
 import { FavoritesRoutes } from "./favorites";
@@ -17,10 +15,6 @@ import { ChunithmSettingsRoutes } from "./settings";
 import { SystemVoiceRoutes } from "./systemvoice";
 import { TrophyRoutes } from "./trophies";
 
-
-
-
-
 export const AllChunithmRoutes = new Hono()
 	.route("", ChunithmRoutes)
 	.route("avatar", AvatarRoutes)
@@ -35,4 +29,4 @@ export const AllChunithmRoutes = new Hono()
 	.route("settings", ChunithmSettingsRoutes)
 	.route("systemvoice", SystemVoiceRoutes)
 	.route("trophy", TrophyRoutes)
-	.route("modifications", ChunithmModsRoutes);
+	.route("mods", ChunithmModsRoutes);
