@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { useChunithmVersion, useCurrentTrophy, useUnlockedTrophies, useUpdateTrophy } from "@/hooks/chunithm";
-import { honorBackgrounds } from "@/utils/consts";
+import { honorBackgrounds } from "@/lib/constants";
 
 import { SubmitButton } from "../common/button";
 import TrophyDropdown from "./trophy-dropdown";
