@@ -5,7 +5,7 @@ import { api } from "@/utils";
 export const useUnlockAllSongs = () => {
 	return useMutation({
 		mutationFn: async () => {
-			const response = await api.chunithm.modifications.songs.unlock.$post({
+			const response = await api.chunithm.mods.songs.unlock.$post({
 				json: { value: 1 },
 			});
 			if (!response.ok) {
