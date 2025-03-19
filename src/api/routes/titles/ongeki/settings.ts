@@ -56,21 +56,29 @@ const OngekiSettingsRoutes = new Hono()
 					const { userId, aimeCardId } = c.payload;
 					const { version } = await c.req.json();
 
+					// console.log("UserId:", userId);
+					// console.log("AimeCardId:", aimeCardId, "Type:", typeof aimeCardId);
+
 					const result = await db.update(
 						`
-							UPDATE daphnis_user_option 
-							SET value = ?
-							WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.OngekiVersion}'
-						`,
+        UPDATE daphnis_user_option 
+        SET value = ?
+        WHERE user = ? AND \`key\` = '${DaphnisUserOptionKey.OngekiVersion}'
+        `,
 						[version, userId]
 					);
 					if (result.affectedRows === 0) {
-						throw new HTTPException(404);
+						throw rethrowWithMessage("Nothing to be updated", 500);
 					}
 
 					// Gotta update the cookie now that the version has changed
-					const [user] = await conn.select<DB.AimeUser>("SELECT * FROM aime_user WHERE id = ?", [userId]);
-					const [card] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE id = ?", [aimeCardId]);
+					const [user] = await conn.select<DB.AimeUser>("SELECT id FROM aime_user WHERE id = ?", [userId]);
+					// console.log("User:", user);
+					// console.log("AimeCardId:", aimeCardId);
+					const [card] = await conn.select<DB.AimeCard>("SELECT access_code FROM aime_card WHERE accesss_code = ?", [
+						aimeCardId,
+					]);
+					// console.log("Card:", card);
 					if (!user || !card) {
 						throw new HTTPException(404);
 					}

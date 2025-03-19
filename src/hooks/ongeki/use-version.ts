@@ -42,6 +42,7 @@ export const useUpdateOngekiVersion = () => {
 			const response = await api.ongeki.settings.update.$post({
 				json: { version },
 			});
+
 			if (!response.ok) {
 				throw new Error();
 			}

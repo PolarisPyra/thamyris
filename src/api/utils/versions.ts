@@ -11,11 +11,20 @@ const getInitVersion = async (
 	conn: Connection
 ): Promise<number> => {
 	switch (versionKey) {
-		case DaphnisUserOptionVersionKey.Chunithm:
-			return (await conn.select<number>(`SELECT MAX(version) FROM chuni_profile_data WHERE user = ?`, [userId]))?.[0];
-		case DaphnisUserOptionVersionKey.Ongeki:
-			return (await conn.select<number>(`SELECT MAX(version) FROM ongeki_profile_data WHERE user = ?`, [userId]))?.[0];
-
+		case DaphnisUserOptionVersionKey.Chunithm: {
+			const result = await conn.select<{ version: number }>(
+				`SELECT MAX(version) AS version FROM chuni_profile_data WHERE user = ?`,
+				[userId]
+			);
+			return result[0]?.version ?? -1; // grab the version property from the o
+		}
+		case DaphnisUserOptionVersionKey.Ongeki: {
+			const result = await conn.select<{ version: number }>(
+				`SELECT MAX(version) AS version FROM ongeki_profile_data WHERE user = ?`,
+				[userId]
+			);
+			return result[0]?.version ?? -1;
+		}
 		default:
 			throw new HTTPException(500, { message: "Invalid version key. Title not supported" });
 	}
@@ -47,6 +56,7 @@ export const getUserGameVersions = async (userId: number, conn: Connection): Pro
 		// Insert missing version keys
 		for (const key of missingVersionKeys) {
 			const version = await getInitVersion(userId, key, conn);
+			console.log(`Inserting version key: ${key}, version: ${version}`);
 			await conn.query(
 				`
                     INSERT INTO daphnis_user_option (user, \`key\`, value)
