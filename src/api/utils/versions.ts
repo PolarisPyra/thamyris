@@ -56,7 +56,7 @@ export const getUserGameVersions = async (userId: number, conn: Connection): Pro
 		// Insert missing version keys
 		for (const key of missingVersionKeys) {
 			const version = await getInitVersion(userId, key, conn);
-			console.log(`Inserting version key: ${key}, version: ${version}`);
+			// console.log(`Inserting version key: ${key}, version: ${version}`);
 			await conn.query(
 				`
                     INSERT INTO daphnis_user_option (user, \`key\`, value)
