@@ -135,7 +135,32 @@ const AvatarRoutes = new Hono()
 				const { userId, versions } = c.payload;
 				const version = versions.chunithm_version;
 
-				const { avatarParts } = await c.req.json();
+				// const { avatarParts } = await c.req.json(); dont destructure otherwise it expects
+				// const { head, face, back, wear, item } = avatarParts;
+
+				// Get the JSON body from the request
+				// Look for a property named avatarParts in that JSON
+				// Assign that property to a variable also named avatarPart
+				// {
+				//   "avatarParts": {
+				//     "head": 6201601,
+				//     "face": 3303401,
+				//     "back": 2700004,
+				//     "wear": 6101601,
+				//     "item": 6501501
+				//   }
+				// }
+
+				// but we are sending from the root level of the request
+				// 				{
+				//   				"head": 6201601,
+				//   				"face": 3303401,
+				//   				"back": 2700004,
+				//   				"wear": 6101601,
+				//   				"item": 6501501
+				// 				}
+
+				const avatarParts = await c.req.json();
 				const { head, face, back, wear, item } = avatarParts;
 
 				const result = await db.query(

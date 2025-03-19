@@ -23,10 +23,9 @@ export function useUpdateAvatar() {
 
 	return useMutation({
 		mutationFn: async (avatarParts: AvatarParts) => {
+			// Send the object as is without spreading or wrapping
 			const response = await api.chunithm.avatar.update.$post({
-				json: {
-					...avatarParts,
-				},
+				json: avatarParts,
 			});
 
 			if (!response.ok) {

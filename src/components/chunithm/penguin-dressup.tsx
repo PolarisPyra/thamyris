@@ -13,7 +13,7 @@ import Spinner from "../common/spinner";
 
 interface AvatarDropdownProps {
 	category: string;
-	options: AvatarParts[];
+	options: { image: string; label: string; avatarAccessoryId: number }[];
 	openDropdown: string | null;
 	handleDropdownToggle: (part: string) => void;
 	handleChange: (part: string, image: string) => void;
@@ -126,6 +126,8 @@ const PenguinDressup = () => {
 				setOpenDropdown(null);
 			},
 			onError: () => {
+				console.log(avatarParts);
+
 				toast.error("Error updating avatar");
 			},
 		});
