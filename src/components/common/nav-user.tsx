@@ -73,7 +73,7 @@ export function NavUser({
 							</div>
 						</DropdownMenuLabel>
 
-						<DropdownMenuSeparator className="bg-gray-700" />
+						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuGroup>
 							<DropdownMenuItem
 								onClick={() => navigate("/account")}
@@ -83,7 +83,7 @@ export function NavUser({
 								Account
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
-						<DropdownMenuSeparator className="bg-gray-700" />
+						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuGroup>
 							<DropdownMenuItem
 								onClick={() => navigate("/settings/ongeki")}
@@ -102,7 +102,7 @@ export function NavUser({
 								Chunithm Settings
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
-						<DropdownMenuSeparator className="bg-gray-700" />
+						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem onClick={logout} className="text-primary focus:bg-hover focus:text-primary">
 							<LogOut className="text-primary" />
 							Log out
