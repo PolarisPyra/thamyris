@@ -58,7 +58,7 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 				}`}
 			>
 				<span className="text-primary w-1 truncate">
-					{trophy.name} {trophy.rareType}
+					{trophy.name}
 					{isCurrentSelection && " (Current)"}
 				</span>
 			</div>
