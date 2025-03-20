@@ -41,6 +41,7 @@ export function useHonorBackground() {
 		(trophy: { rareType: number; imagePath?: string | null }) => {
 			if (
 				trophy.rareType === TrophyRareType.Kop ||
+				trophy.rareType === TrophyRareType.Kop2 ||
 				trophy.rareType === TrophyRareType.Lamp ||
 				trophy.rareType === TrophyRareType.Lamp2 ||
 				trophy.rareType === TrophyRareType.Lamp3

@@ -33,11 +33,11 @@ export const honorBackgrounds: Record<TrophyRareType, string> = {
 	[TrophyRareType.Staff]: `${cdnUrl}assets/honorBackgrounds/honor_bg_staff.png`,
 	[TrophyRareType.Ongeki]: `${cdnUrl}assets/honorBackgrounds/honor_bg_ongeki.png`,
 	[TrophyRareType.Maimai]: `${cdnUrl}assets/honorBackgrounds/honor_bg_maimai.png`,
-	[TrophyRareType.Kop]: `${cdnUrl}assets/honorBackgrounds/honor_bg_maimai.png`,
 	[TrophyRareType.Duals]: `${cdnUrl}assets/honorBackgrounds/honor_bg_platina.png`,
 	[TrophyRareType.Idori]: `${cdnUrl}assets/honorBackgrounds/honor_bg_platina.png`,
 	[TrophyRareType.Lamp]: ``,
 	[TrophyRareType.Lamp2]: ``,
 	[TrophyRareType.Lamp3]: ``,
+	[TrophyRareType.Kop]: ``,
 	[TrophyRareType.Kop2]: ``,
 };

@@ -30,6 +30,7 @@ export const TrophySelector = () => {
 	const isImage = (type: number) => {
 		return (
 			type !== TrophyRareType.Kop &&
+			type !== TrophyRareType.Kop2 &&
 			type !== TrophyRareType.Lamp &&
 			type !== TrophyRareType.Lamp2 &&
 			type !== TrophyRareType.Lamp3
