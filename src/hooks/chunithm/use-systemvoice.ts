@@ -10,10 +10,7 @@ export function useSystemVoices() {
 			if (!response.ok) {
 				throw new Error("Failed to fetch systemvoices");
 			}
-
-			const data = await response.json();
-
-			return data || {};
+			return await response.json();
 		},
 	});
 }

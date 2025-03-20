@@ -1,42 +1,20 @@
+import { useCallback } from "react";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { TrophyRareType, cdnUrl, honorBackgrounds } from "@/lib/constants";
 import { api } from "@/utils";
-
-interface Trophy {
-	id: number;
-	name: string;
-	description: string;
-	rareType: number;
-	trophyId: number;
-}
-
-interface CurrentTrophyResponse {
-	data?: {
-		trophyId: number | null;
-		trophyIdSub1: number | null;
-		trophyIdSub2: number | null;
-		version: number;
-	};
-	error?: string;
-}
-
-interface UnlockedTrophyResponse {
-	data?: Trophy[];
-	error?: string;
-}
 
 export function useUnlockedTrophies() {
 	return useQuery({
 		queryKey: ["unlockedTrophies"],
 		queryFn: async () => {
 			const response = await api.chunithm.trophy.unlocked.$get();
-			const data = (await response.json()) as UnlockedTrophyResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch systemvoices");
 			}
 
-			return data.data || [];
+			return await response.json();
 		},
 	});
 }
@@ -46,15 +24,35 @@ export function useCurrentTrophy() {
 		queryKey: ["currentTrophy"],
 		queryFn: async () => {
 			const response = await api.chunithm.trophy.current.$get();
-			const data = (await response.json()) as CurrentTrophyResponse;
-
 			if (!response.ok) {
-				throw new Error();
+				throw new Error("Failed to fetch systemvoices");
 			}
 
-			return data.data || null;
+			return await response.json();
 		},
 	});
+}
+
+export function useHonorBackground() {
+	const { data } = useUnlockedTrophies();
+	const imagePath = data?.[0]?.imagePath;
+
+	return useCallback(
+		(trophy: { rareType: number; imagePath?: string | null }) => {
+			if (
+				trophy.rareType === TrophyRareType.Kop ||
+				trophy.rareType === TrophyRareType.Lamp ||
+				trophy.rareType === TrophyRareType.Lamp2 ||
+				trophy.rareType === TrophyRareType.Lamp3
+			) {
+				const path = trophy.imagePath || imagePath;
+				return `${cdnUrl}assets/trophy/${path?.replace(".dds", ".png")}`;
+			}
+
+			return honorBackgrounds[trophy.rareType as TrophyRareType];
+		},
+		[imagePath]
+	);
 }
 
 export function useUpdateTrophy() {
@@ -78,7 +76,7 @@ export function useUpdateTrophy() {
 				throw new Error();
 			}
 
-			return true;
+			return await response.json();
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["currentTrophy"] });

@@ -1,47 +1,20 @@
 import { Hono } from "hono";
+import { z } from "zod";
 
+import { validateJson } from "@/api/middleware/validator";
+import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
 
 import { db } from "../../../db";
 
-interface CurrentTrophyResponse {
-	data?: {
-		trophyId: number | null;
-		trophyIdSub1: number | null;
-		trophyIdSub2: number | null;
-		version: number;
-	};
-}
-
-interface UnlockedTrophyResponse {
-	data?: Array<{
-		id: number;
-		name: string;
-		rareType: number;
-		trophyId: number;
-	}>;
-}
-
-interface UpdateTrophyRequest {
-	mainTrophyId?: number | null;
-	subTrophy1Id?: number | null;
-	subTrophy2Id?: number | null;
-}
-
 export const TrophyRoutes = new Hono()
+
 	.get("current", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
 
-			const rows = await db.query<
-				{
-					trophyId: number | null;
-					trophyIdSub1: number | null;
-					trophyIdSub2: number | null;
-					version: number;
-				}[]
-			>(
+			const results = await db.select<DB.ChuniProfileData>(
 				`SELECT 
           trophyId,
           trophyIdSub1,
@@ -52,13 +25,7 @@ export const TrophyRoutes = new Hono()
 				[userId, version]
 			);
 
-			if (!rows || rows.length === 0) {
-				return new Response("not found", { status: 404 });
-			}
-
-			return c.json<CurrentTrophyResponse>({
-				data: rows[0],
-			});
+			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get current trophies", error);
 		}
@@ -68,87 +35,71 @@ export const TrophyRoutes = new Hono()
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
-
-			const unlockedResults = await db.query<Array<{ itemId: number }>>(
-				`SELECT itemId 
-        FROM chuni_item_item 
-        WHERE itemKind = 3 AND user = ?`,
-				[userId]
+			const results = await db.select<DB.DaphnisStaticTrophy>(
+				`SELECT dst.id, dst.version, dst.trophyId, dst.name, dst.rareType, dst.imagePath
+   					FROM daphnis_static_trophy dst
+   					INNER JOIN chuni_item_item cii ON dst.trophyId = cii.itemId
+   					WHERE cii.itemKind = 3 
+  				  AND cii.user = ?
+ 					  AND dst.version = ?`,
+				[userId, version]
 			);
 
-			if (!unlockedResults || unlockedResults.length === 0) {
-				return c.json<UnlockedTrophyResponse>({
-					data: [],
-				});
-			}
-
-			const unlockedTrophyIds = unlockedResults.map((item) => item.itemId);
-
-			const trophyResults = await db.query<
-				Array<{
-					id: number;
-					name: string;
-					rareType: number;
-					trophyId: number;
-				}>
-			>(
-				`SELECT id, name, rareType, trophyId
-        FROM daphnis_static_trophy
-        WHERE trophyId IN (?) AND version = ?`,
-				[unlockedTrophyIds, version]
-			);
-
-			return c.json<UnlockedTrophyResponse>({
-				data: trophyResults,
-			});
+			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get unlocked trophies", error);
 		}
 	})
 
-	.post("update", async (c) => {
-		try {
-			const { userId, versions } = c.payload;
-			const version = versions.chunithm_version;
+	.post(
+		"update",
+		validateJson(
+			z.object({
+				mainTrophyId: z.number().nullable().optional(),
+				subTrophy1Id: z.number().nullable().optional(),
+				subTrophy2Id: z.number().nullable().optional(),
+			})
+		),
+		async (c) => {
+			try {
+				const { userId, versions } = c.payload;
+				const version = versions.chunithm_version;
+				const body = await c.req.json();
 
-			const body = await c.req.json<UpdateTrophyRequest>();
-
-			const updateFields: string[] = [];
-			const updateValues: (number | null)[] = [];
-
-			if ("mainTrophyId" in body) {
-				updateFields.push("trophyId = ?");
-				updateValues.push(body.mainTrophyId ?? null);
-			}
-
-			if (version >= 17) {
-				if ("subTrophy1Id" in body) {
-					updateFields.push("trophyIdSub1 = ?");
-					updateValues.push(body.subTrophy1Id ?? null);
+				// Check if any trophy fields are provided
+				if (!("mainTrophyId" in body || "subTrophy1Id" in body || "subTrophy2Id" in body)) {
+					return c.json({ error: "No trophy updates provided" }, 400);
 				}
-				if ("subTrophy2Id" in body) {
-					updateFields.push("trophyIdSub2 = ?");
-					updateValues.push(body.subTrophy2Id ?? null);
+
+				const updateFields = [];
+				const updateValues = [];
+
+				if ("mainTrophyId" in body) {
+					updateFields.push("trophyId = ?");
+					updateValues.push(body.mainTrophyId);
 				}
+
+				if (version >= 17) {
+					if ("subTrophy1Id" in body) {
+						updateFields.push("trophyIdSub1 = ?");
+						updateValues.push(body.subTrophy1Id);
+					}
+					if ("subTrophy2Id" in body) {
+						updateFields.push("trophyIdSub2 = ?");
+						updateValues.push(body.subTrophy2Id);
+					}
+				}
+
+				const update = await db.query(
+					`UPDATE chuni_profile_data 
+                SET ${updateFields.join(", ")}
+                WHERE user = ? AND version = ?`,
+					[...updateValues, userId, version]
+				);
+
+				return c.json(update);
+			} catch (error) {
+				throw rethrowWithMessage("Failed to update trophies", error);
 			}
-
-			if (updateFields.length === 0) {
-				return new Response("no trophy updates provided", { status: 400 });
-			}
-
-			const result = await db.query<{ affectedRows: number }>(
-				`UPDATE chuni_profile_data 
-        SET ${updateFields.join(", ")}
-        WHERE user = ? AND version = ?`,
-				[...updateValues, userId, version]
-			);
-
-			if (!result || result.affectedRows === 0) {
-				return new Response("not found", { status: 404 });
-			}
-
-			return new Response("success", { status: 200 });
-		} catch (error) {
-			throw rethrowWithMessage("Failed to update trophies", error);
 		}
-	});
+	);

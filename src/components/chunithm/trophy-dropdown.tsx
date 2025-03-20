@@ -3,7 +3,15 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
-import { Trophy } from "@/types";
+interface Trophy {
+	id: number;
+	version: number;
+	trophyId: number;
+	name: string;
+	explainText: string;
+	rareType: number;
+	imagePath: string | null;
+}
 
 interface TrophyDropdownProps {
 	type: "main" | "sub1" | "sub2";
@@ -49,8 +57,8 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 					isCurrentSelection ? "text-primary bg-dropdownhover cursor-not-allowed" : "bg-dropdown hover:bg-dropdownhover"
 				}`}
 			>
-				<span className="relative truncate text-gray-200">
-					{trophy.name}
+				<span className="text-primary w-1 truncate">
+					{trophy.name} {trophy.rareType}
 					{isCurrentSelection && " (Current)"}
 				</span>
 			</div>
@@ -74,7 +82,7 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 						exit={{ opacity: 0, height: 0 }}
 						className="mt-2 overflow-hidden"
 					>
-						<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
+						<div className="max-h-[285px] max-w-[400px] space-y-2 truncate overflow-y-auto pr-2">
 							{unlockedTrophies?.map((trophy) => renderTrophyOption(trophy))}
 						</div>
 					</motion.div>

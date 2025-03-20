@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { toast } from "sonner";
 
 import { useChunithmVersion, useCurrentTrophy, useUnlockedTrophies, useUpdateTrophy } from "@/hooks/chunithm";
-import { honorBackgrounds } from "@/lib/constants";
+import { useHonorBackground } from "@/hooks/chunithm/use-trophies";
+import { TrophyRareType, honorBackgrounds } from "@/lib/constants";
 
 import { SubmitButton } from "../common/button";
 import TrophyDropdown from "./trophy-dropdown";
 
 export const TrophySelector = () => {
 	const version = useChunithmVersion();
-	const { data: currentTrophy } = useCurrentTrophy();
+	const { data: currentTrophyData } = useCurrentTrophy();
+	const currentTrophy = currentTrophyData?.[0];
 	const { data: unlockedTrophies } = useUnlockedTrophies();
 	const { mutate: updateTrophy, isPending } = useUpdateTrophy();
 	const [selectedTrophies, setSelectedTrophies] = useState({
@@ -20,81 +22,68 @@ export const TrophySelector = () => {
 	});
 	const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([]);
 	const [selectedTrophyNames, setSelectedTrophyNames] = useState<string[]>([]);
+	const [selectedTrophyRareTypes, setSelectedTrophyRareTypes] = useState<number[]>([]);
 
 	const isVerseOrAbove = (version || 0) >= 17;
+	const getHonorBackground = useHonorBackground();
 
-	useEffect(() => {
-		if (currentTrophy) {
-			setSelectedTrophies({
-				main: currentTrophy.trophyId || 0,
-				sub1: currentTrophy.trophyIdSub1 || 0,
-				sub2: currentTrophy.trophyIdSub2 || 0,
-			});
-			const mainTrophy = unlockedTrophies?.find((t) => t.trophyId === currentTrophy.trophyId);
-			const sub1Trophy = unlockedTrophies?.find((t) => t.trophyId === currentTrophy.trophyIdSub1);
-			const sub2Trophy = unlockedTrophies?.find((t) => t.trophyId === currentTrophy.trophyIdSub2);
-
-			if (isVerseOrAbove) {
-				setSelectedBackgrounds([
-					honorBackgrounds[mainTrophy?.rareType as keyof typeof honorBackgrounds] || honorBackgrounds[0],
-					honorBackgrounds[sub1Trophy?.rareType as keyof typeof honorBackgrounds] || honorBackgrounds[0],
-					honorBackgrounds[sub2Trophy?.rareType as keyof typeof honorBackgrounds] || honorBackgrounds[0],
-				]);
-				setSelectedTrophyNames([mainTrophy?.name || "", sub1Trophy?.name || "", sub2Trophy?.name || ""]);
-			} else {
-				setSelectedBackgrounds([
-					honorBackgrounds[mainTrophy?.rareType as keyof typeof honorBackgrounds] || honorBackgrounds[0],
-				]);
-				setSelectedTrophyNames([mainTrophy?.name || ""]);
-			}
-		}
-	}, [currentTrophy, unlockedTrophies, isVerseOrAbove]);
-
-	const handleTrophySelect = (type: "main" | "sub1" | "sub2", trophyId: number) => {
-		// Verify version
-		if (!isVerseOrAbove && (type === "sub1" || type === "sub2")) {
-			toast.error("Sub trophies are only available in VERSE");
-			return;
-		}
-
-		// Get trophy index based on type
-		let trophyIndex = 0;
-		if (type === "main") {
-			trophyIndex = 0;
-		} else if (type === "sub1") {
-			trophyIndex = 1;
-		} else if (type === "sub2") {
-			trophyIndex = 2;
-		}
-
-		// Update selected trophies object
-		setSelectedTrophies((prev) => ({
-			...prev,
-			[type]: trophyId,
-		}));
-
-		// Find trophy and update visuals
-		const selectedTrophy = unlockedTrophies?.find((t) => t.trophyId === trophyId);
-		if (selectedTrophy) {
-			const background = honorBackgrounds[selectedTrophy.rareType as keyof typeof honorBackgrounds];
-
-			// Update background at specific index
-			setSelectedBackgrounds((prev) => {
-				const newBackgrounds = [...prev];
-				newBackgrounds[trophyIndex] = background;
-				return newBackgrounds;
-			});
-
-			// Update trophy name at specific index
-			setSelectedTrophyNames((prev) => {
-				const newNames = [...prev];
-				newNames[trophyIndex] = selectedTrophy.name;
-				return newNames;
-			});
-		}
+	const isImage = (type: number) => {
+		return (
+			type !== TrophyRareType.Kop &&
+			type !== TrophyRareType.Lamp &&
+			type !== TrophyRareType.Lamp2 &&
+			type !== TrophyRareType.Lamp3
+		);
 	};
 
-	const hasChanges = () => {
+	useEffect(() => {
+		if (!currentTrophy || !unlockedTrophies) return;
+
+		setSelectedTrophies({
+			main: currentTrophy.trophyId || 0,
+			sub1: currentTrophy.trophyIdSub1 || 0,
+			sub2: currentTrophy.trophyIdSub2 || 0,
+		});
+	}, [currentTrophy, unlockedTrophies]);
+
+	useEffect(() => {
+		if (!unlockedTrophies) return;
+
+		const mainTrophy = unlockedTrophies.find((t) => t.trophyId === selectedTrophies.main);
+		const sub1Trophy = unlockedTrophies.find((t) => t.trophyId === selectedTrophies.sub1);
+		const sub2Trophy = unlockedTrophies.find((t) => t.trophyId === selectedTrophies.sub2);
+
+		if (isVerseOrAbove) {
+			setSelectedBackgrounds([
+				mainTrophy ? getHonorBackground(mainTrophy) : honorBackgrounds[TrophyRareType.Staff],
+				sub1Trophy ? getHonorBackground(sub1Trophy) : honorBackgrounds[TrophyRareType.Staff],
+				sub2Trophy ? getHonorBackground(sub2Trophy) : honorBackgrounds[TrophyRareType.Staff],
+			]);
+			setSelectedTrophyNames([mainTrophy?.name || "", sub1Trophy?.name || "", sub2Trophy?.name || ""]);
+			setSelectedTrophyRareTypes([mainTrophy?.rareType || 0, sub1Trophy?.rareType || 0, sub2Trophy?.rareType || 0]);
+		} else {
+			setSelectedBackgrounds([mainTrophy ? getHonorBackground(mainTrophy) : honorBackgrounds[TrophyRareType.Normal]]);
+			setSelectedTrophyNames([mainTrophy?.name || ""]);
+			setSelectedTrophyRareTypes([mainTrophy?.rareType || 0]);
+		}
+		// console.log(mainTrophy);
+	}, [selectedTrophies, unlockedTrophies, isVerseOrAbove, getHonorBackground]);
+	const handleTrophySelect = useCallback(
+		(type: "main" | "sub1" | "sub2", trophyId: number) => {
+			if (!isVerseOrAbove && (type === "sub1" || type === "sub2")) {
+				toast.error("Sub trophies are only available in VERSE");
+				return;
+			}
+
+			setSelectedTrophies((prev) => ({
+				...prev,
+				[type]: trophyId,
+			}));
+		},
+		[isVerseOrAbove]
+	);
+
+	const hasChanges = useCallback(() => {
 		if (!isVerseOrAbove) {
 			return selectedTrophies.main !== currentTrophy?.trophyId;
 		}
@@ -104,9 +93,9 @@ export const TrophySelector = () => {
 			selectedTrophies.sub1 !== currentTrophy?.trophyIdSub1 ||
 			selectedTrophies.sub2 !== currentTrophy?.trophyIdSub2
 		);
-	};
+	}, [isVerseOrAbove, selectedTrophies, currentTrophy]);
 
-	const handleSubmit = () => {
+	const handleSubmit = useCallback(() => {
 		const updates: {
 			mainTrophyId?: number;
 			subTrophy1Id?: number;
@@ -132,7 +121,7 @@ export const TrophySelector = () => {
 				toast.error(error instanceof Error ? error.message : "Failed to update trophy");
 			},
 		});
-	};
+	}, [selectedTrophies, isVerseOrAbove, currentTrophy, updateTrophy]);
 
 	return (
 		<div className="flex w-full flex-col justify-center gap-4 px-4 pt-4 pb-4 md:flex-row md:gap-8 md:pt-15">
@@ -142,7 +131,7 @@ export const TrophySelector = () => {
 						{bg && (
 							<div className="absolute inset-0 h-full w-full">
 								<img className="w-full object-cover" src={bg} />
-								{selectedTrophyNames[index] && (
+								{selectedTrophyNames[index] && isImage(selectedTrophyRareTypes[index]) && (
 									<div className="absolute inset-0 flex items-center justify-center">
 										<span className="mr-2 mb-2 ml-2 max-w-[300px] truncate text-center text-sm font-bold text-black">
 											{selectedTrophyNames[index]}
@@ -157,7 +146,6 @@ export const TrophySelector = () => {
 			<div className="bg-card w-full rounded-md p-4 md:w-[400px] md:p-6">
 				<h2 className="text-primary mb-4 text-xl font-semibold">Trophy Settings</h2>
 
-				{/* Main Trophy Dropdown */}
 				<TrophyDropdown
 					type="main"
 					selectedTrophies={selectedTrophies}
@@ -168,14 +156,12 @@ export const TrophySelector = () => {
 				{/* Sub Trophy dropdowns - Only shown for version 17+ */}
 				{isVerseOrAbove && (
 					<>
-						{/* Sub Trophy 1 Dropdown */}
 						<TrophyDropdown
 							type="sub1"
 							selectedTrophies={selectedTrophies}
 							unlockedTrophies={unlockedTrophies}
 							handleTrophySelect={handleTrophySelect}
 						/>
-						{/* Sub Trophy 2 Dropdown */}
 						<TrophyDropdown
 							type="sub2"
 							selectedTrophies={selectedTrophies}
