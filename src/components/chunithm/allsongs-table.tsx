@@ -3,6 +3,7 @@ import React from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { cdnUrl } from "@/lib/constants";
 import { getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 interface AllSongs {
@@ -12,6 +13,7 @@ interface AllSongs {
 	level: number | React.ReactNode;
 	genre: string | null;
 	artist: React.ReactNode;
+	jacketPath: string;
 	icon?: React.ReactNode;
 }
 
@@ -53,7 +55,18 @@ const ChunithmAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSon
 					<TableBody>
 						{filteredSongs.map((song) => (
 							<TableRow key={song.id} className="border-seperator hover:bg-hover border-b">
-								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
+								<TableCell className="text-primary text-sm">
+									<div className="flex items-center gap-3">
+										<img
+											width={50}
+											height={50}
+											src={`${cdnUrl}assets/jacket/${song.jacketPath.replace(".dds", ".png")}`}
+											alt={String(song.title)}
+											className="flex-shrink-0"
+										/>
+										<span className="text-primary truncate">{song.title}</span>
+									</div>
+								</TableCell>
 								<TableCell className="text-primary text-sm">{getDifficultyFromChunithmChart(song.chartId ?? 0)}</TableCell>
 								<TableCell className="text-primary text-sm">{song.level}</TableCell>
 								<TableCell className="text-primary text-sm">{song.genre}</TableCell>

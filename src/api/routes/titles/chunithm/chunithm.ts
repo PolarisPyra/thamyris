@@ -15,7 +15,7 @@ const ChunithmRoutes = new Hono()
 			const version = versions.chunithm_version;
 
 			const results = await db.select<DB.ChuniStaticMusic>(
-				`SELECT id, songId, chartId, title, level, artist, genre  
+				`SELECT id, songId, chartId, title, level, artist, genre, jacketPath  
        FROM chuni_static_music
        WHERE version = ?`,
 				[version]

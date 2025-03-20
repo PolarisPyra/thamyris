@@ -3,6 +3,7 @@ import React from "react";
 import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { cdnUrl } from "@/lib/constants";
 import { getChunithmGrade, getDifficultyFromChunithmChart } from "@/utils/helpers";
 
 interface ChunithmScore {
@@ -68,6 +69,7 @@ interface ChunithmScore {
 	monthPoint: number | null;
 	eventPoint: number | null;
 	title?: string;
+	jacketPath: string;
 	chartId?: number;
 	rating_change?: "Increase" | "Decrease" | "Same";
 }
@@ -115,7 +117,18 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 					<TableBody>
 						{filteredScores.map((score) => (
 							<TableRow key={score.id} className="border-seperator hover:bg-hover border-b">
-								<TableCell className="text-primary max-w-[140px] truncate text-sm font-medium">{score.title}</TableCell>
+								<TableCell className="text-primary text-sm">
+									<div className="flex items-center gap-3">
+										<img
+											width={50}
+											height={50}
+											src={`${cdnUrl}assets/jacket/${score.jacketPath.replace(".dds", ".png")}`}
+											alt={String(score.title)}
+											className="flex-shrink-0"
+										/>
+										<span className="text-primary truncate">{score.title}</span>
+									</div>
+								</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{score.score?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{getChunithmGrade(score.score!)}</TableCell>
 								<TableCell className="text-primary text-sm">
