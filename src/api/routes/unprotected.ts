@@ -89,7 +89,7 @@ const UnprotectedRoutes = new Hono()
 		validateJson(
 			z.object({
 				username: z.string(),
-				password: z.string(),
+				password: z.string().min(1),
 				accessCode: z.string(),
 			})
 		),
@@ -102,9 +102,7 @@ const UnprotectedRoutes = new Hono()
 			const user = await db.inTransaction(async (conn) => {
 				try {
 					// Verify access code and get user ID
-					const [aimeCard] = await conn.select<DB.AimeCard>("SELECT user FROM aime_card WHERE access_code = ?", [
-						accessCode,
-					]);
+					const [aimeCard] = await conn.select<DB.AimeCard>("SELECT * FROM aime_card WHERE access_code = ?", [accessCode]);
 					if (!aimeCard) {
 						throw new HTTPException(404, { message: "Aime Card not found" });
 					}

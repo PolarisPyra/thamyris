@@ -860,7 +860,7 @@ export namespace DB {
 		id: number;
 		user: number;
 		key: string;
-		value: string | null;
+		value: string | number | null;
 	};
 
 	export type Machine = {

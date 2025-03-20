@@ -37,7 +37,6 @@ const getInitVersion = async (
 export const getUserGameVersions = async (userId: number, conn: Connection): Promise<GameVersions> => {
 	try {
 		const versionKeys = Object.values(DaphnisUserOptionVersionKey);
-
 		const versions = await conn.select<DB.DaphnisUserOption>(
 			`
                 SELECT \`key\`, value
@@ -56,7 +55,7 @@ export const getUserGameVersions = async (userId: number, conn: Connection): Pro
 		// Insert missing version keys
 		for (const key of missingVersionKeys) {
 			const version = await getInitVersion(userId, key, conn);
-			// console.log(`Inserting version key: ${key}, version: ${version}`);
+			versions.push({ key, value: version } as DB.DaphnisUserOption);
 			await conn.query(
 				`
                     INSERT INTO daphnis_user_option (user, \`key\`, value)
@@ -67,15 +66,13 @@ export const getUserGameVersions = async (userId: number, conn: Connection): Pro
 		}
 
 		const gameVersions: GameVersions = versionKeys.reduce((acc, title) => {
-			const version = versions.find((v) => v.key === title);
-			if (version && version.value) {
-				acc[title] = parseInt(version.value);
-				if (isNaN(acc[title])) {
-					acc[title] = -1;
-				}
+			const { value } = versions.find((v) => v.key === title) ?? {};
+			if (value) {
+				acc[title] = value as number;
 			}
 			return acc;
 		}, {} as GameVersions);
+
 		return gameVersions;
 	} catch (cause) {
 		throw new HTTPException(500, { message: "Failed to fetch user versions", cause });
