@@ -92,11 +92,9 @@ const ChunithmFavorites = () => {
 					<div className="gap-4 p-4 py-6 sm:p-0">
 						<QouteCard
 							icon={Heart}
-							tagline=""
 							value={`Total Favorites: ${favoriteSongIds.length}`}
 							color="#ffaa00"
-							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
-						/>
+							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}				/>
 					</div>
 
 					<div className="mb-4 space-y-8 p-4 sm:p-0">

@@ -7,7 +7,7 @@ const QouteCard = ({
 	color,
 	welcomeMessage,
 }: {
-	header: React.ReactNode;
+	header?: React.ReactNode;
 	icon?: React.ElementType;
 	value?: string | number; // Make value optional since we'll use quotes list
 	color: string;
