@@ -29,7 +29,7 @@ export function useUpdateTeam() {
 	return useMutation({
 		mutationFn: async (teamId: number) => {
 			const response = await api.chunithm.teams.updateteam.$post({
-				json: { teamId, version: 0, userId: 0 },
+				json: { teamId },
 			});
 
 			if (!response.ok) {

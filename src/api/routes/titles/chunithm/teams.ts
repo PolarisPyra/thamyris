@@ -23,8 +23,6 @@ const ChunithmTeamsRoutes = new Hono()
 		validateJson(
 			z.object({
 				teamId: z.number(),
-				userId: z.number(),
-				version: z.number(),
 			})
 		),
 		async (c) => {
