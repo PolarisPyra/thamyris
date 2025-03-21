@@ -25,6 +25,7 @@ import ChunithmUserbox from "./pages/chunithm/userbox";
 import { NotFound } from "./pages/common/not-found";
 import OverviewPage from "./pages/common/overview-page";
 import ServerNews from "./pages/common/server-news";
+import MaimaiScores from "./pages/maimai/scores";
 import OngekiAllSongs from "./pages/ongeki/allsongs";
 import OngekiLeaderboard from "./pages/ongeki/leaderboard";
 import OngekiRatingFrames from "./pages/ongeki/rating-base-list";
@@ -64,16 +65,18 @@ const app = (
 							>
 								<Route path="/overview" element={<OverviewPage />} />
 								<Route path="/news" element={<ServerNews />} />
+								<Route path="/account" element={<Account />} />
+
 								<Route path="/settings/chunithm" element={<ChunithmSettingsPage />} />
-								<Route path="/settings/ongeki" element={<OngekiSettingsPage />} />
-								<Route path="/ongeki/allsongs" element={<OngekiAllSongs />} />
 								<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />
 								<Route path="/chunithm/scores" element={<ChunithmScorePage />} />
 								<Route path="/chunithm/favorites" element={<ChunithmFavorites />} />
 								<Route path="/chunithm/leaderboard" element={<ChunithmLeaderboard />} />
-
 								<Route path="/chunithm/allsongs" element={<ChunithmAllSongs />} />
 								<Route path="/chunithm/rivals" element={<ChunithmRivals />} />
+
+								<Route path="/settings/ongeki" element={<OngekiSettingsPage />} />
+								<Route path="/ongeki/allsongs" element={<OngekiAllSongs />} />
 								<Route path="/ongeki/scores" element={<OngekiScorePage />} />
 								<Route path="/chunithm/rating" element={<ChunithmRatingBaseList />} />
 								<Route path="/ongeki/rating" element={<OngekiRatingFrames />} />
@@ -81,7 +84,7 @@ const app = (
 								<Route path="/ongeki/leaderboard" element={<OngekiLeaderboard />} />
 								<Route path="/ongeki/rivals" element={<OngekiRivals />} />
 
-								<Route path="/account" element={<Account />} />
+								<Route path="/maimai/scores" element={<MaimaiScores />} />
 							</Route>
 						</Route>
 

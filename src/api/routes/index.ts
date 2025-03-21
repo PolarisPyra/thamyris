@@ -4,6 +4,7 @@ import { AdminRoutes } from "./admin/admin";
 import { AimeCardRoute } from "./common/aime";
 import { UserRoutes } from "./common/users";
 import { AllChunithmRoutes } from "./titles/chunithm";
+import { AllMaimaiRoutes } from "./titles/maimai";
 import { AllOngekiRoutes } from "./titles/ongeki";
 import { UnprotectedRoutes } from "./unprotected";
 
@@ -14,7 +15,8 @@ const Routes = new Hono()
 
 	// Titles
 	.route("/chunithm", AllChunithmRoutes)
-	.route("/ongeki", AllOngekiRoutes);
+	.route("/ongeki", AllOngekiRoutes)
+	.route("/maimai", AllMaimaiRoutes);
 
 export { Routes, UnprotectedRoutes };
 
