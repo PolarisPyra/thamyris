@@ -69,7 +69,7 @@ interface ChunithmScore {
 	monthPoint: number | null;
 	eventPoint: number | null;
 	title?: string;
-	jacketPath: string;
+	jacketPath?: string;
 	chartId?: number;
 	rating_change?: "Increase" | "Decrease" | "Same";
 }
@@ -122,7 +122,7 @@ const ChunithmScoreTable = ({ scores, searchQuery, onSearchChange }: ChunithmSco
 										<img
 											width={50}
 											height={50}
-											src={`${cdnUrl}assets/jacket/${score.jacketPath.replace(".dds", ".png")}`}
+											src={`${cdnUrl}assets/jacket/${score.jacketPath!.replace(".dds", ".png")}`}
 											alt={String(score.title)}
 											className="flex-shrink-0"
 										/>

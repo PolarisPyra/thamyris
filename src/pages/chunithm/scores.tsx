@@ -14,9 +14,11 @@ const ChunithmScorePage = () => {
 	const { data: scores = [], isLoading: isLoadingScores } = useChunithmScores();
 	const version = useChunithmVersion();
 
+	const filteredScores = scores.filter((score) => score.title?.toLowerCase().includes(searchQuery.toLowerCase()));
+
 	const itemsPerPage = 15;
-	const totalPages = Math.ceil(scores.length / itemsPerPage);
-	const paginatedScores = scores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+	const totalPages = Math.ceil(filteredScores.length / itemsPerPage);
+	const paginatedScores = filteredScores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	if (isLoadingScores) {
 		return (

@@ -688,6 +688,7 @@ export namespace DB {
 		ticketId: number | null;
 		monthPoint: number | null;
 		eventPoint: number | null;
+		title?: string;
 	};
 	export type ChuniStaticAvatar = {
 		id: number;
@@ -1146,6 +1147,7 @@ export namespace DB {
 		battlePoint: number | null;
 		platinumScore: number | null;
 		platinumScoreMax: number | null;
+		title?: string;
 	};
 	export type OngekiScoreTechCount = {
 		id: number;
