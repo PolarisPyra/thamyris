@@ -54,16 +54,44 @@ const TrophyDropdown: React.FC<TrophyDropdownProps> = ({
 				key={trophy.id}
 				onClick={() => handleTrophySelect(type, trophy.trophyId)}
 				className={`relative cursor-pointer rounded-md p-2 transition-colors ${
-					isCurrentSelection ? "text-primary bg-dropdownhover cursor-not-allowed" : "bg-dropdown hover:bg-dropdownhover"
+					isCurrentSelection
+						? "text-primary bg-dropdownhover hover:cursor-not-allowed"
+						: "bg-dropdown hover:bg-dropdownhover cursor-pointer"
 				}`}
 			>
-				<span className="text-primary w-1 truncate">
+				<span className="text-primary block w-full truncate">
 					{trophy.name}
 					{isCurrentSelection && " (Current)"}
 				</span>
 			</div>
 		);
 	};
+
+	return (
+		<div className="mb-4">
+			<button
+				onClick={() => handleDropdownToggle(type)}
+				className="bg-dropdown hover:bg-dropdownhover flex w-full items-center justify-between rounded-md p-3"
+			>
+				<span className="text-primary truncate">{getSelectedLabel()}</span>
+				<ChevronDown className={`text-primary h-5 w-5 transition-transform ${openDropdown === type ? "rotate-180" : ""}`} />
+			</button>
+			<AnimatePresence>
+				{openDropdown === type && (
+					<motion.div
+						initial={{ opacity: 0, height: 0 }}
+						animate={{ opacity: 1, height: "auto", maxHeight: "285px" }}
+						exit={{ opacity: 0, height: 0 }}
+						className="mt-2 overflow-hidden"
+					>
+						<div className="max-h-[285px] max-w-[400px] space-y-2 overflow-y-auto pr-2">
+							{unlockedTrophies?.map((trophy) => renderTrophyOption(trophy))}
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</div>
+	);
 
 	return (
 		<div className="mb-4">
