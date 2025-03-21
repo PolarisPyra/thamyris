@@ -2,9 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
-import { useCurrentUser } from "../users";
-import { useChunithmVersion } from "./use-version";
-
 interface Team {
 	id: number;
 	teamName: string;
@@ -14,7 +11,7 @@ export function useTeams() {
 	return useQuery({
 		queryKey: ["teams"],
 		queryFn: async () => {
-			const response = await api.chunithm.teams.$get();
+			const response = await api.chunithm.teams.teams.$get();
 
 			if (!response.ok) {
 				throw new Error("Failed to fetch teams");
@@ -28,17 +25,11 @@ export function useTeams() {
 
 export function useUpdateTeam() {
 	const queryClient = useQueryClient();
-	const version = useChunithmVersion();
-	const { userId } = useCurrentUser();
 
 	return useMutation({
 		mutationFn: async (teamId: number) => {
-			const response = await api.chunithm.updateteam.$post({
-				json: {
-					teamId,
-					user: userId,
-					version,
-				},
+			const response = await api.chunithm.teams.updateteam.$post({
+				json: { teamId, version: 0, userId: 0 },
 			});
 
 			if (!response.ok) {
@@ -58,8 +49,10 @@ export function useCreateTeam() {
 
 	return useMutation({
 		mutationFn: async (teamName: string) => {
-			const response = await api.chunithm.addteam.$post({
-				json: { teamName },
+			const response = await api.chunithm.teams.addteam.$post({
+				json: {
+					teamName,
+				},
 			});
 
 			if (!response.ok) {

@@ -13,6 +13,7 @@ import { ChunithmReiwaRoutes } from "./reiwa";
 import { RivalsRoutes } from "./rivals";
 import { ChunithmSettingsRoutes } from "./settings";
 import { SystemVoiceRoutes } from "./systemvoice";
+import { ChunithmTeamsRoutes } from "./teams";
 import { TrophyRoutes } from "./trophies";
 
 export const AllChunithmRoutes = new Hono()
@@ -29,4 +30,5 @@ export const AllChunithmRoutes = new Hono()
 	.route("settings", ChunithmSettingsRoutes)
 	.route("systemvoice", SystemVoiceRoutes)
 	.route("trophy", TrophyRoutes)
-	.route("mods", ChunithmModsRoutes);
+	.route("mods", ChunithmModsRoutes)
+	.route("teams", ChunithmTeamsRoutes);

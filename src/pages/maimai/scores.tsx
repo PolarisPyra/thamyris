@@ -1,7 +1,7 @@
 import React from "react";
 
 const MaimaiScores = () => {
-	return <div>Scores</div>;
+	return <div>under Construction</div>;
 };
 
 export default MaimaiScores;

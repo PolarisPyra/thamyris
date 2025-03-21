@@ -108,38 +108,38 @@ const ongekiSubnav = [
 	},
 ];
 
-const maimaiSubNav = [
-	{
-		name: "Scores",
-		href: "/maimai/scores",
-		icon: NotepadText,
-		color: "#1aaeed",
-	},
-	{
-		name: "Rivals",
-		href: "/maimai/rivals",
-		icon: Swords,
-		color: "#1aaeed",
-	},
-	{
-		name: "Leaderboard",
-		href: "/maimai/leaderboard",
-		icon: Trophy,
-		color: "#1aaeed",
-	},
-	{
-		name: "All Songs",
-		href: "/maimai/allsongs",
-		icon: BoomBox,
-		color: "#1aaeed",
-	},
-	{
-		name: "Rating Frame",
-		href: "/maimai/rating",
-		icon: List,
-		color: "#1aaeed",
-	},
-];
+// const maimaiSubNav = [
+// 	{
+// 		name: "Scores",
+// 		href: "/maimai/scores",
+// 		icon: NotepadText,
+// 		color: "#1aaeed",
+// 	},
+// 	{
+// 		name: "Rivals",
+// 		href: "/maimai/rivals",
+// 		icon: Swords,
+// 		color: "#1aaeed",
+// 	},
+// 	{
+// 		name: "Leaderboard",
+// 		href: "/maimai/leaderboard",
+// 		icon: Trophy,
+// 		color: "#1aaeed",
+// 	},
+// 	{
+// 		name: "All Songs",
+// 		href: "/maimai/allsongs",
+// 		icon: BoomBox,
+// 		color: "#1aaeed",
+// 	},
+// 	{
+// 		name: "Rating Frame",
+// 		href: "/maimai/rating",
+// 		icon: List,
+// 		color: "#1aaeed",
+// 	},
+// ];
 
 const sidebarItems = [
 	{
@@ -171,12 +171,12 @@ const sidebarItems = [
 				color: "#f067e9",
 				subnav: ongekiSubnav,
 			},
-			{
-				name: "Maimai",
-				icon: ChevronDown,
-				color: "#1aaeed",
-				subnav: maimaiSubNav,
-			},
+			// {
+			// 	name: "Maimai",
+			// 	icon: ChevronDown,
+			// 	color: "#1aaeed",
+			// 	subnav: maimaiSubNav,
+			// },
 		],
 	},
 ];
