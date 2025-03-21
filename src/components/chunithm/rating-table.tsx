@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { cdnUrl } from "@/lib/constants";
 import { ChunitmRating, getDifficultyFromChunithmChart } from "@/utils/helpers";
 import { getChunithmGrade } from "@/utils/helpers";
-import { cdnUrl } from "@/lib/constants";
 
 interface RatingTable {
 	id: number;
@@ -68,7 +68,7 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 					<TableBody>
 						{filteredSongs.map((song, index) => (
 							<TableRow key={song.id ?? index} className="border-seperator hover:bg-hover border-b">
-							<TableCell className="text-primary text-sm">
+								<TableCell className="text-primary text-sm">
 									<div className="flex items-center gap-3">
 										<img
 											width={50}
@@ -79,7 +79,8 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 										/>
 										<span className="text-primary truncate">{song.title}</span>
 									</div>
-								</TableCell>								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
+								</TableCell>{" "}
+								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm">{getChunithmGrade(song.score!)}</TableCell>
 								<TableCell className="text-primary text-sm">{song.level}</TableCell>
 								<TableCell className="text-primary text-sm">
