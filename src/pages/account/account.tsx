@@ -3,6 +3,7 @@ import React from "react";
 import KeychipGenerator from "@/components/admin/keychip-generator";
 import Header from "@/components/common/header";
 import AimeCardSwap from "@/components/settings/common/aime-card";
+import PersonalizeArcade from "@/components/settings/common/arcade-personalization";
 import { useAdmin } from "@/hooks/admin";
 
 const Account = () => {
@@ -19,7 +20,9 @@ const Account = () => {
 					<>
 						{isAdmin && <KeychipGenerator />}
 						{!isAdmin}
-						<div className="mx-auto max-w-2xl space-y-6">
+						<div className="mx-auto space-y-6">
+							<PersonalizeArcade />
+
 							<AimeCardSwap />
 						</div>
 					</>

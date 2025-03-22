@@ -14,6 +14,7 @@ import { AuthProvider } from "./context/auth";
 import { ThemeProvider } from "./context/theme";
 import "./index.css";
 import Account from "./pages/account/account";
+import Arcade from "./pages/account/arcade";
 import ChunithmAllSongs from "./pages/chunithm/allsongs";
 import ChunithmFavorites from "./pages/chunithm/favorites";
 import ChunithmLeaderboard from "./pages/chunithm/leaderboard";
@@ -66,6 +67,7 @@ const app = (
 								<Route path="/overview" element={<OverviewPage />} />
 								<Route path="/news" element={<ServerNews />} />
 								<Route path="/account" element={<Account />} />
+								<Route path="/arcade" element={<Arcade />} />
 
 								<Route path="/settings/chunithm" element={<ChunithmSettingsPage />} />
 								<Route path="/chunithm/userbox" element={<ChunithmUserbox />} />

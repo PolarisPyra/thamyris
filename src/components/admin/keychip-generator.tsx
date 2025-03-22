@@ -94,6 +94,7 @@ const KeychipGenerator = () => {
 	return (
 		<div className="bg-card rounded-md p-6">
 			<h2 className="text-primary mb-4 text-xl font-semibold">Keychip Generator</h2>
+			<div className="text-primary mb-4 text-sm">Makes a new keychip</div>
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<div>
 					<label className="text-primary mb-1 block text-sm font-medium">Arcade Nickname</label>

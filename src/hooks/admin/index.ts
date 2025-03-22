@@ -1,3 +1,3 @@
-import { useAdmin } from "./use-admin";
+import { useAdmin, useArcades, useUpdateArcadeOwnership, useUsers } from "./use-admin";
 
-export { useAdmin };
+export { useAdmin, useArcades, useUsers, useUpdateArcadeOwnership };

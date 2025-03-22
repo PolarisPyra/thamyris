@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ChevronsUpDown, LogOut, SettingsIcon } from "lucide-react";
+import { ChevronsUpDown, LogOut, Monitor, SettingsIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -75,6 +75,10 @@ export function NavUser({
 
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuGroup>
+							<DropdownMenuItem onClick={() => navigate("/arcade")} className="text-primary focus:bg-hover focus:text-primary">
+								<Monitor className="text-primary" />
+								Aracde
+							</DropdownMenuItem>
 							<DropdownMenuItem
 								onClick={() => navigate("/account")}
 								className="text-primary focus:bg-hover focus:text-primary"

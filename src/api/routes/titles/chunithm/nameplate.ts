@@ -13,7 +13,7 @@ const NameplateRoutes = new Hono()
 			const { userId, versions } = c.payload;
 			const version = versions.chunithm_version;
 
-			const results = await db.select<DB.DaphnisStaticMapIcon>(
+			const results = await db.select<DB.DaphnisStaticNameplate>(
 				`SELECT p.nameplateId, i.*, n.name, n.sortName, n.imagePath
      FROM chuni_profile_data p
      JOIN chuni_item_item i 

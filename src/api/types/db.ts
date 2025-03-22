@@ -876,6 +876,9 @@ export namespace DB {
 		memo: string | null;
 		is_cab: boolean | null;
 		data: string | null;
+		nickname?: string;
+		name?: string;
+		user?: number;
 	};
 
 	export type OngekiGpLog = {
