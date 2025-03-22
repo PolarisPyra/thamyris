@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ChevronsUpDown, LogOut, Monitor, SettingsIcon, UserCog } from "lucide-react";
+import { ChevronsUpDown, LogOut, MonitorCog, SettingsIcon, UserCog } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -79,7 +79,7 @@ export function NavUser({
 								onClick={() => navigate("/arcade")}
 								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
 							>
-								<Monitor className="text-primary" />
+								<MonitorCog className="text-primary" />
 								Arcade Management
 							</DropdownMenuItem>
 							<DropdownMenuItem
