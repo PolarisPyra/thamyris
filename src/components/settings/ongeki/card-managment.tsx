@@ -20,7 +20,7 @@ const CardManagement = () => {
 
 		setIsUnlocking((prev) => ({ ...prev, cards: true }));
 		try {
-			unlockAllCards(version, {
+			unlockAllCards(Number(version), {
 				onSuccess: () => {
 					toast.success("Cards unlocked successfully!");
 				},

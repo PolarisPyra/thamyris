@@ -63,7 +63,7 @@ const server = new Hono()
 		if (err instanceof HTTPException) {
 			return c.json({ error: err.message }, err.status);
 		}
-		return c.json({ error: "Internal server error" }, 500);
+		return c.json({ error: err.message }, 500);
 	})
 
 	// Compression

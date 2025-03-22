@@ -34,14 +34,13 @@ const ItemManagement = () => {
 			setIsUnlocking((prev) => ({ ...prev, items: false }));
 		}
 	};
-
 	const handleUnlockSpecificItem = async (itemKind: number) => {
 		if (!version) return;
 
 		setIsUnlocking((prev) => ({ ...prev, specific: true }));
 		try {
 			unlockSpecificItem(
-				{ itemKind, version },
+				{ itemKind, version: Number(version) },
 				{
 					onSuccess: () => {
 						toast.success("Items unlocked successfully!");
@@ -55,6 +54,7 @@ const ItemManagement = () => {
 			setIsUnlocking((prev) => ({ ...prev, specific: false }));
 		}
 	};
+
 	return (
 		<div className="bg-card rounded-md p-4 md:p-6">
 			<h2 className="text-primary text-xl font-semibold">Item Management</h2>
