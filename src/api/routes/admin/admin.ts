@@ -1,10 +1,7 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { z } from "zod";
 
 import { db } from "@/api/db";
-import { validateJson } from "@/api/middleware/validator";
-import { DB } from "@/api/types";
 import { UserRole } from "@/api/types/enums";
 import { rethrowWithMessage } from "@/api/utils/error";
 
@@ -22,71 +19,6 @@ const AdminRoutes = new Hono()
 			throw rethrowWithMessage("Failed to check admin status", error);
 		}
 	})
-
-	.get("arcades", async (c) => {
-		try {
-			const results = await db.select<DB.Machine>(
-				`SELECT m.*, a.*, ao.*
-             FROM machine m
-             LEFT JOIN arcade a ON m.arcade = a.id
-             LEFT JOIN arcade_owner ao ON a.id = ao.arcade
-				`
-			);
-			return c.json(results);
-		} catch (error) {
-			throw rethrowWithMessage("Failed to get static music", error);
-		}
-	})
-	.get("users", async (c) => {
-		try {
-			const results = await db.select<DB.AimeUser>(
-				`SELECT au.*, ac.access_code
-             FROM aime_user au
-             LEFT JOIN aime_card ac ON au.id = ac.user`
-			);
-			return c.json(results);
-		} catch (error) {
-			throw rethrowWithMessage("Failed to get static music", error);
-		}
-	})
-	.post(
-		"update",
-		validateJson(
-			z.object({
-				arcade: z.number(),
-				user: z.number(),
-			})
-		),
-		async (c) => {
-			try {
-				const { permissions } = c.payload;
-				const { arcade, user } = await c.req.json();
-
-				if (permissions !== UserRole.Admin) {
-					throw new HTTPException(403, { message: "Admin permissions required" });
-				}
-
-				// Update the user column in arcade_owner table
-				const update = await db.query(
-					`UPDATE arcade_owner 
-                    SET user = ?
-                    WHERE arcade = ?`,
-					[user, arcade]
-				);
-
-				if (update.affectedRows === 0) {
-					throw new HTTPException(404, { message: "Arcade owner record not found" });
-				}
-
-				return c.json({
-					success: true,
-					message: "Arcade owner updated successfully",
-				});
-			} catch (error) {
-				throw rethrowWithMessage("Failed to update arcade owner", error);
-			}
-		}
-	)
 
 	.post("/keychip/generate", async (c) => {
 		try {

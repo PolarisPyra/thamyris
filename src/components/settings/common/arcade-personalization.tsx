@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { SubmitButton } from "@/components/common/button";
 import Spinner from "@/components/common/spinner";
-import { useArcades, useUpdateArcadeOwnership, useUsers } from "@/hooks/admin";
+import { useArcades, useUpdateArcadeOwnership, useUsers } from "@/hooks/users/use-arcade";
 
 const PersonalizeArcade = () => {
 	const [arcadeDropdownOpen, setArcadeDropdownOpen] = useState(false);
