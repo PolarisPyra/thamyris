@@ -154,10 +154,6 @@ const PersonalizeArcade = () => {
 				updatingLabel="Updating..."
 				disabled={isPending || !hasChanges()}
 			/>
-
-			<div className="mt-8">
-				<h2 className="text-primary mb-4 text-xl font-semibold">Create New Team</h2>
-			</div>
 		</div>
 	);
 };
