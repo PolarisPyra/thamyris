@@ -40,10 +40,9 @@ const AdminRoutes = new Hono()
 	.get("users", async (c) => {
 		try {
 			const results = await db.select<DB.AimeUser>(
-				`SELECT *
-             FROM aime_user
-            
-				`
+				`SELECT au.*, ac.access_code
+             FROM aime_user au
+             LEFT JOIN aime_card ac ON au.id = ac.user`
 			);
 			return c.json(results);
 		} catch (error) {

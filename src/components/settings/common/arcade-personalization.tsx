@@ -39,13 +39,13 @@ const PersonalizeArcade = () => {
 				{ arcade: selectedArcade, user: selectedUser },
 				{
 					onSuccess: () => {
-						toast.success("Nameplate updated successfully!");
+						toast.success("Arcade Ownership updated");
 						setArcadeDropdownOpen(false);
 						setUserDropdownOpen(false);
 					},
 					onError: (error) => {
-						toast.error("Failed to update nameplate");
-						console.error("Error updating nameplate:", error);
+						toast.error("Failed to update ownership");
+						console.error("Error updating ownership:", error);
 					},
 				}
 			);
@@ -102,7 +102,7 @@ const PersonalizeArcade = () => {
 										className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 									>
 										<span className="text-primary min-w-[150px] truncate">
-											{arcade.name} {arcade.arcade}
+											{arcade.name} {arcade.user}
 										</span>
 									</div>
 								))}
@@ -139,7 +139,11 @@ const PersonalizeArcade = () => {
 										}}
 										className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 									>
-										<span className="text-primary min-w-[150px] truncate">{user.username || `User #${user.id}`}</span>
+										<span className="text-primary min-w-[150px] truncate">
+											{user.username
+												? `${user.username}${user.access_code ? ` (${user.access_code})` : ""}`
+												: `User #${user.id}${user.access_code ? ` (${user.access_code})` : ""}`}
+										</span>
 									</div>
 								))}
 							</div>

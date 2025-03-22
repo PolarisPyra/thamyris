@@ -14,6 +14,7 @@ export namespace DB {
 		created_date: string;
 		last_login_date: string;
 		suspend_expire_time: string;
+		access_code?: string;
 	};
 
 	export type AimeCard = {
