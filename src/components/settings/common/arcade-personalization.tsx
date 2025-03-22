@@ -59,7 +59,7 @@ const PersonalizeArcade = () => {
 	const getSelectedUserLabel = () => {
 		if (selectedUser === null) return "Select User";
 		const selected = users?.find((user) => user.id === selectedUser);
-		return selected?.username || "";
+		return selected?.username || selected?.id || "";
 	};
 
 	if (isLoadingArcades || isLoadingUsers) {
