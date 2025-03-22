@@ -118,7 +118,7 @@ const ArcadeConfiguration = () => {
 	const { data: currentArcade, isLoading } = useCurrentArcade();
 	const { mutate: updateArcadeLocation, isPending } = useUpdateArcadeLocation();
 	const [isUpdating, setIsUpdating] = useState(false);
-	const [selectedArcadeIndex, setSelectedArcadeIndex] = useState(0);
+	const [selectedArcade, setSelectedArcade] = useState(0);
 	const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 	const [selectedState, setSelectedState] = useState<State | null>(null);
 
@@ -178,7 +178,7 @@ const ArcadeConfiguration = () => {
 			return;
 		}
 
-		const arcade = currentArcade[selectedArcadeIndex];
+		const arcade = currentArcade[selectedArcade];
 
 		setIsUpdating(true);
 		updateArcadeLocation(
@@ -210,12 +210,12 @@ const ArcadeConfiguration = () => {
 					</span>
 				) : currentArcade && currentArcade.length > 0 ? (
 					<span className="text-primary-muted ml-2 font-normal">
-						for {currentArcade[selectedArcadeIndex]?.name}
+						for {currentArcade[selectedArcade]?.name}
 						{currentArcade.length > 1 && (
 							<select
 								className="bg-dropdown ml-2 rounded p-1 text-sm"
-								value={selectedArcadeIndex}
-								onChange={(e) => setSelectedArcadeIndex(Number(e.target.value))}
+								value={selectedArcade}
+								onChange={(e) => setSelectedArcade(Number(e.target.value))}
 							>
 								{currentArcade.map((arcade, idx) => (
 									<option key={idx} value={idx}>
