@@ -15,6 +15,20 @@ export function useArcades() {
 		},
 	});
 }
+
+export function useCurrentArcade() {
+	return useQuery({
+		queryKey: ["current"],
+		queryFn: async () => {
+			const response = await api.arcades.current.$get();
+			if (!response.ok) {
+				throw new Error();
+			}
+
+			return await response.json();
+		},
+	});
+}
 export function useUsers() {
 	return useQuery({
 		queryKey: ["users"],
@@ -28,6 +42,43 @@ export function useUsers() {
 		},
 	});
 }
+
+export function useUpdateArcadeLocation() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async ({
+			arcade,
+			country,
+			state,
+			regionId,
+		}: {
+			arcade: number;
+			country: string;
+			state: string;
+			regionId: number;
+		}) => {
+			const response = await api.arcades.update.location.$post({
+				json: {
+					arcade,
+					country,
+					state,
+					regionId,
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to update arcade location");
+			}
+			return await response.json();
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["arcades"] });
+			queryClient.invalidateQueries({ queryKey: ["current"] });
+		},
+	});
+}
+
 export function useUpdateArcadeOwnership() {
 	const queryClient = useQueryClient();
 

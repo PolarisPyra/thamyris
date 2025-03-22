@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
+import Spinner from "@/components/common/spinner";
+import { useCurrentArcade, useUpdateArcadeLocation } from "@/hooks/users";
 import localeData from "@/utils/locale.json";
 
 type State = {
@@ -113,6 +115,10 @@ const StateDropdown = ({ label, options, value, placeholder, onChange }: StateDr
 };
 
 const ArcadeConfiguration = () => {
+	const { data: currentArcade, isLoading } = useCurrentArcade();
+	const { mutate: updateArcadeLocation, isPending } = useUpdateArcadeLocation();
+	const [isUpdating, setIsUpdating] = useState(false);
+	const [selectedArcadeIndex, setSelectedArcadeIndex] = useState(0);
 	const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 	const [selectedState, setSelectedState] = useState<State | null>(null);
 
@@ -167,9 +173,60 @@ const ArcadeConfiguration = () => {
 		return selectedState ? selectedState.state : null;
 	};
 
+	const handleSubmit = () => {
+		if (!selectedCountry || !selectedState || !currentArcade || currentArcade.length === 0) {
+			return;
+		}
+
+		const arcade = currentArcade[selectedArcadeIndex];
+
+		setIsUpdating(true);
+		updateArcadeLocation(
+			{
+				arcade: arcade.id,
+				country: selectedCountry,
+				state: selectedState.state,
+				regionId: selectedState.regionId,
+			},
+			{
+				onSuccess: () => {
+					setIsUpdating(false);
+				},
+				onError: (error) => {
+					console.error("Failed to update arcade location:", error);
+					setIsUpdating(false);
+				},
+			}
+		);
+	};
+
 	return (
 		<div className="bg-card rounded-md p-6">
-			<h2 className="text-primary mb-2 text-xl font-semibold">Change arcade location</h2>
+			<h2 className="text-primary mb-2 text-xl font-semibold">
+				Change arcade location
+				{isLoading ? (
+					<span className="ml-2">
+						<Spinner size={16} />
+					</span>
+				) : currentArcade && currentArcade.length > 0 ? (
+					<span className="text-primary-muted ml-2 font-normal">
+						for {currentArcade[selectedArcadeIndex]?.name}
+						{currentArcade.length > 1 && (
+							<select
+								className="bg-dropdown ml-2 rounded p-1 text-sm"
+								value={selectedArcadeIndex}
+								onChange={(e) => setSelectedArcadeIndex(Number(e.target.value))}
+							>
+								{currentArcade.map((arcade, idx) => (
+									<option key={idx} value={idx}>
+										{arcade.name}
+									</option>
+								))}
+							</select>
+						)}
+					</span>
+				) : null}
+			</h2>
 			<div className="text-primary mb-4 text-sm">
 				<CountryDropdown
 					label="Country"
@@ -188,6 +245,25 @@ const ArcadeConfiguration = () => {
 						onChange={handleStateChange}
 					/>
 				)}
+
+				<button
+					onClick={handleSubmit}
+					disabled={!selectedCountry || !selectedState || isPending || isLoading || !currentArcade?.length}
+					className={`mt-4 rounded-md px-4 py-2 font-medium transition-colors ${
+						!selectedCountry || !selectedState || isPending || isLoading || !currentArcade?.length
+							? "bg-button text-gray-primary cursor-not-allowed disabled:opacity-50"
+							: "bg-button hover:bg-buttonhover text-primary"
+					}`}
+				>
+					{isPending || isUpdating ? (
+						<span className="flex items-center">
+							<Spinner size={16} className="mr-2" />
+							Updating...
+						</span>
+					) : (
+						"Update Location"
+					)}
+				</button>
 			</div>
 		</div>
 	);
