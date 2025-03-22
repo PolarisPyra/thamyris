@@ -8,7 +8,7 @@ import { SubmitButton } from "@/components/common/button";
 import Spinner from "@/components/common/spinner";
 import { useArcades, useUpdateArcadeOwnership, useUsers } from "@/hooks/users/use-arcade";
 
-const PersonalizeArcade = () => {
+const ArcadeOwnership = () => {
 	const [arcadeDropdownOpen, setArcadeDropdownOpen] = useState(false);
 	const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
@@ -162,4 +162,4 @@ const PersonalizeArcade = () => {
 	);
 };
 
-export default PersonalizeArcade;
+export default ArcadeOwnership;

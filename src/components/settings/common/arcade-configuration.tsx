@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/auth";
 import { useUpdateAimecard } from "@/hooks/users";
 
-const ArcadeManagment = () => {
+const ArcadeConfiguration = () => {
 	const [accessCode, setAccessCode] = useState("");
 	const updateAimecard = useUpdateAimecard();
 	const { user } = useAuth();
@@ -72,4 +72,4 @@ const ArcadeManagment = () => {
 	);
 };
 
-export default ArcadeManagment;
+export default ArcadeConfiguration;
