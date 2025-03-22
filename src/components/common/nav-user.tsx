@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { ChevronsUpDown, LogOut, Monitor, SettingsIcon } from "lucide-react";
+import { ChevronsUpDown, LogOut, Monitor, SettingsIcon, UserCog } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -75,23 +75,26 @@ export function NavUser({
 
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuGroup>
-							<DropdownMenuItem onClick={() => navigate("/arcade")} className="text-primary focus:bg-hover focus:text-primary">
+							<DropdownMenuItem
+								onClick={() => navigate("/arcade")}
+								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
+							>
 								<Monitor className="text-primary" />
-								Aracde
+								Arcade Management
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								onClick={() => navigate("/account")}
-								className="text-primary focus:bg-hover focus:text-primary"
+								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
 							>
-								<SettingsIcon className="text-primary" />
-								Account
+								<UserCog className="text-primary" />
+								Account Settings
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuGroup>
 							<DropdownMenuItem
 								onClick={() => navigate("/settings/ongeki")}
-								className="text-primary focus:bg-hover focus:text-primary"
+								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
 							>
 								<SettingsIcon className="text-primary`" />
 								Ongeki Settings
@@ -100,14 +103,17 @@ export function NavUser({
 						<DropdownMenuGroup>
 							<DropdownMenuItem
 								onClick={() => navigate("/settings/chunithm")}
-								className="text-primary focus:bg-hover focus:text-primary"
+								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
 							>
 								<SettingsIcon className="text-primary" />
 								Chunithm Settings
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator className="bg-border" />
-						<DropdownMenuItem onClick={logout} className="text-primary focus:bg-hover focus:text-primary">
+						<DropdownMenuItem
+							onClick={logout}
+							className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
+						>
 							<LogOut className="text-primary" />
 							Log out
 						</DropdownMenuItem>
