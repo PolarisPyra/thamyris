@@ -319,6 +319,7 @@ video {
 	--buttonhover: hsla(129, 47%, 39%, 0.7);
 	--dropdown: hsl(0, 2%, 80%);
 	--dropdownhover: hsl(0, 3%, 65%);
+	--ping: hsl(233, 30%, 34%);
 }
 
 /*
@@ -369,6 +370,7 @@ video {
 	--dropdown: hsl(0, 1%, 34%);
 	--dropdownhover: hsl(0, 0%, 19%);
 	--buttontext: hsl(0, 4%, 85%);
+	--button-ping: hsl(233, 30%, 34%);
 }
 
 /*
@@ -425,6 +427,7 @@ video {
 	--color-buttonunlockcontenthover: var(--buttonunlockcontenthover);
 	--color-textbox: var(--textbox);
 	--color-buttontext: var(--buttontext);
+	--color-ping: var(--button-ping);
 }
 
 /*

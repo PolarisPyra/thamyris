@@ -227,44 +227,60 @@ const ArcadeConfiguration = () => {
 					</span>
 				) : null}
 			</h2>
-			<div className="text-primary mb-4 text-sm">
-				<CountryDropdown
-					label="Country"
-					options={countries}
-					value={selectedCountry}
-					placeholder="Select Country"
-					onChange={handleCountryChange}
-				/>
 
-				{selectedCountry && (
-					<StateDropdown
-						label="State"
-						options={states}
-						value={getStateDisplayValue()}
-						placeholder="Select State"
-						onChange={handleStateChange}
+			{!isLoading && (!currentArcade || currentArcade.length === 0) ? (
+				<div className="mb-4 rounded-md bg-amber-50 p-4 dark:bg-amber-900/30">
+					<div className="flex">
+						<div className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+							<p>
+								You currently have no arcade tied to your account. Please contact{" "}
+								<span className="bg-ping rounded-md px-1.5 py-0.5 font-medium text-white">@PolarisPyra</span> or{" "}
+								<span className="bg-ping rounded-md px-1.5 py-0.5 font-medium text-white">@azui.573</span> to get your assigned
+								arcade back.
+							</p>
+						</div>
+					</div>
+				</div>
+			) : (
+				<div className="text-primary mb-4 text-sm">
+					<CountryDropdown
+						label="Country"
+						options={countries}
+						value={selectedCountry}
+						placeholder="Select Country"
+						onChange={handleCountryChange}
 					/>
-				)}
 
-				<button
-					onClick={handleSubmit}
-					disabled={!selectedCountry || !selectedState || isPending || isLoading || !currentArcade?.length}
-					className={`mt-4 rounded-md px-4 py-2 font-medium transition-colors ${
-						!selectedCountry || !selectedState || isPending || isLoading || !currentArcade?.length
-							? "bg-button text-gray-primary cursor-not-allowed disabled:opacity-50"
-							: "bg-button hover:bg-buttonhover text-primary"
-					}`}
-				>
-					{isPending || isUpdating ? (
-						<span className="flex items-center">
-							<Spinner size={16} className="mr-2" />
-							Updating...
-						</span>
-					) : (
-						"Update Location"
+					{selectedCountry && (
+						<StateDropdown
+							label="State"
+							options={states}
+							value={getStateDisplayValue()}
+							placeholder="Select State"
+							onChange={handleStateChange}
+						/>
 					)}
-				</button>
-			</div>
+
+					<button
+						onClick={handleSubmit}
+						disabled={!selectedCountry || !selectedState || isPending || isLoading || !currentArcade?.length}
+						className={`mt-4 rounded-md px-4 py-2 font-medium transition-colors ${
+							!selectedCountry || !selectedState || isPending || isLoading || !currentArcade?.length
+								? "bg-button text-gray-primary cursor-not-allowed disabled:opacity-50"
+								: "bg-button hover:bg-buttonhover text-primary"
+						}`}
+					>
+						{isPending || isUpdating ? (
+							<span className="flex items-center">
+								<Spinner size={16} className="mr-2" />
+								Updating...
+							</span>
+						) : (
+							"Update Location"
+						)}
+					</button>
+				</div>
+			)}
 		</div>
 	);
 };
