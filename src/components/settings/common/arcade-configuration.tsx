@@ -55,7 +55,6 @@ const CountryDropdown = ({ label, options, value, placeholder, onChange }: Count
 									key={index}
 									onClick={() => {
 										onChange(option);
-										setIsOpen(false);
 									}}
 									className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 								>
@@ -96,7 +95,6 @@ const StateDropdown = ({ label, options, value, placeholder, onChange }: StateDr
 									key={index}
 									onClick={() => {
 										onChange(option);
-										setIsOpen(false);
 									}}
 									className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 								>
