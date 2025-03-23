@@ -216,13 +216,13 @@ const ArcadeConfiguration = () => {
 						for {currentArcade[selectedArcade]?.name}
 						{currentArcade.length > 1 && (
 							<select
-								className="bg-dropdown ml-2 rounded p-1 text-sm"
+								className="bg-dropdown mt-2 rounded p-2 text-sm"
 								value={selectedArcade}
 								onChange={(e) => setSelectedArcade(Number(e.target.value))}
 							>
 								{currentArcade.map((arcade, idx) => (
 									<option key={idx} value={idx}>
-										{arcade.name}
+										{arcade.name} {arcade.serial}
 									</option>
 								))}
 							</select>
