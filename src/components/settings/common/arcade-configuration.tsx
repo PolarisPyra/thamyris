@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 
 import Spinner from "@/components/common/spinner";
 import { useCurrentArcade, useUpdateArcadeLocation } from "@/hooks/users";
@@ -191,10 +192,12 @@ const ArcadeConfiguration = () => {
 			{
 				onSuccess: () => {
 					setIsUpdating(false);
+					toast.success("Arcade location updated successfully!");
 				},
 				onError: (error) => {
 					console.error("Failed to update arcade location:", error);
 					setIsUpdating(false);
+					toast.error("Failed to update arcade location");
 				},
 			}
 		);
