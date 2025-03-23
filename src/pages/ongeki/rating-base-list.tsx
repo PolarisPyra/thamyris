@@ -28,7 +28,7 @@ const OngekiRatingFrames = () => {
 			<Header title="Rating Frame" />
 			{version ? (
 				<div className="container mx-auto space-y-6">
-					<div className="gap-4 p-4 py-6 sm:p-0">
+					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						<QouteCard
 							header="Single track ratings are calculated from fumen constants and scores. Player rating is the average of 55 unique fumen ratings, including:"
 							welcomeMessage={
