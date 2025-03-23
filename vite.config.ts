@@ -133,7 +133,7 @@ export default defineConfig({
 		emptyOutDir: true,
 		copyPublicDir: true,
 	},
-	assetsInclude: ["**/*.png"],
+	assetsInclude: ["**/*.png", "**/*.ttf", "**/*.woff", "**/*.svg"],
 	plugins: [tsconfigPaths(), tailwindcss()],
 	base: "/",
 	server: {
