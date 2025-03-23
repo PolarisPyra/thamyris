@@ -7,6 +7,7 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 
 import { LoginContent } from "./components/common/login";
+import { BuildUpdateChecker } from "./components/common/new-build";
 import { SidebarComponent } from "./components/common/sidebar";
 import SignUpContent from "./components/common/signup";
 import { SidebarProvider } from "./components/ui/sidebar";
@@ -44,6 +45,8 @@ const app = (
 			<AuthProvider>
 				<ThemeProvider>
 					<Toaster />
+					<BuildUpdateChecker />
+
 					<Routes>
 						<Route path="/" element={<WelcomePage />}>
 							<Route index element={<WelcomeContent />} />

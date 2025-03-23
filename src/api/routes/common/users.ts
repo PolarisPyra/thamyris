@@ -29,6 +29,13 @@ const UserRoutes = new Hono()
 		} catch (error) {
 			throw rethrowWithMessage("Failed to update aime card", error);
 		}
+	})
+	.get("/build-info", (c) => {
+		return c.json({
+			buildDate: env.BUILD_DATE_YEAR_MONTH_DAY,
+			buildTime: env.BUILD_TIME_12_HOUR,
+			buildHash: env.BUILD_HASH,
+		});
 	});
 
 export { UserRoutes };
