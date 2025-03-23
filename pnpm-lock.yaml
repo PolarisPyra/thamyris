@@ -129,6 +129,9 @@ importers:
       '@eslint/js':
         specifier: ^9.19.0
         version: 9.21.0
+      '@plugin-web-update-notification/vite':
+        specifier: ^2.0.0
+        version: 2.0.0(vite@6.2.0(@types/node@22.13.5)(jiti@2.4.2)(lightningcss@1.29.1)(tsx@4.19.3))
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.2
         version: 5.2.2(prettier@3.5.2)
@@ -555,6 +558,14 @@ packages:
   '@phc/format@1.0.0':
     resolution: {integrity: sha512-m7X9U6BG2+J+R1lSOdCiITLLrxm+cWlNI3HUFA92oLO77ObGNzaKdh8pMLqdZcshtkKuV84olNNXDfMc4FezBQ==}
     engines: {node: '>=10'}
+
+  '@plugin-web-update-notification/core@2.0.0':
+    resolution: {integrity: sha512-xxtEtTkFHX59iKm6NxCeyA2vZNA8nM+RjmuPC+jc2JAuhR9oGlmWHrlzXM64bu6NxZuQ5W52+sZKUsQUnDLh/g==}
+
+  '@plugin-web-update-notification/vite@2.0.0':
+    resolution: {integrity: sha512-pytuDfqUmFhJkysiH05BHYs56/7+0ikSQETADqT8S3Zu4j9N+ENEVB0Z2myTRw5FuI3zVLmt/pLXH9EAWYZ2CQ==}
+    peerDependencies:
+      vite: ^6.0.0 || ^5.0.0 || >4.0.0 || ^3.0.0
 
   '@radix-ui/number@1.1.0':
     resolution: {integrity: sha512-V3gRzhVNU1ldS5XhAPTom1fOIo4ccrjjJgmE+LI2h/WaFpHmx0MQApT+KZHnx8abG6Avtfcz4WoEciMnpFT3HQ==}
@@ -3128,6 +3139,13 @@ snapshots:
       fastq: 1.19.1
 
   '@phc/format@1.0.0': {}
+
+  '@plugin-web-update-notification/core@2.0.0': {}
+
+  '@plugin-web-update-notification/vite@2.0.0(vite@6.2.0(@types/node@22.13.5)(jiti@2.4.2)(lightningcss@1.29.1)(tsx@4.19.3))':
+    dependencies:
+      '@plugin-web-update-notification/core': 2.0.0
+      vite: 6.2.0(@types/node@22.13.5)(jiti@2.4.2)(lightningcss@1.29.1)(tsx@4.19.3)
 
   '@radix-ui/number@1.1.0': {}
 

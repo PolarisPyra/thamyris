@@ -1,3 +1,4 @@
+import { webUpdateNotice } from "@plugin-web-update-notification/vite";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import { defineConfig } from "vite";
@@ -134,7 +135,17 @@ export default defineConfig({
 		copyPublicDir: true,
 	},
 	assetsInclude: ["**/*.png", "**/*.ttf", "**/*.woff", "**/*.svg"],
-	plugins: [tsconfigPaths(), tailwindcss()],
+	plugins: [
+		tsconfigPaths(),
+		tailwindcss(),
+		webUpdateNotice({
+			notificationProps: {
+				title: "system update",
+				description: "System update, please refresh the page",
+				buttonText: "refresh",
+			},
+		}),
+	],
 	base: "/",
 	server: {
 		proxy: {
