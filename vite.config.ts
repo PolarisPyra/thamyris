@@ -142,7 +142,7 @@ export default defineConfig({
 			hiddenDefaultNotification: false,
 			checkInterval: 60 * 1000,
 			notificationProps: {
-				title: "System Update Available",
+				title: "Site Update Available",
 				description: "A new version is available. Please refresh to update.",
 				buttonText: "Update Now",
 				dismissButtonText: "Later",
