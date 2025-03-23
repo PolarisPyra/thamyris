@@ -89,15 +89,16 @@ const ChunithmFavorites = () => {
 			<Header title="Favorites" />
 			{version ? (
 				<div className="container mx-auto space-y-6">
-					<div className="gap-4 p-4 py-6 sm:p-0">
+					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						<QouteCard
 							icon={Heart}
 							value={`Total Favorites: ${favoriteSongIds.length}`}
 							color="#ffaa00"
-							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}				/>
+							welcomeMessage={`Welcome back, ${username.charAt(0).toUpperCase() + username.slice(1)}`}
+						/>
 					</div>
 
-					<div className="mb-4 space-y-8 p-4 sm:p-0">
+					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						<ChunithmFavoritesTable
 							favorites={paginatedSongs}
 							searchQuery={searchQuery}

@@ -82,7 +82,7 @@ const ChunithmRivals = () => {
 			<Header title={`Rivals ${rivalCount}/3`} />
 			{version ? (
 				<div className="container mx-auto space-y-6">
-					<div className="mb-4 space-y-8 p-4 sm:p-0">
+					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						<RivalsTable
 							rivals={paginatedRivals.map((user) => ({
 								id: user.id,

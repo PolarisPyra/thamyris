@@ -50,7 +50,7 @@ const OngekiRatingFrames = () => {
 						/>
 					</div>
 
-					<div className="mb-4 space-y-8 p-4 sm:p-0">
+					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						<OngekiRatingFrameTable data={baseSongs} title="Best 30" />
 						<OngekiRatingFrameTable data={newSongs} title="Current Version" />
 						<OngekiRatingFrameTable data={hotSongs} title="Recent" />

@@ -15,7 +15,7 @@ const OngekiAllSongs = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemsPerPage = 15;
 
-	const filteredSongs = songs.filter((song) => song.title.toLowerCase().includes(searchQuery.toLowerCase()));
+	const filteredSongs = songs.filter((song) => song.title!.toLowerCase().includes(searchQuery.toLowerCase()));
 	const totalPages = Math.ceil(filteredSongs.length / itemsPerPage);
 	const paginatedSongs = filteredSongs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -35,7 +35,7 @@ const OngekiAllSongs = () => {
 			<Header title="All Songs" />
 			{version ? (
 				<div className="container mx-auto space-y-6">
-					<div className="mb-4 space-y-8 p-4 sm:p-0">
+					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						<OngekiAllSongsTable
 							allSongs={paginatedSongs}
 							searchQuery={searchQuery}
