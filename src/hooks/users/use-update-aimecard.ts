@@ -12,7 +12,7 @@ export function useUpdateAimecard() {
 
 	return useMutation({
 		mutationFn: async (accessCode: string) => {
-			const response = await api.users["update-aimecard"].$post({
+			const response = await api.aime.update.$post({
 				json: { accessCode },
 			});
 			const data = (await response.json()) as UpdateAimecardResponse;

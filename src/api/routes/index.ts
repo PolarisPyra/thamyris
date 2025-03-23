@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import { AdminRoutes } from "./admin/admin";
+import { AllCommonRoutes } from "./common";
 import { AimeCardRoute } from "./common/aime";
 import { ArcadeRoutes } from "./common/arcades";
 import { UserRoutes } from "./common/users";
@@ -13,6 +14,7 @@ const Routes = new Hono()
 	.route("/admin", AdminRoutes)
 	.route("/aime", AimeCardRoute)
 	.route("/users", UserRoutes)
+	.route("/common", AllCommonRoutes)
 
 	// Titles
 	.route("/chunithm", AllChunithmRoutes)
