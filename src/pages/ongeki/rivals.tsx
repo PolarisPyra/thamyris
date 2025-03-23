@@ -84,7 +84,7 @@ const OngekiRivals = () => {
 								mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
 								rivalIcon: (
 									<Skull
-										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-primary"}`}
 										onClick={() => {
 											const isRival = rivalIds.includes(user.id);
 											if (isRival) {

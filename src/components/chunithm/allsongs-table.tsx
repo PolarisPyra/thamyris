@@ -13,7 +13,7 @@ interface AllSongs {
 	level: number | React.ReactNode;
 	genre: string | null;
 	artist: React.ReactNode;
-	jacketPath: string;
+	jacketPath: string | null;
 	icon?: React.ReactNode;
 }
 
@@ -60,7 +60,7 @@ const ChunithmAllSongsTable = ({ allSongs, searchQuery, onSearchChange }: AllSon
 										<img
 											width={50}
 											height={50}
-											src={`${cdnUrl}assets/jacket/${song.jacketPath.replace(".dds", ".png")}`}
+											src={`${cdnUrl}assets/jacket/${song.jacketPath!.replace(".dds", ".png")}`}
 											alt={String(song.title)}
 											className="flex-shrink-0"
 										/>

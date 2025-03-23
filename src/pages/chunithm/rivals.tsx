@@ -69,7 +69,7 @@ const ChunithmRivals = () => {
 			<div className="relative flex-1 overflow-auto">
 				<Header title="Rivals" />
 				<div className="flex h-[calc(100vh-64px)] items-center justify-center">
-					<div className="text-lg text-gray-400">
+					<div className="text-primary text-lg">
 						<Spinner size={24} color="#ffffff" />
 					</div>
 				</div>
@@ -90,7 +90,7 @@ const ChunithmRivals = () => {
 								mutualIcon: user.isMutual ? <Handshake className="h-8 w-8 text-green-500" /> : null,
 								rivalIcon: (
 									<Skull
-										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-gray-500"}`}
+										className={`h-8 w-8 ${rivalIds.includes(user.id) ? "text-red-500" : "text-primary`"}`}
 										onClick={() => {
 											const isRival = rivalIds.includes(user.id);
 											if (isRival) {
