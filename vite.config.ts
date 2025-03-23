@@ -141,6 +141,8 @@ export default defineConfig({
 		webUpdateNotice({
 			hiddenDefaultNotification: false,
 			checkInterval: 60 * 1000,
+			checkImmediately: true,
+			checkOnLoadFileError: true,
 			notificationProps: {
 				title: "Site Update Available",
 				description: "A new version is available. Please refresh to update.",
