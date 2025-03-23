@@ -139,10 +139,13 @@ export default defineConfig({
 		tsconfigPaths(),
 		tailwindcss(),
 		webUpdateNotice({
+			hiddenDefaultNotification: false,
+			checkInterval: 60 * 1000,
 			notificationProps: {
-				title: "system update",
-				description: "System update, please refresh the page",
-				buttonText: "refresh",
+				title: "System Update Available",
+				description: "A new version is available. Please refresh to update.",
+				buttonText: "Update Now",
+				dismissButtonText: "Later",
 			},
 		}),
 	],
