@@ -53,15 +53,15 @@ const CountryDropdown = ({ label, options, value, placeholder, onChange }: Count
 						className="mt-2 overflow-hidden"
 					>
 						<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
-							{options.map((option, index) => (
+							{options.map((country, index) => (
 								<div
 									key={index}
 									onClick={() => {
-										onChange(option);
+										onChange(country);
 									}}
 									className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 								>
-									<span className="text-primary">{option}</span>
+									<span className="text-primary">{country}</span>
 								</div>
 							))}
 						</div>
@@ -93,17 +93,17 @@ const StateDropdown = ({ label, options, value, placeholder, onChange }: StateDr
 						className="mt-2 overflow-hidden"
 					>
 						<div className="max-h-[285px] space-y-2 overflow-y-auto pr-2">
-							{options.map((option, index) => (
+							{options.map((state, index) => (
 								<div
 									key={index}
 									onClick={() => {
-										onChange(option);
+										onChange(state);
 									}}
 									className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 								>
 									<div className="flex justify-between">
-										<span className="text-primary">{option.state}</span>
-										<span className="text-primary-muted text-sm">ID: {option.regionId}</span>
+										<span className="text-primary">{state.state}</span>
+										<span className="text-primary-muted text-sm">ID: {state.regionId}</span>
 									</div>
 								</div>
 							))}
