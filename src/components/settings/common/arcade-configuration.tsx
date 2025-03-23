@@ -30,7 +30,6 @@ interface StateDropdownProps {
 	placeholder: string;
 	onChange: (option: State) => void;
 }
-
 const CountryDropdown = ({ label, options, value, placeholder, onChange }: CountryDropdownProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -58,6 +57,7 @@ const CountryDropdown = ({ label, options, value, placeholder, onChange }: Count
 									key={index}
 									onClick={() => {
 										onChange(country);
+										setIsOpen(false);
 									}}
 									className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 								>
@@ -98,6 +98,7 @@ const StateDropdown = ({ label, options, value, placeholder, onChange }: StateDr
 									key={index}
 									onClick={() => {
 										onChange(state);
+										setIsOpen(false);
 									}}
 									className="bg-dropdown hover:bg-dropdownhover cursor-pointer overflow-x-hidden rounded-md p-2 transition-colors"
 								>
