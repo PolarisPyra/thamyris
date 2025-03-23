@@ -29,6 +29,7 @@ dist-ssr
 /public/assets/*
 # Except avatarStatic
 !/public/assets/avatarStatic
+!/public/assets/fonts
 
 # Ignore all dist folders
 /dist/*
