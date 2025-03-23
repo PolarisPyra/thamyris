@@ -12,14 +12,14 @@ type State = {
 	regionId: number;
 };
 
-type CountryOption = string;
+type Country = string;
 
 interface CountryDropdownProps {
 	label: string;
-	options: CountryOption[];
+	options: Country[];
 	value: string | null;
 	placeholder: string;
-	onChange: (option: CountryOption) => void;
+	onChange: (option: Country) => void;
 }
 
 interface StateDropdownProps {
@@ -122,7 +122,7 @@ const ArcadeConfiguration = () => {
 	const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 	const [selectedState, setSelectedState] = useState<State | null>(null);
 
-	const getUniqueCountries = (): CountryOption[] => {
+	const getUniqueCountries = (): Country[] => {
 		const uniqueCountries = new Set<string>();
 
 		for (const region of localeData.region0) {
@@ -135,7 +135,7 @@ const ArcadeConfiguration = () => {
 		return Array.from(uniqueCountries);
 	};
 
-	const countries: CountryOption[] = getUniqueCountries();
+	const countries: Country[] = getUniqueCountries();
 
 	const getStatesForCountry = (country: string | null): State[] => {
 		if (!country) return [];
@@ -157,7 +157,7 @@ const ArcadeConfiguration = () => {
 
 	const states: State[] = getStatesForCountry(selectedCountry);
 
-	const handleCountryChange = (country: CountryOption) => {
+	const handleCountryChange = (country: Country) => {
 		setSelectedCountry(country);
 		setSelectedState(null);
 		console.log(`Selected Country: ${country}`);
