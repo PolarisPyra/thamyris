@@ -7,13 +7,18 @@
 ---break---
 */
 @custom-variant dark (&:is(.dark *));
-
+@custom-variant dark (&:is(.dark *));
+@font-face {
+	font-family: "PlusJakartaSans";
+	src: local("PlusJakartaSans-Regular"), url("./assets/fonts/PlusJakartaSans.ttf");
+}
 /*
 * CHUSAN AVATAR
 */
 html,
 body {
 	background-color: var(--secondary-foreground);
+	font-family: "PlusJakartaSans";
 }
 
 img,
