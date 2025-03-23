@@ -160,7 +160,7 @@ export namespace DB {
 		duelId: number | null;
 		progress: number | null;
 		point: number | null;
-		isClear: boolean | null;
+		isclear: number | null;
 		lastPlayDate: string | null;
 		param1: number | null;
 		param2: number | null;
@@ -208,7 +208,7 @@ export namespace DB {
 		user: number;
 		mapId: number | null;
 		position: number | null;
-		isClear: boolean | null;
+		isclear: number | null;
 		areaId: number | null;
 		routeNumber: number | null;
 		eventId: number | null;
@@ -221,7 +221,7 @@ export namespace DB {
 		user: number;
 		mapAreaId: number | null;
 		rate: number | null;
-		isClear: boolean | null;
+		isclear: number | null;
 		isLocked: boolean | null;
 		position: number | null;
 		statusCount: number | null;
@@ -622,7 +622,7 @@ export namespace DB {
 		param2: number | null;
 		param3: number | null;
 		param4: number | null;
-		isClear: boolean | null;
+		isclear: number | null;
 		theoryCount: number | null;
 		orderId: number | null;
 		playerRating: number | null;
@@ -1311,7 +1311,7 @@ export namespace DB {
 		user: number | null;
 		musicId: number | null;
 		damage: number | null;
-		isClear: boolean | null;
+		isclear: number | null;
 		eventId: number | null;
 	};
 	export type OngekiUserCard = {
@@ -1338,7 +1338,7 @@ export namespace DB {
 		chapterId: number | null;
 		jewelCount: number | null;
 		isStoryWatched: boolean | null;
-		isClear: boolean | null;
+		isclear: number | null;
 		lastPlayMusicId: number | null;
 		lastPlayMusicCategory: number | null;
 		lastPlayMusicLevel: number | null;
@@ -1435,7 +1435,7 @@ export namespace DB {
 		isBossWatched: boolean | null;
 		isDialogWatched: boolean | null;
 		isEndingWatched: boolean | null;
-		isClear: boolean | null;
+		isclear: number | null;
 		lastPlayMusicId: number | null;
 		lastPlayMusicLevel: number | null;
 		lastPlayMusicCategory: number | null;
@@ -1509,6 +1509,568 @@ export namespace DB {
 		chapterId: number | null;
 		tradeItemId: number | null;
 		tradeCount: number | null;
+	};
+
+	export type Mai2ItemCard = {
+		id: number;
+		user: number;
+		cardId: number | null;
+		cardTypeId: number | null;
+		charaId: number | null;
+		mapId: number | null;
+		startDate: string | null;
+		endDate: string | null;
+	};
+
+	export type Mai2ItemCharacter = {
+		id: number;
+		user: number;
+		characterId: number | null;
+		level: number | null;
+		awakening: number | null;
+		useCount: number | null;
+		point: number | null;
+	};
+
+	export type Mai2ItemCharge = {
+		id: number;
+		user: number;
+		chargeId: number | null;
+		stock: number | null;
+		purchaseDate: string | null;
+		validDate: string | null;
+	};
+	export type Mai2ItemFavorite = {
+		id: number;
+		user: number;
+		itemKind: number | null;
+		itemIdList: string | null;
+	};
+	export type Mai2ItemFavoriteMusic = {
+		id: number;
+		user: number;
+		musicId: number;
+		orderId: number | null;
+	};
+
+	export type Mai2ItemFriendSeasonRanking = {
+		id: number;
+		user: number;
+		seasonId: number | null;
+		point: number | null;
+		rank: number | null;
+		rewardGet: boolean | null;
+		userName: string | null;
+		recordDate: string | null;
+	};
+
+	export type Mai2ItemItem = {
+		id: number;
+		user: number;
+		itemId: number | null;
+		itemKind: number | null;
+		stock: number | null;
+		isValid: boolean | null;
+	};
+
+	export type Mai2ItemLoginBonus = {
+		id: number;
+		user: number;
+		bonusId: number | null;
+		point: number | null;
+		isCurrent: boolean | null;
+		isComplete: number;
+	};
+
+	export type Mai2ItemMap = {
+		id: number;
+		user: number;
+		mapId: number | null;
+		distance: number | null;
+		isLock: boolean | null;
+		isclear: number | null;
+		isComplete: boolean | null;
+	};
+
+	export type Mai2ItemPresent = {
+		id: number;
+		version: number | null;
+		user: number | null;
+		itemKind: number;
+		itemId: number;
+		stock: number;
+		startDate: string | null;
+		endDate: string | null;
+	};
+
+	export type Mai2ItemPrintDetail = {
+		id: number;
+		user: number;
+		orderId: number | null;
+		printNumber: number | null;
+		printDate: string | null;
+		serialId: string | null;
+		placeId: number | null;
+		clientId: string | null;
+		printerSerialId: string | null;
+		cardRomVersion: number | null;
+		isHolograph: boolean | null;
+		printOption1: boolean | null;
+		printOption2: boolean | null;
+		printOption3: boolean | null;
+		printOption4: boolean | null;
+		printOption5: boolean | null;
+		printOption6: boolean | null;
+		printOption7: boolean | null;
+		printOption8: boolean | null;
+		printOption9: boolean | null;
+		printOption10: boolean | null;
+		created: string | null;
+	};
+
+	export type Mai2Playlog = {
+		id: number;
+		user: number;
+		userId: number | null;
+		orderId: number | null;
+		playlogId: number | null;
+		version: number | null;
+		placeId: number | null;
+		placeName: string | null;
+		loginDate: number | null;
+		playDate: string | null;
+		userPlayDate: string | null;
+		type: number | null;
+		musicId: number | null;
+		level: number | null;
+		trackNo: number | null;
+		vsMode: number | null;
+		vsUserName: string | null;
+		vsStatus: number | null;
+		vsUserRating: number | null;
+		vsUserAchievement: number | null;
+		vsUserGradeRank: number | null;
+		vsRank: number | null;
+		playerNum: number | null;
+		playedUserId1: number | null;
+		playedUserName1: string | null;
+		playedMusicLevel1: number | null;
+		playedUserId2: number | null;
+		playedUserName2: string | null;
+		playedMusicLevel2: number | null;
+		playedUserId3: number | null;
+		playedUserName3: string | null;
+		playedMusicLevel3: number | null;
+		characterId1: number | null;
+		characterLevel1: number | null;
+		characterAwakening1: number | null;
+		characterId2: number | null;
+		characterLevel2: number | null;
+		characterAwakening2: number | null;
+		characterId3: number | null;
+		characterLevel3: number | null;
+		characterAwakening3: number | null;
+		characterId4: number | null;
+		characterLevel4: number | null;
+		characterAwakening4: number | null;
+		characterId5: number | null;
+		characterLevel5: number | null;
+		characterAwakening5: number | null;
+		achievement: number | null;
+		deluxscore: number | null;
+		scoreRank: number | null;
+		maxCombo: number | null;
+		totalCombo: number | null;
+		maxSync: number | null;
+		totalSync: number | null;
+		tapCriticalPerfect: number | null;
+		tapPerfect: number | null;
+		tapGreat: number | null;
+		tapGood: number | null;
+		tapMiss: number | null;
+		holdCriticalPerfect: number | null;
+		holdPerfect: number | null;
+		holdGreat: number | null;
+		holdGood: number | null;
+		holdMiss: number | null;
+		slideCriticalPerfect: number | null;
+		slidePerfect: number | null;
+		slideGreat: number | null;
+		slideGood: number | null;
+		slideMiss: number | null;
+		touchCriticalPerfect: number | null;
+		touchPerfect: number | null;
+		touchGreat: number | null;
+		touchGood: number | null;
+		touchMiss: number | null;
+		breakCriticalPerfect: number | null;
+		breakPerfect: number | null;
+		breakGreat: number | null;
+		breakGood: number | null;
+		breakMiss: number | null;
+		isTap: boolean | null;
+		isHold: boolean | null;
+		isSlide: boolean | null;
+		isTouch: boolean | null;
+		isBreak: boolean | null;
+		isCriticalDisp: boolean | null;
+		isFastLateDisp: boolean | null;
+		fastCount: number | null;
+		lateCount: number | null;
+		isAchieveNewRecord: boolean | null;
+		isDeluxscoreNewRecord: boolean | null;
+		comboStatus: number | null;
+		syncStatus: number | null;
+		isclear: number | null;
+		beforeRating: number | null;
+		afterRating: number | null;
+		beforeGrade: number | null;
+		afterGrade: number | null;
+		afterGradeRank: number | null;
+		beforeDeluxRating: number | null;
+		afterDeluxRating: number | null;
+		isPlayTutorial: boolean | null;
+		isEventMode: boolean | null;
+		isFreedomMode: boolean | null;
+		playMode: number | null;
+		isNewFree: boolean | null;
+		extNum1: number | null;
+		extNum2: number | null;
+		extNum4: number | null;
+		extBool1: boolean | null;
+		trialPlayAchievement: number | null;
+	};
+
+	export type Mai2Playlog2p = {
+		id: number;
+		user: number;
+		userId1: number | null;
+		userId2: number | null;
+		userName1: string | null;
+		userName2: string | null;
+		regionId: number | null;
+		placeId: number | null;
+		user2pPlaylogDetailList: string | null;
+	};
+
+	export type Mai2ProfileActivity = {
+		id: number;
+		user: number;
+		kind: number | null;
+		activityId: number | null;
+		param1: number | null;
+		param2: number | null;
+		param3: number | null;
+		param4: number | null;
+		sortNumber: number | null;
+	};
+
+	export type Mai2ProfileConsecLogins = {
+		id: number;
+		user: number;
+		version: number;
+		logins: number | null;
+	};
+
+	export type Mai2ProfileDetail = {
+		id: number;
+		user: number;
+		version: number;
+		userName: string | null;
+		isNetMember: number | null;
+		iconId: number | null;
+		plateId: number | null;
+		titleId: number | null;
+		partnerId: number | null;
+		frameId: number | null;
+		selectMapId: number | null;
+		totalAwake: number | null;
+		gradeRating: number | null;
+		musicRating: number | null;
+		playerRating: number | null;
+		highestRating: number | null;
+		gradeRank: number | null;
+		classRank: number | null;
+		courseRank: number | null;
+		charaSlot: string | null;
+		charaLockSlot: string | null;
+		contentBit: number | null;
+		playCount: number | null;
+		currentPlayCount: number | null;
+		renameCredit: number | null;
+		mapStock: number | null;
+		eventWatchedDate: string | null;
+		lastGameId: string | null;
+		lastRomVersion: string | null;
+		lastDataVersion: string | null;
+		lastLoginDate: string | null;
+		lastPairLoginDate: string | null;
+		lastPlayDate: string | null;
+		lastTrialPlayDate: string | null;
+		lastPlayCredit: number | null;
+		lastPlayMode: number | null;
+		lastPlaceId: number | null;
+		lastPlaceName: string | null;
+		lastAllNetId: number | null;
+		lastRegionId: number | null;
+		lastRegionName: string | null;
+		lastClientId: string | null;
+		lastCountryCode: string | null;
+		lastSelectEMoney: number | null;
+		lastSelectTicket: number | null;
+		lastSelectCourse: number | null;
+		lastCountCourse: number | null;
+		firstGameId: string | null;
+		firstRomVersion: string | null;
+		firstDataVersion: string | null;
+		firstPlayDate: string | null;
+		compatibleCmVersion: string | null;
+		dailyBonusDate: string | null;
+		dailyCourseBonusDate: string | null;
+		playVsCount: number | null;
+		playSyncCount: number | null;
+		winCount: number | null;
+		helpCount: number | null;
+		comboCount: number | null;
+		totalDeluxscore: number | null;
+		totalBasicDeluxscore: number | null;
+		totalAdvancedDeluxscore: number | null;
+		totalExpertDeluxscore: number | null;
+		totalMasterDeluxscore: number | null;
+		totalReMasterDeluxscore: number | null;
+		totalSync: number | null;
+		totalBasicSync: number | null;
+		totalAdvancedSync: number | null;
+		totalExpertSync: number | null;
+		totalMasterSync: number | null;
+		totalReMasterSync: number | null;
+		totalAchievement: number | null;
+		totalBasicAchievement: number | null;
+		totalAdvancedAchievement: number | null;
+		totalExpertAchievement: number | null;
+		totalMasterAchievement: number | null;
+		totalReMasterAchievement: number | null;
+		playerOldRating: number | null;
+		playerNewRating: number | null;
+		dateTime: number | null;
+		banState: number | null;
+		point: number | null;
+		totalPoint: number | null;
+		friendRegistSkip: number | null;
+	};
+
+	export type Mai2ProfileExtend = {
+		id: number;
+		user: number;
+		version: number;
+		selectMusicId: number | null;
+		selectDifficultyId: number | null;
+		categoryIndex: number | null;
+		musicIndex: number | null;
+		extraFlag: number | null;
+		selectScoreType: number | null;
+		extendContentBit: number | null;
+		isPhotoAgree: boolean | null;
+		isGotoCodeRead: boolean | null;
+		selectResultDetails: boolean | null;
+		selectResultScoreViewType: number | null;
+		sortCategorySetting: number | null;
+		sortMusicSetting: number | null;
+		selectedCardList: string | null;
+		encountMapNpcList: string | null;
+		playStatusSetting: number | null;
+	};
+
+	export type Mai2ProfileGhost = {
+		id: number;
+		user: number;
+		version_int: number;
+		name: string | null;
+		iconId: number | null;
+		plateId: number | null;
+		titleId: number | null;
+		rate: number | null;
+		udemaeRate: number | null;
+		courseRank: number | null;
+		classRank: number | null;
+		classValue: number | null;
+		playDatetime: string | null;
+		shopId: number | null;
+		regionCode: number | null;
+		typeId: number | null;
+		musicId: number | null;
+		difficulty: number | null;
+		version: number | null;
+		resultBitList: string | null;
+		resultNum: number | null;
+		achievement: number | null;
+	};
+
+	export type Mai2ProfileOption = {
+		id: number;
+		user: number;
+		version: number;
+		selectMusicId: number | null;
+		optionKind: number | null;
+		noteSpeed: number | null;
+		slideSpeed: number | null;
+		touchSpeed: number | null;
+		tapDesign: number | null;
+		tapSe: number | null;
+		holdDesign: number | null;
+		slideDesign: number | null;
+		starType: number | null;
+		outlineDesign: number | null;
+		noteSize: number | null;
+		slideSize: number | null;
+		touchSize: number | null;
+		starRotate: number | null;
+		dispCenter: number | null;
+		outFrameType: number | null;
+		dispChain: number | null;
+		dispRate: number | null;
+		dispBar: number | null;
+		touchEffect: number | null;
+		submonitorAnimation: number | null;
+		submonitorAchive: number | null;
+		submonitorAppeal: number | null;
+		matching: number | null;
+		trackSkip: number | null;
+		brightness: number | null;
+		mirrorMode: number | null;
+		dispJudge: number | null;
+		dispJudgePos: number | null;
+		dispJudgeTouchPos: number | null;
+		adjustTiming: number | null;
+		judgeTiming: number | null;
+		ansVolume: number | null;
+		tapHoldVolume: number | null;
+		criticalSe: number | null;
+		breakSe: number | null;
+		breakVolume: number | null;
+		exSe: number | null;
+		exVolume: number | null;
+		slideSe: number | null;
+		slideVolume: number | null;
+		breakSlideVolume: number | null;
+		touchVolume: number | null;
+		touchHoldVolume: number | null;
+		damageSeVolume: number | null;
+		headPhoneVolume: number | null;
+		sortTab: number | null;
+		sortMusic: number | null;
+	};
+
+	export type Mai2ProfileRating = {
+		id: number;
+		user: number;
+		version: number;
+		rating: number | null;
+		ratingList: string | null;
+		newRatingList: string | null;
+		nextRatingList: string | null;
+		nextNewRatingList: string | null;
+		udemae: string | null;
+	};
+
+	export type Mai2ProfileRegion = {
+		id: number;
+		user: number;
+		regionId: number | null;
+		playCount: number | null;
+		created: string | null;
+	};
+
+	export type Mai2ScoreBest = {
+		id: number;
+		user: number;
+		musicId: number | null;
+		level: number | null;
+		playCount: number | null;
+		achievement: number | null;
+		comboStatus: number | null;
+		syncStatus: number | null;
+		deluxscoreMax: number | null;
+		scoreRank: number | null;
+		extNum1: number | null;
+	};
+
+	export type Mai2ScoreCourse = {
+		id: number;
+		user: number;
+		courseId: number | null;
+		isLastClear: boolean | null;
+		totalRestlife: number | null;
+		totalAchievement: number | null;
+		totalDeluxscore: number | null;
+		playCount: number | null;
+		clearDate: string | null;
+		lastPlayDate: string | null;
+		bestAchievement: number | null;
+		bestAchievementDate: string | null;
+		bestDeluxscore: number | null;
+		bestDeluxscoreDate: string | null;
+	};
+
+	export type Mai2StaticCards = {
+		id: number;
+		version: number;
+		cardId: number;
+		cardName: string;
+		startDate: string | null;
+		endDate: string | null;
+		noticeStartDate: string | null;
+		noticeEndDate: string | null;
+		enabled: boolean | null;
+	};
+
+	export type Mai2StaticEvent = {
+		id: number;
+		version: number;
+		eventId: number | null;
+		type: number | null;
+		name: string | null;
+		startDate: string | null;
+		enabled: boolean | null;
+	};
+
+	export type Mai2StaticMusic = {
+		id: number;
+		version: number;
+		songId: number | null;
+		chartId: number | null;
+		title: string | null;
+		artist: string | null;
+		genre: string | null;
+		bpm: number | null;
+		addedVersion: string | null;
+		difficulty: number | null;
+		noteDesigner: string | null;
+	};
+
+	export type Mai2StaticTicket = {
+		id: number;
+		version: number;
+		ticketId: number | null;
+		kind: number | null;
+		name: string | null;
+		price: number | null;
+		enabled: boolean | null;
+	};
+
+	export type Mai2UserIntimate = {
+		id: number;
+		user: number;
+		partnerId: number;
+		intimateLevel: number;
+		intimateCountRewarded: number;
+	};
+
+	export type Mai2UserRival = {
+		id: number;
+		user: number;
+		rival: number;
+		show: boolean;
 	};
 }
 
