@@ -2,12 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 
 import { toast } from "sonner";
 
+import { api } from "@/utils/api";
+
 export function BuildUpdateChecker() {
-	const [initialBuildDate] = useState(env.BUILD_DATE_YEAR_MONTH_DAY);
+	const [initialBuildDate] = useState(env.BUILD_TIME_12_HOUR);
 
 	const checkForUpdates = useCallback(async () => {
 		try {
-			const response = await fetch(`/api/build-info?t=${Date.now()}`);
+			const response = await api.users.buildinfo.$get();
 			if (!response.ok) return false;
 
 			const data = await response.json();

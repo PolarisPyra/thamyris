@@ -7,7 +7,7 @@ const UserRoutes = new Hono()
 		return c.json(c.payload);
 	})
 
-	.get("/build-info", (c) => {
+	.get("/buildinfo", (c) => {
 		return c.json({
 			buildDate: env.BUILD_DATE_YEAR_MONTH_DAY,
 			buildTime: env.BUILD_TIME_12_HOUR,
