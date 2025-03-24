@@ -67,12 +67,7 @@ const ArcadeRoutes = new Hono()
 		),
 		async (c) => {
 			try {
-				const { permissions } = c.payload;
 				const { arcade, country, state, regionId } = await c.req.json();
-
-				if (permissions !== UserRole.Admin) {
-					throw new HTTPException(403, { message: "Admin permissions required" });
-				}
 
 				// Update location fields in the arcade table
 				const update = await db.query(
