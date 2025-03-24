@@ -14,14 +14,15 @@ const SignUpContent = () => {
 	const [accessCode, setAccessCode] = useState("");
 	const [canSubmit, setCanSubmit] = useState(false);
 	const refTurnstile = useRef<TurnstileInstance>(null);
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
 			refTurnstile.current?.reset();
 
 			await signup(username, password, accessCode);
-		} catch (err: any) {
-			toast.error(err);
+		} catch (error) {
+			toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
 		}
 	};
 
