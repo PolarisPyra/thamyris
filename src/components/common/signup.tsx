@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 import { useAuth } from "@/hooks/auth";
+import { turnstile } from "@/lib/constants";
 
 const SignUpContent = () => {
 	const { signup, isLoading } = useAuth();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [accessCode, setAccessCode] = useState("");
-
+	const [canSubmit, setCanSubmit] = useState(false);
+	const refTurnstile = useRef<TurnstileInstance>(null);
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
+			refTurnstile.current?.reset();
+
 			await signup(username, password, accessCode);
 		} catch (err: any) {
 			toast.error(err);
@@ -65,9 +70,11 @@ const SignUpContent = () => {
 						onChange={(e) => setAccessCode(e.target.value)}
 					/>
 				</div>
+				<Turnstile id="turnstile-1" ref={refTurnstile} siteKey={turnstile} onSuccess={() => setCanSubmit(true)} />
 
 				<button
 					type="submit"
+					disabled={!canSubmit}
 					className="bg-button text-buttontext hover:bg-buttonhover block w-full transform rounded-lg px-6 py-3 text-center font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
 				>
 					{isLoading ? "Creating Account..." : "Create Account"}

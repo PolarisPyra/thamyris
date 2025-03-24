@@ -62,7 +62,7 @@ export const LoginContent = () => {
 				<Turnstile id="turnstile-1" ref={refTurnstile} siteKey={turnstile} onSuccess={() => setCanSubmit(true)} />
 				<button
 					disabled={!canSubmit}
-					className="text-buttontext hover:bg-buttonhover bg-button mb-4 flex w-full transform justify-center rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer"
+					className="text-buttontext hover:bg-buttonhover bg-button mb-4 flex w-full transform justify-center rounded-md px-6 py-3 font-semibold transition duration-300 hover:scale-105 hover:cursor-pointer disabled:opacity-50"
 				>
 					{isLoading ? <Spinner size={24} color="#ffffff" /> : "Login"}
 				</button>
