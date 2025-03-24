@@ -14,7 +14,7 @@ const OngekiSettingsPage: React.FC<GameSettingsProps> = () => {
 	return (
 		<div className="relative flex-1 overflow-auto">
 			<Header title={"Ongeki Settings"} />
-			<div className="flex w-full flex-col gap-4 px-4 pt-4 md:gap-8 md:pt-15">
+			<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 				<VersionManagement />
 				<CardManagement />
 				<ItemManagement />
