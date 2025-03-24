@@ -212,7 +212,7 @@ export function SidebarComponent() {
 	return (
 		<Sidebar className="text-primary border-sidebar-border border-r">
 			<SidebarHeader className="bg-background px-4 py-4">
-				<h2 className="text-primary text-2xl font-extrabold">Thamyris</h2>
+				<h2 className="text-primary text-2xl font-extrabold">Cozynet</h2>
 			</SidebarHeader>
 			<SidebarContent className="bg-background">
 				<SidebarGroup>
