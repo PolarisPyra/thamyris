@@ -1,168 +1,161 @@
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
+import { z } from "zod";
 
 import { db } from "@/api/db";
+import { validateJson } from "@/api/middleware/validator";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-interface RivalAddRequest {
-	rivalUserId: number;
-}
-
-interface RivalRemoveRequest {
-	rivalUserId: number;
-}
-
-interface RivalsListResponse {
-	results: number[];
-}
-
-interface MutualRival {
-	rivalId: number;
-	isMutual: number;
-}
-
-interface UserLookupResult {
-	id: number;
-	username: string;
-}
-
-interface RivalCountResponse {
-	rivalCount: number;
-}
-
-interface MutualRivalsResponse {
-	results: MutualRival[];
-}
-
-interface UserLookupResponse {
-	results: UserLookupResult[];
-}
-
 const OngekiRivalsRoutes = new Hono()
+	.post(
+		"add",
+		validateJson(
+			z.object({
+				rivalUserId: z.number().int().positive(),
+			})
+		),
+		async (c) => {
+			try {
+				const userId = c.payload.userId;
+				const { rivalUserId } = await c.req.json();
 
-	.post("add", async (c): Promise<Response> => {
-		try {
-			const userId = c.payload.userId;
-			const { rivalUserId } = await c.req.json<RivalAddRequest>();
-
-			const result = await db.query(
-				`INSERT INTO ongeki_profile_rival (user, rivalUserId)
-         VALUES (?, ?)`,
-				[userId, rivalUserId]
-			);
-
-			if (result.affectedRows === 0) {
-				return new Response(null, { status: 400 });
+				const result = await db.query(
+					`
+						INSERT INTO ongeki_profile_rival (user, rivalUserId)
+						VALUES (?, ?)
+					`,
+					[userId, rivalUserId]
+				);
+				if (result.affectedRows === 0) {
+					throw new HTTPException(500, { message: "Insert failed" });
+				}
+				return new Response();
+			} catch (error) {
+				throw rethrowWithMessage("Failed to add rival", error);
 			}
-			return new Response(null, { status: 200 });
-		} catch (error) {
-			throw rethrowWithMessage("Failed to add rival", error);
 		}
-	})
+	)
 
-	.post("remove", async (c): Promise<Response> => {
-		try {
-			const userId = c.payload.userId;
-			const { rivalUserId } = await c.req.json<RivalRemoveRequest>();
+	.post(
+		"remove",
+		validateJson(
+			z.object({
+				rivalUserId: z.number().int().positive(),
+			})
+		),
+		async (c) => {
+			try {
+				const userId = c.payload.userId;
+				const { rivalUserId } = await c.req.json();
 
-			const result = await db.query(
-				`DELETE FROM ongeki_profile_rival 
-         WHERE user = ? AND rivalUserId = ?`,
-				[userId, rivalUserId]
-			);
-
-			if (result.affectedRows === 0) {
-				return new Response(null, { status: 404 });
+				const result = await db.query(
+					`
+						DELETE FROM ongeki_profile_rival 
+         				WHERE user = ? AND rivalUserId = ?
+					`,
+					[userId, rivalUserId]
+				);
+				if (result.affectedRows === 0) {
+					throw new HTTPException(500, { message: "Delete failed" });
+				}
+				return new Response();
+			} catch (error) {
+				throw rethrowWithMessage("Failed to remove rival", error);
 			}
-			return new Response(null, { status: 200 });
-		} catch (error) {
-			throw rethrowWithMessage("Failed to remove rival", error);
 		}
-	})
+	)
 
-	.get("all", async (c): Promise<Response> => {
+	.get("all", async (c) => {
 		try {
 			const userId = c.payload.userId;
 
-			const results = (await db.query(
-				`SELECT rivalUserId 
-         FROM ongeki_profile_rival
-         WHERE user = ?`,
+			const results = await db.select<{ rivalUserId: number }>(
+				`
+					SELECT rivalUserId 
+         			FROM ongeki_profile_rival
+         			WHERE user = ?
+				`,
 				[userId]
-			)) as { rivalUserId: number }[];
+			);
 
-			return c.json({
-				results: results.map((r) => r.rivalUserId),
-			} as RivalsListResponse);
+			return c.json(results.map((row) => row.rivalUserId));
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get rivals", error);
 		}
 	})
 
-	.get("mutual", async (c): Promise<Response> => {
+	.get("mutual", async (c) => {
 		try {
 			const userId = c.payload.userId;
 
-			const results = (await db.query(
-				`SELECT 
-          r1.rivalUserId AS rivalId,
-          CASE 
-            WHEN EXISTS (
-              SELECT 1 
-              FROM ongeki_profile_rival AS r2
-              WHERE r2.user = r1.rivalUserId 
-                AND r2.rivalUserId = r1.user
-            ) THEN 1
-            ELSE 0
-          END AS isMutual
-         FROM ongeki_profile_rival AS r1
-         WHERE r1.user = ?
-         AND EXISTS (
-           SELECT 1
-           FROM aime_card AS ac
-           WHERE ac.user = r1.rivalUserId
-         )`,
+			const results = await db.select<{
+				rivalId: number;
+				isMutual: number;
+			}>(
+				`
+					SELECT 
+						r1.rivalUserId AS rivalId,
+						CASE 
+							WHEN EXISTS (
+							SELECT 1 
+							FROM ongeki_profile_rival AS r2
+							WHERE r2.user = r1.rivalUserId 
+								AND r2.rivalUserId = r1.user
+							) THEN 1
+							ELSE 0
+						END AS isMutual
+					FROM ongeki_profile_rival AS r1
+					WHERE r1.user = ?
+						AND EXISTS (
+							SELECT 1
+							FROM aime_card AS ac
+							WHERE ac.user = r1.rivalUserId
+						)
+				`,
 				[userId]
-			)) as MutualRival[];
+			);
 
-			return c.json({ results } as MutualRivalsResponse);
+			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get mutual rivals", error);
 		}
 	})
 
-	.get("userlookup", async (c): Promise<Response> => {
+	.get("userlookup", async (c) => {
 		try {
 			const { userId, versions } = c.payload;
 			const version = versions.ongeki_version;
 
-			const results = (await db.query(
-				`SELECT 
-          user AS id,
-          userName AS username
-         FROM ongeki_profile_data 
-         WHERE version = ?
-         AND user != ?`,
+			const results = await db.select<{ id: number; username: string }>(
+				`
+					SELECT 
+          				user AS id,
+          				userName AS username
+         			FROM ongeki_profile_data 
+         			WHERE version = ?
+         			AND user != ?
+				`,
 				[version, userId]
-			)) as UserLookupResult[];
+			);
 
-			return c.json({ results } as UserLookupResponse);
+			return c.json(results);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get Aime users", error);
 		}
 	})
 
-	.get("count", async (c): Promise<Response> => {
+	.get("count", async (c) => {
 		try {
 			const userId = c.payload.userId;
 
-			const result = (await db.query(
+			const result = await db.select<{ rivalCount: number }>(
 				`SELECT COUNT(*) AS rivalCount 
          FROM ongeki_profile_rival
          WHERE user = ?`,
 				[userId]
-			)) as { rivalCount: number }[];
+			);
 
-			return c.json({ rivalCount: result[0].rivalCount } as RivalCountResponse);
+			return c.json(result[0].rivalCount);
 		} catch (error) {
 			throw rethrowWithMessage("Failed to get rival count", error);
 		}
