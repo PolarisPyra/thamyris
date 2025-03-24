@@ -22,7 +22,7 @@ const RivalsRoutes = new Hono()
 
 				const { favId } = await c.req.json();
 
-				const result = await db.query(
+				const results = await db.query(
 					`
 						INSERT INTO chuni_item_favorite (user, version, favId, favKind)
        					VALUES (?, ?, ?, 2)
@@ -30,10 +30,10 @@ const RivalsRoutes = new Hono()
 					[userId, version, favId]
 				);
 
-				if (result.affectedRows === 0) {
+				if (results.affectedRows === 0) {
 					throw new HTTPException(500, { message: "Insert failed" });
 				}
-				return new Response();
+				return c.json(results);
 			} catch (error) {
 				throw rethrowWithMessage("Failed to add favorite", error);
 			}
@@ -54,7 +54,7 @@ const RivalsRoutes = new Hono()
 
 				const { favId } = await c.req.json();
 
-				const result = await db.query(
+				const results = await db.query(
 					`
 						DELETE FROM chuni_item_favorite
        					WHERE user = ? 
@@ -65,10 +65,10 @@ const RivalsRoutes = new Hono()
 					[userId, version, favId]
 				);
 
-				if (result.affectedRows === 0) {
+				if (results.affectedRows === 0) {
 					throw new HTTPException(500, { message: "Delete failed" });
 				}
-				return new Response();
+				return c.json(results);
 			} catch (error) {
 				throw rethrowWithMessage("Failed to remove favorite", error);
 			}

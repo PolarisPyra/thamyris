@@ -19,17 +19,17 @@ const OngekiRivalsRoutes = new Hono()
 				const userId = c.payload.userId;
 				const { rivalUserId } = await c.req.json();
 
-				const result = await db.query(
+				const results = await db.query(
 					`
 						INSERT INTO ongeki_profile_rival (user, rivalUserId)
 						VALUES (?, ?)
 					`,
 					[userId, rivalUserId]
 				);
-				if (result.affectedRows === 0) {
+				if (results.affectedRows === 0) {
 					throw new HTTPException(500, { message: "Insert failed" });
 				}
-				return new Response();
+				return c.json(results);
 			} catch (error) {
 				throw rethrowWithMessage("Failed to add rival", error);
 			}
@@ -48,17 +48,17 @@ const OngekiRivalsRoutes = new Hono()
 				const userId = c.payload.userId;
 				const { rivalUserId } = await c.req.json();
 
-				const result = await db.query(
+				const results = await db.query(
 					`
 						DELETE FROM ongeki_profile_rival 
          				WHERE user = ? AND rivalUserId = ?
 					`,
 					[userId, rivalUserId]
 				);
-				if (result.affectedRows === 0) {
+				if (results.affectedRows === 0) {
 					throw new HTTPException(500, { message: "Delete failed" });
 				}
-				return new Response();
+				return c.json(results);
 			} catch (error) {
 				throw rethrowWithMessage("Failed to remove rival", error);
 			}
