@@ -1,4 +1,5 @@
 export const cdnUrl = env.CDN_URL;
+export const turnstile = env.CFTurnstileKey;
 
 export enum TrophyRareType {
 	Normal = 0,

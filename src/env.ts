@@ -20,6 +20,8 @@ export const env = createEnv({
 		DEV_MYSQL_PASSWORD: z.string().optional(),
 		DEV_MYSQL_DATABASE: z.string().optional(),
 
+		CFTurnstileKey: z.string(),
+
 		// Production database
 		PROD_MYSQL_HOST: z.string().optional(),
 		PROD_MYSQL_USERNAME: z.string().optional(),

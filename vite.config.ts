@@ -172,6 +172,7 @@ export default defineConfig({
 	define: {
 		// For client env variables, add the type in src/vite-env.d.ts
 		env: {
+			CFTurnstileKey: env.CFTurnstileKey,
 			BUILD_DATE_YEAR_MONTH_DAY: buildDateYearMonthDay(new Date().toISOString()),
 			BUILD_TIME_12_HOUR: buildTime12HourFormat(new Date().toISOString()),
 			CDN_URL: env.CDN_URL,
