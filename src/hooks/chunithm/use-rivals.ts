@@ -2,28 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
-interface Rivals {
-	id: number;
-	isMutual: boolean;
-	username: string;
-}
-
-interface ChunithmApiResponse {
-	results: Rivals[];
-}
-
-interface RivalCountResponse {
-	rivalCount: number;
-}
-
-interface RivalResponse {
-	results: number[];
-}
-
-interface MutualResponse {
-	results: { rivalId: number; isMutual: number }[];
-}
-
 export function useRivals() {
 	return useQuery({
 		queryKey: ["rivals", "all"],
@@ -33,9 +11,7 @@ export function useRivals() {
 			if (!response.ok) {
 				throw new Error();
 			}
-
-			const data = (await response.json()) as RivalResponse;
-			return data.results;
+			return await response.json();
 		},
 	});
 }
@@ -50,8 +26,7 @@ export function useRivalCount() {
 				throw new Error();
 			}
 
-			const data = (await response.json()) as RivalCountResponse;
-			return data.rivalCount;
+			return await response.json();
 		},
 	});
 }
@@ -61,7 +36,7 @@ export function useRivalUsers() {
 		queryKey: ["rivals", "users"],
 		queryFn: async () => {
 			const [usersResp, mutualResp] = await Promise.all([
-				api.chunithm.rivals.userlookup.$get(),
+				api.chunithm.rivals.userlookup.$get().then(),
 				api.chunithm.rivals.mutual.$get(),
 			]);
 
@@ -69,12 +44,12 @@ export function useRivalUsers() {
 				throw new Error();
 			}
 
-			const usersData = (await usersResp.json()) as ChunithmApiResponse;
-			const mutualData = (await mutualResp.json()) as MutualResponse;
+			const usersData = await usersResp.json();
+			const mutualData = await mutualResp.json();
 
-			const mutualRivals = new Set(mutualData.results.filter((r) => r.isMutual === 1).map((r) => r.rivalId));
+			const mutualRivals = new Set(mutualData.filter((r) => r.isMutual === 1).map((r) => r.rivalId));
 
-			return usersData.results.map((response) => ({
+			return usersData.map((response) => ({
 				id: response.id,
 				username: response.username,
 				isMutual: mutualRivals.has(response.id),
