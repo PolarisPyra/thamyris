@@ -13,10 +13,34 @@ const ArcadeRoutes = new Hono()
 	.get("list", async (c) => {
 		try {
 			const results = await db.select<DB.Machine>(
-				`SELECT m.*, a.*, ao.*
-						FROM machine m
-						LEFT JOIN arcade a ON m.arcade = a.id
-						LEFT JOIN arcade_owner ao ON a.id = ao.arcade
+				`SELECT
+    m.id,
+    m.arcade,
+    m.serial,
+    m.board,
+    m.game,
+    m.country,
+    m.timezone,
+    m.ota_enable,
+    m.memo,
+    m.is_cab,
+    m.data,
+    a.id,
+    a.name,
+    a.nickname,
+    a.country,
+    a.country_id,
+    a.state,
+    a.city,
+    a.region_id,
+    a.timezone,
+    a.ip,
+    ao.user,
+    ao.arcade,
+    ao.permissions
+FROM arcade a
+LEFT JOIN machine m ON a.id = m.arcade
+LEFT JOIN arcade_owner ao ON a.id = ao.arcade
 				`
 			);
 			return c.json(results);
