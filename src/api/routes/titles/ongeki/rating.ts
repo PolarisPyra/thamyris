@@ -13,9 +13,9 @@ type ExtendedOngekiProfileRating = DB.OngekiProfileRating & {
 	genre: string;
 	chartId: number;
 	jacketPath?: string;
-	isFullBell?: boolean;
-	isFullCombo?: boolean;
-	isAllBreake?: boolean;
+	isFullBell?: number;
+	isFullCombo?: number;
+	isAllBreake?: number;
 };
 
 const UserRatingFramesRoutes = new Hono()

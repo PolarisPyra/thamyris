@@ -595,7 +595,7 @@ export namespace DB {
 		resSuccessCount: number | null;
 		missCount: number | null;
 		maxComboCount: number | null;
-		isFullCombo: boolean | null;
+		isFullCombo: number;
 		isAllJustice: boolean | null;
 		isSuccess: number | null;
 		fullChain: number | null;
@@ -612,7 +612,7 @@ export namespace DB {
 		classId: number | null;
 		playCount: number | null;
 		scoreMax: number | null;
-		isFullCombo: boolean | null;
+		isFullCombo: number;
 		isAllJustice: boolean | null;
 		isSuccess: boolean | null;
 		scoreRank: number | null;
@@ -667,7 +667,7 @@ export namespace DB {
 		eventId: number | null;
 		playerRating: number | null;
 		isNewRecord: boolean | null;
-		isFullCombo: boolean | null;
+		isFullCombo: number;
 		fullChainKind: number | null;
 		isAllJustice: boolean | null;
 		isContinue: boolean | null;
@@ -1079,9 +1079,9 @@ export namespace DB {
 		maxComboCount: number;
 		maxOverKill: number;
 		maxTeamOverKill: number;
-		isFullBell: boolean;
-		isFullCombo: boolean;
-		isAllBreake: boolean;
+		isFullBell: number;
+		isFullCombo: number;
+		isAllBreake: number;
 		isLock: boolean;
 		clearStatus: number;
 		isStoryWatched: boolean;
@@ -1144,9 +1144,9 @@ export namespace DB {
 		isTechNewRecord: boolean | null;
 		isBattleNewRecord: boolean | null;
 		isOverDamageNewRecord: boolean | null;
-		isFullCombo: boolean | null;
-		isFullBell: boolean | null;
-		isAllBreak: boolean | null;
+		isFullCombo: number;
+		isFullBell: number;
+		isAllBreak: number;
 		playerRating: number | null;
 		battlePoint: number | null;
 		platinumScore: number | null;

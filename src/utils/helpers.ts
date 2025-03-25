@@ -99,7 +99,7 @@ export const getOngekiComboStatus = (isFullCombo: number, IsAllBreak: number, is
 };
 
 export function OngekiRating(level: number, score: number): number {
-	const iclInt = level * 100;
+	const internalChartRating = level * 100;
 
 	// Return 0 if score is too low to earn any rating
 	if (score < 970000) {
@@ -107,16 +107,72 @@ export function OngekiRating(level: number, score: number): number {
 	}
 
 	if (score >= 1007500) {
-		return iclInt + 200; // +2.00 for SSS+
+		return internalChartRating + 200; // +2.00 for SSS+
 	} else if (score >= 1000000) {
-		return iclInt + 150 + Math.floor((score - 1000000) / 150); // +1.50 for SSS, then +0.01 per 150 points
+		return internalChartRating + 150 + Math.floor((score - 1000000) / 150); // +1.50 for SSS, then +0.01 per 150 points
 	} else if (score >= 990000) {
-		return iclInt + 100 + Math.floor((score - 990000) / 200); // +1.00 for SS, then +0.01 per 200 points
+		return internalChartRating + 100 + Math.floor((score - 990000) / 200); // +1.00 for SS, then +0.01 per 200 points
 	} else if (score >= 970000) {
-		return iclInt + Math.floor((score - 970000) / 200); // ±0 at 970000, then +0.01 per 200 points
+		return internalChartRating + Math.floor((score - 970000) / 200); // ±0 at 970000, then +0.01 per 200 points
 	}
 
 	return 0; // Fallback return 0
+}
+export function OngekiGekForceRating(
+	level: number,
+	score: number,
+	isFullCombo: number,
+	isAllBreake: number,
+	isFullBell: number
+): number {
+	const internalChartRating = level * 1000;
+	let rating = 0;
+
+	const fullCombo = isFullCombo === 1;
+	const allBreake = isAllBreake === 1;
+	const fullBell = isFullBell === 1;
+
+	if (score < 500000) {
+		return 0;
+	} else if (score < 800000) {
+		rating = internalChartRating + ((level - 6) * (score - 500000)) / 300000;
+	} else if (score < 900000) {
+		rating = internalChartRating + (level - 6) + (2 * (score - 800000)) / 100000;
+	} else if (score < 970000) {
+		rating = internalChartRating + (level - 4) + (4 * (score - 900000)) / 70000;
+	} else if (score < 990000) {
+		rating = internalChartRating + level + (0.75 * (score - 970000)) / 20000;
+	} else if (score < 1000000) {
+		rating = internalChartRating + (level + 0.75) + (0.5 * (score - 990000)) / 10000;
+	} else if (score < 1007500) {
+		rating = internalChartRating + (level + 1.25) + (0.5 * (score - 1000000)) / 7500;
+	} else if (score <= 1010000) {
+		rating = internalChartRating + (level + 1.75) + (0.25 * (score - 1007500)) / 2500;
+	} else {
+		return 0;
+	}
+
+	// Apply bonuses
+	if (score === 1010000) {
+		rating += 0.35; // AB+
+	} else if (allBreake) {
+		rating += 0.3;
+	} else if (fullCombo) {
+		rating += 0.1;
+	}
+
+	if (fullBell) {
+		rating += 0.05;
+	}
+	if (score >= 1007500) {
+		rating += 0.3; // SSS+
+	} else if (score >= 1000000) {
+		rating += 0.2; // SSS
+	} else if (score >= 990000) {
+		rating += 0.1; // SS
+	}
+
+	return rating;
 }
 
 export function ChunitmRating(level: number, score: number): number {

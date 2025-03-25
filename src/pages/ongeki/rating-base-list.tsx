@@ -3,6 +3,7 @@ import React from "react";
 import Header from "@/components/common/header";
 import QouteCard from "@/components/common/qoutecard";
 import OngekiRatingFrameTable from "@/components/ongeki/rating-table";
+import OngekiRatingFrameTableNew from "@/components/ongeki/rating-table new";
 import {
 	useHighestRating,
 	useOngekiVersion,
@@ -22,6 +23,7 @@ const OngekiRatingFrames = () => {
 	const { data: nextSongs = [] } = useUserRatingBaseNextList();
 	const { data: playerRating = [] } = usePlayerRating();
 	const { data: highestRating = [] } = useHighestRating();
+	const isRefreshOrAbove = Number(version) >= 9;
 
 	return (
 		<div className="relative flex-1 overflow-auto">
@@ -37,12 +39,25 @@ const OngekiRatingFrames = () => {
 									<span>• 30 highest ratings from old version fumens</span>
 									<span>• 10 highest ratings from recent plays, excluding Lunatic difficulty</span>
 									<div className="flex flex-col">
-										<span className="text-primary font-bold">
-											Player Rating: {((playerRating[0]?.playerRating ?? 0) / 100).toFixed(2) || "Loading..."}
-										</span>
-										<span className="text-primary font-bold">
-											Highest Rating: {((highestRating[0]?.highestRating ?? 0) / 100).toFixed(2) || "Loading..."}
-										</span>
+										{isRefreshOrAbove ? (
+											<>
+												<span className="text-primary font-bold">
+													Player Rating: {((playerRating[0]?.playerRating ?? 0) / 1000).toFixed(3) || "Loading..."}
+												</span>
+												<span className="text-primary font-bold">
+													Highest Rating: {((highestRating[0]?.highestRating ?? 0) / 1000).toFixed(3) || "Loading..."}
+												</span>
+											</>
+										) : (
+											<>
+												<span className="text-primary font-bold">
+													Player Rating: {((playerRating[0]?.playerRating ?? 0) / 100).toFixed(2) || "Loading..."}
+												</span>
+												<span className="text-primary font-bold">
+													Highest Rating: {((highestRating[0]?.highestRating ?? 0) / 100).toFixed(2) || "Loading..."}
+												</span>
+											</>
+										)}
 									</div>
 								</div>
 							}
@@ -51,10 +66,21 @@ const OngekiRatingFrames = () => {
 					</div>
 
 					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
-						<OngekiRatingFrameTable data={baseSongs} title="Best 30" />
-						<OngekiRatingFrameTable data={newSongs} title="Current Version" />
-						<OngekiRatingFrameTable data={hotSongs} title="Recent" />
-						<OngekiRatingFrameTable data={nextSongs} title="Potential Plays" />
+						{isRefreshOrAbove ? (
+							<>
+								<OngekiRatingFrameTableNew data={baseSongs} title="Best 30" />
+								<OngekiRatingFrameTableNew data={newSongs} title="Current Version" />
+								<OngekiRatingFrameTableNew data={hotSongs} title="Recent" />
+								<OngekiRatingFrameTableNew data={nextSongs} title="Potential Plays" />
+							</>
+						) : (
+							<>
+								<OngekiRatingFrameTable data={baseSongs} title="Best 30" />
+								<OngekiRatingFrameTable data={newSongs} title="Current Version" />
+								<OngekiRatingFrameTable data={hotSongs} title="Recent" />
+								<OngekiRatingFrameTable data={nextSongs} title="Potential Plays" />
+							</>
+						)}
 					</div>
 				</div>
 			) : (
