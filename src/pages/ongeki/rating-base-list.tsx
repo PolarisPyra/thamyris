@@ -23,7 +23,7 @@ const OngekiRatingFrames = () => {
 	const { data: nextSongs = [] } = useUserRatingBaseNextList();
 	const { data: playerRating = [] } = usePlayerRating();
 	const { data: highestRating = [] } = useHighestRating();
-	const isRefreshOrAbove = Number(version) >= 9;
+	const isRefreshOrAbove = Number(version) >= 8;
 
 	return (
 		<div className="relative flex-1 overflow-auto">
@@ -35,9 +35,17 @@ const OngekiRatingFrames = () => {
 							header="Single track ratings are calculated from fumen constants and scores. Player rating is the average of 55 unique fumen ratings, including:"
 							welcomeMessage={
 								<div className="flex flex-col space-y-1">
-									<span>• 15 highest ratings from new version fumens</span>
-									<span>• 30 highest ratings from old version fumens</span>
-									<span>• 10 highest ratings from recent plays, excluding Lunatic difficulty</span>
+									{isRefreshOrAbove ? (
+										<>
+											<span>• sum(new10) / 50 + sum(best50) / 50 + sum(platinum50) / 50</span>
+										</>
+									) : (
+										<>
+											<span>• 15 highest ratings from new version fumens</span>
+											<span>• 30 highest ratings from old version fumens</span>
+											<span>• 10 highest ratings from recent plays, excluding Lunatic difficulty</span>
+										</>
+									)}
 									<div className="flex flex-col">
 										{isRefreshOrAbove ? (
 											<>
