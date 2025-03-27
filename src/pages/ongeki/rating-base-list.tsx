@@ -6,13 +6,19 @@ import OngekiRatingFrameTable from "@/components/ongeki/rating-table";
 import OngekiRatingFrameTableNew from "@/components/ongeki/rating-table new";
 import {
 	useHighestRating,
+	useNewHighestRating,
+	useNewPlayerRating,
 	useOngekiVersion,
 	usePlayerRating,
+	useUserNewRatingBaseBestList,
+	useUserNewRatingBaseBestNewList,
+	useUserNewRatingBaseNextBestList,
 	useUserRatingBaseHotList,
 	useUserRatingBaseList,
 	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
 } from "@/hooks/ongeki";
+import { useUserNewRatingBasePScoreList } from "@/hooks/ongeki/use-new-rating";
 
 const OngekiRatingFrames = () => {
 	const version = useOngekiVersion();
@@ -23,6 +29,15 @@ const OngekiRatingFrames = () => {
 	const { data: nextSongs = [] } = useUserRatingBaseNextList();
 	const { data: playerRating = [] } = usePlayerRating();
 	const { data: highestRating = [] } = useHighestRating();
+
+	const { data: newBaseSongs = [] } = useUserNewRatingBaseBestList();
+	const { data: newNewSongs = [] } = useUserNewRatingBaseBestNewList();
+	const { data: newNextSongs = [] } = useUserNewRatingBaseNextBestList();
+	const { data: newPscoreSongs = [] } = useUserNewRatingBasePScoreList();
+
+	const { data: newPlayerRating = [] } = useNewPlayerRating();
+	const { data: newHighestRating = [] } = useNewHighestRating();
+
 	const isRefreshOrAbove = Number(version) >= 8;
 
 	return (
@@ -37,7 +52,9 @@ const OngekiRatingFrames = () => {
 								<div className="flex flex-col space-y-1">
 									{isRefreshOrAbove ? (
 										<>
-											<span>• sum(new10) / 50 + sum(best50) / 50 + sum(platinum50) / 50</span>
+											<span>• (sum of NEW top 10) ÷ 50</span>
+											<span>• (sum of BEST top 50) ÷ 50</span>
+											<span>• (sum of PLATINUM top 50) ÷ 50</span>
 										</>
 									) : (
 										<>
@@ -50,10 +67,10 @@ const OngekiRatingFrames = () => {
 										{isRefreshOrAbove ? (
 											<>
 												<span className="text-primary font-bold">
-													Player Rating: {((playerRating[0]?.playerRating ?? 0) / 1000).toFixed(3) || "Loading..."}
+													Player Rating: {((newPlayerRating[0]?.newPlayerRating ?? 0) / 1000).toFixed(3) || "Loading..."}
 												</span>
 												<span className="text-primary font-bold">
-													Highest Rating: {((highestRating[0]?.highestRating ?? 0) / 1000).toFixed(3) || "Loading..."}
+													Highest Rating: {((newHighestRating[0]?.newHighestRating ?? 0) / 1000).toFixed(3) || "Loading..."}
 												</span>
 											</>
 										) : (
@@ -76,10 +93,10 @@ const OngekiRatingFrames = () => {
 					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						{isRefreshOrAbove ? (
 							<>
-								<OngekiRatingFrameTableNew data={baseSongs} title="Best 30" />
-								<OngekiRatingFrameTableNew data={newSongs} title="Current Version" />
-								<OngekiRatingFrameTableNew data={hotSongs} title="Recent" />
-								<OngekiRatingFrameTableNew data={nextSongs} title="Potential Plays" />
+								<OngekiRatingFrameTableNew data={newBaseSongs} title="Best 50" />
+								<OngekiRatingFrameTableNew data={newPscoreSongs} title="Best 50 P-score" />
+								<OngekiRatingFrameTableNew data={newNewSongs} title="Current Version" />
+								<OngekiRatingFrameTableNew data={newNextSongs} title="Potential Plays" />
 							</>
 						) : (
 							<>

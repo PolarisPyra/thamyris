@@ -55,6 +55,8 @@ const OngekiRatingTable = ({ data, title }: RatingFrameTableProps) => {
 				<Table>
 					<TableHeader>
 						<TableRow className="border-seperator border-b hover:bg-transparent">
+							<TableHead className="text-primary">#</TableHead>
+
 							<TableHead className="text-primary">Song</TableHead>
 							<TableHead className="text-primary">Score</TableHead>
 							<TableHead className="text-primary">Grade</TableHead>
@@ -68,6 +70,8 @@ const OngekiRatingTable = ({ data, title }: RatingFrameTableProps) => {
 					<TableBody>
 						{filteredSongs.map((song, index) => (
 							<TableRow key={song.id ?? index} className="border-seperator hover:bg-hover border-b">
+								<TableCell className="text-primary text-sm">{index + 1}</TableCell>
+
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
 								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm">{getOngekiGrade(song.score!)}</TableCell>

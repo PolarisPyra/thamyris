@@ -970,6 +970,8 @@ export namespace DB {
 		lastEmoneyBrand: number;
 		lastEmoneyCredit: number;
 		isDialogWatchedSuggestMemory: boolean;
+		newHighestRating: number | null;
+		newPlayerRating: number | null;
 	};
 	export type OngekiProfileKop = {
 		id: number;

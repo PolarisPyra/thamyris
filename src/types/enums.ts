@@ -11,6 +11,7 @@ export enum ChunithmVersions {
 export enum OngekiVersions {
 	Bright = 6,
 	BrightMemory = 7,
+	ReFresh = 8,
 }
 
 export enum Theme {

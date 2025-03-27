@@ -1,5 +1,12 @@
 import { useLeaderboard } from "./use-leaderboard";
 import {
+	useNewHighestRating,
+	useNewPlayerRating,
+	useUserNewRatingBaseBestList,
+	useUserNewRatingBaseBestNewList,
+	useUserNewRatingBaseNextBestList,
+} from "./use-new-rating";
+import {
 	useHighestRating,
 	usePlayerRating,
 	useUserRatingBaseHotList,
@@ -36,4 +43,9 @@ export {
 	useUserRatingBaseHotList,
 	useUserRatingBaseNewList,
 	useUserRatingBaseNextList,
+	useUserNewRatingBaseBestList,
+	useUserNewRatingBaseBestNewList,
+	useUserNewRatingBaseNextBestList,
+	useNewPlayerRating,
+	useNewHighestRating,
 };
