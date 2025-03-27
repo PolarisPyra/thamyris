@@ -17,12 +17,24 @@ const OngekiScorePage = () => {
 
 	const { data: scores = [], isLoading: isLoadingScores } = useOngekiScores();
 
-	const filteredScores = scores.filter((score) => score.title?.toLowerCase().includes(searchQuery.toLowerCase()));
+	const filteredByVersionScores = isRefreshOrAbove
+		? scores.filter((score) => {
+				const rating = Math.abs(score.playerRating ?? 0).toString();
+				return rating.length === 5; // Show only 5-digit ratings (like 14375) for version 8+
+			})
+		: scores.filter((score) => {
+				const rating = Math.abs(score.playerRating ?? 0).toString();
+				return rating.length === 4; // Show only 4-digit ratings (like 1438) for versions below 8
+			});
+
+	const filteredScores = filteredByVersionScores.filter((score) =>
+		score.title?.toLowerCase().includes(searchQuery.toLowerCase())
+	);
 
 	const itemsPerPage = 15;
 	const totalPages = Math.ceil(filteredScores.length / itemsPerPage);
 
-	const paginatedScores = scores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+	const paginatedScores = filteredScores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	if (isLoadingScores) {
 		return (
