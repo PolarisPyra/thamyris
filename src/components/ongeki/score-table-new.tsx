@@ -62,9 +62,9 @@ interface OngekiScore {
 	isTechNewRecord: boolean | null;
 	isBattleNewRecord: boolean | null;
 	isOverDamageNewRecord: boolean | null;
-	isFullCombo: number | null;
-	isFullBell: number | null;
-	isAllBreak: number | null;
+	isFullCombo?: number | undefined;
+	isFullBell?: number;
+	isAllBreak?: number;
 	playerRating: number | null;
 	battlePoint: number | null;
 	platinumScore: number | null;
@@ -80,7 +80,7 @@ interface OngekiScoreTableProps {
 	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTableProps) => {
+const OngekiScoreTableNew = ({ scores, searchQuery, onSearchChange }: OngekiScoreTableProps) => {
 	// Filter scores based on search query
 	const filteredScores = scores.filter((score) => score.title?.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -118,13 +118,13 @@ const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTa
 					<TableBody>
 						{filteredScores.map((score) => (
 							<TableRow key={score.id} className="border-seperator hover:bg-hover border-b">
-								<TableCell className="text-primary max-w-[140px] truncate text-sm font-medium">{score.title}</TableCell>
+								<TableCell className="text-primary text-sm">{score.title}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{score.techScore?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{getOngekiGrade(score.techScore ?? 0)}</TableCell>
 
 								<TableCell className="text-primary text-sm">
 									<div className="flex items-center">
-										<span>{((score.playerRating ?? 0) / 100).toFixed(2)}</span>{" "}
+										<span className="mr-4">{((score.playerRating ?? 0) / 1000).toFixed(3)}</span>{" "}
 										{score.rating_change === "Increase" && <CircleArrowUp className="h-6 w-6 text-green-500" />}
 										{score.rating_change === "Decrease" && <CircleArrowDown className="h-6 w-6 text-red-500" />}
 										{score.rating_change === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
@@ -154,4 +154,4 @@ const OngekiScoreTable = ({ scores, searchQuery, onSearchChange }: OngekiScoreTa
 	);
 };
 
-export default OngekiScoreTable;
+export default OngekiScoreTableNew;

@@ -20,9 +20,9 @@ interface RatingTable {
 	level: number;
 	chartId: number;
 	genre: string;
-	isFullCombo?: number | undefined;
-	isFullBell?: number;
-	isAllBreake?: number;
+	isFullCombo?: number | null;
+	isFullBell?: number | null;
+	isAllBreake?: number | null;
 }
 
 interface RatingFrameTableProps {
