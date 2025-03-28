@@ -4,12 +4,15 @@ import { Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
+interface LeaderboardTable {
+	user: number;
+	userName: string | null;
+	playerRating: number | null;
+}
+
 interface LeaderboardTableProps {
-	players: {
-		user: number;
-		userName: string | null;
-		playerRating: number | null;
-	}[];
+	players: LeaderboardTable[];
+
 	searchQuery: string;
 	onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	page: number;

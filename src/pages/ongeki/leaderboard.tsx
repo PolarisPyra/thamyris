@@ -3,9 +3,9 @@ import React from "react";
 
 import Header from "@/components/common/header";
 import { LeaderboardTable } from "@/components/common/leaderboard-table";
-import { NewOngekiLeaderboardTable } from "@/components/common/new-ongeki-leaderboard-table";
 import Pagination from "@/components/common/pagination";
 import Spinner from "@/components/common/spinner";
+import { NewOngekiLeaderboardTable } from "@/components/ongeki/new-ongeki-leaderboard-table";
 import { useLeaderboard, useOngekiVersion } from "@/hooks/ongeki";
 
 const ITEMS_PER_PAGE = 50;
