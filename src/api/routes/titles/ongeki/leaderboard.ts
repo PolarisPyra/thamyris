@@ -14,7 +14,9 @@ const OngekiLeaderboardRoutes = new Hono().get("", async (c) => {
 				SELECT 
 					opd.user,
 					opd.playerRating,
-					opd.userName
+					opd.userName,
+					opd.newPlayerRating
+
 				FROM ongeki_profile_data opd
 				WHERE opd.version = ?
 				ORDER BY opd.playerRating DESC
@@ -27,4 +29,5 @@ const OngekiLeaderboardRoutes = new Hono().get("", async (c) => {
 		throw rethrowWithMessage("Failed to get leaderboard", error);
 	}
 });
+
 export { OngekiLeaderboardRoutes };

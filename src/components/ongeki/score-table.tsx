@@ -67,8 +67,7 @@ interface OngekiScore {
 	isAllBreak: number | null;
 	playerRating: number | null;
 	battlePoint: number | null;
-	platinumScore: number | null;
-	platinumScoreMax: number | null;
+
 	title?: string;
 	chartId?: number;
 	rating_change?: "Increase" | "Decrease" | "Same";

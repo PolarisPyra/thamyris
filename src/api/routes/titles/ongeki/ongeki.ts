@@ -18,6 +18,9 @@ const OngekiRoutes = new Hono()
                         csp.userPlayDate,
                         csp.maxCombo,
                         csp.isFullCombo,
+                        csp.platinumScore,
+                        csp.platinumScoreMax, 
+                        csp.platinumScoreStar,
                         csp.playerRating,
                         csp.isAllBreak,
                         csp.isFullBell,
@@ -75,7 +78,10 @@ const OngekiRoutes = new Hono()
                     artist,
                     techscore_change,
                     battlescore_change,
-                    rating_change
+                    rating_change,
+                    platinumScore,
+                    platinumScoreMax,
+                    platinumScoreStar
                 FROM 
                     RankedScores
                 ORDER BY 

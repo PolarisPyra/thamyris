@@ -1,6 +1,6 @@
 import React from "react";
 
-import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search } from "lucide-react";
+import { CircleArrowDown, CircleArrowRight, CircleArrowUp, Search, Star } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
@@ -67,8 +67,9 @@ interface OngekiScore {
 	isAllBreak?: number;
 	playerRating: number | null;
 	battlePoint: number | null;
-	platinumScore: number | null;
-	platinumScoreMax: number | null;
+	platinumScore?: number | null;
+	platinumScoreStar?: number | null;
+	platinumScoreMax?: number | null;
 	title?: string;
 	chartId?: number;
 	rating_change?: "Increase" | "Decrease" | "Same";
@@ -106,8 +107,9 @@ const OngekiScoreTableNew = ({ scores, searchQuery, onSearchChange }: OngekiScor
 							<TableHead className="text-primary whitespace-nowrap">Song</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Score</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Grade</TableHead>
-
 							<TableHead className="text-primary whitespace-nowrap">Rating</TableHead>
+							<TableHead className="text-primary whitespace-nowrap">Pscore</TableHead>
+							<TableHead className="text-primary whitespace-nowrap">Pstars</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Difficulty</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Playdate</TableHead>
 							<TableHead className="text-primary whitespace-nowrap">Level</TableHead>
@@ -121,19 +123,26 @@ const OngekiScoreTableNew = ({ scores, searchQuery, onSearchChange }: OngekiScor
 								<TableCell className="text-primary text-sm">{score.title}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{score.techScore?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{getOngekiGrade(score.techScore ?? 0)}</TableCell>
-
 								<TableCell className="text-primary text-sm">
-									<div className="flex items-center">
-										<span className="mr-4">{((score.playerRating ?? 0) / 1000).toFixed(3)}</span>{" "}
+									<div className="flex items-center justify-between">
+										<span>{((score.playerRating ?? 0) / 1000).toFixed(3)}</span>
 										{score.rating_change === "Increase" && <CircleArrowUp className="h-6 w-6 text-green-500" />}
 										{score.rating_change === "Decrease" && <CircleArrowDown className="h-6 w-6 text-red-500" />}
 										{score.rating_change === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
 									</div>
 								</TableCell>
+								<TableCell className="text-primary text-sm">{score.platinumScore?.toLocaleString()}</TableCell>{" "}
+								<TableCell className="text-primary text-sm">
+									{(score.platinumScoreStar ?? 0) > 0 && (
+										<>
+											<Star className="inline-block text-yellow-300" size={16} />
+											<span className="ml-1">{score.platinumScoreStar?.toLocaleString()}</span>
+										</>
+									)}
+								</TableCell>
 								<TableCell className="text-primary text-sm">{getDifficultyFromOngekiChart(score.chartId ?? 0)}</TableCell>
 								<TableCell className="text-primary text-sm">{new Date(score.userPlayDate ?? 0).toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm">{score.level}</TableCell>
-
 								<TableCell className="text-primary text-sm">
 									{score.isFullCombo ? "FC" : ""} {score.isAllBreak ? "AB" : ""}
 								</TableCell>
