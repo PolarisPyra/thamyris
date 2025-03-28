@@ -16,7 +16,6 @@ const OngekiLeaderboardRoutes = new Hono().get("", async (c) => {
 					opd.playerRating,
 					opd.userName,
 					opd.newPlayerRating
-
 				FROM ongeki_profile_data opd
 				WHERE opd.version = ?
 				ORDER BY opd.playerRating DESC

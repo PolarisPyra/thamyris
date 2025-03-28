@@ -15,6 +15,7 @@ export const AllOngekiRoutes = new Hono()
 	.route("newRating", NewUserRatingFramesRoutes)
 	.route("settings", OngekiSettingsRoutes)
 	.route("leaderboard", OngekiLeaderboardRoutes)
+
 	.route("rivals", OngekiRivalsRoutes)
 	.route("mods", OngekiModsRoutes)
 	.route("reiwa", OngekiReiwaRoutes);

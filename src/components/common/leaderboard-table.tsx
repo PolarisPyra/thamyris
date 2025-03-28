@@ -23,6 +23,8 @@ export const LeaderboardTable = ({
 	page,
 	itemsPerPage,
 }: LeaderboardTableProps) => {
+	const sortedPlayers = [...players].sort((a, b) => b.playerRating! - a.playerRating!);
+
 	return (
 		<div className="bg-card rounded-md p-4 sm:p-6">
 			<div className="mb-4 flex flex-col items-center justify-between gap-4 sm:mb-6 sm:flex-row">
@@ -48,7 +50,7 @@ export const LeaderboardTable = ({
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{players.map((player, index) => {
+						{sortedPlayers.map((player, index) => {
 							const rank = (page - 1) * itemsPerPage + index + 1;
 							let rowClass = "border-b border-seperator ";
 
