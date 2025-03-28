@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Search } from "lucide-react";
+import { Search, Star } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { OngekiGekForceRating, getDifficultyFromOngekiChart, getOngekiGrade } from "@/utils/helpers";
@@ -15,6 +15,8 @@ interface RatingTable {
 	difficultId: number | null;
 	romVersionCode: number | null;
 	techScoreMax: number | null;
+	platinumScoreMax: number | null;
+	platinumScoreStar: number | null;
 	artist: string | undefined;
 	title: string;
 	level: number;
@@ -58,12 +60,17 @@ const OngekiRatingTableNew = ({ data, title }: RatingFrameTableProps) => {
 
 							<TableHead className="text-primary">Song</TableHead>
 							<TableHead className="text-primary">Score</TableHead>
+
 							<TableHead className="text-primary">Grade</TableHead>
+							<TableHead className="text-primary">Rating</TableHead>
+
+							<TableHead className="text-primary">PScore</TableHead>
+							<TableHead className="text-primary">PStars</TableHead>
+
 							<TableHead className="text-primary">Level</TableHead>
 							<TableHead className="text-primary">Difficulty</TableHead>
 							<TableHead className="text-primary">Genre</TableHead>
 							<TableHead className="text-primary">Artist</TableHead>
-							<TableHead className="text-primary">Rating</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -74,13 +81,6 @@ const OngekiRatingTableNew = ({ data, title }: RatingFrameTableProps) => {
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
 								<TableCell className="text-primary text-sm">{song.techScoreMax?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm">{getOngekiGrade(song.techScoreMax!)}</TableCell>
-
-								<TableCell className="text-primary text-sm">{song.level}</TableCell>
-								<TableCell className="text-primary text-sm">
-									<span>{getDifficultyFromOngekiChart(song.chartId!)}</span>
-								</TableCell>
-								<TableCell className="text-primary text-sm">{song.genre}</TableCell>
-								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.artist}</TableCell>
 								<TableCell className="text-primary text-sm">
 									{(
 										OngekiGekForceRating(
@@ -92,6 +92,22 @@ const OngekiRatingTableNew = ({ data, title }: RatingFrameTableProps) => {
 										) / 1000
 									).toFixed(3)}
 								</TableCell>
+								<TableCell className="text-primary text-sm">{song.platinumScoreMax?.toLocaleString()}</TableCell>
+								<TableCell className="text-primary text-sm">
+									{(song.platinumScoreStar ?? 0) > 0 && (
+										<>
+											<Star className="inline-block text-yellow-300" size={16} />
+											<span className="ml-1">{song.platinumScoreStar?.toLocaleString()}</span>
+										</>
+									)}
+								</TableCell>
+
+								<TableCell className="text-primary text-sm">{song.level}</TableCell>
+								<TableCell className="text-primary text-sm">
+									<span>{getDifficultyFromOngekiChart(song.chartId!)}</span>
+								</TableCell>
+								<TableCell className="text-primary text-sm">{song.genre}</TableCell>
+								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.artist}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

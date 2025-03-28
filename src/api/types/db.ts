@@ -1032,9 +1032,11 @@ export namespace DB {
 		type: string;
 		index: number;
 		musicId: number | null;
+		platinumScoreMax: number | null;
+		platinumScoreStar: number | null;
 		difficultId: number | null;
 		romVersionCode: number | null;
-		score: number | null;
+		techScoreMax: number | null;
 	};
 	export type OngekiProfileRatingLog = {
 		id: number;

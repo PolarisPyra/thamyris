@@ -28,6 +28,8 @@ const NewUserRatingFramesRoutes = new Hono()
 				`SELECT 
           r.musicId,
           b.techScoreMax,
+          b.platinumScoreMax,
+          b.platinumScoreStar,
           r.difficultId,
           r.version,
           r.type,
@@ -68,6 +70,8 @@ const NewUserRatingFramesRoutes = new Hono()
 				`SELECT 
           r.musicId,
           b.techScoreMax,
+          b.platinumScoreMax,
+          b.platinumScoreStar,
           r.difficultId,
           r.version,
           r.type,
@@ -109,6 +113,8 @@ const NewUserRatingFramesRoutes = new Hono()
 				`SELECT 
           r.musicId,
           b.techScoreMax,
+          b.platinumScoreMax,
+          b.platinumScoreStar,
           r.difficultId,
           r.version,
           r.type,
@@ -150,6 +156,8 @@ const NewUserRatingFramesRoutes = new Hono()
 				`SELECT 
           r.musicId,
           b.techScoreMax,
+          b.platinumScoreMax,
+          b.platinumScoreStar,
           r.difficultId,
           r.version,
           r.type,

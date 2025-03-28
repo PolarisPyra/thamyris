@@ -47,7 +47,7 @@ const OngekiRatingFrames = () => {
 				<div className="container mx-auto space-y-6">
 					<div className="mb-4 space-y-8 p-4 sm:px-6 sm:py-0">
 						<QouteCard
-							header="Single track ratings are calculated from fumen constants and scores. Player rating is the average of 55 unique fumen ratings, including:"
+							header="Single track ratings are calculated from fumen constants and scores."
 							welcomeMessage={
 								<div className="flex flex-col space-y-1">
 									{isRefreshOrAbove ? (
