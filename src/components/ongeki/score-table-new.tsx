@@ -124,14 +124,14 @@ const OngekiScoreTableNew = ({ scores, searchQuery, onSearchChange }: OngekiScor
 								<TableCell className="text-primary text-sm font-medium">{score.techScore?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm font-medium">{getOngekiGrade(score.techScore ?? 0)}</TableCell>
 								<TableCell className="text-primary text-sm">
-									<div className="flex items-center justify-between">
+									<div className="mr-1 flex items-center justify-between">
 										<span>{((score.playerRating ?? 0) / 1000).toFixed(3)}</span>
 										{score.rating_change === "Increase" && <CircleArrowUp className="h-6 w-6 text-green-500" />}
 										{score.rating_change === "Decrease" && <CircleArrowDown className="h-6 w-6 text-red-500" />}
 										{score.rating_change === "Same" && <CircleArrowRight className="h-6 w-6 text-gray-500" />}
 									</div>
 								</TableCell>
-								<TableCell className="text-primary text-sm">{score.platinumScore?.toLocaleString()}</TableCell>{" "}
+								<TableCell className="text-primary text-sm">{score.platinumScore?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm">
 									{(score.platinumScoreStar ?? 0) > 0 && (
 										<>
