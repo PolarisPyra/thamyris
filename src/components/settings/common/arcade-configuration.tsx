@@ -162,13 +162,10 @@ const ArcadeConfiguration = () => {
 	const handleCountryChange = (country: Country) => {
 		setSelectedCountry(country);
 		setSelectedState(null);
-		console.log(`Selected Country: ${country}`);
 	};
 
 	const handleStateChange = (state: State) => {
 		setSelectedState(state);
-		console.log("Selected State:", state.state);
-		console.log("Region ID:", state.regionId);
 	};
 
 	const getStateDisplayValue = (): string | null => {

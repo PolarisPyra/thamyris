@@ -14,7 +14,7 @@ interface RatingTable {
 	musicId: number | null;
 	difficultId: number | null;
 	romVersionCode: number | null;
-	score: number | null;
+	techScoreMax: number | null;
 	artist: string | undefined;
 	title: string;
 	level: number;
@@ -34,7 +34,6 @@ const OngekiRatingTableNew = ({ data, title }: RatingFrameTableProps) => {
 	const [searchQuery, setSearchQuery] = useState("");
 
 	const filteredSongs = data.filter((song) => song.title?.toLowerCase().includes(searchQuery.toLowerCase()));
-	console.log(filteredSongs);
 	return (
 		<div className="bg-card rounded-md p-4 sm:p-6">
 			<div className="mb-4 flex flex-col items-center justify-between gap-4 sm:mb-6 sm:flex-row">
@@ -73,8 +72,8 @@ const OngekiRatingTableNew = ({ data, title }: RatingFrameTableProps) => {
 								<TableCell className="text-primary text-sm">{index + 1}</TableCell>
 
 								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
-								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
-								<TableCell className="text-primary text-sm">{getOngekiGrade(song.score!)}</TableCell>
+								<TableCell className="text-primary text-sm">{song.techScoreMax?.toLocaleString()}</TableCell>
+								<TableCell className="text-primary text-sm">{getOngekiGrade(song.techScoreMax!)}</TableCell>
 
 								<TableCell className="text-primary text-sm">{song.level}</TableCell>
 								<TableCell className="text-primary text-sm">
@@ -86,7 +85,7 @@ const OngekiRatingTableNew = ({ data, title }: RatingFrameTableProps) => {
 									{(
 										OngekiGekForceRating(
 											song.level!,
-											song.score!,
+											song.techScoreMax!,
 											song.isFullCombo ?? 0,
 											song.isAllBreake ?? 0,
 											song.isFullBell ?? 0
