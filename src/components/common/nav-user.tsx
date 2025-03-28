@@ -76,18 +76,18 @@ export function NavUser({
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuGroup>
 							<DropdownMenuItem
-								onClick={() => navigate("/arcade")}
-								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
-							>
-								<MonitorCog className="text-primary" />
-								Arcade Management
-							</DropdownMenuItem>
-							<DropdownMenuItem
 								onClick={() => navigate("/account")}
 								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
 							>
 								<UserCog className="text-primary" />
 								Account Settings
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => navigate("/arcade")}
+								className="text-primary focus:bg-hover focus:text-primary hover:cursor-pointer"
+							>
+								<MonitorCog className="text-primary" />
+								Arcade Management
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator className="bg-border" />
