@@ -106,33 +106,8 @@ CDN_URL=https://thamyris.b-cdn.net/
 ### Starting the Development Server
 
 ```bash
-# Start the full stack development environment
-bun dev
-
-# Or start frontend and backend separately
 bun client:dev    # Frontend only
 bun server:dev    # Backend only
-```
-
-### Available Scripts
-
-- `bun dev` - Start development environment
-- `bun build` - Build for production
-- `bun start` - Start production server
-- `bun typecheck` - Run TypeScript type checking
-- `bun lint` - Run ESLint
-- `bun lint:fix` - Fix ESLint issues
-
-## 📁 Project Structure
-
-```
-thamyris/
-├── src/           # Source code
-├── public/        # Static assets
-├── scripts/       # Build and development scripts
-├── dist/          # Production build output
-├── components.json # UI components configuration
-└── vite.config.ts # Vite configuration
 ```
 
 ## 🔧 Configuration Files
@@ -147,10 +122,5 @@ thamyris/
 1. Build the application:
 
    ```bash
-   bun build
-   ```
-
-2. Start the production server:
-   ```bash
-   bun start
+   pnpm build
    ```
