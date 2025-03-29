@@ -4,7 +4,6 @@ import { db } from "@/api/db";
 import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-// includes joined tables
 type ExtendedOngekiProfileRating = DB.OngekiProfileRating & {
 	score: number;
 	level: number;
@@ -13,8 +12,11 @@ type ExtendedOngekiProfileRating = DB.OngekiProfileRating & {
 	genre: string;
 	chartId: number;
 	jacketPath?: string;
+	noteCount: number;
 	isFullBell?: number;
 	isFullCombo?: number;
+	platinumScoreStar?: number;
+	platinumScoreMax: number;
 	isAllBreake?: number;
 };
 
@@ -39,6 +41,7 @@ const NewUserRatingFramesRoutes = new Hono()
           b.isAllBreake,
           m.title,
           m.artist,
+          m.noteCount,
           m.level,
           m.genre,
           m.chartId
@@ -83,7 +86,8 @@ const NewUserRatingFramesRoutes = new Hono()
           m.artist,
           m.level,
           m.genre,
-          m.chartId
+          m.chartId,
+          m.noteCount
         FROM ongeki_profile_rating r
         JOIN ongeki_score_best b 
           ON r.musicId = b.musicId 
@@ -126,7 +130,8 @@ const NewUserRatingFramesRoutes = new Hono()
           m.artist,
           m.level,
           m.genre,
-          m.chartId
+          m.chartId,
+          m.noteCount
         FROM ongeki_profile_rating r
         JOIN ongeki_score_best b 
           ON r.musicId = b.musicId 
@@ -169,7 +174,8 @@ const NewUserRatingFramesRoutes = new Hono()
           m.artist,
           m.level,
           m.genre,
-          m.chartId
+          m.chartId,
+          m.noteCount
         FROM ongeki_profile_rating r
         JOIN ongeki_score_best b 
           ON r.musicId = b.musicId 

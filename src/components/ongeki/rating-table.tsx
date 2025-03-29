@@ -20,6 +20,8 @@ interface RatingTable {
 	level: number;
 	chartId: number;
 	genre: string;
+	platinumScoreMax: number;
+	noteCount: number;
 	isFullCombo?: number | undefined;
 	isFullBell?: number;
 	isAllBreake?: number;
@@ -30,10 +32,11 @@ interface RatingFrameTableProps {
 	title: string;
 }
 
-const OngekiRatingTable = ({ data, title }: RatingFrameTableProps) => {
-	const [searchQuery, setSearchQuery] = useState("");
+const OngekiRatingTable: React.FC<RatingFrameTableProps> = ({ data, title }) => {
+	const [searchQuery, setSearchQuery] = useState<string>("");
 
 	const filteredSongs = data.filter((song) => song.title?.toLowerCase().includes(searchQuery.toLowerCase()));
+
 	return (
 		<div className="bg-card rounded-md p-4 sm:p-6">
 			<div className="mb-4 flex flex-col items-center justify-between gap-4 sm:mb-6 sm:flex-row">
@@ -55,33 +58,39 @@ const OngekiRatingTable = ({ data, title }: RatingFrameTableProps) => {
 					<TableHeader>
 						<TableRow className="border-seperator border-b hover:bg-transparent">
 							<TableHead className="text-primary">#</TableHead>
-
 							<TableHead className="text-primary">Song</TableHead>
 							<TableHead className="text-primary">Score</TableHead>
 							<TableHead className="text-primary">Grade</TableHead>
 							<TableHead className="text-primary">Rating</TableHead>
+							<TableHead className="text-primary">PScore</TableHead>
 
 							<TableHead className="text-primary">Level</TableHead>
 							<TableHead className="text-primary">Difficulty</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{filteredSongs.map((song, index) => (
-							<TableRow key={song.id ?? index} className="border-seperator hover:bg-hover border-b">
-								<TableCell className="text-primary text-sm">{index + 1}</TableCell>
+						{filteredSongs.map((song, index) => {
+							const maxPossibleScore = song.noteCount * 2;
 
-								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
-								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
-								<TableCell className="text-primary text-sm">{getOngekiGrade(song.score!)}</TableCell>
-								<TableCell className="text-primary text-sm">
-									{(OngekiRating(song.level!, song.score!) / 100).toFixed(2)}
-								</TableCell>
-								<TableCell className="text-primary text-sm">{song.level}</TableCell>
-								<TableCell className="text-primary text-sm">
-									<span>{getDifficultyFromOngekiChart(song.chartId!)}</span>
-								</TableCell>
-							</TableRow>
-						))}
+							return (
+								<TableRow key={song.id ?? index} className="border-seperator hover:bg-hover border-b">
+									<TableCell className="text-primary text-sm">{index + 1}</TableCell>
+									<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.title}</TableCell>
+									<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
+									<TableCell className="text-primary text-sm">{getOngekiGrade(song.score!)}</TableCell>
+									<TableCell className="text-primary text-sm">
+										{(OngekiRating(song.level!, song.score!) / 100).toFixed(2)}
+									</TableCell>
+									<TableCell className="text-primary text-sm">
+										{`${(song.platinumScoreMax ?? 0).toLocaleString()} / ${maxPossibleScore.toLocaleString()}`}
+									</TableCell>
+									<TableCell className="text-primary text-sm">{song.level}</TableCell>
+									<TableCell className="text-primary text-sm">
+										<span>{getDifficultyFromOngekiChart(song.chartId!)}</span>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 				{filteredSongs.length === 0 && (

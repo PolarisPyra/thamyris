@@ -4,7 +4,6 @@ import { db } from "@/api/db";
 import { DB } from "@/api/types";
 import { rethrowWithMessage } from "@/api/utils/error";
 
-// includes joined tables
 type ExtendedOngekiProfileRating = DB.OngekiProfileRating & {
 	score: number;
 	level: number;
@@ -15,6 +14,9 @@ type ExtendedOngekiProfileRating = DB.OngekiProfileRating & {
 	jacketPath?: string;
 	isFullBell?: number;
 	isFullCombo?: number;
+	noteCount: number;
+	platinumScoreStar?: number;
+	platinumScoreMax: number;
 	isAllBreake?: number;
 };
 
@@ -28,6 +30,7 @@ const UserRatingFramesRoutes = new Hono()
 				`SELECT 
           r.musicId,
           b.techScoreMax as score,
+          b.platinumScoreMax,
           r.difficultId,
           r.version,
           r.type,
@@ -39,7 +42,8 @@ const UserRatingFramesRoutes = new Hono()
           m.artist,
           m.level,
           m.genre,
-          m.chartId
+          m.chartId,
+          m.noteCount
         FROM ongeki_profile_rating r
         JOIN ongeki_score_best b 
           ON r.musicId = b.musicId 
@@ -67,8 +71,9 @@ const UserRatingFramesRoutes = new Hono()
 
 			const results = await db.select<ExtendedOngekiProfileRating>(
 				`SELECT 
-          r.musicId,
+         r.musicId,
           b.techScoreMax as score,
+          b.platinumScoreMax,
           r.difficultId,
           r.version,
           r.type,
@@ -80,7 +85,8 @@ const UserRatingFramesRoutes = new Hono()
           m.artist,
           m.level,
           m.genre,
-          m.chartId
+          m.chartId,
+          m.noteCount
         FROM ongeki_profile_rating r
         JOIN ongeki_score_best b 
           ON r.musicId = b.musicId 
@@ -109,6 +115,7 @@ const UserRatingFramesRoutes = new Hono()
 				`SELECT 
           r.musicId,
           b.techScoreMax as score,
+          b.platinumScoreMax,
           r.difficultId,
           r.version,
           r.type,
@@ -120,7 +127,8 @@ const UserRatingFramesRoutes = new Hono()
           m.artist,
           m.level,
           m.genre,
-          m.chartId
+          m.chartId,
+          m.noteCount
         FROM ongeki_profile_rating r
         JOIN ongeki_score_best b 
           ON r.musicId = b.musicId 
@@ -150,6 +158,7 @@ const UserRatingFramesRoutes = new Hono()
 				`SELECT 
           r.musicId,
           b.techScoreMax as score,
+          b.platinumScoreMax,
           r.difficultId,
           r.version,
           r.type,
@@ -161,7 +170,8 @@ const UserRatingFramesRoutes = new Hono()
           m.artist,
           m.level,
           m.genre,
-          m.chartId
+          m.chartId,
+          m.noteCount
         FROM ongeki_profile_rating r
         JOIN ongeki_score_best b 
           ON r.musicId = b.musicId 
