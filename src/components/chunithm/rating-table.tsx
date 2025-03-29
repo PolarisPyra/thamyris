@@ -58,11 +58,9 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 							<TableHead className="text-primary">Song</TableHead>
 							<TableHead className="text-primary">Score</TableHead>
 							<TableHead className="text-primary">Grade</TableHead>
+							<TableHead className="text-primary">Rating</TableHead>
 							<TableHead className="text-primary">Level</TableHead>
 							<TableHead className="text-primary">Difficulty</TableHead>
-							<TableHead className="text-primary">Genre</TableHead>
-							<TableHead className="text-primary">Artist</TableHead>
-							<TableHead className="text-primary">Rating</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -77,19 +75,17 @@ const ChunithmRatingFrameTable = ({ data, title }: RatingFrameTableProps) => {
 											alt={String(song.title)}
 											className="flex-shrink-0"
 										/>
-										<span className="text-primary truncate">{song.title}</span>
+										<span className="text-primary max-w- truncate">{song.title}</span>
 									</div>
 								</TableCell>{" "}
 								<TableCell className="text-primary text-sm">{song.score?.toLocaleString()}</TableCell>
 								<TableCell className="text-primary text-sm">{getChunithmGrade(song.score!)}</TableCell>
+								<TableCell className="text-primary text-sm">
+									{(ChunitmRating(song.level!, song.score!) / 100).toFixed(2)}
+								</TableCell>
 								<TableCell className="text-primary text-sm">{song.level}</TableCell>
 								<TableCell className="text-primary text-sm">
 									<span>{getDifficultyFromChunithmChart(song.chartId!)}</span>
-								</TableCell>
-								<TableCell className="text-primary text-sm">{song.genre}</TableCell>
-								<TableCell className="text-primary max-w-[140px] truncate text-sm">{song.artist}</TableCell>
-								<TableCell className="text-primary text-sm">
-									{(ChunitmRating(song.level!, song.score!) / 100).toFixed(2)}
 								</TableCell>
 							</TableRow>
 						))}

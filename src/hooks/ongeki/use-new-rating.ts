@@ -2,9 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { api } from "@/utils";
 
-/**
- * Fetches and returns the user's top 30 best plays that contribute to their rating.
- */
 export const useUserNewRatingBaseBestList = () => {
 	return useQuery({
 		queryKey: ["userNewRatingBaseBestList"],
@@ -15,15 +12,9 @@ export const useUserNewRatingBaseBestList = () => {
 			}
 			return await response.json();
 		},
-		select: (data) => {
-			return [...data].sort((a, b) => b.score - a.score);
-		},
 	});
 };
 
-/**
- * Fetches and returns the most recent plays for the current game version that contribute to the user's rating.
- */
 export const useUserNewRatingBaseBestNewList = () => {
 	return useQuery({
 		queryKey: ["userNewRatingBaseBestNewList"],
@@ -49,9 +40,6 @@ export const useUserNewRatingBasePScoreList = () => {
 	});
 };
 
-/**
- * Fetches and returns potential plays that could improve the user's rating.
- */
 export const useUserNewRatingBaseNextBestList = () => {
 	return useQuery({
 		queryKey: ["userNewRatingBaseNextBestList"],
@@ -66,9 +54,6 @@ export const useUserNewRatingBaseNextBestList = () => {
 	});
 };
 
-/**
- * Fetches and returns the player's current rating.
- */
 export const useNewPlayerRating = () => {
 	return useQuery({
 		queryKey: ["newPlayerRating"],
@@ -83,9 +68,6 @@ export const useNewPlayerRating = () => {
 	});
 };
 
-/**
- * Fetches and returns the player's highest achieved rating.
- */
 export const useNewHighestRating = () => {
 	return useQuery({
 		queryKey: ["newHighestRating"],
