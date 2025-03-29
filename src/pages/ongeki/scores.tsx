@@ -19,10 +19,14 @@ const OngekiScorePage = () => {
 
 	const filteredScores = scores.filter((score) => score.title?.toLowerCase().includes(searchQuery.toLowerCase()));
 
-	const itemsPerPage = 15;
-	const totalPages = Math.ceil(filteredScores.length / itemsPerPage);
+	const versionFilteredScores = isRefreshOrAbove
+		? filteredScores.filter((score) => score.platinumScoreStar !== null)
+		: filteredScores.filter((score) => score.platinumScoreStar === null);
 
-	const paginatedScores = filteredScores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+	const itemsPerPage = 15;
+	const totalPages = Math.ceil(versionFilteredScores.length / itemsPerPage);
+
+	const paginatedScores = versionFilteredScores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 	if (isLoadingScores) {
 		return (
