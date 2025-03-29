@@ -106,8 +106,8 @@ CDN_URL=https://thamyris.b-cdn.net/
 ### Starting the Development Server
 
 ```bash
-bun client:dev    # Frontend only
-bun server:dev    # Backend only
+pnpm client:dev    # Frontend only
+pnpm server:dev    # Backend only
 ```
 
 ## 🔧 Configuration Files
