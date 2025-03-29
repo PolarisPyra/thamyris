@@ -60,35 +60,46 @@ pnpm env use --global lts
 3. **Environment Setup**
    Create a `.env` file in the root directory with the following variables:
 
-   ```env
-   # Required in both environments
-   JWT_SECRET=your_jwt_secret
-   DOMAIN=localhost
-   RATELIMIT_KEY=your_ratelimit_key
+```env
 
-   # Production database credentials
-   PROD_MYSQL_HOST=your_prod_host
-   PROD_MYSQL_USERNAME=your_prod_username
-   PROD_MYSQL_PASSWORD=your_prod_password
-   PROD_MYSQL_DATABASE=your_prod_database
+   # Required environment variables
 
-   # Development database credentials
-   DEV_MYSQL_HOST=localhost
-   DEV_MYSQL_USERNAME=your_dev_username
-   DEV_MYSQL_PASSWORD=your_dev_password
-   DEV_MYSQL_DATABASE=your_dev_database
+JWT_SECRET=
+DOMAIN=localhost
+RATELIMIT_KEY=
 
-   # Additional configuration
-   NODE_ENV=development  # or production
-   PORT=3000
-   SERVER_PORT=3001
+# Development database credentials (required by the application)
 
-   # CDN Configuration
-   CDN_URL=/
-   ```
+DEV_MYSQL_HOST=
+DEV_MYSQL_USERNAME=
+DEV_MYSQL_PASSWORD=
+DEV_MYSQL_DATABASE=
+
+# Production database credentials (required by the application)
+
+PROD_MYSQL_HOST=
+PROD_MYSQL_USERNAME=
+PROD_MYSQL_PASSWORD=
+PROD_MYSQL_DATABASE=
+
+# Additional configuration
+
+NODE_ENV=development
+CLIENT_PORT=3000
+SERVER_PORT=3001
+
+# Cloudflare turnstile
+
+CFTurnstileKey=1x00000000000000000000AA
+
+# CDN Configuration
+
+CDN_URL=https://thamyris.b-cdn.net/
+```
 
 4. **Database Setup**
-   - Create a MySQL database following the artemis [guide](https://gitea.tendokyu.moe/Hay1tsme/artemis) and configure your `.env` file
+
+- Create a MySQL database following the artemis [guide](https://gitea.tendokyu.moe/Hay1tsme/artemis) and configure your `.env` file
 
 ## 🚀 Development
 
