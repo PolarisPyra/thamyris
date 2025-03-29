@@ -103,9 +103,10 @@ CDN_URL=https://thamyris.b-cdn.net/
 
 ## 🚀 Development
 
-### Starting the Development Server
+### Starting the Development Server / Client
 
 ```bash
+pnpm install
 pnpm client:dev    # Frontend only
 pnpm server:dev    # Backend only
 ```
